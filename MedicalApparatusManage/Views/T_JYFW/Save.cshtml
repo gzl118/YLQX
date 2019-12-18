@@ -1,0 +1,77 @@
+﻿@model MedicalApparatusManage.Models.T_JYFWModels
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Save</title>
+    <script type="text/javascript" language="javascript">
+        $(function () {
+            var tag = $("#Tag").val();
+            if (tag == "Details") {
+                $("form input").prop("readonly", true);
+                $("#divSave").hide();
+            }
+        });
+        function Save() {
+            var elements = document.forms['formT_JYFW'];
+            var bl = validateCallback(elements);
+            if (bl) {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/T_JYFW/Save",
+                    data: $("#formT_JYFW").serializeArray(),
+                    success: dialogAjaxDone
+                });
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="pageContent">
+        <form id="formT_JYFW" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
+            <div class="pageFormContent" layouth="58">
+                @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Name = "Tag" })
+                @Html.HiddenFor(m => m.DataModel.FWID, new { Name = "DataModel.FWID" })
+                <div class="unit">
+                    <label>
+                        类型名称：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.FWBM, new { name = "FWBM", style = "width:270px" })
+                </div>
+                <div class="unit">
+                    <label>
+                        类型说明：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.FWMC, new { name = "FWMC", style = "width:270px" })
+                </div>
+            </div>
+            <div class="formBar">
+                <ul>
+                    <li>
+                        <div class="button" id="divSave">
+                            <div class="buttonContent">
+                                <button value="保存" onclick="Save();">
+                                    保存
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="button">
+                            <div class="buttonContent">
+                                <button value="取消" class="close">
+                                    取消
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

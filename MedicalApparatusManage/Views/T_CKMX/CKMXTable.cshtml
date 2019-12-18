@@ -1,0 +1,105 @@
+﻿@model MedicalApparatusManage.Models.T_CKDModels
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <script type="text/javascript" language="javascript">
+        function deleteCKMX(obj) {
+            var guid1 = obj.getAttribute("name");
+            $.post("/T_CKMX/Delete", { Guid: guid1 }, function (data) {
+                if (data.statusCode == "200") {
+                    $("#ckmxCkPageBox").loadUrl("/T_CKMX/CKMXTable", { id: 0, ckdh: $("#CKDH").val(), canEdit: 0 });
+                    alertMsg.correct('删除成功！');
+                } else {
+                    alertMsg.error('删除失败！');
+                }
+            }, "json");
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <table width="100%" layouth="280" class="table">
+            <thead>
+                <tr>
+                    <th>
+                        产品编号
+                    </th>
+                    <th>
+                        产品名称
+                    </th>
+                    <th>
+                        生产企业
+                    </th>
+                    <th>
+                        产品规格
+                    </th>
+                    <th>
+                        产品型号
+                    </th>
+                    <th>
+                        包装单位
+                    </th>
+                    <th>
+                        产品数量
+                    </th>
+                    <th>
+                        产品批号
+                    </th>
+                    <th>
+                        生产日期
+                    </th>
+                    <th>
+                        有效期
+                    </th>
+                    <th>
+                        许可证号
+                    </th>
+                    <th>
+                        注册证号
+                    </th>
+                    <th>
+                        库房
+                    </th>
+                    <th>
+                        库管
+                    </th>
+                    <th type="del">
+                        操作
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CKMXList)
+                {
+                    <tr target="sid_user">
+                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPBH) ? item.T_YLCP.CPBH : "")</td>
+                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPMC) ? item.T_YLCP.CPMC : "")</td>
+                        <td>@(item.T_YLCP != null && item.T_YLCP.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_YLCP.T_SupQY1.SupMC) ? item.T_YLCP.T_SupQY1.SupMC : "")</td>
+                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPGG) ? item.T_YLCP.CPGG : "")</td>
+                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPXH) ? item.T_YLCP.CPXH : "")</td>
+                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPDW) ? item.T_YLCP.CPDW : "")</td>
+                        <td>@item.CPNUM</td>
+                        <td>@item.CPPH</td>
+                        <td>@(item.CPSCRQ.HasValue ? item.CPSCRQ.Value.ToString("yyyy/MM/dd") : "")</td>
+                        <td>@(item.CPYXQ.HasValue ? item.CPYXQ.Value.ToString("yyyy/MM/dd") : "")</td>
+                        <td>@(item.T_YLCP != null && item.T_YLCP.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_YLCP.T_SupQY1.SupXKZBH) ? item.T_YLCP.T_SupQY1.SupXKZBH : "")</td>
+                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPZCZ) ? item.T_YLCP.CPZCZ : "")</td>
+                        <td>@(item.T_CK != null && !string.IsNullOrEmpty(item.T_CK.CKMC) ? item.T_CK.CKMC : "")</td>
+                        <td>@(item.T_CK != null && !string.IsNullOrEmpty(item.T_CK.CKGLY) ? item.T_CK.CKGLY : "")</td>
+                        <td>
+                            <a href="javascript:void(0)" name="@item.GUID" class="btnDel" onclick="deleteCKMX(this);">删除</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

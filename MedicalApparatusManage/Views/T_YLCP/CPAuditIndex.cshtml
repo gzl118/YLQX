@@ -1,0 +1,196 @@
+﻿@model MedicalApparatusManage.Models.T_YLCPModels
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Audit</title>
+    <script type="text/javascript" language="javascript">
+        $(function () {
+            var tag = $("#Tag").val();
+            if (tag == "Details") {
+                $("form input").prop("readonly", true);
+                $("#divSave").hide();
+            }
+        });
+        function through(type) {
+            var elements = document.forms['formT_YLCPSP'];
+            var bl = validateCallback(elements);
+            if (bl) {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/T_YLCP/through/" + type,
+                    data: $("#formT_YLCPSP").serializeArray(),
+                    success: dialogAjaxDone
+                });
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="pageContent">
+        <form id="formT_YLCPSP" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
+            <div class="pageFormContent" layouth="58">
+                @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Name = "Tag" })
+                @Html.HiddenFor(m => m.DataModel.CPID, new { Name = "DataModel.CPID" })
+                @Html.HiddenFor(m => m.DataModel.CPTP, new { Name = "DataModel.CPTP" })
+                @Html.HiddenFor(m => m.DataModel.CPFJ, new { Name = "DataModel.CPFJ" })
+                <div class="unit">
+                    <label>
+                        产品名称：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.CPMC, new { name = "CPMC", style = "width:260px" ,@readonly = "readonly" })
+                </div>
+                <div class="unit">
+                    <label>
+                        产品注册号：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.CPZCZ, new { name = "CPZCZ", style = "width:260px", @readonly = "readonly" })
+                </div>
+                <div class="unit">
+                    <label>
+                        产品型号：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.CPXH, new { name = "CPXH", style = "width:260px", @readonly = "readonly" })
+                </div>
+                <div class="unit">
+                    <label>
+                        产品类型：
+                    </label>
+                    @Html.DropDownListFor(m => m.DataModel.CPLXID, ViewData["CPLX"] as SelectList, "请选择", new { style = "width:270px", disabled = "disabled" })
+                </div>
+                <div class="unit">
+                    <label>
+                        产品规格：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.CPGG, new { name = "CPGG", style = "width:260px", @readonly = "readonly" })
+                </div>
+                <div class="unit">
+                    <label>
+                        产品单位：
+                    </label>
+                    @{
+                        List<SelectListItem> list = new List<SelectListItem>();
+                        list.Add(new SelectListItem { Text = "盒", Value = "盒" });
+                        list.Add(new SelectListItem { Text = "瓶", Value = "瓶" });
+                        list.Add(new SelectListItem { Text = "台", Value = "台" });
+                        list.Add(new SelectListItem { Text = "个", Value = "个" });
+
+                        @Html.DropDownListFor(m => m.DataModel.CPDW, list, new { style = "width:270px",disabled = "disabled" })
+                    }
+
+                </div>
+                <div class="unit">
+                    <label>
+                        产品单价：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.CPPrice, new { name = "CPPrice", style = "width:260px", @readonly = "readonly" })
+                </div>
+                <div class="unit">
+                    <label>
+                        产品图片：
+                    </label>
+                    @if (ViewData["CPTPLJ"] != null && ViewData["CPTPLJ"].ToString() != "")
+                    {
+                        <a href="~/UploadFiles/供货商产品图片/@ViewData["CPTPLJ"].ToString()" target="_blank">@ViewData["CPTPLJ"].ToString()</a>
+                    }
+                </div>
+                <div class="unit">
+                    <label>
+                        产品附件：
+                    </label>
+                    @if (ViewData["CPFJLJ"] != null && ViewData["CPFJLJ"].ToString() != "")
+                    {
+                        <a href="~/UploadFiles/供货商产品附件/@ViewData["CPFJLJ"].ToString()" target="_blank">@ViewData["CPFJLJ"].ToString()</a>
+                    }
+                </div>
+                <div class="unit">
+                    <label>
+                        供应商：
+                    </label>
+                    @Html.DropDownListFor(m => m.DataModel.CPGYSID, ViewData["SUPQY"] as SelectList, "请选择", new { style = "width:270px", disabled = "disabled" })
+                </div>
+                <div class="unit">
+                    <label>
+                        生产单位：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.CPSCQY, new { name = "CPSCQY", style = "width:260px", @readonly = "readonly" })
+                </div>
+                <div class="unit">
+                    <label>
+                        生产地址：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.CPSCDZ, new { name = "CPSCDZ", style = "width:260px", @readonly = "readonly" })
+                </div>
+                <div class="unit">
+                    <label>
+                        生产批号：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.CPPH, new { name = "CPPH", style = "width:260px", @readonly = "readonly" })
+                </div>
+
+                <div class="unit">
+                    <label>
+                        生产时间：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.CPSCSJ, new { name = "CPSCSJ", style = "width:260px ", @readonly = "readonly" })
+                </div>
+
+                <div class="unit">
+
+                    <label>
+                        录入时间：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.CPLRRQ, new { name = "CPLRSJ", style = "width:260px", @readonly = "readonly" })
+                </div>
+                <div class="unit">
+                    <label>
+                        产品录入人：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.CPLRR, new { name = "CPTJR", style = "width:260px", @readonly = "readonly" })
+                </div>
+
+            </div>
+            <div class="formBar">
+                <ul>
+                   @if (Model.DataModel.CPStatus != 1)
+                    {
+                    <li>
+                        <div class="button" id="divSave">
+                            <div class="buttonContent">
+                                <button value="通过" onclick="through(1);">
+                                    通过
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="button" id="divSave">
+                            <div class="buttonContent">
+                                <button value="不通过" onclick="through(2);">
+                                    不通过
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                   }
+                    <li>
+                        <div class="button">
+                            <div class="buttonContent">
+                                <button value="取消" class="close">
+                                    取消
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

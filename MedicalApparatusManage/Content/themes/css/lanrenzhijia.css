@@ -1,0 +1,185 @@
+a.back {
+	background:transparent url(../images/back.png) no-repeat top left;
+	position:fixed;
+	width:150px;
+	height:27px;
+	outline:none;
+	bottom:0px;
+	left:0px;
+}   
+.menu {
+	width:80px;
+	height:52px;
+	position:relative;
+	font-family: "Trebuchet MS", sans-serif;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+.item {
+	position:relative;
+	background-color:#f0f0f0;
+	float:left;
+	width:52px;
+	margin:0px 5px;
+	height:52px;
+	border:2px solid #ddd;
+	-moz-border-radius:30px;
+	-webkit-border-radius:30px;
+	border-radius:30px;
+	-moz-box-shadow:1px 1px 3px #555;
+	-webkit-box-shadow:1px 1px 3px #555;
+	box-shadow:1px 1px 3px #555;
+	cursor:pointer;
+	overflow:hidden;
+}
+.items {
+	position:relative;
+	background-color:#f0f0f0;
+	float:left;
+	width:52px;
+	margin:0px 5px;
+	height:52px;
+	border:2px solid #ddd;
+	-moz-border-radius:30px;
+	-webkit-border-radius:30px;
+	border-radius:30px;
+	-moz-box-shadow:1px 1px 3px #555;
+	-webkit-box-shadow:1px 1px 3px #555;
+	box-shadow:1px 1px 3px #555;
+	cursor:pointer;
+	overflow:hidden;
+}
+.link {
+	left:2px;
+	top:2px;
+	position:absolute;
+	width:48px;
+	height:48px;
+}
+.icon_home {
+	background:transparent url(../../images/home.png) no-repeat top left;
+}
+.icon_mail {
+	background:transparent url(../../images/mail.png) no-repeat top left;
+}
+.icon_help {
+	background:transparent url(../../images/help.png) no-repeat top left;
+}
+.icon_find {
+	background:transparent url(../../images/find.png) no-repeat top left;
+}
+.icon_photos {
+	background:transparent url(../../images/photos.png) no-repeat top left;
+}
+.item_content {
+	position:absolute;
+	height:52px;
+	width:220px;
+	overflow:hidden;
+	left:56px;
+	top:0px;
+	display:none;
+}
+.item_content h2 {
+	color:#aaa;
+	text-shadow: 1px 1px 1px #fff;
+	background-color:transparent;
+	font-size:14px;
+}
+.item_content a {
+	background-color:transparent;
+	float:left;
+	margin-right:7px;
+	margin-top:3px;
+	color:#bbb;
+	text-shadow: 1px 1px 1px #fff;
+	text-decoration:none;
+	font-size:12px;
+}
+.item_content a:hover {
+	color:#0b965b;
+}
+
+.item_content .portrait {
+  width: 48px;
+  padding: 2px;
+  margin-right:2px;
+  text-align: center;
+  cursor: pointer;
+  float: left;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+
+.item_content .portrait {
+  width: 48px;
+  padding: 2px;
+  margin-right:15px;
+  text-align: center;
+  cursor: pointer;
+  float: left;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}.item_content .portraits {
+  width: 48px;
+  padding: 0px;
+  margin-right:0px;
+  text-align: center;
+  cursor: pointer;
+  float: left;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+
+ul li{  
+list-style-type:none; 
+float:left; 
+}  
+.item_content .portrait:hover {
+  -moz-transform: scale(1.04, 1.04);
+  -ms-transform: scale(1.04, 1.04);
+  -webkit-transform: scale(1.04, 1.04);
+  transform: scale(1.04, 1.04);
+  -webkit-filter: grayscale(0%);
+  filter: grayscale(0%);
+  background-image:url(../images/toolsbuttonbg.png);
+  background-repeat: no-repeat;
+}
+
+.item_content .portraits:hover {
+  -moz-transform: scale(1.04, 1.04);
+  -ms-transform: scale(1.04, 1.04);
+  -webkit-transform: scale(1.04, 1.04);
+  transform: scale(1.04, 1.04);
+  -webkit-filter: grayscale(0%);
+  filter: grayscale(0%);
+  background-image:url(../images/toolsbuttonbg.png);
+  background-repeat: no-repeat;
+}
+
+.item_content p {
+	background-color:transparent;
+	display:none;
+}
+.item_content p input {
+	border:1px solid #ccc;
+	padding:1px;
+	width:155px;
+	float:left;
+	margin-right:5px;
+}
+/* 代码整理：懒人之家 lanrenzhijia.com */

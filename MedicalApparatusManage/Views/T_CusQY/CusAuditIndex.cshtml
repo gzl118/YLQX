@@ -1,0 +1,205 @@
+﻿@model MedicalApparatusManage.Models.T_CusQYModels
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Audit</title>
+    <script type="text/javascript" language="javascript">
+        $(function () {
+            var tag = $("#Tag").val();
+            if (tag == "Details") {
+                $("form input").prop("readonly", true);
+                $("#divSave").hide();
+            }
+        });
+        function through(type) {
+            var elements = document.forms['formCusAuditIndex'];
+            var bl = validateCallback(elements);
+            if (bl) {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/T_CusQY/through/" + type,
+                    data: $("#formCusAuditIndex").serializeArray(),
+                    success: dialogAjaxDone
+                });
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="pageContent">
+        <form id="formCusAuditIndex" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
+            <div class="pageFormContent" layouth="58">
+                <div>
+                    <fieldset>
+                        <legend>资料列表</legend>
+                        <table width="100%" class="table" id="T_CusQYZZTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        资料名称
+                                    </th>
+                                    <th>
+                                        资料类型
+                                    </th>
+                                    <th>
+                                        资料编号
+                                    </th>
+                                    <th>
+                                        资料附件
+                                    </th>
+                                    <th>
+                                        是否有效
+                                    </th>
+                                    <th>
+                                        资料备注
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.CusQYZZList)
+                                {
+                                    <tr target="sid_user" rel="@item.ZZID">
+                                        <td>@item.ZZMC</td>
+                                        <td>@item.ZZLX</td>
+                                        <td>@item.ZZBH</td>
+                                        <td><a href="~/UploadFiles/购货商资料/@item.ZZFJ" target="_blank">@item.ZZFJ</a></td>
+                                        <td>@item.ZZYX</td>
+                                        <td>@item.ZZBZ</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </div>
+                @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Name = "Tag" })
+                @Html.HiddenFor(m => m.DataModel.CusID, new { Name = "DataModel.CusID" })
+                <div>
+                    <fieldset>
+                        <legend>基本信息</legend>
+                        <div class="unit">
+                            <label>
+                                企业名称：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CusMC, new { name = "CusMC", style = "width:279px", @readonly = "readonly" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                信用代码：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CusZZJGDM, new { name = "CusZZJGDM", style = "width:279px", @readonly = "readonly" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                企业类型：
+                            </label>
+                            @{
+                                string[] QYL = { "国有企业", "集体企业", "股份合作企业", "联营企业", "中外合资经营企业", "中外合作经营企业" };
+                                List<SelectListItem> QYlist = new List<SelectListItem>();
+                                foreach (string s in QYL)
+                                {
+                                    QYlist.Add(new SelectListItem { Text = s, Value = s });
+                                }
+
+                                @Html.DropDownListFor(m => m.DataModel.CusDWXZ, QYlist, "--- 请选择 ---", new { name = "WhsDWXZ", style = "width:282px", disabled = "disabled" })
+                            }
+                        </div>
+                        <div class="unit">
+                            <label>
+                                法人代表：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CusFSDB, new { name = "CusFSDB", style = "width:279px", @readonly = "readonly" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                注册日期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CusZCSJ, new { name = "CusZCSJ", style = "width:279px", @readonly = "readonly" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                注册地址：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CusZCDZ, new { name = "CusZCDZ", style = "width:279px", @readonly = "readonly" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                经营期限：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CusJYKSSJ, new { name = "CusJYKSSJ", @readonly = "readonly" })
+                            <label style="width:10px">
+                                至
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CusJXJSSJ, new { name = "CusJXJSSJ", @readonly = "readonly" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                开户行：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CusKHH, new { name = "CusKHH", style = "width:279px", @readonly = "readonly" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                银行帐号：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CusZH, new { name = "CusZH", style = "width:279px", @readonly = "readonly" })
+                        </div>
+                        @*<div class="unit">
+                                <label>
+                                    经营范围：
+                                </label>
+                                @Html.TextAreaFor(m => m.DataModel.CusJXFW, new { name = "CusJXFW", style = "width:279px;height=120px" })
+                            </div>*@
+                        @*<div class="unit">
+                                <label>
+                                    备注：
+                                </label>
+                                @Html.TextAreaFor(m => m.DataModel.CusBZ, new { name = "CusBZ", style = "width:279px;height=120px" })
+                            </div>*@
+                    </fieldset>
+                </div>
+            </div>
+            <div class="formBar">
+                <ul>
+                    @if (Model.DataModel.CusStatus != 1)
+                    {
+                        <li>
+                            <div class="button" id="divSave">
+                                <div class="buttonContent">
+                                    <button value="通过" onclick="through(1);">
+                                        通过
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="button" id="divSave">
+                                <div class="buttonContent">
+                                    <button value="不通过" onclick="through(2);">
+                                        不通过
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                    <li>
+                        <div class="button">
+                            <div class="buttonContent">
+                                <button value="取消" class="close">
+                                    取消
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

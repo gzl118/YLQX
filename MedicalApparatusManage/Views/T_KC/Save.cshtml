@@ -1,0 +1,116 @@
+﻿@model MedicalApparatusManage.Models.T_KCModels
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Save</title>
+    <script type="text/javascript" language="javascript">
+        $(function () {
+            var tag = $("#Tag").val();
+            if (tag == "Details") {
+                $("form input").prop("readonly", true);
+                $("#divSave").hide();
+            }
+        });
+        function Save() {
+            var elements = document.forms['formT_KC'];
+            var bl = validateCallback(elements);
+            if (bl) {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/T_KC/Save",
+                    data: $("#formT_KC").serializeArray(),
+                    success: dialogAjaxDone
+                });
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="pageContent">
+        <form id="formT_KC" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
+            <div class="pageFormContent" layouth="58">
+                @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Name = "Tag" })
+                @Html.HiddenFor(m => m.DataModel.KCID, new { Name = "DataModel.KCID" })
+                <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                    <div class="unit">
+                        <label>
+                            仓库：
+                        </label>
+                        @Html.DropDownListFor(m => m.DataModel.CKID, ViewData["CK"] as SelectList, "请选择", new { style = "width:279px" })
+                    </div>
+                    <div class="unit">
+                        <label>
+                            库存数量：
+                        </label>
+                        @Html.TextBoxFor(m => m.DataModel.CPNUM, new { name = "CPNUM", style = "width:274px" })
+                    </div>
+                    <div class="unit">
+                        <label>
+                            是否作废：
+                        </label>
+                        @{
+                            string[] isL = { "是", "否" };
+                            List<SelectListItem> isList = new List<SelectListItem>();
+
+                            isList.Add(new SelectListItem { Text = "是", Value = "1" });
+                            isList.Add(new SelectListItem { Text = "否", Value = "0" });
+
+                            @Html.DropDownListFor(m => m.DataModel.FlAG, isList, "请选择", new { style = "width:279px" })
+                        }
+                    </div>
+                </div>
+                <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
+                    <div class="unit">
+                        <label>
+                            产品名称：
+                        </label>
+                        @Html.DropDownListFor(m => m.DataModel.CPID, ViewData["YLCP"] as SelectList, "请选择", new { style = "width:279px" })
+                    </div>
+                    <div class="unit">
+                        <label>
+                            存放地址：
+                        </label>
+                        @Html.TextBoxFor(m => m.DataModel.CFDZ, new { name = "CFDZ", style = "width:274px" })
+                    </div>
+                </div>
+                <div style="width:96%;border:1px solid #ffffff;margin:5px;">
+                    <div class="unit">
+                        <label>
+                            备注：
+                        </label>
+                        @Html.TextAreaFor(m => m.DataModel.BZ, new { name = "BZ", style = "width:81.3%;height:45px;" })
+                    </div>
+                </div>
+            </div>
+            <div class="formBar">
+                <ul>
+                    <li>
+                        <div class="button" id="divSave">
+                            <div class="buttonContent">
+                                <button value="保存" onclick="Save();">
+                                    保存
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="button">
+                            <div class="buttonContent">
+                                <button value="取消" class="close">
+                                    取消
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+

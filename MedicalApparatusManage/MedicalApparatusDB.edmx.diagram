@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="53cafd34f7b849c4b25e8b7c174430eb" Name="Diagram1" ZoomLevel="124">
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.ActivityInfo" Width="1.5" PointX="8.75" PointY="4.75" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.sysdiagrams" Width="1.5" PointX="8.75" PointY="8.75" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.SysFavorite" Width="1.5" PointX="3" PointY="6.5" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.SysResource" Width="1.5" PointX="7.75" PointY="1" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.SysRole" Width="1.5" PointX="3.75" PointY="10.875" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.SysRoleResource" Width="1.5" PointX="10" PointY="1.25" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.SysUser" Width="1.5" PointX="0.75" PointY="6.125" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.SysUserRole" Width="1.5" PointX="6" PointY="6.75" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_BJD" Width="1.5" PointX="5.25" PointY="1" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_BJDate" Width="1.5" PointX="5.75" PointY="9.75" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_CGD" Width="1.5" PointX="6" PointY="41.5" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_CGMX" Width="1.5" PointX="8.25" PointY="32.125" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_CK" Width="1.5" PointX="3" PointY="17.5" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_CKD" Width="1.5" PointX="7.5" PointY="51.125" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_CKMX" Width="1.5" PointX="16.5" PointY="40.625" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_CPLX" Width="1.5" PointX="9" PointY="28.625" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_CusPerson" Width="1.5" PointX="5.25" PointY="74.75" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_CusQY" Width="1.5" PointX="3" PointY="68.75" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_CusQYZZ" Width="1.5" PointX="5.25" PointY="79.75" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_FKD" Width="1.5" PointX="7.5" PointY="84" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_FP" Width="1.5" PointX="8.25" PointY="42.5" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_HT" Width="1.5" PointX="5.25" PointY="59.625" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_JYFW" Width="1.5" PointX="0.75" PointY="10.75" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_KC" Width="1.5" PointX="5.25" PointY="26.875" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_Person" Width="1.5" PointX="3" PointY="22.625" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_QYSH" Width="1.5" PointX="10.75" PointY="4.75" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_QYZZ" Width="1.5" PointX="5.25" PointY="32.125" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_RKD" Width="1.5" PointX="11.25" PointY="25.125" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_RKMX" Width="1.5" PointX="13.5" PointY="31.5" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_SHFW" Width="1.5" PointX="5.25" PointY="83.25" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_SJZDFL" Width="1.5" PointX="0.75" PointY="1.125" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_SJZDLX" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_SupPerson" Width="1.5" PointX="5.25" PointY="35.5" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_SupQY" Width="1.5" PointX="3" PointY="29.25" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_THD" Width="1.5" PointX="7.5" PointY="59.875" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_THMX" Width="1.5" PointX="13.5" PointY="45.5" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_WhsQY" Width="1.5" PointX="0.75" PointY="38.125" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_WhsQYZZ" Width="1.5" PointX="3" PointY="40.75" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_XSD" Width="1.5" PointX="5.25" PointY="47.25" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_XSHT" Width="1.5" PointX="5.25" PointY="87.875" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_XSMX" Width="1.5" PointX="13.5" PointY="40.625" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_YLCP" Width="1.5" PointX="11.25" PointY="30" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_YLCPZZ" Width="1.5" PointX="13.5" PointY="38" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_YSD" Width="1.5" PointX="14.25" PointY="27.375" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_YSMX" Width="1.5" PointX="16.5" PointY="31.75" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_SysFavorite_SysUser" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_SysRoleResource_SysResource" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_SysUserRole_SysRole1" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_BJD_T_SJZDLX" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_CGMX_T_CGD" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_FP_T_CGD" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_CGMX_T_SupQY" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_CGMX_T_SupQY1" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_CGMX_T_YLCP" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_CKMX_T_CK" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_KC_T_CK" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_RKMX_T_CK" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_THMX_T_CK" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_CKD_T_XSD" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_CKMX_T_CKD" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_CKMX_T_YLCP" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_CPLX_T_CPLX" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_YLCP_T_CPLX" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_CusPerson_T_CusQY" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_CusQY_T_SupQY" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_CusQYZZ_T_CusQY" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_SHFW_T_CusQY" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_THD_T_CusQY" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_XSD_T_CusQY" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_XSHT_T_CusQY" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_FKD_T_SHFW" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_HT_T_SupQY" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_KC_T_SupQY" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_KC_T_SupQY1" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_KC_T_YLCP" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_Person_T_SupQY" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_XSD_T_Person" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_QYZZ_T_SupQY" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_RKMX_T_RKD" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_RKMX_T_SupQY" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_RKMX_T_SupQY1" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_RKMX_T_YLCP" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_SJZDLX_T_SJZDFL" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_SupPerson_T_SupQY" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_SupQY_T_WhsQY" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_YLCP_T_SupQY" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_YLCP_T_SupQY1" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_YSMX_T_SupQY" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_YSMX_T_SupQY1" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_THD_T_XSD" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_THMX_T_THD" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_THMX_T_YLCP" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_WhsQYZZ_T_WhsQY" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_XSMX_T_XSD" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_XSMX_T_YLCP" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_YLCPZZ_T_YLCP" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_YSMX_T_YLCP" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_YSMX_T_YSD" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

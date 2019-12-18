@@ -1,0 +1,179 @@
+﻿@model MedicalApparatusManage.Models.T_SHFWModels
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>售后服务</title>
+</head>
+<body>
+    <div id="pageContent">
+        <div class="pageHeader" style="hight: 80px;">
+            @using (Html.BeginForm("Index", "T_SHFW", FormMethod.Post, new
+            {
+                name = "formSerachMA",
+                id = "formSerachMA",
+                onsubmit = "return navTabSearch(this);"
+
+            }))
+            {
+                <div class="searchBar">
+                    <table class="searchContent">
+                        <tr>
+                            <td>
+                                服务名称:
+                            </td>
+                            <td>
+                                @Html.TextBox("strFWMC")
+                            </td>
+
+                            <td>
+                                服务日期:
+                            </td>
+                            <td>
+                                @{ string strStart = Model.StartTime.HasValue ? Model.StartTime.Value.ToString("yyyy/MM/dd") : "";
+                                    string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
+                                }
+                                <input id="StartDate" name="StartTime" class="Wdate" type="text" value="@strStart"
+                                       onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
+                            </td>
+                            <td>
+                                至
+                            </td>
+                            <td>
+                                <input id="EndDate" name="EndTime" class="Wdate" type="text" value="@strEnd"
+                                       onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', minDate: '#F{$dp.$D(\'StartDate\')}' })" />
+                            </td>
+
+                            <td>
+                                <ul>
+                                    <li>
+                                        <div class="buttonActive">
+                                            <div class="buttonContent">
+                                                <button type="submit" id="Button1" name="btnSerachOl">
+                                                    检索
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                                    }
+        </div>
+        <div class="panelBar" id="EntLimitMenu">
+            <ul class="toolBar">
+                <li><a class="add" href="/T_SHFW/Save/0/Add" target="dialog"  mask="true" title="新增" width="1050" height="500"><span>新增</span></a></li>
+                <li> <a class="edit" href="/T_SHFW/Save/{sid_user}/Edit" target="dialog" mask="true" title="修改" width="1050" height="500"><span>修改</span></a></li>
+                <li><a class="delete" href="/T_SHFW/Delete/{sid_user}" target="ajaxTodo" title="确定删除吗?" mask="true"><span>删除</span></a></li>
+                <li><a class="icon" href="/T_SHFW/Save/{sid_user}/Details" target="dialog"  mask="true" width="1050" height="500"><span>查看详情</span></a></li>
+            </ul>
+        </div>
+        <table width="100%" layouth="112" class="table" id="T_SHFWTable">
+           <thead>
+                <tr>
+                    <th>
+                        服务名称
+                    </th>
+                    <th>
+                        客户单位
+                    </th>
+                    <th>
+                        地址
+                    </th>
+                    <th>
+                        联系人
+                    </th>
+                    <th>
+                        联系电话
+                    </th>
+                    <th>
+                        订货日期
+                    </th>
+                    <th>
+                        交货日期
+                    </th>
+                    <th>
+                        服务完成日期
+                    </th>
+                    <th>
+                        服务人
+                    </th>
+                    <th>
+                        服务人
+                    </th>
+                    <th>
+                        服务内容
+                    </th>
+                    <th>
+                        备注
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.DataList)
+                {
+                    <tr target="sid_user" rel="@item.SHID">
+                        <td>@item.FWMC</td>
+                        <td>@item.T_CusQY.CusMC</td>
+                        <td>@item.DZ</td>
+                        <td>@item.LXR</td>
+                        <td>@item.LXDH</td>
+                        <td>@item.DHRQ</td>
+                        <td>@item.JHRQ</td>
+                        <td>@item.FWRQ</td>
+                        <td>@item.FWR</td>
+                        <td>@item.FWLXDH</td>
+                        <td>@item.FWNR</td>
+                        <td>@item.BZ</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <form id="pagerForm" method="post" onsubmit="return navTabSearch(this);">
+            <input type="hidden" name="pageNum" id="pageNum" />
+            @Html.HiddenFor(m => m.pageSize, new { name = "numPerPage", id = "numPerPage" })
+            <input type="hidden" name="totalCount" id="totalCount" />
+            @Html.HiddenFor(m => m.SortCol, new { name = "SortCol_OP", id = "SortCol_OP" })
+            @Html.HiddenFor(m => m.SortKey, new { name = "SortKey_OP", id = "SortKey_OP" })
+            @Html.HiddenFor(m => m.StartTime, new { name = "StartTime" })
+            @Html.HiddenFor(m => m.EndTime, new { name = "EndTime" })
+            <input type="hidden" name="orderField" value="${param.orderField}" />
+            <input type="hidden" name="orderDirection" value="${param.orderDirection}" />
+        </form>
+        <div class="panelBar">
+            <div class="pages">
+                <span style="width: 35px;">显示</span>
+                @{
+                    string[] sL = { "10", "20", "30", "50" };
+                    List<SelectListItem>
+                        list = new List<SelectListItem>
+                            ();
+                    foreach (string s in sL)
+                    {
+                        list.Add(new SelectListItem { Text = s, Value = s });
+                    }
+                    @Html.DropDownListFor(m => m.pageSize, list, new { name = "numPerPage", id = "numPerPage", onchange = "navTabPageBreak({numPerPage:this.value});" });
+                    <span>
+                        条，共<label>@Model.resultCount</label>
+                        条
+                    </span>
+
+                }
+            </div>
+            <div class="pagination" targettype="navTab" totalcount="@Model.resultCount"
+                 numperpage="@Model.pageSize" pagenumshown="@Model.pagecount"
+                 currentpage="@Model.currentPage">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+

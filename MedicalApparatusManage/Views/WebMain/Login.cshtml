@@ -1,0 +1,124 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>登录</title>
+    <link href="~/Content/css/login.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.7.2.js"></script>
+    <style type="text/css">
+        body {
+            padding-left: 10px;
+            font-size: 13px;
+        }
+
+        h1 {
+            font-size: 20px;
+            font-family: Verdana;
+        }
+
+        h4 {
+            font-size: 16px;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            padding-bottom: 30px;
+            font-family: Verdana;
+        }
+
+            .description h3 {
+                color: #CC0000;
+                font-size: 16px;
+                margin: 0 30px 10px 0px;
+                padding: 45px 0 8px; /*background:url(titleback.png) no-repeat scroll left bottom transparent*/
+                border-bottom: solid 1px #888;
+            }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            document.onkeydown = function (e) {
+                if (e.keyCode) {
+                    if (e.keyCode == 13) {
+                        $("#f_Login").click();
+                    }
+                }
+            }
+            $("#f_Login").click(function () {
+                var UserName = $("#username");
+                var Password = $("#password");
+                if (UserName.val() == '') {
+                    alert("用户名不能为空！");
+                    return false;
+                }
+                else if (Password.val() == '') {
+                    alert("密码不能为空！");
+                    return false;
+                }
+                else {
+                    $.ajax({
+                        type: "post",
+                        dataType: "json",
+                        url: "/WebMain/LoginNew",
+                        data: { userAccount: UserName.val(), password: Password.val() },
+                        success: function (msg) {
+                            if (msg == "success") {
+                                location.href = "/WebMain/Index";
+                            }
+                            else {
+                                alert(msg);
+                                return false;
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div id="container">
+        <div id="header">
+            <h1></h1>
+            <ul class="nav"></ul>
+        </div>
+        <div id="content">
+            <div class="left_main">
+                <h2>渠道信息</h2>
+                <ul class="news" id="qdkb_html" style="color:#FFFFFF;">
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;欢迎使用医疗器械管理系统!</li>
+                </ul>
+
+            </div>
+            <fieldset class="right_main">
+                <legend>用户登录</legend>
+                <dl class="setting">
+                    <dt>
+                        <label>用户名</label>
+                    </dt>
+                    <dd>
+                        <span class="text_input">
+                            <input type="text" name="UserName" id="username" value="" />
+                        </span>
+                    </dd>
+                    <dt>
+                        <label>密　码</label>
+                    </dt>
+                    <dd><span class="text_input"><input type="password" value="" name="password" id="password" /></span></dd>
+                    <dd>
+                        <input type="button" name="sm1" id="f_Login" class="login_btn" value="" />
+                    </dd>
+                </dl>
+
+            </fieldset>
+        </div>
+        <div id="footer"></div>
+    </div>
+</body>
+</html>

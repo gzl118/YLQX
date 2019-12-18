@@ -1,0 +1,428 @@
+﻿@model MedicalApparatusManage.Models.T_CGDModels
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Save</title>
+    <script type="text/javascript" language="javascript">
+        $(function () {
+            refreshCgmxGrid();
+        });
+        function Save() {
+            $.pdialog.closeCurrent();
+            navTab.reload("/T_CGD/Index");
+        };
+        function SaveCgd() {
+            var elements = document.forms['formT_CGD'];
+            var bl = validateCallback(elements);
+            if (bl) {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/T_CGD/Save",
+                    data: $("#formT_CGD").serializeArray(),
+                    success: function (data) {
+                        if (data.statusCode == "200") {
+                            $("#lblCgd").text("保存成功，请填写采购明细！");
+                            $("#lblCgdmx").text("");
+                            if ($("#Tag").val() == "Add") {
+                                $("#CGID").val($("#CGDH").val());
+                                //$("#btnCgd").attr("disabled", true);
+                                $("#divSaveCgd").hide();
+                            }
+                        }
+                    }
+                });
+            }
+        };
+        function SaveCgmx() {
+            if ($("#cgidMain").val() != 0) {
+                $("#CGID").val($("#CGDH").val());
+            }
+            if ($("#CGID").val() == 0) {
+                $("#lblCgdmx").text("请先填写采购单！");
+                return false;
+            }
+            if ($("#supId").find("option:selected").text() == "请选择") {
+                $("#lblCgdmx").text("请选择供货企业！");
+                return false;
+            }
+            if ($("#YLCP").find("option:selected").text() == "请选择") {
+                $("#lblCgdmx").text("请选择产品！");
+                return false;
+            }
+            var elements = document.forms['formT_CGDMX'];
+            var bl = validateCallback(elements);
+            if (bl) {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/T_CGMX/Save",
+                    data: $("#formT_CGDMX").serializeArray(),
+                    success: function (data) {
+                        if (data.statusCode == "200") {
+                            alertMsg.correct('保存成功！');
+                            $("#guid").val(data.guid);
+                            //Grid添加行
+                            //AddRow();
+                            //清空表单
+                            RefreshForm();
+                            refreshCgmxGrid();
+                        } else {
+                            //$("#lblCgdmx").text("保存失败！");
+                            alertMsg.error('保存失败！')
+                        }
+                    }
+                });
+            }
+        };
+        function RefreshForm() {
+            $('#formT_CGDMX')[0].reset();
+        }
+        function AddRow() {
+            var tag = $("#guid").val();
+            var cpprice = $("#cpprice").val();
+            var cpnum = $("#cpnum").val();
+            var zj = "";
+            if (parseInt(cpprice) && parseInt(cpnum)) {
+                zj = cpprice * cpnum;
+            }
+            var supName = $("#supId").find("option:selected").text() == "请选择" ? "" : $("#supId").find("option:selected").text();
+            var cpName = $("#YLCP").find("option:selected").text() == "请选择" ? "" : $("#YLCP").find("option:selected").text();
+            var scqyName = $("#scqy").val();
+            $str = '';
+            $str += "<tr target='sid_user'>";
+            $str += "<td><div>" + supName + "</div></td>";
+            $str += "<td><div>" + scqyName + "</div></td>";
+            $str += "<td><div>" + cpName + "</div></td>";
+            $str += "<td><div>" + cpprice + "</div></td>";
+            $str += "<td><div>" + cpnum + "</div></td>";
+            $str += "<td><div>" + zj + "</div></td>";
+            $str += "<td><div><a href='javascript:void(0)' name='" + tag + "' class='btnDel' onclick='deleteCGMX(this);'>删除</a></div></td>";
+            $str += "</tr>";
+            $("#wtlb").append($str);
+            Jszj();
+        }
+        function deleteCGMX(obj) {
+            deleteCurrentRow(obj);
+            var guid1 = obj.getAttribute("name");
+            $.post("/T_CGMX/Delete", { Guid: guid1 }, function (data) {
+                if (data.statusCode == "200") {
+                    Jszj();
+                    alertMsg.correct('删除成功！');
+                } else {
+                    alertMsg.error('删除失败！');
+                }
+            }, "json");
+        };
+        function deleteCurrentRow(obj) {
+            var tr = obj.parentNode.parentNode.parentNode;
+            var tbody = tr.parentNode;
+            tbody.removeChild(tr);
+        };
+        function dropQyChange(id) {
+            if (id != "" && id != "请选择") {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/T_YLCP/GetCpByQy",
+                    data: { id: id },
+                    success: function (json) {
+                        if (!json) return;
+                        var html = '';
+                        $.each(json, function (i) {
+                            if (json[i] && json[i].length > 1) {
+                                html += '<option value="' + json[i][0] + '">' + json[i][1] + '</option>';
+                            }
+                        });
+                        var $ref = $("#YLCP");
+                        var $refCombox = $ref.parents("div.combox:first");
+                        $ref.html(html).insertAfter($refCombox);
+                        $refCombox.remove();
+                    },
+                    error: function () {
+                        alertMsg.error('发生错误！');
+                    }
+                });
+            }
+        };
+        function dropChange(id) {
+            if (id != "") {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/T_YLCP/GetYLCPDetails",
+                    data: { cpid: id },
+                    success: function (json) {
+                        var tes = eval("(" + json + ")");
+                        $("#cpbh").val(tes.CPBH);
+                        $("#scqy").val(tes.SCQYMC);
+                        $("#cpgg").val(tes.CPGG);
+                        $("#cpxh").val(tes.CPXH);
+                        $("#cpdw").val(tes.CPDW);
+                        $("#cpzczh").val(tes.ZCZH);
+                        $("#cpxkzh").val(tes.XKZH);
+                        $("#cpprice").val(tes.CPPrice);
+                        $("#cpscqyid").val(tes.SCQYID);
+                    },
+                    error: function () {
+                        alertMsg.error('发生错误！');
+                    }
+                });
+            }
+        };
+        function Jszj() {
+            var totalRow = 0;
+            $('#wtlb tr').each(function () {
+                $(this).find('td:eq(11)').each(function () {
+                    if (parseFloat($(this).text())) {
+                        totalRow += parseFloat($(this).text());
+                    }
+                });
+            });
+            $('#cgze').val(totalRow);
+        };
+
+        function through(type) {
+            var elements = document.forms['formT_CGD'];
+            var bl = validateCallback(elements);
+            if (bl) {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/T_CGD/through/" + type,
+                    data: $("#formT_CGD").serializeArray(),
+                    success: dialogAjaxDone
+                });
+            }
+        };
+
+        function refreshCgmxGrid() {
+            $("#cgmxBox").loadUrl("/T_CGMX/CGMXTable", { id: 0, cgdh: $("#CGDH").val(), canEdit: 1 });
+        };
+    </script>
+</head>
+<body>
+    <div class="pageContent">
+        <div class="pageFormContent" layouth="58">
+            <fieldset>
+                <legend>采购单</legend>
+                <form id="formT_CGD" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                        @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Name = "Tag" })
+                        @Html.HiddenFor(m => m.DataModel.CGID, new { ID = "cgidMain", Name = "DataModel.CGID" })
+                        @Html.HiddenFor(m => m.DataModel.ISSH, new { Name = "DataModel.ISSH" })
+                        @Html.HiddenFor(m => m.DataModel.CGCJR, new { Name = "DataModel.CGCJR" })
+                        @Html.HiddenFor(m => m.DataModel.CGCJRQ, new { Name = "DataModel.CGCJRQ" })
+                        <div class="unit">
+                            <label>
+                                采购单号：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CGDH, new { id = "CGDH", name = "CGDH", style = "width:279px", ReadOnly = true })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                采购人：
+                            </label>
+                            @Html.DropDownListFor(m => m.DataModel.CGPERSON, ViewBag.Persons as SelectList, "请选择", new { style = "width:285px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                申请人：
+                            </label>
+                            @Html.DropDownListFor(m => m.DataModel.SQPERSON, ViewBag.Persons as SelectList, "请选择", new { style = "width:285px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                采购总额(元)：
+                            </label>
+                            <input id="cgze" type="text" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
+                        <div class="unit">
+                            <label>
+                                采购单名称：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CGDMC, new { name = "CGMC", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                采购日期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CGRQ, new { name = "CGRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                申请日期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SQRQ, new { name = "SQRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
+                        </div>
+                    </div>
+                </form>
+                <div style="width:91%;border:1px solid #ffffff;margin:5px;">
+                    <div><label id="lblCgd" style="width:50%;color:red;"></label></div>
+                    @{if (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.ISSH != 1)
+                    {
+                        <div class="button" id="divSaveCgd" style="float:right;">
+                            <div class="buttonContent">
+                                <button id="btnCgd" value="保存采购单" onclick="SaveCgd();">
+                                    保存采购单
+                                </button>
+                            </div>
+                        </div>
+                    }}
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>采购明细</legend>
+                <form id="formT_CGDMX" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
+                    @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Value = "Add", Name = "Tag" })
+                    @Html.HiddenFor(m => m.CGMXModel.MXID, new { Name = "DataModel.MXID" })
+                    @Html.HiddenFor(m => m.CGMXModel.CPSCQYID, new { ID = "cpscqyid", Name = "DataModel.CPSCQYID" })
+                    <input type="hidden" id="CGID" name="CGDH">
+                    <input type="hidden" id="guid">
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                供货企业：
+                            </label>
+                            @*@Html.DropDownList("DataModel.SupID", ViewData["SupID"] as SelectList, "请选择", new { id = "supId", style = "width:270px" })*@
+                            <select id="supId" name="DataModel.SupID" style="width:285px" onchange="dropQyChange(this.value)">
+                                <option>请选择</option>
+                                @{foreach (var item in ViewData["SupID"] as SelectList)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }}
+                            </select>
+                        </div>
+                        <div class="unit">
+                            <label>
+                                产品编号：
+                            </label>
+                            <input type="text" name="" id="cpbh" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                        <div class="unit">
+                            <label>
+                                产品名称：
+                            </label>
+                            <select id="YLCP" name="DataModel.CPID" style="width:285px" onchange="dropChange(this.value)">
+                                <option>请选择</option>
+                            </select>
+                            @*@Html.DropDownList("DataModel.CPID", new SelectList(), "请选择", new { ID = "YLCP", style = "width:270px", onchange = "dropChange(this.value)" })*@
+                        </div>
+                        <div class="unit">
+                            <label>
+                                生产企业：
+                            </label>
+                            <input type="text" name="" id="scqy" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                        <div class="unit">
+                            <label>
+                                产品规格：
+                            </label>
+                            <input type="text" name="" id="cpgg" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                        <div class="unit">
+                            <label>
+                                产品型号：
+                            </label>
+                            <input type="text" name="" id="cpxh" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
+                        <div class="unit">
+                            <label>
+                                包装单位：
+                            </label>
+                            <input type="text" name="" id="cpdw" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                        <div class="unit">
+                            <label>
+                                产品数量：
+                            </label>
+                            @Html.TextBox("DataModel.CPNUM", "", new { id = "cpnum", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                许可证号：
+                            </label>
+                            <input type="text" name="" id="cpxkzh" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                        <div class="unit">
+                            <label>
+                                注册证号：
+                            </label>
+                            <input type="text" name="" id="cpzczh" style="width:279px" readonly="readonly" value="" />
+                        </div>
+
+                        <div class="unit">
+                            <label>
+                                进货单价(元)：
+                            </label>
+                            @Html.TextBox("DataModel.CPPRICE", "", new { id = "cpprice", style = "width:279px" })
+                        </div>
+                    </div>
+                </form>
+                <div style="width:91%;border:1px solid #ffffff;margin:5px;">
+                    <div><label id="lblCgdmx" style="width:50%;color:red;"></label></div>
+                    @if (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.ISSH != 1)
+                    {
+                        <div class="button" id="divSaveCgdMx" style="float:right;">
+                            <div class="buttonContent">
+                                <button value="保存明细" onclick="SaveCgmx();">
+                                    保存明细
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </fieldset>
+            <fieldset>
+                <div id="cgmxBox" class="unitBox">
+                </div>
+            </fieldset>
+        </div>
+        <div class="formBar">
+            <ul>
+                @{if (ViewData["IsLeader"].ToString() == "True")
+                {
+                    if (Model.DataModel.ISSH != 1 && Model.DataModel.CGID != 0)
+                    {
+                        <li>
+                            <div class="button">
+                                <div class="buttonContent">
+                                    <button value="通过" onclick="through(1);">
+                                        通过
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="button">
+                                <div class="buttonContent">
+                                    <button value="不通过" onclick="through(2);">
+                                        不通过
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                }}
+                <li>
+                    <div class="button" id="divSave">
+                        <div class="buttonContent">
+                            <button value="关闭" onclick="Save();">
+                                关闭
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

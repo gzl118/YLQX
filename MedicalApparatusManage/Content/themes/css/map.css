@@ -1,0 +1,21 @@
+
+html,body{height: 100%;font:normal 13px/18px 宋体, Arial, sans-serif;}
+
+
+/*工具*/
+.rk-map-tools { position: absolute;  white-space: nowrap; cursor: pointer;  }
+	
+.rk-map-tools .btn{
+	padding: 2px 6px; 
+	font:normal normal normal 12px arial,sans-serif;
+	line-height: 1.3em; text-align: center; white-space: nowrap;
+	box-shadow: rgba(0, 0, 0, 0.34902) 2px 2px 3px;
+	color: #000;background: #fff ;border: 1px solid #8ba4dc; 
+}
+.rk-map-tools .selected .btn{border:1px solid #8ba4dc;border-right-width:0px; color: #fff; background: #8ea8e0;}
+.rk-map-tools .first .btn{border-top-left-radius: 3px; border-bottom-left-radius: 3px;}
+.rk-map-tools .last .btn{ border-top-right-radius: 3px; border-bottom-right-radius: 3px;}
+
+
+		
+		

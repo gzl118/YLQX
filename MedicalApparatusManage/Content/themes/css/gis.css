@@ -1,0 +1,585 @@
+﻿/* File Created: 六月 25, 2012 */
+ul
+{
+    padding: 0px 0px 0px 0px;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 25px;
+}
+.slide-out-div
+{
+    padding: 10px 5px 0 5px;
+    width: 260px;
+    background: #f2f2f2;
+    border: solid 1px black;
+    height: 270px;
+    z-index: 9999;
+}
+#gismain
+{
+    position: relative;
+    margin-right: 310px;
+    overflow: hidden;
+    z-index: 0;
+    margin-right: 310px;
+}
+/*地图右侧样式*/
+/*jquery tab*/
+#maptabs .tabs-spacer
+{
+    float: left;
+    height: 200px;
+}
+.tabs-bottom .ui-tabs-nav
+{
+    clear: left;
+    padding: 0 .2em .2em .2em;
+}
+.tabs-bottom .ui-tabs-nav li
+{
+    top: auto;
+    bottom: 0;
+    margin: 0 .2em 1px 0;
+    border-bottom: auto;
+    border-top: 0;
+}
+.tabs-bottom .ui-tabs-nav li.ui-tabs-active
+{
+    margin-top: -1px;
+    padding-top: 1px;
+}
+/*jquery tab end*/
+.gisrighttab
+{
+    width: 380px;
+    height: 450px; /*background-image: url(../images/right_bottom.png);     background-repeat: no-repeat;*/
+    margin-top: 5px;
+}
+.gismainInfo
+{
+    width: 380px;
+    height: 520px;
+    position: absolute;
+    right: 25px;
+    top: 10px;
+    z-index: 10;
+}
+.gisrightsearch
+{
+    width: 380px;
+    height: 30px; /*background-image: url(../images/right_top.png);     background-repeat: no-repeat;*/
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #dddddd;
+    background-color: #F2F5F7;
+}
+.gisrightsearch input[type="text"]
+{
+    margin-top: 5px;
+    margin-left: 15px;
+    width: 260px;
+    float: left;
+}
+.gisrightsearch input[type="button"]
+{
+    margin-top: 4px;
+    margin-left: 15px;
+    width: 81px;
+    height: 20px;
+    background-image: url(../images/searchbutton.png);
+    background-repeat: no-repeat;
+    border-style: none;
+    color: #FFFFFF;
+}
+.gisrightinfo
+{
+    width: 375px;
+    height: 60px; /*20140207 去掉 background-image: url(../images/right_middle.png);     background-repeat: no-repeat;*/
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #dddddd;
+    background-color: #F2F5F7;
+    margin-top: 5px;
+    padding-top: 5px;
+    padding-left: 5px;
+}
+.gisrightinfo_top
+{
+    width: 350px;
+    margin-left: 15px;
+}
+.gisrightinfo_middle
+{
+    width: 350px;
+    margin-left: 15px;
+    margin-top: 5px;
+}
+.gisrightbg
+{
+    width: 370px;
+    height: 50px;
+    background-color: #F2F5F7;
+}
+.gisleftinfo
+{
+    width: 200px;
+    height: 250px;
+    position: absolute;
+    left: 10px;
+    top: 200px;
+    padding-left: 5px;
+    padding-top: 5px;
+    background-image: url(../images/leftinfobg.png);
+    background-repeat: no-repeat;
+    display: block;
+}
+.gisleft_content
+{
+    width: 190px;
+    height: 200px;
+    background-color: #F2F5F7;
+    overflow: auto;
+}
+.gisleftjiance_content
+{
+    width: 355px;
+    height: 277px;
+    background-color: #F2F5F7;
+    overflow: auto;
+}
+.gisleftjiance_content2
+{
+    width: 355px;
+    height: 250px;
+    background-color: #F2F5F7;
+    overflow: auto;
+}
+.gisleftinfo li
+{
+    margin-top: 5px;
+    margin-left: 15px;
+    list-style-type: none;
+    line-height: 15px;
+}
+.gisleft_close
+{
+    width: 190px;
+    height: 40px;
+    margin-top: 5px;
+    margin-left: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+.gislefttools
+{
+    position: absolute;
+    width: 68px;
+    height: 250px;
+    top: 240px;
+    left: 0px;
+}
+.gislefttoolsimg
+{
+    margin-left: 2px;
+    margin-top: 4px;
+    cursor: pointer;
+}
+.gislefttoolsdiv
+{
+    float: left;
+    margin-left: 6px;
+    margin-top: 5px;
+    cursor: pointer;
+    width: 52px;
+    height: 52px;
+}
+.gislefttoolsdiv:hover
+{
+    float: left;
+    margin-left: 6px;
+    margin-top: 5px; 
+    cursor: pointer;
+    width: 52px;
+    height: 52px;
+    background-image: url(../images/toolsbuttonbg.png);
+    background-repeat: no-repeat;
+}
+/*right jibao tab*/
+.jibaotop
+{
+    margin-left: 40px;
+    width: 300px;
+    height: 30px;
+}
+.jibaotop span
+{
+    float: left;
+    margin-left: 10px;
+    line-height: 30px;
+}
+/*right ztt tab*/
+.ztttop
+{
+    width: 350px;
+    height: 70px;
+}
+.ztttopinput
+{
+    float: left;
+    width: 250px;
+    height: 33px;
+    text-align: center;
+    background-image: url(../images/tab4_inputbg.png);
+    background-repeat: no-repeat;
+    border-style: none;
+    cursor: pointer;
+    line-height: 33px;
+}
+.ztttopinputup
+{
+    float: left;
+    width: 250px;
+    height: 33px;
+    text-align: center;
+    background-image: url(../images/tab4_inputbg_up.png);
+    background-repeat: no-repeat;
+    border-style: none;
+    cursor: pointer;
+    line-height: 33px;
+}
+.maptoolscontent
+{
+    display: none;
+    width: 330px;
+    height: 0px;
+    position: absolute;
+    margin-top: 67px;
+    background-color: #FFFFFF;
+    right: 25px;
+    z-index: 200;
+    border: 1px solid #dddddd;
+    text-align: center;
+}
+.maptoolscontent ul
+{
+    margin: 5px 0 3px 2px;
+}
+.maptoolscontent ul li
+{
+    display: block;
+    width: 95px;
+    float: left;
+    margin: 0;
+    height: 50px;
+}
+.maptoolscontent ul li a
+{
+    font-family: 微软雅黑,Verdana, Arial, Helvetica,sans-serif;
+    font-size: small;
+    height: 80px;
+}
+.zttmiddle
+{
+    margin-top: 5px;
+    width: 350px;
+    height: 60px;
+    padding-top: 5px;
+}
+.zttbottom
+{
+    margin-top: 0px;
+    width: 350px;
+    height: 160px;
+    padding-top: 5px;
+}
+.zttbottomtl
+{
+    width: 300px;
+    text-align: center;
+    font-weight: bold;
+}
+.zttyear
+{
+    font-weight: bold;
+    float: left;
+    width: 50px;
+    color: #62BBE9;
+}
+.zttnow
+{
+    margin-left: 60px;
+    font-weight: bold;
+    float: left;
+    width: 80px;
+}
+.ztttype
+{
+    margin-left: 10px;
+    font-weight: bold;
+    float: left;
+    width: 100px;
+    color: #62BBE9;
+}
+.gisMapInfo
+{
+    position: relative;
+    padding: 10 5px;
+    overflow: hidden;
+    border: solid 1px #8DB9DB;
+    margin: 5px 0 0 8px;
+    width: 309px;
+}
+#rightTopInfo
+{
+    height: 60%;
+    width: 291px;
+}
+#rightBottomInfo
+{
+    height: 35%;
+    width: 291px;
+    overflow: hidden;
+}
+#giswrapper
+{
+    position: relative;
+    height: 100%;
+    width: 99%;
+    margin-bottom: 0;
+    overflow-x: hidden;
+}
+.pccDiv
+{
+    display: none;
+    width: 330px;
+    height: 0px;
+    overflow: hidden;
+    position: absolute;
+    margin-top: 35px;
+    right: 25px;
+    z-index: 200;
+    background-color: #FFFFFF;
+    border: 1px solid #dddddd;
+}
+.pccDiv ul
+{
+    margin: 5px 0 3px 2px;
+}
+.pccDiv ul li
+{
+    display: block;
+    width: 95px;
+    float: left;
+    margin: 0;
+    height: 50px;
+}
+.pccDiv ul li a
+{
+    font-family: 微软雅黑,Verdana, Arial, Helvetica,sans-serif;
+    font-size: small;
+    height: 80px;
+}
+/*.pccDiv ul li a:hover
+{
+    background-color: Bisque;
+}*/
+#rightTopInfo a:hover
+{
+    background-color: Bisque;
+}
+.pccDiv ul li div
+{
+    margin-bottom: 0;
+    cursor: hand;
+    text-align: center;
+}
+#provinceInfo, #citiInfo, #countryInfo
+{
+    height: 80px;
+    display: none;
+}
+/*#region 分栏CSS */
+
+#shad div
+{
+    position: absolute;
+}
+#shad_v
+{
+    width: 4px;
+    height: 100%;
+    right: 310px;
+    top: 2px;
+    background: url(../images/shad_v.png) repeat-y 0 0;
+    _filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod="scale",src="../images/shad_v.png");
+    font-size: 0;
+    _background: none;
+}
+.mapinfo_but
+{
+    position: absolute;
+    z-index: 20;
+    right: 309px;
+    top: 100px;
+    width: 18px;
+    height: 55px;
+    overflow: hidden;
+}
+.mapinfo_but_con
+{
+    cursor: pointer;
+    width: 42px;
+    height: 55px;
+    background: url(../images/mapinfo.png);
+    cursor: pointer;
+    _background: none;
+    _filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod="scale",src="../images/mapinfo.png");
+}
+.mapinfo_but_span
+{
+    display: block;
+    width: 5px;
+    height: 10px;
+    overflow: hidden;
+    margin: 22px 0 0 10px;
+    background: url(../images/mapinfo.png) no-repeat scroll 3px -22px transparent;
+}
+
+/*以下css为折叠和打开侧边栏鼠标移入和移出时附加到MapInfoTab的class属性*/
+.mapinfo_but_close_on .mapinfo_but_span
+{
+    background-position: -21px -22px;
+}
+.mapinfo_but_open .mapinfo_but_span
+{
+    background-position: -29px -22px;
+}
+.mapinfo_but_open_on .mapinfo_but_span
+{
+    background-position: -37px -22px;
+}
+
+/*#endregion*/
+
+#stztID
+{
+    display: none;
+}
+#quyuxinxi
+{
+    height: 30%;
+}
+#pingjiaxinxi
+{
+    height: 277px;
+    overflow: auto;
+}
+#pingjiabianhua
+{
+    height: 277px;
+    overflow: auto;
+}
+#rightBottomInfo span
+{
+    margin-left: 5px;
+    font-size: large;
+    height: 15px;
+    font-weight: bold;
+}
+#quyuxinxi span, #pingjiaxinxi span
+{
+    margin-left: 0;
+    font-size: 14px;
+}
+#quyuxinxi
+{
+    overflow: auto;
+    border: solid 1px #8DB9DB;
+    margin: 0 5px;
+    padding: 3px;
+}
+#allLegends
+{
+    width: 315px;
+    height: 150px;
+    padding-left: 30px;
+    margin-top: 5px;
+}
+#meiCengLegend, #qiXiangLegend, #stfbLegend
+{
+    float: left;
+    margin-bottom: 0;
+}
+#qiXiangLegend, #stfbLegend
+{
+    display: none;
+}
+#qiXiangLegend table, #stfbLegend table
+{
+    width: 280px;
+    height: 150px;
+}
+#meiCengLegend img
+{
+    width: 280px;
+    height: 150px;
+}
+#MEILegend
+{
+    z-index: 10;
+    margin-bottom: 0;
+    float: left;
+    font-weight: bold;
+    text-align: center;
+}
+#MEILegend table tr td
+{
+    height: 15px;
+    width: 35px;
+}
+.mkinfo
+{
+    width: 350px;
+    height: 160px;
+    padding-top: 5px;
+    padding-left: 5px;
+}
+.mkinfoleft
+{
+    float: left;
+    width: 180px;
+    height: 150px;
+    padding:5px 5px 5px 5px;
+}
+.mkinforight
+{
+    float: left;
+    width: 160px;
+    height: 150px;
+    text-align:center;
+}
+.mkinforight img
+{
+    float: left;
+    border-style:none;
+}
+.mkinforight input
+{
+    margin-top: 14px;
+    margin-left: 15px;
+    width: 81px;
+    height: 20px;
+    background-image: url(../images/searchbutton.png);
+    background-repeat: no-repeat;
+    border-style: none;
+    color: #FFFFFF;
+}

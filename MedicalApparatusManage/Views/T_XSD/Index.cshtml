@@ -1,0 +1,190 @@
+﻿@model MedicalApparatusManage.Models.T_XSDModels
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>销售单</title>
+</head>
+<body>
+    <div id="pageContent">
+        <div class="pageHeader" style="hight: 80px;">
+            @using (Html.BeginForm("Index", "T_XSD", FormMethod.Post, new
+                {
+                    name = "formSerachMA",
+                    id = "formSerachMA",
+                    onsubmit = "return navTabSearch(this);"
+
+                }))
+            {
+                <div class="searchBar">
+                    <table class="searchContent">
+                        <tr>
+                            <td>
+                                销售单号:
+                            </td>
+                            <td>
+                                @Html.TextBox("strXSDMC")
+                            </td>
+                            <td>
+                                购货企业:
+                            </td>
+                            <td>
+                                @Html.DropDownList("strCUSQY", ViewBag.CUSQY as SelectList, "请选择", ViewData["strCUSQY"])
+                            </td>
+                            <td>
+                                销售日期:
+                            </td>
+                            <td>
+                                @{ string strStart = Model.StartTime.HasValue ? Model.StartTime.Value.ToString("yyyy/MM/dd") : "";
+                                 string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
+                                }
+                                <input id="StartDate" name="StartTime" class="Wdate" type="text" value="@strStart"
+                                       onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
+                            </td>
+                            <td>
+                                至
+                            </td>
+                            <td>
+                                <input id="EndDate" name="EndTime" class="Wdate" type="text" value="@strEnd"
+                                       onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', minDate: '#F{$dp.$D(\'StartDate\')}' })" />
+                            </td>
+
+                            <td>
+                                <ul>
+                                    <li>
+                                        <div class="buttonActive">
+                                            <div class="buttonContent">
+                                                <button type="submit" id="Button1" name="btnSerachOl">
+                                                    检索
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            }
+        </div>
+        <div class="panelBar" id="EntLimitMenu">
+            <ul class="toolBar">
+                <li><a class="add" href="/T_XSD/Save/0/Add" target="dialog" mask="true" title="新增" width="1200" height="500"><span>新增</span></a></li>
+                <li><a class="delete" href="/T_XSD/Delete/{sid_user}" target="ajaxTodo" title="确定删除吗?" mask="true"><span>删除</span></a></li>
+                <li><a class="edit" href="/T_XSD/Save/{sid_user}/Edit" target="dialog" mask="true" title="查看详情" width="1200" height="500"><span>查看详情</span></a></li>            
+                @*<li><a class="icon" href="/T_XSD/Save/{sid_user}/Details" target="dialog" mask="true" width="1050" height="500"><span>查看详情</span></a></li>*@
+                @*<li><a class="icon" href="/T_XSMX/Index/{sid_user}" target="dialog" mask="true" width="1050" height="500"><span>销售单明细</span></a></li>*@
+                @*@if (ViewData["shUserId"].ToString() == "1" || ViewData["shUserId"].ToString() == "2")
+                {
+                    <li> <a class="edit" href="/T_XSD/XSDSPIndex/{sid_user}" target="dialog" mask="true" title="审核" width="1050" height="580"><span>审核</span></a></li>
+                }*@
+            </ul>
+        </div>
+        <table width="100%" layouth="112" class="table" id="T_XSDTable">
+            <thead>
+                <tr>
+                    <th>
+                        销售单号
+                    </th>
+                    <th>
+                        购货单位
+                    </th>
+                    <th>
+                        销售人员
+                    </th>
+                    @*<th>
+                            销售合同
+                        </th>*@
+                    <th>
+                        销售日期
+                    </th>
+@*
+            <th>
+                销售金额
+            </th>
+            <th>
+                销售复核人
+            </th>
+    *@
+            <th>
+                审核日期
+            </th>
+            <th>
+                是否审核
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.DataList)
+        {
+            <tr target="sid_user" rel="@item.XSID">
+                <td>@item.XSDH</td>
+                <td>@((item.T_CusQY != null && !string.IsNullOrEmpty(item.T_CusQY.CusMC)) ? item.T_CusQY.CusMC : "")</td>
+                <td>@((item.T_Person != null && !string.IsNullOrEmpty(item.T_Person.PsMZ)) ? item.T_Person.PsMZ : "")</td>
+                @*<td>@item.T_XSHT.HTBH</td>*@
+                        <td>@item.XSRQ</td>
+                @*
+                        <td>@item.XSJE</td>
+                        <td>@item.XSFHR</td>
+                    *@
+                        <td>@item.XSSHRQ</td>
+                        @{
+                            switch (item.XSFLAG)
+                            {
+                                case 0:
+                                    <td style="background-color:deepskyblue;">未审批</td>; break;
+                                case 1:
+                                    <td style="background-color:limegreen;">已审批</td>; break;
+                                case 2:
+                                    <td style="background-color:orangered;">审批未通过</td> ; break;
+                                default:
+                                    <td></td>; break;
+                            }}
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <form id="pagerForm" method="post" onsubmit="return navTabSearch(this);">
+            <input type="hidden" name="pageNum" id="pageNum" />
+            @Html.HiddenFor(m => m.pageSize, new { name = "numPerPage", id = "numPerPage" })
+            <input type="hidden" name="totalCount" id="totalCount" />
+            @Html.HiddenFor(m => m.SortCol, new { name = "SortCol_OP", id = "SortCol_OP" })
+            @Html.HiddenFor(m => m.SortKey, new { name = "SortKey_OP", id = "SortKey_OP" })
+            @Html.HiddenFor(m => m.StartTime, new { name = "StartTime" })
+            @Html.HiddenFor(m => m.EndTime, new { name = "EndTime" })
+            <input type="hidden" name="orderField" value="${param.orderField}" />
+            <input type="hidden" name="orderDirection" value="${param.orderDirection}" />
+        </form>
+        <div class="panelBar">
+            <div class="pages">
+                <span style="width: 35px;">显示</span>
+                @{
+                    string[] sL = { "10", "20", "30", "50" };
+                    List<SelectListItem>
+                        list = new List<SelectListItem>
+                            ();
+                    foreach (string s in sL)
+                    {
+                        list.Add(new SelectListItem { Text = s, Value = s });
+                    }
+                    @Html.DropDownListFor(m => m.pageSize, list, new { name = "numPerPage", id = "numPerPage", onchange = "navTabPageBreak({numPerPage:this.value});" });
+                    <span>
+                        条，共<label>@Model.resultCount</label>
+                        条
+                    </span>
+
+                }
+            </div>
+            <div class="pagination" targettype="navTab" totalcount="@Model.resultCount"
+                 numperpage="@Model.pageSize" pagenumshown="@Model.pagecount"
+                 currentpage="@Model.currentPage">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

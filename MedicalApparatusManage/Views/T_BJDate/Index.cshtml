@@ -1,0 +1,67 @@
+﻿@model MedicalApparatusManage.Models.T_BJDateModels
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script type="text/javascript" language="javascript">
+        function Save() {
+            var elements = document.forms['formBjqx'];
+            var bl = validateCallback(elements);
+            if (bl) {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/T_BJDate/Save",
+                    data: $("#formBjqx").serializeArray(),
+                    success: function (data) {
+                        if (data.statusCode == "200") {
+                            alertMsg.correct('保存成功！');
+                        }
+                    }
+                });
+            }
+        };
+    </script>
+
+</head>
+<body>
+    <div id="pageContent">
+        <div class="pageHeader" style="hight: 80px;">
+            <div class="searchBar">
+                <form id="formBjqx" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
+                    <table class="searchContent">
+                        <tr>
+                            @Html.HiddenFor(m => m.DataModel.ID, new { Name = "DataModel.ID" })
+                            <td>
+                                预警期限:
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(m => m.DataModel.BJDATE, new { Name = "DataModel.BJDATE", style = "width:264px", @class = "required textInput number" })
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>
+                                        <div class="buttonActive">
+                                            <div class="buttonContent">
+                                                <button onclick="Save();">
+                                                    保存
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

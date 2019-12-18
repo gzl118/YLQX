@@ -1,0 +1,387 @@
+﻿@model MedicalApparatusManage.Models.T_YLCPModels
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Save</title>
+    <script type="text/javascript" language="javascript">
+        $(function () {
+            var tag = $("#Tag").val();
+            if (tag == "Details") {
+                $("form input").prop("readonly", true);
+                $("#divSave").hide();
+            }
+        });
+        function Save() {
+            if ($("#SUPQY").find("option:selected").text() == "请选择") {
+                alertMsg.info('请选择供货企业！');
+                return false;
+            }
+            if ($("#CPSCQYID").find("option:selected").text() == "请选择") {
+                alertMsg.info('请选择生产企业！');
+                return false;
+            }
+            var elements = document.forms['formT_YLCP'];
+            var bl = validateCallback(elements);
+            if (bl) {
+                //获取资质table的值赋给文本
+                getQYZZ();
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/T_YLCP/Save",
+                    data: $("#formT_YLCP").serializeArray(),
+                    success: dialogAjaxDone
+                });
+            }
+        };
+
+        //$(function () {
+        //    $.ajaxSetup({ cache: false });
+        //    //uploadify上传组件
+        //    $('#uploadify').uploadify({
+        //        uploader: '/T_YLCP/Upload',           // 服务器端处理地址
+        //        swf: '/Content/upload/uploadify.swf',    // 上传使用的 Flash
+        //        fileSizeLimit: '100MB',             //在上传界面上限制上传文件大小
+        //        width: 60,                          // 按钮的宽度
+        //        height: 23,                         // 按钮的高度
+        //        buttonText: "上传",                 // 按钮上的文字
+        //        buttonCursor: 'hand',                // 按钮的鼠标图
+        //        fileObjName: 'Filedata',            // 上传参数名称
+        //        formData: { 'uptype': '0' },
+        //        auto: true,                // 选择之后，自动开始上传
+        //        multi: true,               // 是否支持同时上传多个文件
+
+        //        //queueSizeLimit: 5          // 允许多文件上传的时候，同时上传文件的个数
+        //        'onUploadSuccess': function (file, data) {
+
+        //            var datalist = eval("[" + data + "]");
+        //            document.getElementById("DataModel_CPTP").value = datalist[0].filename;
+        //        },
+        //        'overrideEvents': ['onDialogClose', 'onUploadError', 'onSelectError'],
+        //        'onSelect': uploadify_onSelect,
+        //        'onSelectError': uploadify_onSelectError,
+        //        'onUploadError': uploadify_onUploadError,
+        //    });
+        //    $('.dialogContent').css('overflow', 'auto');
+        //});
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            //uploadify上传组件
+            $('#uploadify1').uploadify({
+                uploader: '/T_YLCP/Upload',           // 服务器端处理地址
+                swf: '/Content/upload/uploadify.swf',    // 上传使用的 Flash
+                fileSizeLimit: '100MB',             //在上传界面上限制上传文件大小
+                width: 60,                          // 按钮的宽度
+                height: 23,                         // 按钮的高度
+                buttonText: "上传",                 // 按钮上的文字
+                buttonCursor: 'hand',                // 按钮的鼠标图
+                fileObjName: 'Filedata',            // 上传参数名称
+                formData: { 'uptype': '1' },
+                auto: true,                // 选择之后，自动开始上传
+                multi: true,               // 是否支持同时上传多个文件
+
+                //queueSizeLimit: 5          // 允许多文件上传的时候，同时上传文件的个数
+                'onUploadSuccess': function (file, data) {
+                    var datalist = eval("[" + data + "]");
+                    AddRow(datalist[0].filename);
+                },
+                'overrideEvents': ['onDialogClose', 'onUploadError', 'onSelectError'],
+                'onSelect': uploadify_onSelect,
+                'onSelectError': uploadify_onSelectError,
+                'onUploadError': uploadify_onUploadError,
+            });
+            $('.dialogContent').css('overflow', 'auto');
+        });
+
+        function through(type) {
+            var elements = document.forms['formT_YLCP'];
+            var bl = validateCallback(elements);
+            if (bl) {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/T_YLCP/through/" + type,
+                    data: $("#formT_YLCP").serializeArray(),
+                    success: dialogAjaxDone
+                });
+            }
+        };
+
+        function AddRow(filename) {
+            $str = '';
+            $str += "<tr target='sid_user'>";
+            $str += "<td><a href='/UploadFiles/供货商产品附件/" + filename + "' target='_blank'>" + filename + "</a></td>";
+            $str += "<td><div><a href='javascript:void(0)' class='btnDel' onclick='deleteQYZZ(this);'>删除</a></div></td>";
+            $str += "</tr>";
+            $("#wtlb").append($str);
+        };
+        function deleteQYZZ(obj) {
+            var tr = obj.parentNode.parentNode.parentNode;
+            var tbody = tr.parentNode;
+            tbody.removeChild(tr);
+        };
+        function getQYZZ() {
+            var qyzzFiles = "";
+            $('#wtlb tr').each(function () {
+                $(this).find('td:eq(0)').each(function () {
+                    if ($(this).text() != "") {
+                        qyzzFiles += $(this).text() + ";";
+                    }
+                });
+            });
+            $('#QYZZFiles').val(qyzzFiles);
+        };
+    </script>
+</head>
+<body>
+    <div class="pageContent">
+        <form id="formT_YLCP" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
+            <div class="pageFormContent" layouth="58">
+                <fieldset>
+                    @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Name = "Tag" })
+                    @Html.HiddenFor(m => m.DataModel.CPID, new { Name = "DataModel.CPID" })
+                    @Html.HiddenFor(m => m.DataModel.CPStatus, new { Name = "DataModel.CPStatus" })
+                    @Html.HiddenFor(m => m.DataModel.CPLRR, new { Name = "DataModel.CPLRR" })
+                    @Html.HiddenFor(m => m.DataModel.CPLRRQ, new { Name = "DataModel.CPLRRQ" })
+                    @Html.HiddenFor(m => m.CPZZFiles, new { ID = "QYZZFiles", Name = "CPZZFiles" })
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                产品编号：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CPBH, new { name = "CPBH", style = "width:279px;", ReadOnly = true })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                注册证号：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CPZCZ, new { name = "CPZCZ", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                产品类型：
+                            </label>
+                            @Html.DropDownListFor(m => m.DataModel.CPLXID, ViewData["CPLX"] as SelectList, "请选择", new { style = "width:285px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                产品型号：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CPXH, new { name = "CPXH", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                进货价格(元)：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CPPrice, new { name = "CPPrice", style = "width:279px", @class = "textInput number" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                供货企业：
+                            </label>
+                            @Html.DropDownListFor(m => m.DataModel.CPGYSID, ViewData["SUPQY"] as SelectList, "请选择", new { ID = "SUPQY", style = "width:285px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                生产地址：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CPSCDZ, new { name = "CPSCDZ", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                报警数量：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.BJSL, new { name = "BJSL", style = "width:279px", @class = "textInput number" })
+                        </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
+                        <div class="unit">
+                            <label>
+                                产品名称：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CPMC, new { name = "CPMC", style = "width:279px", @class = "required" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                有效期限：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.YXQXKS, new { name = "YXQXKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            <label style="width:10px">
+                                至
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.YXQXJS, new { name = "YXQXJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                产品规格：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CPGG, new { name = "CPGG", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                产品单位：
+                            </label>
+                            @{
+                                List<SelectListItem>
+                                list = new List<SelectListItem>
+                                    ();
+                                list.Add(new SelectListItem { Text = "盒", Value = "盒" });
+                                list.Add(new SelectListItem { Text = "袋", Value = "袋" });
+                                list.Add(new SelectListItem { Text = "桶", Value = "桶" });
+                                list.Add(new SelectListItem { Text = "筒", Value = "筒" });
+                                list.Add(new SelectListItem { Text = "支", Value = "支" });
+                                list.Add(new SelectListItem { Text = "瓶", Value = "瓶" });
+                                list.Add(new SelectListItem { Text = "台", Value = "台" });
+                                list.Add(new SelectListItem { Text = "个", Value = "个" });
+                                list.Add(new SelectListItem { Text = "张", Value = "张" });
+                                list.Add(new SelectListItem { Text = "ML", Value = "ML" });
+                                list.Add(new SelectListItem { Text = "L", Value = "L" });
+                                @Html.DropDownListFor(m => m.DataModel.CPDW, list, new { style = "width:285px" })
+                            }
+                        </div>
+                        <div class="unit">
+                            <label>
+                                销售价格(元)：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.XSJG, new { name = "XSJG", style = "width:279px", @class = "textInput number" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                生产企业：
+                            </label>
+                            @Html.DropDownListFor(m => m.DataModel.CPSCQYID, ViewData["SUPQY"] as SelectList, "请选择", new { ID = "CPSCQYID", style = "width:285px" })
+                            @*@Html.TextBoxFor(m => m.DataModel.CPSCQY, new { name = "CPSCQY", style = "width:279px" })*@
+                        </div>
+                        <div class="unit">
+                            <div style="float:left;width:72%;">
+                                <label>
+                                    资质上传：
+                                </label>
+                            </div>
+                            @{if (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.CPStatus != 1)
+                            {
+                                <div style="float:right;width:28%;">
+                                    <span id="uploadify1"></span>
+                                </div>
+                            }}
+                        </div>
+                    </div>
+                    @*<div class="unit">
+                            <label>
+                                产品图片：
+                            </label>
+                            <div>
+                                <table class="updatePage">
+                                    <tr><td>@Html.TextBoxFor(m => m.DataModel.CPTP, new { @readonly = "true", name = "CPTP", style = "width:260px" })</td></tr>
+                                    <tr>
+                                        <td style=" padding-top:5px;">
+                                            @if (isReadonlyFlag == 0)
+                                            {
+                                            <span id="uploadify"></span>
+                                            }
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="unit">
+                            <label>
+                                生产批号：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CPPH, new { name = "CPPH", style = "width:260px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                生产时间：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CPSCSJ, new { name = "CPSCSJ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:260px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                录入时间：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CPLRRQ, new { name = "CPLRRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:260px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                产品录入人：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CPLRR, new { name = "CPTJR", style = "width:260px" })
+                        </div>*@
+                </fieldset>
+                <fieldset>
+                    <legend>资质列表</legend>
+                    <table width="100%" layouth="280" class="table">
+                        <tbody id="wtlb">
+                            @foreach (var item in Model.YLCPZZList)
+                            {
+                                <tr target="sid_user">
+                                    <td><a href="/UploadFiles/供货商产品附件/@item.ZZFJ" target="_blank">@item.ZZFJ</a></td>
+                                    @{if (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.CPStatus != 1)
+                                    {
+                                        <td><a href="javascript:void(0)" class="btnDel" onclick="deleteQYZZ(this);">删除</a></td>
+                                    }}
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+            <div class="formBar">
+                <ul>
+                    @{if (ViewData["IsLeader"].ToString() == "True")
+                    {
+                        if (Model.DataModel.CPStatus != 1 && Model.DataModel.CPID != 0)
+                        {
+                            <li>
+                                <div class="button">
+                                    <div class="buttonContent">
+                                        <button value="通过" onclick="through(1);">
+                                            通过
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="button">
+                                    <div class="buttonContent">
+                                        <button value="不通过" onclick="through(2);">
+                                            不通过
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    }}
+                    @{if (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.CPStatus != 1)
+                    {
+                        <li>
+                            <div class="button" id="divSave">
+                                <div class="buttonContent">
+                                    <button value="保存" onclick="Save();">
+                                        保存
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    }}
+                    <li>
+                        <div class="button">
+                            <div class="buttonContent">
+                                <button value="取消" class="close">
+                                    取消
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

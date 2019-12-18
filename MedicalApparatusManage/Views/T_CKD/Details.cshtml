@@ -1,0 +1,179 @@
+﻿@model MedicalApparatusManage.Models.T_CKDModels
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+    <script type="text/javascript" language="javascript">
+        function ExportCkd() {
+            document.location.href = "/T_CKD/ExportExcel/" + $("#CkidMain").val();
+        };
+        function prickd() {
+            $("#printckd").jqprint();
+        }
+    </script>
+</head>
+<body>
+    <div class="pageContent">
+        <div class="pageFormContent" layouth="58">
+            <div id="printckd">@Html.Raw(ViewData["ParaStr"].ToString())</div>
+            @*<div style="width:91%;border:1px solid #ffffff;margin:5px;margin-right:84px;float:right;">
+                <div class="button" style="width:20%;float:right;">
+                    <div class="buttonContent" style="float:left;">
+                        <button value="导出出库单" onclick="ExportCkd();">
+                            导出出库单
+                        </button>
+                    </div>
+                    <div class="buttonContent" style="float:right;">
+                        <button value="打印出库单" onclick="prickd();">
+                            打印出库单
+                        </button>
+                    </div>
+                </div>
+            </div>*@
+            <div style="display:none;">
+                <fieldset>
+                    <legend>出库单</legend>
+                    @Html.HiddenFor(m => m.DataModel.CKID, new { ID = "CkidMain", Name = "DataModel.CKID" })
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                出库单号：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CKDH, new { id = "CKDH", name = "CKDH", style = "width:264px;", ReadOnly = true })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                出库申请人：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CKSQR, new { name = "CKSQR", style = "width:264px", ReadOnly = true })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                销售单名称：
+                            </label>
+                            @Html.TextBoxFor(m => m.XSDMC, new { style = "width:264px", ReadOnly = true })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                复核日期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.FHRQ, new { name = "FHRQ", style = "width:264px", ReadOnly = true })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                出货日期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CHRQ, new { name = "CHRQ", style = "width:264px", ReadOnly = true })
+                        </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
+                        <div class="unit">
+                            <label>
+                                出库名称：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CKMC, new { name = "CKMC", style = "width:264px", ReadOnly = true })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                申请日期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SQRQ, new { name = "SQRQ", style = "width:264px", ReadOnly = true })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                复核人：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.FHR, new { name = "FHR", style = "width:264px", ReadOnly = true })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                仓库出货人：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CKCHR, new { name = "CKCHR", style = "width:264px", ReadOnly = true })
+                        </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;">
+                        <div class="unit">
+                            <label>
+                                备注：
+                            </label>
+                            @Html.TextAreaFor(m => m.DataModel.CHBZ, new { name = "CHBZ", style = "width:80.5%;height:30px;", ReadOnly = true })
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>出库明细</legend>
+                    <table width="100%" layouth="200" class="table" id="T_CKMXTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    仓库名称
+                                </th>
+                                <th>
+                                    产品名称
+                                </th>
+                                <th>
+                                    产品规格
+                                </th>
+                                <th>
+                                    产品数量
+                                </th>
+                                <th>
+                                    备注
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="wtlb">
+                            @foreach (var item in Model.CKMXList)
+                            {
+                                <tr target="sid_user" rel="@item.CKMID">
+                                    <td>@((item.T_CK != null && !string.IsNullOrEmpty(item.T_CK.CKMC)) ? item.T_CK.CKMC : "")</td>
+                                    <td>@((item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPMC)) ? item.T_YLCP.CPMC : "")</td>
+                                    <td>@((item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPGG)) ? item.T_YLCP.CPGG : "")</td>
+                                    <td>@item.CPNUM</td>
+                                    <td>@item.BZ</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button value="导出出库单" onclick="ExportCkd();">
+                                导出出库单
+                            </button>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button value="打印出库单" onclick="prickd();">
+                                打印出库单
+                            </button>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button value="关闭" class="close">
+                                关闭
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

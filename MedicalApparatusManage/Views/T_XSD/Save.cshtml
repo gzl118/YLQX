@@ -1,0 +1,415 @@
+﻿@model MedicalApparatusManage.Models.T_XSDModels
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Save</title>
+    <script type="text/javascript" language="javascript">
+        $(function () {
+            refreshXsmxGrid();
+        });
+        function Save() {
+            $.pdialog.closeCurrent();
+            navTab.reload("/T_XSD/Index");
+        };
+        function SaveXsd() {
+            var elements = document.forms['formT_XSD'];
+            var bl = validateCallback(elements);
+            if (bl) {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/T_XSD/Save",
+                    data: $("#formT_XSD").serializeArray(),
+                    success: function (data) {
+                        if (data.statusCode == "200") {
+                            $("#lblXsd").text("保存成功，请填写销售明细！");
+                            $("#lblXsdmx").text("");
+                            if ($("#Tag").val() == "Add") {
+                                $("#XSID").val($("#XSDH").val());
+                                $("#divSaveXsd").hide();
+                            }
+                        }
+                    }
+                });
+            }
+        };
+        function SaveXsmx() {
+            if ($("#XsidMain").val() != 0) {
+                $("#XSID").val($("#XSDH").val());
+            }
+            if ($("#XSID").val() == 0 || $("#XSID").val() == "") {
+                $("#lblXsdmx").text("请先填写销售单！");
+                return false;
+            }
+            if ($("#YLCP").find("option:selected").text() == "请选择") {
+                $("#lblXsdmx").text("请选择产品！");
+                return false;
+            }
+            var elements = document.forms['formT_XSMX'];
+            var bl = validateCallback(elements);
+            if (bl) {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/T_XSMX/Save",
+                    data: $("#formT_XSMX").serializeArray(),
+                    success: function (data) {
+                        if (data.statusCode == "200") {
+                            alertMsg.correct('保存成功！');
+                            $("#guid").val(data.guid);
+                            //Grid添加行
+                            //AddRow();
+                            //清空表单
+                            RefreshForm();
+                            refreshXsmxGrid();
+                        } else {
+                            //$("#lblCgdmx").text("保存失败！");
+                            alertMsg.error('保存失败！')
+                        }
+                    }
+                });
+            }
+        };
+        function RefreshForm() {
+            $('#formT_XSMX')[0].reset();
+        }
+        function AddRow() {
+            var tag = $("#guid").val();
+            var cpprice = $("#cpprice").val();
+            var cpnum = $("#cpnum").val();
+            var zj = "";
+            if (parseInt(cpprice) && parseInt(cpnum)) {
+                zj = cpprice * cpnum;
+            }
+            var cpName = $("#YLCP").find("option:selected").text() == "请选择" ? "" : $("#YLCP").find("option:selected").text();
+            $str = '';
+            $str += "<tr target='sid_user'>";
+            $str += "<td><div>" + cpName + "</div></td>";
+            $str += "<td><div>" + cpprice + "</div></td>";
+            $str += "<td><div>" + cpnum + "</div></td>";
+            $str += "<td><div>" + zj + "</div></td>";
+            $str += "<td><div><a href='javascript:void(0)' name='" + tag + "' class='btnDel' onclick='deleteXSMX(this);'>删除</a></div></td>";
+            $str += "</tr>";
+            $("#wtlb").append($str);
+            Jszj();
+        }
+        function deleteXSMX(obj) {
+            deleteCurrentRow(obj);
+            var guid1 = obj.getAttribute("name");
+            $.post("/T_XSMX/Delete", { Guid: guid1 }, function (data) {
+                if (data.statusCode == "200") {
+                    alertMsg.correct('删除成功！');
+                } else {
+                    alertMsg.error('删除失败！');
+                }
+            }, "json");
+        }
+        function deleteCurrentRow(obj) {
+            var tr = obj.parentNode.parentNode.parentNode;
+            var tbody = tr.parentNode;
+            tbody.removeChild(tr);
+            Jszj();
+        };
+        function dropChange(id) {
+            if (id != "") {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/T_YLCP/GetYLCPDetails",
+                    data: { cpid: id },
+                    success: function (json) {
+                        var tes = eval("(" + json + ")");
+                        $("#cpbh").val(tes.CPBH);
+                        $("#scqy").val(tes.SCQYMC);
+                        $("#cpgg").val(tes.CPGG);
+                        $("#cpxh").val(tes.CPXH);
+                        $("#cpdw").val(tes.CPDW);
+                        $("#cpzczh").val(tes.ZCZH);
+                        $("#cpxkzh").val(tes.XKZH);
+                        $("#cpprice").val(tes.XSJG);
+                    },
+                    error: function () {
+                        alertMsg.error('发生错误！');
+                    }
+                });
+            }
+        };
+        function Jszj() {
+            var totalRow = 0
+            $('#wtlb tr').each(function () {
+                $(this).find('td:eq(10)').each(function () {
+                    if (parseFloat($(this).text())) {
+                        totalRow += parseFloat($(this).text());
+                    }
+                });
+            });
+            $('#cgze').val(totalRow);
+        };
+        function through(type) {
+            var elements = document.forms['formT_XSD'];
+            var bl = validateCallback(elements);
+            if (bl) {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/T_XSD/through/" + type,
+                    data: $("#formT_XSD").serializeArray(),
+                    success: dialogAjaxDone
+                });
+            }
+        };
+        function refreshXsmxGrid() {
+            $("#xsmxBox").loadUrl("/T_XSMX/XSMXTable", { id: 0, xsdh: $("#XSDH").val(), canEdit: 1 });
+        };
+    </script>
+</head>
+<body>
+    <div class="pageContent">
+        <div class="pageFormContent" layouth="58">
+            <fieldset>
+                <legend>销售单</legend>
+                <form id="formT_XSD" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
+                    @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Name = "Tag" })
+                    @Html.HiddenFor(m => m.DataModel.XSID, new { ID = "XsidMain", Name = "DataModel.XSID" })
+                    @Html.HiddenFor(m => m.DataModel.XSFLAG, new { Name = "DataModel.XSFLAG" })
+                    @Html.HiddenFor(m => m.DataModel.XSCJR, new { Name = "DataModel.XSCJR" })
+                    @Html.HiddenFor(m => m.DataModel.XSCJRQ, new { Name = "DataModel.XSCJRQ" })
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                销售单号：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.XSDH, new { id = "XSDH", name = "XSDH", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                购货企业：
+                            </label>
+                            @Html.DropDownListFor(m => m.DataModel.KHID, ViewData["CusQY"] as SelectList, "请选择", new { style = "width:285px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                销售日期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.XSRQ, new { name = "XSRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
+                        </div>
+                        @*
+                            <div class="unit">
+                                <label>
+                                    销售复核人：
+                                </label>
+                                @Html.TextBoxFor(m => m.DataModel.XSFHR, new { name = "XSFHR", style = "width:264px" })
+                            </div>*@
+                        <div class="unit">
+                            <label>
+                                销售总额(元)：
+                            </label>
+                            <input id="cgze" type="text" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                销售名称：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.XSMC, new { name = "XSMC", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                销售人员：
+                            </label>
+                            @Html.DropDownListFor(m => m.DataModel.XSRID, ViewData["Person"] as SelectList, "请选择", new { style = "width:285px" })
+                        </div>
+                        @*
+                            <div class="unit">
+                                <label>
+                                    销售金额(万)：
+                                </label>
+                                @Html.TextBoxFor(m => m.DataModel.XSJE, new { name = "XSJE", style = "width:264px" })
+                            </div>*@
+                        <div class="unit">
+                            <label>
+                                审核时间：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.XSSHRQ, new { name = "XSSHRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
+                        </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;">
+                        <div class="unit">
+                            <label>
+                                备注：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.XSBZ, new { name = "XSBZ", style = "width:78.5%;height:30px;" })
+                        </div>
+                    </div>
+                    @*<div class="unit">
+                            <label>
+                                销售合同：
+                            </label>
+                            @Html.DropDownListFor(m => m.DataModel.XSHTID, ViewData["XSHT"] as SelectList, "请选择", new { style = "width:270px" })
+                        </div>*@
+                    @*<div class="unit">
+                            <label>
+                                销售单标识：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.XSFLAG, new { name = "XSFLAG", tyle = "width:260px" })
+                        </div>*@
+                </form>
+                <div style="width:91%;border:1px solid #ffffff;margin:5px;">
+                    <div><label id="lblXsd" style="width:50%;color:red;"></label></div>
+                    @{if (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.XSFLAG != 1)
+                    {
+                        <div class="button" id="divSaveXsd" style="float:right;">
+                            <div class="buttonContent">
+                                <button id="btnXsd" value="保存销售单" onclick="SaveXsd();">
+                                    保存销售单
+                                </button>
+                            </div>
+                        </div>
+                    }}
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>销售明细</legend>
+                <form id="formT_XSMX" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
+                    @Html.HiddenFor(m => m.Tag, new { Value = "Add", Name = "Tag" })
+                    @Html.HiddenFor(m => m.T_XSMXModel.MXID, new { Name = "DataModel.MXID" })
+                    <input type="hidden" id="XSID" name="XSDH">
+                    <input type="hidden" id="guid">
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                产品编号：
+                            </label>
+                            <input type="text" name="" id="cpbh" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                        <div class="unit">
+                            <label>
+                                产品名称：
+                            </label>
+                            <select id="supId" name="DataModel.CPID" style="width:285px" onchange="dropChange(this.value)">
+                                <option>请选择</option>
+                                @{foreach (var item in ViewData["YLCP"] as SelectList)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }}
+                            </select>
+                            @*@Html.DropDownList("DataModel.CPID", ViewData["YLCP"] as SelectList, new { ID = "YLCP", style = "width:270px", onchange = "dropChange(this.value)" })*@
+                        </div>
+                        <div class="unit">
+                            <label>
+                                生产企业：
+                            </label>
+                            <input type="text" name="" id="scqy" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                        <div class="unit">
+                            <label>
+                                产品规格：
+                            </label>
+                            <input type="text" name="" id="cpgg" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                        <div class="unit">
+                            <label>
+                                产品型号：
+                            </label>
+                            <input type="text" name="" id="cpxh" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
+                        <div class="unit">
+                            <label>
+                                包装单位：
+                            </label>
+                            <input type="text" name="" id="cpdw" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                        <div class="unit">
+                            <label>
+                                产品数量：
+                            </label>
+                            @Html.TextBox("DataModel.CPSL", "", new { id = "cpnum", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                许可证号：
+                            </label>
+                            <input type="text" name="" id="cpxkzh" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                        <div class="unit">
+                            <label>
+                                注册证号：
+                            </label>
+                            <input type="text" name="" id="cpzczh" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                        <div class="unit">
+                            <label>
+                                销售单价(元)：
+                            </label>
+                            @Html.TextBox("DataModel.XSJG", "", new { id = "cpprice", style = "width:279px" })
+                        </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;">
+                    </div>
+                </form>
+                <div style="width:91%;border:1px solid #ffffff;margin:5px;">
+                    <div><label id="lblXsdmx" style="width:50%;color:red;"></label></div>
+                    @{if (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.XSFLAG != 1)
+                    {
+                        <div class="button" id="divSaveXsdMx" style="float:right;">
+                            <div class="buttonContent">
+                                <button value="保存明细" onclick="SaveXsmx();">
+                                    保存明细
+                                </button>
+                            </div>
+                        </div>
+                    }}
+                </div>
+            </fieldset>
+            <fieldset>
+                <div id="xsmxBox" class="unitBox">
+                </div>
+            </fieldset>
+        </div>
+        <div class="formBar">
+            <ul>
+                @{if (ViewData["IsLeader"].ToString() == "True")
+                {
+                    if (Model.DataModel.XSFLAG != 1 && Model.DataModel.XSID != 0)
+                    {
+                        <li>
+                            <div class="button">
+                                <div class="buttonContent">
+                                    <button value="通过" onclick="through(1);">
+                                        通过
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="button">
+                                <div class="buttonContent">
+                                    <button value="不通过" onclick="through(2);">
+                                        不通过
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                }}
+                <li>
+                    <div class="button" id="divSave">
+                        <div class="buttonContent">
+                            <button value="关闭" onclick="Save();">
+                                关闭
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

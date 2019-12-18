@@ -1,0 +1,230 @@
+﻿@model MedicalApparatusManage.Models.T_HTModels
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Audit</title>
+    <script type="text/javascript" language="javascript">
+        $(function () {
+            var tag = $("#Tag").val();
+            if (tag == "Details") {
+                $("form input").prop("readonly", true);
+                $("#divSave").hide();
+            }
+        });
+        function through(type) {
+            var elements = document.forms['formHTSPIndex'];
+            var bl = validateCallback(elements);
+            if (bl) {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/T_HT/through/" + type,
+                    data: $("#formHTSPIndex").serializeArray(),
+                    success: dialogAjaxDone
+                });
+            }
+        };
+    </script>
+</head>
+<body>
+    <div>
+        <form id="formHTSPIndex" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
+            <div style="width: 100%;" class="pageFormContent" layouth="58">
+                <div style="width: 50%; float: left;">
+                    <fieldset style=" height:100%;">
+                        <legend>采购单</legend>
+                        <div class="unit">
+                            <label>
+                                采购单名称：
+                            </label>
+                            @Html.TextBoxFor(m => m.CGDmodel.CGDMC, new { name = "CGDMC", @readonly = "readonly"})
+                        </div>
+                        <div class="unit">
+                            <label>
+                                采购人：
+                            </label>
+                            @Html.TextBoxFor(m => m.CGDmodel.CGPERSON, new { name = "CGPERSON", @readonly = "readonly" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                采购日期：
+                            </label>
+                            @Html.TextBoxFor(m => m.CGDmodel.CGRQ, new { name = "CGRQ", @readonly = "readonly" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                检验员：
+                            </label>
+                            @Html.TextBoxFor(m => m.CGDmodel.JYPERSON, new { name = "JYPERSON", @readonly = "readonly" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                检验时间：
+                            </label>
+                            @Html.TextBoxFor(m => m.CGDmodel.JYQR, new { name = "JYQR", @readonly = "readonly" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                是否合格：
+                            </label>
+                            @{
+                                List<SelectListItem> ishgList = new List<SelectListItem>();
+
+                                ishgList.Add(new SelectListItem { Text = "是", Value = "1" });
+                                ishgList.Add(new SelectListItem { Text = "否", Value = "0" });
+
+                                @Html.DropDownListFor(m => m.CGDmodel.ISHG, ishgList, "请选择", new { style = "width:270px", disabled = "disabled" })
+                            }
+                        </div>
+                        <div class="unit">
+                            <label>
+                                申请人：
+                            </label>
+                            @Html.TextBoxFor(m => m.CGDmodel.SQPERSON, new { name = "SQPERSON", @readonly = "readonly" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                申请日期：
+                            </label>
+                            @Html.TextBoxFor(m => m.CGDmodel.SQRQ, new { name = "SQRQ", @readonly = "readonly" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                是否到货：
+                            </label>
+                            @{
+                                List<SelectListItem> isdhList = new List<SelectListItem>();
+
+                                isdhList.Add(new SelectListItem { Text = "是", Value = "1" });
+                                isdhList.Add(new SelectListItem { Text = "否", Value = "0" });
+
+                                @Html.DropDownListFor(m => m.CGDmodel.ISCG, isdhList, "请选择", new { style = "width:270px", disabled = "disabled" })
+                            }
+                        </div>
+                    </fieldset>
+                </div>
+                @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Name = "Tag" })
+                @Html.HiddenFor(m => m.DataModel.HTID, new { Name = "DataModel.HTID" })
+                <div style="width: 50%; float: right;">
+                    <fieldset>
+                        <legend>合同信息</legend>
+                        @*<div class="unit">
+                            <label>
+                                采购单名称：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CGDID, new { name = "CGDID" })
+                        </div>*@
+                        <div class="unit">
+                            <label>
+                                合同编号：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.HTBH, new { name = "HTBH", @readonly = "readonly" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                合同名称：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.HTMC, new { name = "HTMC", @readonly = "readonly" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                合同签订单位：
+                            </label>
+                           @Html.DropDownListFor(m => m.DataModel.HTQDDWID, ViewData["SupID"] as SelectList, "请选择", new { style = "width:270px", disabled = "disabled" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                合同申请人：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.HTSQR, new { name = "HTSQR", @readonly = "readonly" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                申请时间：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SQSJ, new { name = "SQSJ", @readonly = "readonly" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                合同附件：
+                            </label>
+                            <div>
+                                <a href="~/UploadFiles/采购合同附件/@ViewData["HTFJ"]" target="_blank">@ViewData["HTFJ"]</a>
+                            </div>
+                        </div>
+                        <div class="unit">
+                            <label>
+                                质量协议：
+                            </label>
+                            <div>
+                                <a href="~/UploadFiles/质量协议/@ViewData["ZLXY"]" target="_blank">@ViewData["ZLXY"]</a>
+                            </div>
+                        </div>
+                        <div class="unit">
+                            <label>
+                                审核人：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SHR, new { name = "SHR", @readonly = "readonly" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                审核时间：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SHSJ, new { name = "SHSJ", @readonly = "readonly" })
+                        </div>
+                        @*<div class="unit">
+                                <label>
+                                    备注：
+                                </label>
+                                @Html.TextBoxFor(m => m.DataModel.BZ, new { name = "BZ" })
+                            </div>*@
+                        @*<div class="unit">
+                                <label>
+                                    审核结果：
+                                </label>
+                                @Html.TextBoxFor(m => m.DataModel.SHJG, new { name = "SHJG" })
+                            </div>*@
+                    </fieldset>
+                </div>
+            </div>
+            <div class="formBar">
+                <ul>
+                    <li>
+                        <div class="button" id="divSave">
+                            <div class="buttonContent">
+                                <button value="通过" onclick="through(1);">
+                                    通过
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="button" id="divSave">
+                            <div class="buttonContent">
+                                <button value="不通过" onclick="through(2);">
+                                    不通过
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="button">
+                            <div class="buttonContent">
+                                <button value="取消" class="close">
+                                    取消
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

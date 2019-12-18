@@ -1,0 +1,423 @@
+﻿@model MedicalApparatusManage.Models.T_SupQYModels
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Save</title>
+    <link href="~/Content/css/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/css/jquery.multiselect.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-ui-1.8.11.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.8.11.js"></script>
+    <script src="~/Scripts/jquery.multiselect.js"></script>
+    <script type="text/javascript" language="javascript">
+        $(function () {
+            var tag = $("#Tag").val();
+            if (tag == "Details") {
+                $("form input").prop("readonly", true);
+                $("#divSave").hide();
+            }
+            var str = $('#SupJYFW').val();
+            var arr = str.split(',');
+            var sel = document.getElementById("example_tem");
+            var len = sel.options.length;
+            for (var i = 0; i < arr.length; i++) {
+                for (var j = 0; j < len; j++) {
+                    if (sel.options[j].value == arr[i]) {
+                        sel.options[j].setAttribute("selected", true);
+                        break;
+                    }
+                }
+            }
+            $("#example_tem").multiselect({
+                header: false,
+                height: 200,
+                minWidth: 200,
+                selectedList: 10,//预设值最多显示10被选中项
+                hide: ["explode", 500],
+                noneSelectedText: '请选择',
+                close: function () {
+                    var values = $("#example").val();
+                }
+            });
+        });
+        function Save() {
+            var elements = document.forms['formT_SupQY'];
+            var bl = validateCallback(elements);
+            if (bl) {
+                //获取资质table的值赋给文本
+                getQYZZ();
+                var selectcheck = $('#example_tem').val();
+                $('#SupJYFW').val(selectcheck);
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/T_SupQY/Save",
+                    data: $("#formT_SupQY").serializeArray(),
+                    success: dialogAjaxDone
+                });
+            }
+        };
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            //uploadify上传组件
+            $('#uploadify').uploadify({
+                uploader: '/T_SupQY/Upload',           // 服务器端处理地址
+                swf: '/Content/upload/uploadify.swf',    // 上传使用的 Flash
+                fileSizeLimit: '100MB',             //在上传界面上限制上传文件大小
+                width: 60,                          // 按钮的宽度
+                height: 23,                         // 按钮的高度
+                buttonText: "上传",                 // 按钮上的文字
+                buttonCursor: 'hand',                // 按钮的鼠标图
+                fileObjName: 'Filedata',            // 上传参数名称
+                formData: { 'uptype': '0' },
+                auto: true,                // 选择之后，自动开始上传
+                multi: true,               // 是否支持同时上传多个文件
+                //queueSizeLimit: 5          // 允许多文件上传的时候，同时上传文件的个数
+                'onUploadSuccess': function (file, data) {
+                    var datalist = eval("[" + data + "]");
+                    AddRow(datalist[0].filename);
+                },
+                'overrideEvents': ['onDialogClose', 'onUploadError', 'onSelectError'],
+                'onSelect': uploadify_onSelect,
+                'onSelectError': uploadify_onSelectError,
+                'onUploadError': uploadify_onUploadError,
+            });
+            $('.dialogContent').css('overflow', 'auto');
+        });
+        function through(type) {
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/T_SupQY/through/" + type,
+                data: $("#formT_SupQY").serializeArray(),
+                success: dialogAjaxDone
+            });
+        };
+        function AddRow(filename) {
+            $str = '';
+            $str += "<tr target='sid_user'>";
+            $str += "<td><a href='/UploadFiles/供货企业资质/" + filename + "' target='_blank'>" + filename + "</a></td>";
+            $str += "<td><div><a href='javascript:void(0)' class='btnDel' onclick='deleteQYZZ(this);'>删除</a></div></td>";
+            $str += "</tr>";
+            $("#wtlb").append($str);
+        };
+        function deleteQYZZ(obj) {
+            var tr = obj.parentNode.parentNode.parentNode;
+            var tbody = tr.parentNode;
+            tbody.removeChild(tr);
+        };
+        function getQYZZ() {
+            var qyzzFiles = "";
+            $('#wtlb tr').each(function () {
+                $(this).find('td:eq(0)').each(function () {
+                    if ($(this).text() != "") {
+                        qyzzFiles += $(this).text() + ";";
+                    }
+                });
+            });
+            $('#QYZZFiles').val(qyzzFiles);
+        };
+    </script>
+</head>
+<body>
+    <div class="pageContent">
+        <form id="formT_SupQY" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
+            <div class="pageFormContent" layouth="58">
+                <fieldset>
+                    @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Name = "Tag" })
+                    @Html.HiddenFor(m => m.DataModel.SupID, new { Name = "DataModel.SupID" })
+                    @Html.HiddenFor(m => m.DataModel.SupStatus, new { Name = "DataModel.SupStatus" })
+                    @Html.HiddenFor(m => m.QYZZFiles, new { ID = "QYZZFiles", Name = "QYZZFiles" })
+                    @Html.HiddenFor(m => m.DataModel.SupJYFW, new { ID = "SupJYFW", Name = "DataModel.SupJYFW" })
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                企业名称：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupMC, new { name = "SupMC", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                信用代码：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupZZJGDM, new { name = "SupZZJGDM", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                注册资本(万)：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupZCZB, new { name = "SupZCZB", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                注册地址：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupZCDZ, new { name = "SupZCDZ", style = "width:279px" })
+                        </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
+                        <div class="unit">
+                            <label>
+                                法人代表：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupFSDB, new { name = "SupFSDB", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                企业类型：
+                            </label>
+                            @{
+                                string[] QYL = { "国有企业", "集体企业", "股份合作企业", "有限责任公司", "联营企业", "中外合资经营企业", "中外合作经营企业" };
+                                List<SelectListItem>
+                                    QYlist = new List<SelectListItem>
+                                        ();
+                                foreach (string s in QYL)
+                                {
+                                    QYlist.Add(new SelectListItem { Text = s, Value = s });
+                                }
+
+                                @Html.DropDownListFor(m => m.DataModel.SupDWXZ, QYlist, "--- 请选择 ---", new { name = "SupDWXZ", style = "width:282px" })
+                            }
+                        </div>
+                        <div class="unit">
+                            <label>
+                                成立日期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupZCSJ, new { name = "SupZCSJ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                经营期限：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupJYKSSJ, new { name = "SupJYKSSJ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            <label style="width:10px">
+                                至
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupJXJSSJ, new { name = "SupJXJSSJ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                        </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;">
+                        <div class="unit">
+                            <label>
+                                经营范围：
+                            </label>
+                            @Html.TextAreaFor(m => m.DataModel.SupJXFW, new { name = "SupJXFW", style = "width:81.3%;height:30px;" })
+                        </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                开户行：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupKHH, new { name = "SupKHH", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                许可证编码：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupXKZBH, new { name = "SupXKZBH", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                经营场所：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupJYCS, new { name = "SupJYCS", style = "width:279px" })
+                        </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
+                        <div class="unit">
+                            <label>
+                                银行帐号：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupZH, new { name = "SupZH", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                经营方式：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupJYFS, new { name = "SupJYFS", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                库房地址：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupKFDZ, new { name = "SupKFDZ", style = "width:279px" })
+                        </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;">
+                        <div class="unit">
+                            <label>
+                                经营范围：
+                            </label>
+                            @*@Html.TextBoxFor(m => m.DataModel.WhsJYFW, new { name = "WhsJYFW", style = "width:81.3%;" })*@
+                            @*@Html.DropDownList("JYList", ViewData["JYFW"] as SelectList, "请选择")*@
+                            <select id="example_tem" name="AuditStatus" multiple="multiple" style="width: 300px">
+                                @foreach (var item in Model.JYFWList)
+                                {
+                                    <option value="@item.FWBM  @item.FWMC">@item.FWBM  @item.FWMC</option>
+                                    @*<option value="1" selected="selected">6801 基础外科手术器械</option>*@
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                许可证发证日期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupFZRQ, new { name = "SupFZRQ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                联系人：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupLXR, new { name = "SupLXR", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                联系方式：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupLXDH, new { name = "SupLXDH", style = "width:279px" })
+                        </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
+                        <div class="unit">
+                            <label>
+                                许可证有效期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupYXQKS, new { name = "SupYXQKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            <label style="width:10px">
+                                至
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupYXQJS, new { name = "SupYXQJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                身份证号：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupSFZH, new { name = "SupSFZH", style = "width:279px" })
+                        </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;">
+                        <div class="unit">
+                            <div style="float:left;width:89%;">
+                                <label>
+                                    资质上传：
+                                </label>
+                                @*<a id="aSupZZSC" href='@Model.ZZSCPath' target="_blank">@Model.DataModel.SupZZSC</a>
+                                    @Html.TextBoxFor(m => m.DataModel.SupZZSC, new { id = "txtSupZZSC", name = "SupZZSC", style = "width:81.3%;display:none;" })*@
+                            </div>
+                            @if (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.SupStatus != 1)
+                            {
+                                <div style="float:right;width:11%;">
+                                    <span id="uploadify"></span>
+                                </div>
+                            }
+                        </div>
+                        <div class="unit">
+                            <label>
+                                备注：
+                            </label>
+                            @Html.TextAreaFor(m => m.DataModel.SupBZ, new { name = "SupBZ", style = "width:81.3%;height:45px;" })
+                        </div>
+                    </div>
+                    @*<div class="unit">
+                            <label>
+                                经营许可证：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupJYXKZ, new { name = "SupJYXKZ", style = "width:279px" })
+                        </div>*@
+                    @*<div class="unit">
+                            <label>
+                                供货企业类型：
+                            </label>
+                            @{
+                            string[] GYSL = { "生产", "经营" };
+                            List<selectlistitem>
+                                GYSlist = new List<selectlistitem>
+                                    ();
+                                    foreach (string s in GYSL)
+                                    {
+                                    GYSlist.Add(new SelectListItem { Text = s, Value = s });
+                                    }
+
+                                    @Html.DropDownListFor(m => m.DataModel.SupType, GYSlist, "--- 请选择 ---", new { name = "SupType", style = "width:282px" })
+                                    }
+                        </div>*@
+                </fieldset>
+                <fieldset>
+                    <legend>资质列表</legend>
+                    <table width="100%" layouth="280" class="table">
+                        <tbody id="wtlb">
+                            @foreach (var item in Model.QYZZList)
+                            {
+                                <tr target="sid_user">
+                                    <td><a href="/UploadFiles/供货企业资质/@item.ZZFJ" target="_blank">@item.ZZFJ</a></td>
+                                    @{if (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.SupStatus != 1)
+                                    {
+                                        <td><a href="javascript:void(0)" class="btnDel" onclick="deleteQYZZ(this);">删除</a></td>
+                                    }}
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+            <div class="formBar">
+                <ul>
+                    @{if (ViewData["IsLeader"].ToString() == "True")
+                    {
+                        if (Model.DataModel.SupStatus != 1 && Model.DataModel.SupID != 0)
+                        {
+                            <li>
+                                <div class="button">
+                                    <div class="buttonContent">
+                                        <button value="通过" onclick="through(1);">
+                                            通过
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="button">
+                                    <div class="buttonContent">
+                                        <button value="不通过" onclick="through(2);">
+                                            不通过
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    }}
+                    @{
+                        if (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.SupStatus != 1)
+                        {
+                            <li>
+                                <div class="button" id="divSave">
+                                    <div class="buttonContent">
+                                        <button value="保存" onclick="Save();">
+                                            保存
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    }
+                    <li>
+                        <div class="button">
+                            <div class="buttonContent">
+                                <button value="取消" class="close">
+                                    取消
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

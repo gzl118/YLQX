@@ -1,0 +1,121 @@
+﻿@model MedicalApparatusManage.Models.WebMainModels
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>修改密码</title>
+    <script type="text/javascript" language="javascript">
+        function EditPass() {
+            if (document.getElementById("oldPassword").value != "") {
+                showPass();
+                if (document.getElementById("span_pass").innerHTML == "原密码错误，请确认！") {
+                    return false;
+                }
+            }
+            else {
+                document.getElementById("span_pass").innerHTML = "必填项";
+                document.getElementById("span_pass").style.display = "block";
+                return false;
+            }
+            var elements = document.forms['formUserAddMain'];
+            var bl = validateCallback(elements);
+            if (bl) {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/WebMain/UpdatePw",
+                    data: $("#formUserAddMain").serializeArray(),
+                    success: dialogAjaxDone
+                });
+            }
+        }
+        function showPass() {
+            if (document.getElementById("oldPassword").value == "") {
+                document.getElementById("span_pass").innerHTML = "必填项";
+                document.getElementById("span_pass").style.display = "block";
+                return false;
+            }
+            var oldpwd = $("#oldPassword").val();
+            $.ajax({
+                type: "POST",
+                global: false,
+                dataType: "html",
+                url: "/WebMain/getPassword/" + oldpwd,
+                success: function (msg) {
+                    if (msg != null) {
+                        if (msg != "success") {
+                            document.getElementById("span_pass").style.display = "block";
+                            document.getElementById("span_pass").innerHTML = "原密码错误，请确认！";
+                            return false;
+                        }
+                        else {
+                            document.getElementById("span_pass").innerHTML = "";
+                            document.getElementById("span_pass").style.display = "none";
+                            return true;
+                        }
+                    }
+                },
+                error: function (msg) {
+                }
+            });
+        }
+
+    </script>
+</head>
+<body>
+    <div class="pageContent">
+        <form id="formUserAddMain" method="post" class="pageForm required-validate-noalert"
+              onsubmit="return false;">
+            <div class="pageFormContent" layouth="58">
+                <div class="unit">
+                    <label>
+                        原密码：
+                    </label>
+                    <input type="password" id="oldPassword" name="oldPassword" onblur="showPass()" maxlength="20" />
+                    <span id="span_pass" generated="true" class="error" style="display: none;"></span>
+                </div>
+                <div class="unit">
+                    <label>
+                        密码：
+                    </label>
+                    <input id="w_validation_pwd" type="password" name="password" class="required alphanumeric"
+                           minlength="6" maxlength="20" alt="字母、数字、下划线 6-20位" /><span class="info"></span>
+                </div>
+                <div class="unit">
+                    <label>
+                        确认密码：
+                    </label>
+                    @Html.PasswordFor(m => m.passWord, new { ID = "password", name = "password", reg = "required,mixlen(16)", @class = "required", equalto = "#w_validation_pwd" })<span class="info"></span>
+                </div>
+            </div>
+            <div class="formBar">
+                <ul>
+                    <li>
+                        <div class="button">
+                            <div class="buttonContent">
+                                <button value="修改" onclick="EditPass();">
+                                    修改
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="button">
+                            <div class="buttonContent">
+                                <button value="取消" class="close">
+                                    取消
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

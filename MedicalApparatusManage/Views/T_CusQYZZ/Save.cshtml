@@ -1,0 +1,172 @@
+﻿@model MedicalApparatusManage.Models.T_CusQYZZModels
+@{
+    Layout = null;
+    int isReadonlyFlag = 0;
+    if (ViewBag.isReadonly != null && ViewBag.isReadonly == "True")
+    {
+        isReadonlyFlag = 1;
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Save</title>
+    <script type="text/javascript" language="javascript">
+        $(function () {
+            var tag = $("#Tag").val();
+            if (tag == "Details") {
+                $("form input").prop("readonly", true);
+                $("#divSave").hide();
+            }
+        });
+        function Save() {
+            var elements = document.forms['formT_CusQYZZ'];
+            var bl = validateCallback(elements);
+            if (bl) {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/T_CusQYZZ/Save",
+                    data: $("#formT_CusQYZZ").serializeArray(),
+                    success: dialogAjaxDone
+                });
+            }
+        };
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            //uploadify上传组件
+            $('#uploadify').uploadify({
+                uploader: '/T_CusQYZZ/Upload',           // 服务器端处理地址
+                swf: '/Content/upload/uploadify.swf',    // 上传使用的 Flash
+                fileSizeLimit: '100MB',             //在上传界面上限制上传文件大小
+                width: 60,                          // 按钮的宽度
+                height: 23,                         // 按钮的高度
+                buttonText: "上传",                 // 按钮上的文字
+                buttonCursor: 'hand',                // 按钮的鼠标图
+                fileObjName: 'Filedata',            // 上传参数名称
+                //formData: { 'area': '@ViewBag.area', 'controller': '@ViewBag.controller', 'rID': '@ViewBag.rID', 'user': '@ViewBag.userName' },
+                auto: true,                // 选择之后，自动开始上传
+                multi: true,               // 是否支持同时上传多个文件
+
+                //queueSizeLimit: 5          // 允许多文件上传的时候，同时上传文件的个数
+                'onUploadSuccess': function (file, data) {
+
+                    var datalist = eval("[" + data + "]");
+                    document.getElementById("DataModel_ZZFJ").value = datalist[0].filename;
+                },
+                'overrideEvents': ['onDialogClose', 'onUploadError', 'onSelectError'],
+                'onSelect': uploadify_onSelect,
+                'onSelectError': uploadify_onSelectError,
+                'onUploadError': uploadify_onUploadError,
+            });
+            $('.dialogContent').css('overflow', 'auto');
+        });
+    </script>
+</head>
+<body>
+    <div class="pageContent">
+        <form id="formT_CusQYZZ" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
+            <div class="pageFormContent" layouth="58">
+                @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Name = "Tag" })
+                @Html.HiddenFor(m => m.DataModel.ZZID, new { Name = "DataModel.ZZID" })
+                <div class="unit">
+                    <label>
+                        资料名称：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.ZZMC, new { name = "ZZMC", style = "width:260px" })
+                </div>
+                <div class="unit">
+                    <label>
+                        资料类型：
+                    </label>
+                    @{
+                        string[] sL = { "冷链运输", "营业执照", "生产许可证", "经营许可证", "授权书", "开户许可证", "其他" };
+                        List<SelectListItem> list = new List<SelectListItem>();
+                        foreach (string s in sL)
+                        {
+                            list.Add(new SelectListItem { Text = s, Value = s });
+                        }
+
+                        @Html.DropDownListFor(m => m.DataModel.ZZLX, list, "请选择", new { style = "width:270px" })
+                    }
+                </div>
+                <div class="unit">
+                    <label>
+                        资料编号：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.ZZBH, new { name = "ZZBH", style = "width:260px" })
+                </div>
+                <div class="unit">
+                    <label>
+                        资料附件：
+                    </label>
+                    <div>
+                        <table class="updatePage">
+                            <tr><td>@Html.TextBoxFor(m => m.DataModel.ZZFJ, new { @readonly = "true", name = "ZZFJ", style = "width:260px" })</td></tr>
+                            <tr>
+                                <td style=" padding-top:5px;">
+                                    @if (isReadonlyFlag == 0)
+                                    {
+                                        <span id="uploadify"></span>
+                                    }
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="unit">
+                    <label>
+                        所属企业：
+                    </label>
+                    @Html.DropDownListFor(m => m.DataModel.QYID, ViewData["CusQY"] as SelectList, new { style = "width:270px" })
+                </div>
+                <div class="unit">
+                    <label>
+                        是否有效：
+                    </label>
+                    @{
+                        string[] isL = { "是", "否" };
+                        List<SelectListItem> isList = new List<SelectListItem>();
+                        foreach (string s in isL)
+                        {
+                            isList.Add(new SelectListItem { Text = s, Value = s });
+                        }
+
+                        @Html.DropDownListFor(m => m.DataModel.ZZYX, isList, "请选择", new { style = "width:270px" })
+                    }
+                </div>
+                <div class="unit">
+                    <label>
+                        资料备注：
+                    </label>
+                    @Html.TextAreaFor(m => m.DataModel.ZZBZ, new { name = "ZZBZ", style = "width:270px;height:120px" })
+                </div>
+            </div>
+            <div class="formBar">
+                <ul>
+                    <li>
+                        <div class="button" id="divSave">
+                            <div class="buttonContent">
+                                <button value="保存" onclick="Save();">
+                                    保存
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="button">
+                            <div class="buttonContent">
+                                <button value="取消" class="close">
+                                    取消
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,182 @@
+﻿@model MedicalApparatusManage.Models.T_HTModels
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>合同管理</title>
+</head>
+<body>
+    <div id="pageContent">
+        <div class="pageHeader" style="hight: 80px;">
+            @using (Html.BeginForm("Index", "T_HT", FormMethod.Post, new
+            {
+                name = "formSerachMA",
+                id = "formSerachMA",
+                onsubmit = "return navTabSearch(this);"
+
+            }))
+            {
+                <div class="searchBar">
+                    <table class="searchContent">
+                        <tr>
+                            <td>
+                                合同编号:
+                            </td>
+                            <td>
+                                @Html.TextBox("strHTCode")
+                            </td>
+                            <td>
+                                合同名称:
+                            </td>
+                            <td>
+                                @Html.TextBox("strHTMC")
+                            </td>
+
+                            <td>
+                                <ul>
+                                    <li>
+                                        <div class="buttonActive">
+                                            <div class="buttonContent">
+                                                <button type="submit" id="Button1" name="btnSerachOl">
+                                                    检索
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                                    }
+        </div>
+        <div class="panelBar" id="EntLimitMenu">
+            <ul class="toolBar">
+                <li><a class="add" href="/T_HT/Save/0/Add" target="dialog"  mask="true" title="新增" width="1050" height="500"><span>新增</span></a></li>
+                <li> <a class="edit" href="/T_HT/Save/{sid_user}/Edit" target="dialog" mask="true" title="修改" width="1050" height="500"><span>修改</span></a></li>
+                <li><a class="delete" href="/T_HT/Delete/{sid_user}" target="ajaxTodo" title="确定删除吗?" mask="true"><span>删除</span></a></li>
+                <li><a class="icon" href="/T_HT/Save/{sid_user}/Details" target="dialog"  mask="true" width="1050" height="500"><span>查看详情</span></a></li>
+                @if (ViewData["shUserId"].ToString() == "1" || ViewData["shUserId"].ToString() == "2")
+                {
+                    <li> <a class="edit" href="/T_HT/HTSPIndex/{sid_user}" target="dialog" mask="true" title="审核" width="1050" height="580"><span>审核</span></a></li>
+                }
+            </ul>
+        </div>
+        <table width="100%" layouth="112" class="table" id="T_HTTable">
+           <thead>
+                <tr>
+                    <th>
+                        合同编号
+                    </th>
+                    <th>
+                        合同名称
+                    </th>
+                    <th>
+                        合同签订单位
+                    </th>
+                    @*<th>
+                        采购
+                    </th>*@
+                    <th>
+                        合同申请人
+                    </th>
+                    <th>
+                        申请时间
+                    </th>
+                    <th>
+                        合同附件
+                    </th>
+                    <th>
+                        质量协议
+                    </th>
+                    <th>
+                        备注
+                    </th>
+                    <th>
+                        审核人
+                    </th>
+                    <th>
+                        审核时间
+                    </th>
+                    <th>
+                        审核结果
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.DataList)
+                {
+                    <tr target="sid_user" rel="@item.HTID">
+                        <td>@item.HTBH</td>
+                        <td>@item.HTMC</td>
+                        <td>@item.T_SupQY.SupMC</td>
+                        @*<td>@item.T_CGD.CGDMC</td>*@
+                        <td>@item.HTSQR</td>
+                        <td>@item.SQSJ</td>
+                        <td><a href="~/UploadFiles/采购合同附件/@item.HTFJ" target="_blank">@item.HTFJ</a></td>
+                        <td><a href="~/UploadFiles/采购质量协议/@item.ZLXY" target="_blank">@item.ZLXY</a></td>
+                        <td>@item.BZ</td>
+                        <td>@item.SHR</td>
+                        <td>@item.SHSJ</td>
+                        @if (item.SHJG == 0)
+                        {
+                            <td>待审批</td>
+                        }
+                        else if (item.SHJG == 1)
+                        {
+                            <td>已审批</td>
+                        }
+                        else if (item.SHJG == 2)
+                        {
+                            <td>审批未通过</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <form id="pagerForm" method="post" onsubmit="return navTabSearch(this);">
+            <input type="hidden" name="pageNum" id="pageNum" />
+            @Html.HiddenFor(m => m.pageSize, new { name = "numPerPage", id = "numPerPage" })
+            <input type="hidden" name="totalCount" id="totalCount" />
+            @Html.HiddenFor(m => m.SortCol, new { name = "SortCol_OP", id = "SortCol_OP" })
+            @Html.HiddenFor(m => m.SortKey, new { name = "SortKey_OP", id = "SortKey_OP" })
+            @Html.HiddenFor(m => m.StartTime, new { name = "StartTime" })
+            @Html.HiddenFor(m => m.EndTime, new { name = "EndTime" })
+            <input type="hidden" name="orderField" value="${param.orderField}" />
+            <input type="hidden" name="orderDirection" value="${param.orderDirection}" />
+        </form>
+        <div class="panelBar">
+            <div class="pages">
+                <span style="width: 35px;">显示</span>
+                @{
+                    string[] sL = { "10", "20", "30", "50" };
+                    List<SelectListItem>
+                        list = new List<SelectListItem>
+                            ();
+                    foreach (string s in sL)
+                    {
+                        list.Add(new SelectListItem { Text = s, Value = s });
+                    }
+                    @Html.DropDownListFor(m => m.pageSize, list, new { name = "numPerPage", id = "numPerPage", onchange = "navTabPageBreak({numPerPage:this.value});" });
+                    <span>
+                        条，共<label>@Model.resultCount</label>
+                        条
+                    </span>
+
+                }
+            </div>
+            <div class="pagination" targettype="navTab" totalcount="@Model.resultCount"
+                 numperpage="@Model.pageSize" pagenumshown="@Model.pagecount"
+                 currentpage="@Model.currentPage">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+

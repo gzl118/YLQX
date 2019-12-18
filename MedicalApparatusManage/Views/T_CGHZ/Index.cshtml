@@ -1,0 +1,167 @@
+﻿@model MedicalApparatusManage.Models.T_CGMXModels
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>采购汇总</title>
+</head>
+<body>
+    <div id="pageContent">
+        <div class="pageHeader" style="hight: 80px;">
+            @using (Html.BeginForm("Index", "T_CGHZ", FormMethod.Post, new
+            {
+                onsubmit = "return navTabSearch(this);"
+            }))
+            {
+                <div class="searchBar">
+                    <table class="searchContent">
+                        <tr>
+                            <td>
+                                生产企业:
+                            </td>
+                            <td>
+                                @Html.DropDownList("QYList", ViewData["QY"] as SelectList, "请选择", ViewData["QYList"])
+                            </td>
+                            <td>
+                                采购日期:
+                            </td>
+                            <td>
+                                @{ string strStart = Model.StartTime.HasValue ? Model.StartTime.Value.ToString("yyyy/MM/dd") : "";
+                                 string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
+                                }
+                                <input id="StartDate" name="StartTime" class="Wdate" type="text" value="@strStart"
+                                       onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
+                            </td>
+                            <td>
+                                至
+                            </td>
+                            <td>
+                                <input id="EndDate" name="EndTime" class="Wdate" type="text" value="@strEnd"
+                                       onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', minDate: '#F{$dp.$D(\'StartDate\')}' })" />
+                            </td>
+
+                            <td>
+                                <ul>
+                                    <li>
+                                        <div class="buttonActive">
+                                            <div class="buttonContent">
+                                                <button type="submit" id="Button1" name="btnSerachOl">
+                                                    检索
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            }
+        </div>
+        <table width="100%" layouth="86" class="table">
+            <thead>
+                <tr>
+                    <th>
+                        采购单号
+                    </th>
+                    <th>
+                        产品名称
+                    </th>
+                    <th>
+                        进货单价(元)
+                    </th>
+                    <th>
+                        产品数量
+                    </th>
+                    <th>
+                        产品单位
+                    </th>
+                    <th>
+                        供货企业
+                    </th>
+                    <th>
+                        生产企业
+                    </th>
+                    <th>
+                        产品规格
+                    </th>
+                    <th>
+                        产品型号
+                    </th>
+                    <th>
+                        许可证号
+                    </th>
+                    <th>
+                        注册证号
+                    </th>
+                    <th>
+                        采购日期
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="wtlb">
+                @foreach (var item in Model.DataList)
+                {
+                    <tr target="sid_user">
+                        <td>@(item.T_CGD != null && !string.IsNullOrEmpty(item.T_CGD.CGDH) ? item.T_CGD.CGDH : "")</td>
+                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPMC) ? item.T_YLCP.CPMC : "")</td>
+                        <td>@item.CPPRICE</td>
+                        <td>@item.CPNUM</td>
+                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPDW) ? item.T_YLCP.CPDW : "")</td>
+                        <td>@(item.T_SupQY != null && !string.IsNullOrEmpty(item.T_SupQY.SupMC) ? item.T_SupQY.SupMC : "")</td>
+                        <td>@(item.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_SupQY1.SupMC) ? item.T_SupQY1.SupMC : "")</td>
+                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPGG) ? item.T_YLCP.CPGG : "")</td>
+                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPXH) ? item.T_YLCP.CPXH : "")</td>
+                        <td>@(item.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_SupQY1.SupXKZBH) ? item.T_SupQY1.SupXKZBH : "")</td>
+                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPZCZ) ? item.T_YLCP.CPZCZ : "")</td>
+                        <td>@(item.T_CGD != null && item.T_CGD.CGRQ.HasValue ? item.T_CGD.CGRQ.Value.ToString("yyyy/MM/dd") : "")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <form id="pagerForm" method="post" onsubmit="return navTabSearch(this);">
+            <input type="hidden" name="pageNum" id="pageNum" />
+            @Html.HiddenFor(m => m.pageSize, new { name = "numPerPage", id = "numPerPage" })
+            <input type="hidden" name="totalCount" id="totalCount" />
+            @Html.HiddenFor(m => m.SortCol, new { name = "SortCol_OP", id = "SortCol_OP" })
+            @Html.HiddenFor(m => m.SortKey, new { name = "SortKey_OP", id = "SortKey_OP" })
+            @Html.HiddenFor(m => m.StartTime, new { name = "StartTime" })
+            @Html.HiddenFor(m => m.EndTime, new { name = "EndTime" })
+            <input type="hidden" name="orderField" value="${param.orderField}" />
+            <input type="hidden" name="orderDirection" value="${param.orderDirection}" />
+        </form>
+        <div class="panelBar">
+            <div class="pages">
+                <span style="width: 35px;">显示</span>
+                @{
+                    string[] sL = { "10", "20", "30", "50" };
+                    List<SelectListItem>
+                        list = new List<SelectListItem>
+                            ();
+                    foreach (string s in sL)
+                    {
+                        list.Add(new SelectListItem { Text = s, Value = s });
+                    }
+                    @Html.DropDownListFor(m => m.pageSize, list, new { name = "numPerPage", id = "numPerPage", onchange = "navTabPageBreak({numPerPage:this.value});" });
+                    <span>
+                        条，共<label>@Model.resultCount</label>
+                        条
+                    </span>
+
+                }
+            </div>
+            <div class="pagination" targettype="navTab" totalcount="@Model.resultCount"
+                 numperpage="@Model.pageSize" pagenumshown="@Model.pagecount"
+                 currentpage="@Model.currentPage">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
