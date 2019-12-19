@@ -48,6 +48,7 @@ namespace MedicalApparatusManage.Controllers
 
             evalModel.DataList = T_WhsQYDomain.GetInstance().PageT_WhsQY(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, out pagecount, out resultCount);
             evalModel.resultCount = resultCount;
+            GetRoleCode(evalModel);
             return View("~/Views/T_WhsQY/Index.cshtml", evalModel);
         }
 
@@ -66,6 +67,7 @@ namespace MedicalApparatusManage.Controllers
             jyfwmodels.DataModel = jyfwmodels.DataModel ?? new T_JYFW();
             model.JYFWList = T_JYFWDomain.GetInstance().GetAllT_JYFW(jyfwmodels.DataModel).ToList();
             model.Tag = tag;
+            GetRoleCode(model);
             return View("~/Views/T_WhsQY/Save.cshtml", model);
         }
 
@@ -140,6 +142,10 @@ namespace MedicalApparatusManage.Controllers
             string path = directory + "\\" + filename;
             Filedata.SaveAs(path);
             return Json(new { status = "OK", filename = filename, path = "/UploadFiles/本企业资质/" + filename });
+        }
+        private void GetRoleCode(T_WhsQYModels evalModel)
+        {
+            evalModel.RoleCode = Session["RoleCode"] == null ? "" : Session["RoleCode"].ToString();
         }
     }
 }

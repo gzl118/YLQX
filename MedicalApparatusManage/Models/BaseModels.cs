@@ -108,6 +108,9 @@ namespace MedicalApparatusManage.Models
             get { return _RoleID; }
             set { _RoleID = value; }
         }
-
+        /// <summary>
+        /// 角色Code,1超级管理员，2部门领导，3普通职员
+        /// </summary>
+        public string RoleCode { get; set; }
     }
 }

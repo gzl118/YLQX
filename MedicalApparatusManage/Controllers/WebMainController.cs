@@ -52,7 +52,7 @@ namespace MedicalApparatusManage.Controllers
                     var roleModel = SysRoleDomain.GetInstance().GetModelById(user.RoleId);
                     if (roleModel != null)
                     {
-                        Session["RoleCode"] = roleModel.RoleCode;
+                        Session["RoleCode"] = roleModel.RoleCode;  //1超级管理员，2部门领导，3普通职员
                     }
                 }
             }
@@ -63,6 +63,8 @@ namespace MedicalApparatusManage.Controllers
         {
             Response.Cookies.Clear();
             Session["UserModel"] = null;
+            Session["RoleCode"] = null;
+            Session["RoleId"] = null;
             return RedirectToAction("Login", "WebMain");
         }
 

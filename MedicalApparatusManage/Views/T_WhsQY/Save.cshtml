@@ -23,6 +23,7 @@
             if (tag == "Details") {
                 $("form input").prop("readonly", true);
                 $("#divSave").hide();
+                $("#divZZ").hide();
             }
             var str = $('#WhsJYFW').val();
             var arr = str.split(',');
@@ -284,7 +285,7 @@
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">
-                        <div class="unit">
+                        <div class="unit" id="divZZ">
                             <div style="float:left;width:89%;">
                                 <label>
                                     资质上传：
@@ -292,12 +293,9 @@
                                 @*<a id="aWhsZZSC" href='@Model.ZZSCPath' target="_blank">@Model.DataModel.WhsZZSC</a>
                                     @Html.TextBoxFor(m => m.DataModel.WhsZZSC, new { id = "txtWhsZZSC", name = "WhsZZSC", style = "width:81.3%;display:none;" })*@
                             </div>
-                            @if (isReadonlyFlag == 0)
-                            {
-                                <div style="float:right;width:11%;">
-                                    <span id="uploadify"></span>
-                                </div>
-                            }
+                            <div style="float:right;width:11%;">
+                                <span id="uploadify"></span>
+                            </div>
                         </div>
                         <div class="unit">
                             <label>
@@ -315,7 +313,10 @@
                             {
                                 <tr target="sid_user">
                                     <td><a href="/UploadFiles/本企业资质/@item.ZZFJ" target="_blank">@item.ZZFJ</a></td>
-                                    <td><a href="javascript:void(0)" class="btnDel" onclick="deleteQYZZ(this);">删除</a></td>
+                                    @if (!Model.Tag.Equals("Details"))
+                                    {
+                                        <td><a href="javascript:void(0)" class="btnDel" onclick="deleteQYZZ(this);">删除</a></td>
+                                    }
                                 </tr>
                             }
                         </tbody>

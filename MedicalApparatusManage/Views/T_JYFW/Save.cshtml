@@ -38,15 +38,15 @@
                 @Html.HiddenFor(m => m.DataModel.FWID, new { Name = "DataModel.FWID" })
                 <div class="unit">
                     <label>
-                        类型名称：
+                        经营范围编码：
                     </label>
-                    @Html.TextBoxFor(m => m.DataModel.FWBM, new { name = "FWBM", style = "width:270px" })
+                    @Html.TextBoxFor(m => m.DataModel.FWBM, new { name = "FWBM", style = "width:270px", @class = "required digits" })
                 </div>
                 <div class="unit">
                     <label>
-                        类型说明：
+                        经营范围名称：
                     </label>
-                    @Html.TextBoxFor(m => m.DataModel.FWMC, new { name = "FWMC", style = "width:270px" })
+                    @Html.TextBoxFor(m => m.DataModel.FWMC, new { name = "FWMC", style = "width:270px", @class = "required" })
                 </div>
             </div>
             <div class="formBar">
