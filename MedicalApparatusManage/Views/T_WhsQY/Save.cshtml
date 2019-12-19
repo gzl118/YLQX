@@ -22,6 +22,7 @@
             var tag = $("#Tag").val();
             if (tag == "Details") {
                 $("form input").prop("readonly", true);
+                $("form input,textarea").prop("disabled", "disabled");
                 $("#divSave").hide();
                 $("#divZZ").hide();
             }
@@ -187,17 +188,17 @@
                             <label>
                                 成立日期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.WhsZCSJ, new { name = "WhsZCSJ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.WhsZCSJ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.WhsZCSJ), name = "WhsZCSJ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
                         </div>
                         <div class="unit">
                             <label>
                                 经营期限：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.WhsJYKSSJ, new { name = "WhsJYKSSJ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.WhsJYKSSJ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.WhsJYKSSJ), name = "WhsJYKSSJ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
                             <label style="width:10px">
                                 至
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.WhsJXJSSJ, new { name = "WhsJXJSSJ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.WhsJXJSSJ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.WhsJXJSSJ), name = "WhsJXJSSJ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">
@@ -258,8 +259,7 @@
                             <select id="example_tem" name="AuditStatus" multiple="multiple" style="width: 300px">
                                 @foreach (var item in Model.JYFWList)
                                 {
-                                    <option value="@item.FWBM  @item.FWMC">@item.FWBM  @item.FWMC</option>
-                                    @*<option value="1" selected="selected">6801 基础外科手术器械</option>*@
+                                    <option value="@item.FWBM  @item.FWMC"> @item.FWBM  @item.FWMC </option>
                                 }
                             </select>
                         </div>
@@ -269,7 +269,7 @@
                             <label>
                                 许可证发证日期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.WhsFZRQ, new { name = "WhsFZRQ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.WhsFZRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.WhsFZRQ), name = "WhsFZRQ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
                         </div>
                     </div>
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
@@ -277,11 +277,11 @@
                             <label>
                                 许可证有效期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.WhsYXQKS, new { name = "WhsYXQKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.WhsYXQKS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.WhsYXQKS), name = "WhsYXQKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
                             <label style="width:10px">
                                 至
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.WhsYXQJS, new { name = "WhsYXQJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.WhsYXQJS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.WhsYXQJS), name = "WhsYXQJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">

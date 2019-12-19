@@ -54,19 +54,19 @@
                         </tr>
                     </table>
                 </div>
-                                    }
+            }
         </div>
 
         <div class="panelBar" id="EntLimitMenu">
             <ul class="toolBar">
-                <li><a class="add" href="/T_Person/Save/0/Add" target="dialog"  mask="true" title="新增" width="1050" height="500"><span>新增</span></a></li>
+                <li><a class="add" href="/T_Person/Save/0/Add" target="dialog" mask="true" title="新增" width="1050" height="500"><span>新增</span></a></li>
+                <li> <a class="edit" href="/T_Person/Save/{sid_user}/Edit" target="dialog" mask="true" title="修改" width="1050" height="500"><span>修改</span></a></li>
                 <li><a class="delete" href="/T_Person/Delete/{sid_user}" target="ajaxTodo" title="确定删除吗?" mask="true"><span>删除</span></a></li>
-                <li> <a class="edit" href="/T_Person/Save/{sid_user}/Edit" target="dialog" mask="true" title="查看详情" width="1050" height="500"><span>查看详情</span></a></li>
-                @*<li><a class="icon" href="/T_Person/Save/{sid_user}/Details" target="dialog"  mask="true" width="1050" height="500"><span>查看详情</span></a></li>*@
+                <li><a class="icon" href="/T_Person/Save/{sid_user}/Details" target="dialog" mask="true" width="1050" height="500"><span>查看详情</span></a></li>
             </ul>
         </div>
         <table width="100%" layouth="112" class="table" id="T_PersonTable">
-           <thead>
+            <thead>
                 <tr>
                     <th>
                         姓名
@@ -90,8 +90,8 @@
                         学历
                     </th>
                     @*<th>
-                        医疗设备相关资质
-                    </th>*@
+                            医疗设备相关资质
+                        </th>*@
                     <th>
                         资质附件
                     </th>

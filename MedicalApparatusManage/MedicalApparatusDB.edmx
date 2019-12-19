@@ -112,6 +112,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BJDATE" Type="int" />
+          <Property Name="BJCode" Type="int" />
         </EntityType>
         <EntityType Name="T_CGD">
           <Key>
@@ -2039,6 +2040,7 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="BJDATE" Type="Int32" />
+          <Property Name="BJCode" Type="Int32" />
         </EntityType>
         <EntityType Name="T_CGD">
           <Key>
@@ -3515,6 +3517,7 @@
           <EntitySetMapping Name="T_BJDate">
             <EntityTypeMapping TypeName="MedicalApparatusManageModel.T_BJDate">
               <MappingFragment StoreEntitySet="T_BJDate">
+                <ScalarProperty Name="BJCode" ColumnName="BJCode" />
                 <ScalarProperty Name="BJDATE" ColumnName="BJDATE" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>

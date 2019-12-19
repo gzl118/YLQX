@@ -14,11 +14,32 @@
             var elements = document.forms['formBjqx'];
             var bl = validateCallback(elements);
             if (bl) {
+                //var arrResult = [];
+                //arrResult.push({
+                //    "BJCode": $("#YYZHBJCode").val(),
+                //    "BJDATE": $("#YYZHAlarmValue").val()
+                //});
+                //arrResult.push({
+                //    "BJCode": $("#SCXKZBJCode").val(),
+                //    "BJDATE": $("#SCXKZAlarmValue").val()
+                //});
+                //arrResult.push({
+                //    "BJCode": $("#JYXKZBJCode").val(),
+                //    "BJDATE": $("#JYXKZAlarmValue").val()
+                //});
+                //arrResult.push({
+                //    "BJCode": $("#CPZCZBJCode").val(),
+                //    "BJDATE": $("#CPZCZAlarmValue").val()
+                //});
+                //arrResult.push({
+                //    "BJCode": $("#SQSBJCode").val(),
+                //    "BJDATE": $("#SQSAlarmValue").val()
+                //});
                 $.ajax({
                     type: "post",
                     dataType: "json",
                     url: "/T_BJDate/Save",
-                    data: $("#formBjqx").serializeArray(),
+                    data: arrResult,   //$("#formBjqx").serializeArray(),
                     success: function (data) {
                         if (data.statusCode == "200") {
                             alertMsg.correct('保存成功！');
@@ -36,15 +57,17 @@
             <div class="searchBar">
                 <form id="formBjqx" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
                     <table class="searchContent">
+                        @*<tr>
+                                <td>
+                                    营业执照预警期限(天):
+                                </td>
+                                <td>
+                                    <input type="hidden" name="YYZHBJCode" value="1001" />
+                                    @Html.TextBoxFor(m => m.YYZHAlarmValue, new { Name = "BJDATE", style = "width:264px", @class = "required textInput digits" })
+                                </td>
+                            <tr>*@
                         <tr>
-                            @Html.HiddenFor(m => m.DataModel.ID, new { Name = "DataModel.ID" })
-                            <td>
-                                预警期限:
-                            </td>
-                            <td>
-                                @Html.TextBoxFor(m => m.DataModel.BJDATE, new { Name = "DataModel.BJDATE", style = "width:264px", @class = "required textInput number" })
-                            </td>
-                            <td>
+                            <td colspan="2" style="margin-left: 200px; margin-top: 20px;">
                                 <ul>
                                     <li>
                                         <div class="buttonActive">

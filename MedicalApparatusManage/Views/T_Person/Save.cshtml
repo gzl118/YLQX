@@ -1,11 +1,6 @@
 ﻿@model MedicalApparatusManage.Models.T_PersonModels
 @{
     Layout = null;
-    int isReadonlyFlag = 0;
-    if (ViewBag.isReadonly != null && ViewBag.isReadonly == "True")
-    {
-        isReadonlyFlag = 1;
-    }
 }
 <!DOCTYPE html>
 <html>
@@ -19,6 +14,7 @@
                 $("form input").prop("readonly", true);
                 $("form DropDownList").prop("readonly", true);
                 $("#divSave").hide();
+                $(".divLoad").hide();
             }
         });
         function Save() {
@@ -105,7 +101,7 @@
                     <label>
                         姓名：
                     </label>
-                    @Html.TextBoxFor(m => m.DataModel.PsMZ, new { name = "PsMZ", style = "width:260px" })
+                    @Html.TextBoxFor(m => m.DataModel.PsMZ, new { name = "PsMZ", style = "width:260px", @class = "required" })
                 </div>
                 <div class="unit">
                     <label>
@@ -127,16 +123,13 @@
                     <div>
                         <table class="updatePage">
                             <tr><td>@Html.TextBoxFor(m => m.DataModel.PsSFZSM, new { @readonly = "true", name = "PsSFZSM", style = "width:260px" })</td></tr>
-                            <tr>
+                            <tr class="divLoad">
                                 <td style=" padding-top:5px;">
-                                    @if (isReadonlyFlag == 0)
-                                    {
-                                        <span id="uploadify"></span>
-                                    }
+                                    <span id="uploadify"></span>
                                 </td>
                             </tr>
                         </table>
-                    </div>                 
+                    </div>
                 </div>
                 <div class="unit">
                     <label>
@@ -158,12 +151,12 @@
                     @Html.DropDownListFor(m => m.DataModel.PsXL, ViewData["XL"] as SelectList, new { style = "width:270px" })
                 </div>
                 @*<div class="unit">
-                    <label>
-                        医疗设备相关资质：
-                    </label>
+                        <label>
+                            医疗设备相关资质：
+                        </label>
 
-                    @Html.TextBoxFor(m => m.DataModel.PsZZ, new { name = "PsZZ", style = "width:260px" })
-                </div>*@
+                        @Html.TextBoxFor(m => m.DataModel.PsZZ, new { name = "PsZZ", style = "width:260px" })
+                    </div>*@
                 <div class="unit">
                     <label>
                         资质附件：
@@ -171,16 +164,13 @@
                     <div>
                         <table class="updatePage">
                             <tr><td>@Html.TextBoxFor(m => m.DataModel.PsZZFJ, new { @readonly = "true", name = "PsZZFJ", style = "width:260px" })</td></tr>
-                            <tr>
+                            <tr class="divLoad">
                                 <td style=" padding-top:5px;">
-                                    @if (isReadonlyFlag == 0)
-                                    {
-                                        <span id="uploadify1"></span>
-                                    }
+                                    <span id="uploadify1"></span>
                                 </td>
                             </tr>
                         </table>
-                    </div>                   
+                    </div>
                 </div>
                 <div class="unit">
                     <label>
