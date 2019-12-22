@@ -14,6 +14,9 @@
                 $("form input").prop("readonly", true);
                 $("#divSave").hide();
             }
+            $("#CKGLY").chosen({
+                search_contains: true
+            });
         });
         function Save() {
             var elements = document.forms['formT_CK'];
@@ -35,12 +38,15 @@
         <form id="formT_CK" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
             <div class="pageFormContent" layouth="58">
                 @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Name = "Tag" })
-                @Html.HiddenFor(m=>m.DataModel.CKID,new { Name = "DataModel.CKID" }) 
-            <div class="unit">
-                <label>
-                    仓库名称：</label>
-                @Html.TextBoxFor(m => m.DataModel.CKMC, new { name = "CKMC", style = "width:260px" })
-            </div>
+                @Html.HiddenFor(m => m.DataModel.CKID, new { Name = "DataModel.CKID" })
+                <div class="unit">
+                    <label>
+                        仓库名称：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.CKMC, new { name = "CKMC", style = "width:260px", @class = "required" })
+
+
+                </div>
                 <div class="unit">
                     <label>
                         仓库类型：
@@ -50,37 +56,48 @@
                         List<SelectListItem> lxList = new List<SelectListItem>();
                         foreach (string s in lxL)
                         {
-                             lxList.Add(new SelectListItem { Text = s, Value = s });
+                            lxList.Add(new SelectListItem { Text = s, Value = s });
                         }
 
-                        @Html.DropDownListFor(m => m.DataModel.CKLX, lxList, "请选择", new { style = "width:270px" })
+                        @Html.DropDownListFor(m => m.DataModel.CKLX, lxList, "请选择", new { style = "width:266px" })
                     }
                 </div>
-            <div class="unit">
-                <label>
-                    仓库地址：</label>
-                @Html.TextBoxFor(m => m.DataModel.CKDZ, new { name = "CKDZ", style = "width:260px" })
-            </div>
-            <div class="unit">
-                <label>
-                    仓库适宜温度：</label>
-                @Html.TextBoxFor(m => m.DataModel.CKSYWD, new { name = "CKSYWD", style = "width:260px" })
-            </div>
-            <div class="unit">
-                <label>
-                    仓库适宜湿度：</label>
-                @Html.TextBoxFor(m => m.DataModel.CKSYSD, new { name = "CKSYSD", style = "width:260px" })
-            </div>
-            <div class="unit">
-                <label>
-                    备注：</label>
-                @Html.TextBoxFor(m => m.DataModel.CKBZ, new { name = "CKBZ", style = "width:260px" })
-            </div>
-            <div class="unit">
-                <label>
-                    仓库管理员：</label>
-                @Html.TextBoxFor(m => m.DataModel.CKGLY, new { name = "CKGLY", style = "width:260px" })
-            </div>
+                <div class="unit">
+                    <label>
+                        仓库地址：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.CKDZ, new { name = "CKDZ", style = "width:260px" })
+                </div>
+                <div class="unit">
+                    <label>
+                        仓库适宜温度(C°)：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.CKSYWD, new { name = "CKSYWD", style = "width:260px" })
+                </div>
+                <div class="unit">
+                    <label>
+                        仓库适宜湿度：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.CKSYSD, new { name = "CKSYSD", style = "width:260px" })
+                </div>
+                <div class="unit">
+                    <label>
+                        采集日期：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.CJSJ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CJSJ), name = "CJSJ", style = "width:260px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                </div>
+                <div class="unit">
+                    <label>
+                        备注：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.CKBZ, new { name = "CKBZ", style = "width:260px" })
+                </div>
+                <div class="unit">
+                    <label>
+                        仓库管理员：
+                    </label>
+                    @Html.DropDownListFor(m => m.DataModel.CKGLY, ViewBag.Persons as SelectList, "请选择", new { id = "CKGLY", style = "width:266px" })
+                </div>
                 <div class="unit">
                     <label>
                         是否有效：
@@ -93,7 +110,7 @@
                             isList.Add(new SelectListItem { Text = s, Value = s });
                         }
 
-                        @Html.DropDownListFor(m => m.DataModel.FLAG, isList, "请选择", new { style = "width:270px" })
+                        @Html.DropDownListFor(m => m.DataModel.FLAG, isList, new { style = "width:266px" })
                     }
                 </div>
             </div>

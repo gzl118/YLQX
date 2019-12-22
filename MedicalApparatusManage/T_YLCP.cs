@@ -51,6 +51,7 @@ namespace MedicalApparatusManage
         public Nullable<System.DateTime> YXQXJS { get; set; }
         public Nullable<int> CPSCQYID { get; set; }
         public Nullable<int> BJSL { get; set; }
+        public Nullable<int> BJDate { get; set; }
     
         public virtual ICollection<T_CGMX> T_CGMX { get; set; }
         public virtual ICollection<T_CKMX> T_CKMX { get; set; }

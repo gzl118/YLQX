@@ -53,6 +53,11 @@ namespace MedicalApparatusManage
         public string CusLXR { get; set; }
         public string CusSFZH { get; set; }
         public string CusLXDH { get; set; }
+        public Nullable<System.DateTime> JYXKZFZRQ { get; set; }
+        public Nullable<System.DateTime> JYXKZYXQKS { get; set; }
+        public Nullable<System.DateTime> JYXKZYXQJS { get; set; }
+        public Nullable<System.DateTime> SQSKS { get; set; }
+        public Nullable<System.DateTime> SQSJS { get; set; }
     
         public virtual ICollection<T_CusPerson> T_CusPerson { get; set; }
         public virtual T_WhsQY T_WhsQY { get; set; }

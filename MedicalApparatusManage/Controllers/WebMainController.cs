@@ -17,6 +17,8 @@ namespace MedicalApparatusManage.Controllers
                     SysUser UserModel = Session["UserModel"] as SysUser;
                     model.ListResource = SysResourceDomain.GetInstance().GetPagesByUserId(UserModel.UserId);
                     model.UserName = UserModel.UserName;
+                    var RoleCode = GetRoleCode();
+                    model.RoleType = RoleCode == "1" ? "超级管理员" : (RoleCode == "2" ? "部门领导" : "普通员工");
                     return View(model);
                 }
                 catch (Exception)
@@ -116,6 +118,10 @@ namespace MedicalApparatusManage.Controllers
             {
                 Response.Write("error");
             }
+        }
+        private string GetRoleCode()
+        {
+            return Session["RoleCode"] == null ? "" : Session["RoleCode"].ToString();
         }
     }
 }

@@ -29,13 +29,21 @@ namespace MedicalApparatusManage.Domain
         public List<T_CK> PageT_CK(T_CK info, DateTime? startTime, DateTime? endTime, int pageIndex, int pageSize, out int pageCount, out int totalRecord)
         {
             Expression<Func<T_CK, bool>> where = PredicateBuilder.True<T_CK>();
-            if(!String.IsNullOrEmpty(info.CKMC))
+            if (!String.IsNullOrEmpty(info.CKMC))
             {
                 where = where.And(p => p.CKMC.Contains(info.CKMC));
             }
-            if(!String.IsNullOrEmpty(info.CKGLY))
+            if (!String.IsNullOrEmpty(info.CKGLY))
             {
                 where = where.And(p => p.CKGLY.Contains(info.CKGLY));
+            }
+            if (startTime != null)
+            {
+                where = where.And(p => p.CJSJ >= startTime.Value);
+            }
+            if (endTime != null)
+            {
+                where = where.And(p => p.CJSJ <= endTime.Value);
             }
             Func<T_CK, System.Int32> order = p => p.CKID;
             return base.GetPageInfo<System.Int32>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);

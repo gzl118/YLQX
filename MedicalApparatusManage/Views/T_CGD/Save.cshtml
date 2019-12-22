@@ -10,6 +10,26 @@
     <script type="text/javascript" language="javascript">
         $(function () {
             refreshCgmxGrid();
+            $("#CGPERSON").chosen({
+                search_contains: true
+            });
+            $("#SQPERSON").chosen({
+                search_contains: true
+            });
+            $("#supId").chosen({
+                search_contains: true
+            });
+            $('#supId').on('change', function (e, params) {
+                var id = params ? params.selected : "";
+                dropQyChange(id);
+            });
+            $("#YLCP").chosen({
+                search_contains: true
+            });
+            $('#YLCP').on('change', function (e, params) {
+                var id = params ? params.selected : "";
+                dropChange(id);
+            });
         });
         function Save() {
             $.pdialog.closeCurrent();
@@ -81,6 +101,8 @@
         };
         function RefreshForm() {
             $('#formT_CGDMX')[0].reset();
+            $("#supId").trigger("chosen:updated");
+            $("#YLCP").trigger("chosen:updated");
         }
         function AddRow() {
             var tag = $("#guid").val();
@@ -138,15 +160,30 @@
                                 html += '<option value="' + json[i][0] + '">' + json[i][1] + '</option>';
                             }
                         });
-                        var $ref = $("#YLCP");
-                        var $refCombox = $ref.parents("div.combox:first");
-                        $ref.html(html).insertAfter($refCombox);
-                        $refCombox.remove();
+                        //var $ref = $("#YLCP");
+                        //var $refCombox = $ref.parents("div.combox:first");
+                        //$ref.html(html).insertAfter($refCombox);
+                        //$refCombox.remove();
+
+                        // 加载数据
+                        //alert(html);
+                        $("#YLCP").empty();
+                        $("#YLCP").append(html);
+                        $("#YLCP").trigger("chosen:updated");
+                        if (json.length == 1)
+                            $("#YLCP").trigger("change");
                     },
                     error: function () {
                         alertMsg.error('发生错误！');
                     }
                 });
+            }
+            else {
+                var html = '<option>请选择</option>';
+                $("#YLCP").empty();
+                $("#YLCP").append(html);
+                $("#YLCP").trigger("chosen:updated");
+                $("#YLCP").trigger("change");
             }
         };
         function dropChange(id) {
@@ -172,6 +209,17 @@
                         alertMsg.error('发生错误！');
                     }
                 });
+            }
+            else {
+                $("#cpbh").val("");
+                $("#scqy").val("");
+                $("#cpgg").val("");
+                $("#cpxh").val("");
+                $("#cpdw").val("");
+                $("#cpzczh").val("");
+                $("#cpxkzh").val("");
+                $("#cpprice").val("");
+                $("#cpscqyid").val("");
             }
         };
         function Jszj() {
@@ -201,7 +249,9 @@
         };
 
         function refreshCgmxGrid() {
-            $("#cgmxBox").loadUrl("/T_CGMX/CGMXTable", { id: 0, cgdh: $("#CGDH").val(), canEdit: 1 });
+            $("#cgmxBox").loadUrl("/T_CGMX/CGMXTable", {
+                id: $("#cgidMain").val(), cgdh: $("#CGDH").val(), canEdit: 1, isSH: $("#ISSH").val()
+            });
         };
     </script>
 </head>
@@ -210,11 +260,11 @@
         <div class="pageFormContent" layouth="58">
             <fieldset>
                 <legend>采购单</legend>
-                <form id="formT_CGD" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
+                <form id="formT_CGD" method="post" onsubmit="return false;" class="pageForm required-validate-noalert" style="overflow: visible;">
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
                         @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Name = "Tag" })
                         @Html.HiddenFor(m => m.DataModel.CGID, new { ID = "cgidMain", Name = "DataModel.CGID" })
-                        @Html.HiddenFor(m => m.DataModel.ISSH, new { Name = "DataModel.ISSH" })
+                        @Html.HiddenFor(m => m.DataModel.ISSH, new { ID = "ISSH", Name = "DataModel.ISSH" })
                         @Html.HiddenFor(m => m.DataModel.CGCJR, new { Name = "DataModel.CGCJR" })
                         @Html.HiddenFor(m => m.DataModel.CGCJRQ, new { Name = "DataModel.CGCJRQ" })
                         <div class="unit">
@@ -227,13 +277,13 @@
                             <label>
                                 采购人：
                             </label>
-                            @Html.DropDownListFor(m => m.DataModel.CGPERSON, ViewBag.Persons as SelectList, "请选择", new { style = "width:285px" })
+                            @Html.DropDownListFor(m => m.DataModel.CGPERSON, ViewBag.Persons as SelectList, "请选择", new { id = "CGPERSON", style = "width:285px" })
                         </div>
                         <div class="unit">
                             <label>
                                 申请人：
                             </label>
-                            @Html.DropDownListFor(m => m.DataModel.SQPERSON, ViewBag.Persons as SelectList, "请选择", new { style = "width:285px" })
+                            @Html.DropDownListFor(m => m.DataModel.SQPERSON, ViewBag.Persons as SelectList, "请选择", new { id = "SQPERSON", style = "width:285px" })
                         </div>
                         <div class="unit">
                             <label>
@@ -247,7 +297,7 @@
                             <label>
                                 采购单名称：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CGDMC, new { name = "CGMC", style = "width:279px" })
+                            @Html.TextBoxFor(m => m.DataModel.CGDMC, new { name = "CGMC", style = "width:279px", @class = "required" })
                         </div>
                         <div class="unit">
                             <label>
@@ -265,21 +315,21 @@
                 </form>
                 <div style="width:91%;border:1px solid #ffffff;margin:5px;">
                     <div><label id="lblCgd" style="width:50%;color:red;"></label></div>
-                    @{if (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.ISSH != 1)
-                    {
-                        <div class="button" id="divSaveCgd" style="float:right;">
-                            <div class="buttonContent">
-                                <button id="btnCgd" value="保存采购单" onclick="SaveCgd();">
-                                    保存采购单
-                                </button>
+                    @{if (Model.DataModel.ISSH != 1)
+                        {
+                            <div class="button" id="divSaveCgd" style="float:right;">
+                                <div class="buttonContent">
+                                    <button id="btnCgd" value="保存采购单" onclick="SaveCgd();">
+                                        保存采购单
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    }}
+                        }}
                 </div>
             </fieldset>
             <fieldset>
                 <legend>采购明细</legend>
-                <form id="formT_CGDMX" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
+                <form id="formT_CGDMX" method="post" onsubmit="return false;" class="pageForm required-validate-noalert" style="overflow: visible;">
                     @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Value = "Add", Name = "Tag" })
                     @Html.HiddenFor(m => m.CGMXModel.MXID, new { Name = "DataModel.MXID" })
                     @Html.HiddenFor(m => m.CGMXModel.CPSCQYID, new { ID = "cpscqyid", Name = "DataModel.CPSCQYID" })
@@ -291,12 +341,12 @@
                                 供货企业：
                             </label>
                             @*@Html.DropDownList("DataModel.SupID", ViewData["SupID"] as SelectList, "请选择", new { id = "supId", style = "width:270px" })*@
-                            <select id="supId" name="DataModel.SupID" style="width:285px" onchange="dropQyChange(this.value)">
+                            <select id="supId" name="DataModel.SupID" style="width:285px">
                                 <option>请选择</option>
                                 @{foreach (var item in ViewData["SupID"] as SelectList)
-                                {
-                                    <option value="@item.Value">@item.Text</option>
-                                }}
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }}
                             </select>
                         </div>
                         <div class="unit">
@@ -309,7 +359,7 @@
                             <label>
                                 产品名称：
                             </label>
-                            <select id="YLCP" name="DataModel.CPID" style="width:285px" onchange="dropChange(this.value)">
+                            <select id="YLCP" name="DataModel.CPID" style="width:285px">
                                 <option>请选择</option>
                             </select>
                             @*@Html.DropDownList("DataModel.CPID", new SelectList(), "请选择", new { ID = "YLCP", style = "width:270px", onchange = "dropChange(this.value)" })*@
@@ -344,7 +394,7 @@
                             <label>
                                 产品数量：
                             </label>
-                            @Html.TextBox("DataModel.CPNUM", "", new { id = "cpnum", style = "width:279px" })
+                            @Html.TextBox("DataModel.CPNUM", "", new { id = "cpnum", style = "width:279px", @class = "required" })
                         </div>
                         <div class="unit">
                             <label>
@@ -369,7 +419,7 @@
                 </form>
                 <div style="width:91%;border:1px solid #ffffff;margin:5px;">
                     <div><label id="lblCgdmx" style="width:50%;color:red;"></label></div>
-                    @if (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.ISSH != 1)
+                    @if (Model.DataModel.ISSH != 1)
                     {
                         <div class="button" id="divSaveCgdMx" style="float:right;">
                             <div class="buttonContent">
@@ -388,30 +438,30 @@
         </div>
         <div class="formBar">
             <ul>
-                @{if (ViewData["IsLeader"].ToString() == "True")
-                {
-                    if (Model.DataModel.ISSH != 1 && Model.DataModel.CGID != 0)
+                @{if (Model.RoleCode == "2")
                     {
-                        <li>
-                            <div class="button">
-                                <div class="buttonContent">
-                                    <button value="通过" onclick="through(1);">
-                                        通过
-                                    </button>
+                        if (Model.DataModel.ISSH != 1 && Model.DataModel.CGID != 0)
+                        {
+                            <li>
+                                <div class="button">
+                                    <div class="buttonContent">
+                                        <button value="通过" onclick="through(1);">
+                                            通过
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="button">
-                                <div class="buttonContent">
-                                    <button value="不通过" onclick="through(2);">
-                                        不通过
-                                    </button>
+                            </li>
+                            <li>
+                                <div class="button">
+                                    <div class="buttonContent">
+                                        <button value="不通过" onclick="through(2);">
+                                            不通过
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                    }
-                }}
+                            </li>
+                        }
+                    }}
                 <li>
                     <div class="button" id="divSave">
                         <div class="buttonContent">

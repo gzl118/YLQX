@@ -1,4 +1,4 @@
-@charset "utf-8";
+﻿@charset "utf-8";
 
 /* Core Code */
 html, body, div, span, applet, object, iframe,
@@ -476,7 +476,7 @@ body { overflow:hidden;}
 
 /* Pages default */
 .page { display:block; overflow:hidden;float:left; width:100%;}
-.pageHeader { display:block; overflow:auto; margin-bottom:1px; padding:5px; border-style:solid; border-width:0 0 1px 0; position:relative;}
+.pageHeader { display:block; overflow:visible; margin-bottom:1px; padding:5px; border-style:solid; border-width:0 0 1px 0; position:relative;}
 .searchBar {}
 .searchBar ul.searchContent { display:block; overflow:hidden; height:25px;}
 .searchBar ul.searchContent li { float:left; display:block; overflow:hidden; width:300px; height:21px; padding:2px 0;}

@@ -20,6 +20,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -1883,6 +1884,10 @@
     <Content Include="plugins\My97DatePicker\skin\whyGreen\datepicker.css" />
     <Content Include="plugins\My97DatePicker\skin\whyGreen\img.gif" />
     <Content Include="plugins\My97DatePicker\WdatePicker.js" />
+    <Content Include="Scripts\chosen\chosen-sprite%402x.png" />
+    <Content Include="Scripts\chosen\chosen-sprite.png" />
+    <Content Include="Scripts\chosen\chosen.css" />
+    <Content Include="Scripts\chosen\chosen.jquery.js" />
     <Content Include="Scripts\dwz\dwz.accordion.js" />
     <Content Include="Scripts\dwz\dwz.ajax.js" />
     <Content Include="Scripts\dwz\dwz.alertMsg.js" />

@@ -14,6 +14,12 @@
                 $("form input").prop("readonly", true);
                 $("#divSave").hide();
             }
+            $("#SUPQY").chosen({
+                search_contains: true
+            });
+            $("#CPSCQYID").chosen({
+                search_contains: true
+            });
         });
         function Save() {
             if ($("#SUPQY").find("option:selected").text() == "请选择") {
@@ -38,36 +44,6 @@
                 });
             }
         };
-
-        //$(function () {
-        //    $.ajaxSetup({ cache: false });
-        //    //uploadify上传组件
-        //    $('#uploadify').uploadify({
-        //        uploader: '/T_YLCP/Upload',           // 服务器端处理地址
-        //        swf: '/Content/upload/uploadify.swf',    // 上传使用的 Flash
-        //        fileSizeLimit: '100MB',             //在上传界面上限制上传文件大小
-        //        width: 60,                          // 按钮的宽度
-        //        height: 23,                         // 按钮的高度
-        //        buttonText: "上传",                 // 按钮上的文字
-        //        buttonCursor: 'hand',                // 按钮的鼠标图
-        //        fileObjName: 'Filedata',            // 上传参数名称
-        //        formData: { 'uptype': '0' },
-        //        auto: true,                // 选择之后，自动开始上传
-        //        multi: true,               // 是否支持同时上传多个文件
-
-        //        //queueSizeLimit: 5          // 允许多文件上传的时候，同时上传文件的个数
-        //        'onUploadSuccess': function (file, data) {
-
-        //            var datalist = eval("[" + data + "]");
-        //            document.getElementById("DataModel_CPTP").value = datalist[0].filename;
-        //        },
-        //        'overrideEvents': ['onDialogClose', 'onUploadError', 'onSelectError'],
-        //        'onSelect': uploadify_onSelect,
-        //        'onSelectError': uploadify_onSelectError,
-        //        'onUploadError': uploadify_onUploadError,
-        //    });
-        //    $('.dialogContent').css('overflow', 'auto');
-        //});
 
         $(function () {
             $.ajaxSetup({ cache: false });
@@ -121,9 +97,13 @@
             $("#wtlb").append($str);
         };
         function deleteQYZZ(obj) {
-            var tr = obj.parentNode.parentNode.parentNode;
-            var tbody = tr.parentNode;
-            tbody.removeChild(tr);
+            alertMsg.confirm("确定要删除么？", {
+                okCall: function () {
+                    var tr = obj.parentNode.parentNode.parentNode;
+                    var tbody = tr.parentNode;
+                    tbody.removeChild(tr);
+                }
+            });
         };
         function getQYZZ() {
             var qyzzFiles = "";
@@ -196,7 +176,13 @@
                             <label>
                                 报警数量：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.BJSL, new { name = "BJSL", style = "width:279px", @class = "textInput number" })
+                            @Html.TextBoxFor(m => m.DataModel.BJSL, new { name = "BJSL", style = "width:279px", @class = "textInput digits" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                报警期限(天)：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.BJDate, new { name = "BJDate", style = "width:279px", @class = "textInput digits" })
                         </div>
                     </div>
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
@@ -208,13 +194,13 @@
                         </div>
                         <div class="unit">
                             <label>
-                                有效期限：
+                                注册证有效期限：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.YXQXKS, new { name = "YXQXKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.YXQXKS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.YXQXKS), name = "YXQXKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
                             <label style="width:10px">
                                 至
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.YXQXJS, new { name = "YXQXJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.YXQXJS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.YXQXJS), name = "YXQXJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
                         </div>
                         <div class="unit">
                             <label>
@@ -263,12 +249,12 @@
                                     资质上传：
                                 </label>
                             </div>
-                            @{if (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.CPStatus != 1)
-                            {
-                                <div style="float:right;width:28%;">
-                                    <span id="uploadify1"></span>
-                                </div>
-                            }}
+                            @{if (Model.RoleCode == "1" || Model.DataModel.CPStatus != 1)
+                                {
+                                    <div style="float:right;width:28%;">
+                                        <span id="uploadify1"></span>
+                                    </div>
+                                }}
                         </div>
                     </div>
                     @*<div class="unit">
@@ -322,10 +308,10 @@
                             {
                                 <tr target="sid_user">
                                     <td><a href="/UploadFiles/供货商产品附件/@item.ZZFJ" target="_blank">@item.ZZFJ</a></td>
-                                    @{if (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.CPStatus != 1)
-                                    {
-                                        <td><a href="javascript:void(0)" class="btnDel" onclick="deleteQYZZ(this);">删除</a></td>
-                                    }}
+                                    @{if (Model.RoleCode == "1" || Model.DataModel.CPStatus != 1)
+                                        {
+                                            <td><a href="javascript:void(0)" class="btnDel" onclick="deleteQYZZ(this);">删除</a></td>
+                                        }}
                                 </tr>
                             }
                         </tbody>
@@ -334,42 +320,43 @@
             </div>
             <div class="formBar">
                 <ul>
-                    @{if (ViewData["IsLeader"].ToString() == "True")
-                    {
-                        if (Model.DataModel.CPStatus != 1 && Model.DataModel.CPID != 0)
+                    @{if (Model.RoleCode == "2")
+                        {
+                            if (Model.DataModel.CPStatus != 1 && Model.DataModel.CPID != 0)
+                            {
+                                <li>
+                                    <div class="button">
+                                        <div class="buttonContent">
+                                            <button value="通过" onclick="through(1);">
+                                                通过
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="button">
+                                        <div class="buttonContent">
+                                            <button value="不通过" onclick="through(2);">
+                                                不通过
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        }}
+                    @{if (Model.RoleCode == "1" || Model.DataModel.CPStatus != 1)
                         {
                             <li>
-                                <div class="button">
+                                <div class="button" id="divSave">
                                     <div class="buttonContent">
-                                        <button value="通过" onclick="through(1);">
-                                            通过
-                                        </button>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="button">
-                                    <div class="buttonContent">
-                                        <button value="不通过" onclick="through(2);">
-                                            不通过
+                                        <button value="保存" onclick="Save();">
+                                            保存
                                         </button>
                                     </div>
                                 </div>
                             </li>
                         }
-                    }}
-                    @{if (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.CPStatus != 1)
-                    {
-                        <li>
-                            <div class="button" id="divSave">
-                                <div class="buttonContent">
-                                    <button value="保存" onclick="Save();">
-                                        保存
-                                    </button>
-                                </div>
-                            </div>
-                        </li>
-                    }}
+                    }
                     <li>
                         <div class="button">
                             <div class="buttonContent">

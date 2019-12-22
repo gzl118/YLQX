@@ -67,17 +67,17 @@ namespace MedicalApparatusManage.Controllers
                 strSHZT = Request["strSHZT"].ToString();
                 if (!String.IsNullOrEmpty(strSHZT))
                 {
-                    if (strSHZT == "未审批")
-                    {
-                        evalModel.DataModel.CusStatus = 0;
-                    }
-                    else if (strSHZT == "已审批")
+                    if (strSHZT == "已审批")
                     {
                         evalModel.DataModel.CusStatus = 1;
                     }
                     else if (strSHZT == "审批未通过")
                     {
                         evalModel.DataModel.CusStatus = 2;
+                    }
+                    else if (strSHZT == "未审批")
+                    {
+                        evalModel.DataModel.CusStatus = 0;
                     }
                 }
             }
@@ -122,12 +122,7 @@ namespace MedicalApparatusManage.Controllers
             jyfwmodels.DataModel = jyfwmodels.DataModel ?? new T_JYFW();
             model.JYFWList = T_JYFWDomain.GetInstance().GetAllT_JYFW(jyfwmodels.DataModel).ToList();
             model.Tag = tag;
-            string roleId = Session["RoleId"].ToString();
-            ViewData["IsLeader"] = false;
-            if (roleId == "1" || roleId == "2")
-            {
-                ViewData["IsLeader"] = true;
-            }
+            model.RoleCode = GetRoleCode();
             return View("~/Views/T_CusQY/Save.cshtml", model);
         }
 
@@ -181,13 +176,13 @@ namespace MedicalApparatusManage.Controllers
 
         [HttpPost]
         [CheckLogin()]
-        public void through(T_CusQYModels model, string id)
+        public void through(T_CusQYModels model, int id)
         {
             int result = 0;
             try
             {
                 Int32 cusqyid = model.DataModel.CusID;
-                result = T_CusQYDomain.GetInstance().Sh(cusqyid, id == "1" ? 1 : 2);
+                result = T_CusQYDomain.GetInstance().Sh(cusqyid, id);
             }
             catch { }
             Response.ContentType = "text/json";
@@ -201,7 +196,17 @@ namespace MedicalApparatusManage.Controllers
         [CheckLogin()]
         public void Delete(System.Int32 id)
         {
-            int result = T_CusQYDomain.GetInstance().DeleteModelById(id);
+            var rCode = GetRoleCode();
+            if (rCode != "1")
+            {
+                var temp = T_CusQYDomain.GetInstance().GetModelById(id);
+                if (temp != null && (temp.CusStatus == 1))
+                {
+                    Response.Write("{\"statusCode\":\"300\", \"message\":\"已审批通过的数据不能删除！\"}");
+                    return;
+                }
+            }
+            int result = T_CusQYDomain.GetInstance().Delete(id);
             Response.ContentType = "text/json";
             if (result > 0)
                 Response.Write("{\"statusCode\":\"200\", \"message\":\"操作成功\",\"callbackType\":\"forward\",\"forwardUrl\":\"/T_CusQY/Index\"}");
@@ -242,6 +247,10 @@ namespace MedicalApparatusManage.Controllers
             string path = directory + "\\" + filename;
             Filedata.SaveAs(path);
             return Json(new { status = "OK", filename = filename, path = "/UploadFiles/购货企业资质/" + filename });
+        }
+        private string GetRoleCode()
+        {
+            return Session["RoleCode"] == null ? "" : Session["RoleCode"].ToString();
         }
     }
 }

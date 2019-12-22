@@ -36,5 +36,30 @@ namespace MedicalApparatusManage.Domain
             }
             return model;
         }
+        public int UpdateList(List<T_BJDate> list)
+        {
+            var result = 0;
+            using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
+            {
+                try
+                {
+                    foreach (var item in list)
+                    {
+                        var temp = hContext1.Set<T_BJDate>().Find(item.ID);
+                        if (temp != null)
+                        {
+                            temp.BJDATE = item.BJDATE;
+                        }
+                    }
+                    hContext1.SaveChanges();
+                    result = 1;
+                }
+                catch (Exception)
+                {
+                }
+            }
+
+            return result;
+        }
     }
 }

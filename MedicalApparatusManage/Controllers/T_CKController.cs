@@ -45,15 +45,21 @@ namespace MedicalApparatusManage.Controllers
                     evalModel.DataModel.CKMC = str;
                 }
             }
-
+            var strCKPerson = "请选择";
             if (Request["strCKPerson"] != null)
             {
-                string str = Request["strCKPerson"].ToString();
-                if (!String.IsNullOrEmpty(str))
+                strCKPerson = Request["strCKPerson"].ToString();
+                if (!String.IsNullOrEmpty(strCKPerson))
                 {
-                    evalModel.DataModel.CKGLY = str;
+                    evalModel.DataModel.CKGLY = strCKPerson;
                 }
             }
+            SysUser UserModel = Session["UserModel"] as SysUser;
+            T_Person person = new T_Person();
+            person.PsQYID = (int)UserModel.UserCompanyID;
+            ViewBag.Persons = new SelectList(T_PersonDomain.GetInstance().GetAllT_Person(person), "PsMZ", "PsMZ");
+            ViewData["strCKPerson"] = strCKPerson;
+
             evalModel.DataList = T_CKDomain.GetInstance().PageT_CK(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, out pagecount, out resultCount);
             evalModel.resultCount = resultCount;
             return View("~/Views/T_CK/Index.cshtml", evalModel);
@@ -69,6 +75,10 @@ namespace MedicalApparatusManage.Controllers
                 model.DataModel = T_CKDomain.GetInstance().GetModelById(id);
             }
             model.Tag = tag;
+            T_Person person = new T_Person();
+            SysUser UserModel = Session["UserModel"] as SysUser;
+            person.PsQYID = (int)UserModel.UserCompanyID;
+            ViewBag.Persons = new SelectList(T_PersonDomain.GetInstance().GetAllT_Person(person), "PsMZ", "PsMZ");
             return View("~/Views/T_CK/Save.cshtml", model);
         }
 

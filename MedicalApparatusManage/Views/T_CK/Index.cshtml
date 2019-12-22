@@ -9,10 +9,17 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>仓库</title>
+    <script type="text/javascript">
+        $(function () {
+            $("#strCKPerson").chosen({
+                search_contains: true
+            });
+        });
+    </script>
 </head>
 <body>
     <div id="pageContent">
-        <div class="pageHeader" style="hight: 80px;">
+        <div class="pageHeader">
             @using (Html.BeginForm("Index", "T_CK", FormMethod.Post, new
             {
                 name = "formSerachMA",
@@ -28,15 +35,31 @@
                                 仓库名称:
                             </td>
                             <td>
-                               @Html.TextBox("strCKName")
+                                @Html.TextBox("strCKName")
                             </td>
                             <td>
                                 仓库管理员:
                             </td>
                             <td>
-                                @Html.TextBox("strCKPerson")
+                                @Html.DropDownList("strCKPerson", ViewBag.Persons as SelectList, "请选择", new { id = "strCKPerson", style = "width:150px;" })
                             </td>
-
+                            <td>
+                                采集日期:
+                            </td>
+                            <td>
+                                @{ string strStart = Model.StartTime.HasValue ? Model.StartTime.Value.ToString("yyyy/MM/dd") : "";
+                                    string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
+                                }
+                                <input id="StartDate" name="StartTime" class="Wdate" type="text" value="@strStart"
+                                       onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
+                            </td>
+                            <td>
+                                至
+                            </td>
+                            <td>
+                                <input id="EndDate" name="EndTime" class="Wdate" type="text" value="@strEnd"
+                                       onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', minDate: '#F{$dp.$D(\'StartDate\')}' })" />
+                            </td>
                             <td>
                                 <ul>
                                     <li>
@@ -53,18 +76,18 @@
                         </tr>
                     </table>
                 </div>
-                                    }
+            }
         </div>
         <div class="panelBar" id="EntLimitMenu">
             <ul class="toolBar">
-                <li><a class="add" href="/T_CK/Save/0/Add" target="dialog"  mask="true" title="新增" width="1050" height="500"><span>新增</span></a></li>
+                <li><a class="add" href="/T_CK/Save/0/Add" target="dialog" mask="true" title="新增" width="1050" height="500"><span>新增</span></a></li>
                 <li> <a class="edit" href="/T_CK/Save/{sid_user}/Edit" target="dialog" mask="true" title="修改" width="1050" height="500"><span>修改</span></a></li>
                 <li><a class="delete" href="/T_CK/Delete/{sid_user}" target="ajaxTodo" title="确定删除吗?" mask="true"><span>删除</span></a></li>
-                <li><a class="icon" href="/T_CK/Save/{sid_user}/Details" target="dialog"  mask="true" width="1050" height="500"><span>查看详情</span></a></li>
+                <li><a class="icon" href="/T_CK/Save/{sid_user}/Details" target="dialog" mask="true" width="1050" height="500"><span>查看详情</span></a></li>
             </ul>
         </div>
         <table width="100%" layouth="112" class="table" id="T_CKTable">
-           <thead>
+            <thead>
                 <tr>
                     <th>
                         仓库名称
@@ -80,6 +103,9 @@
                     </th>
                     <th>
                         仓库适宜湿度
+                    </th>
+                    <th>
+                        采集日期
                     </th>
                     <th>
                         仓库管理员
@@ -102,6 +128,15 @@
                         <td>@item.CKDZ</td>
                         <td>@item.CKSYWD</td>
                         <td>@item.CKSYSD</td>
+                        @{ if (item.CJSJ == null)
+                            {
+                                <td></td>
+                            }
+                            else
+                            {
+                                <td>@item.CJSJ.Value.ToString("yyyy/MM/dd")</td>
+                            }
+                        }
                         <td>@item.CKGLY</td>
                         <td>@item.FLAG</td>
                         <td>@item.CKBZ</td>

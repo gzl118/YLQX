@@ -29,7 +29,7 @@ namespace MedicalApparatusManage.Domain
         public List<T_CusQY> PageT_CusQY(T_CusQY info, DateTime? startTime, DateTime? endTime, int pageIndex, int pageSize, out int pageCount, out int totalRecord)
         {
             Expression<Func<T_CusQY, bool>> where = PredicateBuilder.True<T_CusQY>();
-            if(!String.IsNullOrEmpty(info.CusMC))
+            if (!String.IsNullOrEmpty(info.CusMC))
             {
                 where = where.And(p => p.CusMC.Contains(info.CusMC));
             }
@@ -136,6 +136,28 @@ namespace MedicalApparatusManage.Domain
 
                 }
             }
+        }
+        public int Delete(int id)
+        {
+            var result = 0;
+            try
+            {
+                using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
+                {
+                    var db = hContext1.Set<T_CusQYZZ>();
+                    var deleteFiles = db.Where(p => p.QYID == id);
+                    db.RemoveRange(deleteFiles);
+                    var temp = hContext1.Set<T_CusQY>().Find(id);
+                    hContext1.Set<T_CusQY>().Remove(temp);
+                    hContext1.SaveChanges();
+                    result = 1;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return result;
         }
     }
 }

@@ -1,11 +1,6 @@
 ﻿@model MedicalApparatusManage.Models.T_WhsQYModels
 @{
     Layout = null;
-    int isReadonlyFlag = 0;
-    if (ViewBag.isReadonly != null && ViewBag.isReadonly == "True")
-    {
-        isReadonlyFlag = 1;
-    }
 }
 <!DOCTYPE html>
 <html>
@@ -141,7 +136,7 @@
                             <label>
                                 企业名称：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.WhsMC, new { name = "WhsMC", style = "width:279px" })
+                            @Html.TextBoxFor(m => m.DataModel.WhsMC, new { name = "WhsMC", style = "width:279px", @class = "required" })
                         </div>
                         <div class="unit">
                             <label>
@@ -267,7 +262,7 @@
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
-                                许可证发证日期：
+                                生产许可证发证日期：
                             </label>
                             @Html.TextBoxFor(m => m.DataModel.WhsFZRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.WhsFZRQ), name = "WhsFZRQ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
                         </div>
@@ -275,13 +270,33 @@
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
                         <div class="unit">
                             <label>
-                                许可证有效期：
+                                生产许可证有效期：
                             </label>
                             @Html.TextBoxFor(m => m.DataModel.WhsYXQKS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.WhsYXQKS), name = "WhsYXQKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
                             <label style="width:10px">
                                 至
                             </label>
                             @Html.TextBoxFor(m => m.DataModel.WhsYXQJS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.WhsYXQJS), name = "WhsYXQJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                        </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                经营许可证发证日期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.JYXKZFZRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.JYXKZFZRQ), name = "JYXKZFZRQ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                        </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
+                        <div class="unit">
+                            <label>
+                                经营许可证有效期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.JYXKZYXQKS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.JYXKZYXQKS), name = "JYXKZYXQKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            <label style="width:10px">
+                                至
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.JYXKZYXQJS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.JYXKZYXQJS), name = "JYXKZYXQJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">
@@ -293,9 +308,12 @@
                                 @*<a id="aWhsZZSC" href='@Model.ZZSCPath' target="_blank">@Model.DataModel.WhsZZSC</a>
                                     @Html.TextBoxFor(m => m.DataModel.WhsZZSC, new { id = "txtWhsZZSC", name = "WhsZZSC", style = "width:81.3%;display:none;" })*@
                             </div>
-                            <div style="float:right;width:11%;">
-                                <span id="uploadify"></span>
-                            </div>
+                            @if (Model.RoleCode == "1")
+                            {
+                                <div style="float:right;width:11%;">
+                                    <span id="uploadify"></span>
+                                </div>
+                            }
                         </div>
                         <div class="unit">
                             <label>
@@ -313,7 +331,7 @@
                             {
                                 <tr target="sid_user">
                                     <td><a href="/UploadFiles/本企业资质/@item.ZZFJ" target="_blank">@item.ZZFJ</a></td>
-                                    @if (!Model.Tag.Equals("Details"))
+                                    @if (Model.RoleCode == "1")
                                     {
                                         <td><a href="javascript:void(0)" class="btnDel" onclick="deleteQYZZ(this);">删除</a></td>
                                     }
@@ -325,15 +343,18 @@
             </div>
             <div class="formBar">
                 <ul>
-                    <li>
-                        <div class="button" id="divSave">
-                            <div class="buttonContent">
-                                <button value="保存" onclick="Save();">
-                                    保存
-                                </button>
+                    @if (Model.RoleCode == "1")
+                    {
+                        <li>
+                            <div class="button" id="divSave">
+                                <div class="buttonContent">
+                                    <button value="保存" onclick="Save();">
+                                        保存
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
+                    }
                     <li>
                         <div class="button">
                             <div class="buttonContent">

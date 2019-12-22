@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -106,12 +107,7 @@ namespace MedicalApparatusManage.Controllers
                 model.DataModel.CPBH = T_YLCPDomain.GetInstance().GetCpOrderNum("CP", CurUser);
             }
             model.Tag = tag;
-            string roleId = Session["RoleId"].ToString();
-            ViewData["IsLeader"] = false;
-            if (roleId == "1" || roleId == "2")
-            {
-                ViewData["IsLeader"] = true;
-            }
+            model.RoleCode = GetRoleCode();
             return View("~/Views/T_YLCP/Save.cshtml", model);
         }
 
@@ -294,6 +290,23 @@ namespace MedicalApparatusManage.Controllers
         [CheckLogin()]
         public void Delete(System.Int32 id)
         {
+            var rCode = GetRoleCode();
+            if (rCode != "1")
+            {
+                var temp = T_YLCPDomain.GetInstance().GetModelById(id);
+                if (temp != null && (temp.CPStatus == 1))
+                {
+                    Response.Write("{\"statusCode\":\"300\", \"message\":\"已审批通过的数据不能删除！\"}");
+                    return;
+                }
+            }
+            Expression<Func<T_CGMX, bool>> whereCGD = p => (p.CPID == id);
+            var lstCGMX = T_CGMXDomain.GetInstance().GetAllModels<int>(whereCGD);
+            if (lstCGMX != null && lstCGMX.Count > 0)
+            {
+                Response.Write("{\"statusCode\":\"300\", \"message\":\"该产品已存在与采购单，不能删除！\"}");
+                return;
+            }
             T_YLCPModels model = new T_YLCPModels();
             model.DataModel = new T_YLCP();
             if (id != 0)
@@ -358,6 +371,10 @@ namespace MedicalApparatusManage.Controllers
             }
             Response.ContentType = "text/json";
             Response.Write(result1);
+        }
+        private string GetRoleCode()
+        {
+            return Session["RoleCode"] == null ? "" : Session["RoleCode"].ToString();
         }
     }
 }

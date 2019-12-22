@@ -31,6 +31,7 @@ namespace MedicalApparatusManage
         public string CKGLY { get; set; }
         public string FLAG { get; set; }
         public string CKLX { get; set; }
+        public Nullable<System.DateTime> CJSJ { get; set; }
     
         public virtual ICollection<T_CKMX> T_CKMX { get; set; }
         public virtual ICollection<T_KC> T_KC { get; set; }

@@ -109,9 +109,13 @@
             $("#wtlb").append($str);
         };
         function deleteQYZZ(obj) {
-            var tr = obj.parentNode.parentNode.parentNode;
-            var tbody = tr.parentNode;
-            tbody.removeChild(tr);
+            alertMsg.confirm("确定要删除么？", {
+                okCall: function () {
+                    var tr = obj.parentNode.parentNode.parentNode;
+                    var tbody = tr.parentNode;
+                    tbody.removeChild(tr);
+                }
+            });
         };
         function getQYZZ() {
             var qyzzFiles = "";
@@ -141,7 +145,7 @@
                             <label>
                                 企业名称：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CusMC, new { name = "CusMC", style = "width:279px" })
+                            @Html.TextBoxFor(m => m.DataModel.CusMC, new { name = "CusMC", style = "width:279px", @class = "required" })
                         </div>
                         <div class="unit">
                             <label>
@@ -174,33 +178,33 @@
                                 企业类型：
                             </label>
                             @{
-                            string[] QYL = { "国有企业", "集体企业", "股份合作企业", "有限责任公司", "联营企业", "中外合资经营企业", "中外合作经营企业" };
-                            List<SelectListItem>
-                                QYlist = new List<SelectListItem>
-                                    ();
-                                    foreach (string s in QYL)
-                                    {
+                                string[] QYL = { "国有企业", "集体企业", "股份合作企业", "有限责任公司", "联营企业", "中外合资经营企业", "中外合作经营企业" };
+                                List<SelectListItem>
+                                    QYlist = new List<SelectListItem>
+                                        ();
+                                foreach (string s in QYL)
+                                {
                                     QYlist.Add(new SelectListItem { Text = s, Value = s });
-                                    }
+                                }
 
-                                    @Html.DropDownListFor(m => m.DataModel.CusDWXZ, QYlist, "--- 请选择 ---", new { name = "WhsDWXZ", style = "width:282px" })
-                                    }
+                                @Html.DropDownListFor(m => m.DataModel.CusDWXZ, QYlist, "--- 请选择 ---", new { name = "WhsDWXZ", style = "width:282px" })
+                            }
                         </div>
                         <div class="unit">
                             <label>
                                 成立日期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CusZCSJ, new { name = "CusZCSJ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.CusZCSJ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CusZCSJ), name = "CusZCSJ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
                         </div>
                         <div class="unit">
                             <label>
                                 经营期限：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CusJYKSSJ, new { name = "CusJYKSSJ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.CusJYKSSJ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CusJYKSSJ), name = "CusJYKSSJ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
                             <label style="width:10px">
                                 至
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CusJXJSSJ, new { name = "CusJXJSSJ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.CusJXJSSJ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CusJXJSSJ), name = "CusJXJSSJ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">
@@ -270,9 +274,9 @@
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
-                                许可证发证日期：
+                                生产许可证发证日期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CusFZRQ, new { name = "CusFZRQ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.CusFZRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CusFZRQ), name = "CusFZRQ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
                         </div>
                         <div class="unit">
                             <label>
@@ -286,23 +290,56 @@
                             </label>
                             @Html.TextBoxFor(m => m.DataModel.CusLXDH, new { name = "CusLXDH", style = "width:279px" })
                         </div>
+                        <div class="unit">
+                            <label>
+                                经营许可证发证日期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.JYXKZFZRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.JYXKZFZRQ), name = "JYXKZFZRQ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                        </div>
                     </div>
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
                         <div class="unit">
                             <label>
-                                许可证有效期：
+                                生产许可证有效期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CusYXQKS, new { name = "CusYXQKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.CusYXQKS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CusYXQKS), name = "CusYXQKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
                             <label style="width:10px">
                                 至
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CusYXQJS, new { name = "CusYXQJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.CusYXQJS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CusYXQJS), name = "CusYXQJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
                         </div>
                         <div class="unit">
                             <label>
                                 身份证号：
                             </label>
                             @Html.TextBoxFor(m => m.DataModel.CusSFZH, new { name = "CusSFZH", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+
+                        </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
+                        <div class="unit">
+                            <label>
+                                经营许可证有效期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.JYXKZYXQKS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.JYXKZYXQKS), name = "JYXKZYXQKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            <label style="width:10px">
+                                至
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.JYXKZYXQJS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.JYXKZYXQJS), name = "JYXKZYXQJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                        </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;">
+                        <div class="unit">
+                            <label>
+                                授权书有效期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SQSKS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.SQSKS), name = "SQSKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            <label style="width:10px">
+                                至
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SQSJS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.SQSJS), name = "SQSJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">
@@ -312,13 +349,13 @@
                                     资质上传：
                                 </label>
                                 @*<a id="aCusZZSC" href='@Model.ZZSCPath' target="_blank">@Model.DataModel.CusZZSC</a>
-                                @Html.TextBoxFor(m => m.DataModel.CusZZSC, new { id = "txtCusZZSC", name = "CusZZSC", style = "width:81.3%;display:none;" })*@
+                                    @Html.TextBoxFor(m => m.DataModel.CusZZSC, new { id = "txtCusZZSC", name = "CusZZSC", style = "width:81.3%;display:none;" })*@
                             </div>
-                            @if (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.CusStatus != 1)
+                            @if (Model.RoleCode == "1" || Model.DataModel.CusStatus != 1)
                             {
-                            <div style="float:right;width:11%;">
-                                <span id="uploadify"></span>
-                            </div>
+                                <div style="float:right;width:11%;">
+                                    <span id="uploadify"></span>
+                                </div>
                             }
                         </div>
                         <div class="unit">
@@ -335,13 +372,13 @@
                         <tbody id="wtlb">
                             @foreach (var item in Model.CusQYZZList)
                             {
-                            <tr target="sid_user">
-                                <td><a href="/UploadFiles/购货企业资质/@item.ZZFJ" target="_blank">@item.ZZFJ</a></td>
-                                @{if (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.CusStatus != 1)
-                                {
-                                <td><a href="javascript:void(0)" class="btnDel" onclick="deleteQYZZ(this);">删除</a></td>
-                                }}
-                            </tr>
+                                <tr target="sid_user">
+                                    <td><a href="/UploadFiles/购货企业资质/@item.ZZFJ" target="_blank">@item.ZZFJ</a></td>
+                                    @if (Model.RoleCode == "1" || Model.DataModel.CusStatus != 1)
+                                    {
+                                        <td><a href="javascript:void(0)" class="btnDel" onclick="deleteQYZZ(this);">删除</a></td>
+                                    }
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -349,43 +386,42 @@
             </div>
             <div class="formBar">
                 <ul>
-                    @{if (ViewData["IsLeader"].ToString() == "True")
+                    @if (Model.RoleCode == "2")
                     {
                         if (Model.DataModel.CusStatus != 1 && Model.DataModel.CusID != 0)
-                    {
-                    <li>
-                        <div class="button">
-                            <div class="buttonContent">
-                                <button value="通过" onclick="through(1);">
-                                    通过
-                                </button>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="button">
-                            <div class="buttonContent">
-                                <button value="不通过" onclick="through(2);">
-                                    不通过
-                                </button>
-                            </div>
-                        </div>
-                    </li>
+                        {
+                            <li>
+                                <div class="button">
+                                    <div class="buttonContent">
+                                        <button value="通过" onclick="through(1);">
+                                            通过
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="button">
+                                    <div class="buttonContent">
+                                        <button value="不通过" onclick="through(2);">
+                                            不通过
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        }
                     }
-                    }}
-                    @{
-                    if (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.CusStatus != 1)
-                    {
-                    <li>
-                        <div class="button" id="divSave">
-                            <div class="buttonContent">
-                                <button value="保存" onclick="Save();">
-                                    保存
-                                </button>
-                            </div>
-                        </div>
-                    </li>
-                    }
+                    @{ if (Model.RoleCode == "1" || Model.DataModel.CusStatus != 1)
+                        {
+                            <li>
+                                <div class="button" id="divSave">
+                                    <div class="buttonContent">
+                                        <button value="保存" onclick="Save();">
+                                            保存
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        }
                     }
                     <li>
                         <div class="button">

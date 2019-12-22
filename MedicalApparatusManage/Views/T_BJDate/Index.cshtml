@@ -14,32 +14,20 @@
             var elements = document.forms['formBjqx'];
             var bl = validateCallback(elements);
             if (bl) {
-                //var arrResult = [];
-                //arrResult.push({
-                //    "BJCode": $("#YYZHBJCode").val(),
-                //    "BJDATE": $("#YYZHAlarmValue").val()
-                //});
-                //arrResult.push({
-                //    "BJCode": $("#SCXKZBJCode").val(),
-                //    "BJDATE": $("#SCXKZAlarmValue").val()
-                //});
-                //arrResult.push({
-                //    "BJCode": $("#JYXKZBJCode").val(),
-                //    "BJDATE": $("#JYXKZAlarmValue").val()
-                //});
-                //arrResult.push({
-                //    "BJCode": $("#CPZCZBJCode").val(),
-                //    "BJDATE": $("#CPZCZAlarmValue").val()
-                //});
-                //arrResult.push({
-                //    "BJCode": $("#SQSBJCode").val(),
-                //    "BJDATE": $("#SQSAlarmValue").val()
-                //});
+                var arrResult = [];
+                var dls = $(".pageFormContent").find("dl");
+                $.each(dls, function (i, item) {
+                    arrResult.push({
+                        ID: $(item).find(".BJID").first().val(),
+                        BJDATE: $(item).find(".BJDATE").first().val()
+                    });
+                });
                 $.ajax({
                     type: "post",
                     dataType: "json",
-                    url: "/T_BJDate/Save",
-                    data: arrResult,   //$("#formBjqx").serializeArray(),
+                    url: "/T_BJDate/SaveNew",
+                    data: JSON.stringify(arrResult),
+                    contentType: 'application/json',
                     success: function (data) {
                         if (data.statusCode == "200") {
                             alertMsg.correct('保存成功！');
@@ -53,38 +41,37 @@
 </head>
 <body>
     <div id="pageContent">
-        <div class="pageHeader" style="hight: 80px;">
-            <div class="searchBar">
-                <form id="formBjqx" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
-                    <table class="searchContent">
-                        @*<tr>
-                                <td>
-                                    营业执照预警期限(天):
-                                </td>
-                                <td>
-                                    <input type="hidden" name="YYZHBJCode" value="1001" />
-                                    @Html.TextBoxFor(m => m.YYZHAlarmValue, new { Name = "BJDATE", style = "width:264px", @class = "required textInput digits" })
-                                </td>
-                            <tr>*@
-                        <tr>
-                            <td colspan="2" style="margin-left: 200px; margin-top: 20px;">
-                                <ul>
-                                    <li>
-                                        <div class="buttonActive">
-                                            <div class="buttonContent">
-                                                <button onclick="Save();">
-                                                    保存
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-                    </table>
-                </form>
+        <form id="formBjqx" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
+            <div class="pageFormContent nowrap" layouth="58">
+                @foreach (var item in Model.DataList)
+                {
+                    <dl>
+                        <dt style="width:150px;">
+                            @Html.Label("BJCodeDesc", item.BJCodeDesc + "预警期限(天):", new { style = "width:140px" })
+                        </dt>
+                        <dd>
+                            @Html.Hidden("ID", item.ID, new { @class = "BJID" })
+                            @Html.TextBox("BJDATE" + item.BJCode, item.BJDATE, new { Name = "BJDATE" + item.BJCode, @class = " textInput digits BJDATE" })
+                        </dd>
+                    </dl>
+                }
+                <dl>
+                    <dd colspan="2" style="margin-left: 150px; margin-top: 20px;">
+                        <ul>
+                            <li>
+                                <div class="buttonActive">
+                                    <div class="buttonContent">
+                                        <button onclick="Save();">
+                                            保存
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </dd>
+                </dl>
             </div>
-        </div>
+        </form>
     </div>
 </body>
 </html>

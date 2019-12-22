@@ -14,6 +14,8 @@ namespace MedicalApparatusManage.Models
 
         public string passWord { get; set; }
 
+        public string RoleType { get; set; }
+
     }
 
 }

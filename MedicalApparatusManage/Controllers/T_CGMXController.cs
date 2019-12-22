@@ -134,10 +134,11 @@ namespace MedicalApparatusManage.Controllers
         }
 
         [CheckLogin()]
-        public ActionResult CGMXTable(System.Int32 id, string cgdh, int canEdit)
+        public ActionResult CGMXTable(System.Int32 id, string cgdh, int canEdit, int isSH)
         {
             T_CGDModels model = new T_CGDModels();
             model.DataModel = new T_CGD();
+            model.DataModel.ISSH = isSH;
             if (id != 0)
             {
                 model.CGMXList = T_CGMXDomain.GetInstance().GetT_CGMXByCgid(id);
@@ -147,13 +148,12 @@ namespace MedicalApparatusManage.Controllers
                 model.CGMXList = T_CGMXDomain.GetInstance().GetT_YSMXByCgdh(cgdh);
             }
             ViewData["canEdit"] = canEdit;
-            string roleId = Session["RoleId"].ToString();
-            ViewData["IsLeader"] = false;
-            if (roleId == "1" || roleId == "2")
-            {
-                ViewData["IsLeader"] = true;
-            }
+            model.RoleCode = GetRoleCode();
             return View("~/Views/T_CGMX/CGMXTable.cshtml", model);
+        }
+        private string GetRoleCode()
+        {
+            return Session["RoleCode"] == null ? "" : Session["RoleCode"].ToString();
         }
     }
 }

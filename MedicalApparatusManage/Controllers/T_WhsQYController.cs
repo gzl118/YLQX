@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -48,7 +49,7 @@ namespace MedicalApparatusManage.Controllers
 
             evalModel.DataList = T_WhsQYDomain.GetInstance().PageT_WhsQY(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, out pagecount, out resultCount);
             evalModel.resultCount = resultCount;
-            GetRoleCode(evalModel);
+            //GetRoleCode(evalModel);
             return View("~/Views/T_WhsQY/Index.cshtml", evalModel);
         }
 
@@ -101,6 +102,13 @@ namespace MedicalApparatusManage.Controllers
         [CheckLogin()]
         public void Delete(System.Int32 id)
         {
+            Expression<Func<T_Person, bool>> where = p => (p.PsQYID == id);
+            var list = T_PersonDomain.GetInstance().GetAllModels<int>(where);
+            if (list != null && list.Count > 0)
+            {
+                Response.Write("{\"statusCode\":\"300\", \"message\":\"该企业下已有人员，不能删除！\"}");
+                return;
+            }
             int result = T_WhsQYDomain.GetInstance().DeleteModelById(id);
             Response.ContentType = "text/json";
             if (result > 0)

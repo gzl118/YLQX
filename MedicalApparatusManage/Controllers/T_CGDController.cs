@@ -3,6 +3,7 @@ using MedicalApparatusManage.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -105,15 +106,11 @@ namespace MedicalApparatusManage.Controllers
             SysUser UserModel = Session["UserModel"] as SysUser;
             //获取本企业下的人员列表
             T_Person person = new T_Person();
-            person.PsQYID = (int)UserModel.UserCompanyID;
+            if (UserModel.UserCompanyID != null)
+                person.PsQYID = (int)UserModel.UserCompanyID;
             ViewBag.Persons = new SelectList(T_PersonDomain.GetInstance().GetAllT_Person(person), "PsMZ", "PsMZ");
-            string roleId = Session["RoleId"].ToString();
-            ViewData["IsLeader"] = false;
-            if (roleId == "1" || roleId == "2")
-            {
-                ViewData["IsLeader"] = true;
-            }
             model.Tag = tag;
+            model.RoleCode = GetRoleCode();
             return View("~/Views/T_CGD/Save.cshtml", model);
         }
 
@@ -165,13 +162,13 @@ namespace MedicalApparatusManage.Controllers
 
         [HttpPost]
         [CheckLogin()]
-        public void through(T_CGDModels model, string id)
+        public void through(T_CGDModels model, int id)
         {
             int result = 0;
             try
             {
                 Int32 cgid = model.DataModel.CGID;
-                result = T_CGDDomain.GetInstance().Sh(cgid, id == "1" ? 1 : 2);
+                result = T_CGDDomain.GetInstance().Sh(cgid, id);
             }
             catch { }
             Response.ContentType = "text/json";
@@ -185,12 +182,37 @@ namespace MedicalApparatusManage.Controllers
         [CheckLogin()]
         public void Delete(System.Int32 id)
         {
+            var rCode = GetRoleCode();
+            var temp = T_CGDDomain.GetInstance().GetModelById(id);
+            if (temp != null)
+            {
+                if (temp.ISSH == 1)
+                {
+                    if (rCode != "1")
+                    {
+                        Response.Write("{\"statusCode\":\"300\", \"message\":\"已审批通过的数据不能删除！\"}");
+                        return;
+                    }
+                }
+                //如果采购单未被使用，超级管理员可删除。否则，任何人不能删除
+                Expression<Func<T_YSD, bool>> where = p => (p.CGDH == temp.CGDH);
+                var lst = T_YSDDomain.GetInstance().GetAllModels<int>(where);
+                if (lst != null && lst.Count > 0)
+                {
+                    Response.Write("{\"statusCode\":\"300\", \"message\":\"该采购单已存在验收单，不能删除！\"}");
+                    return;
+                }
+            }
             int result = T_CGDDomain.GetInstance().DeleteModelById(id);
             Response.ContentType = "text/json";
             if (result > 0)
                 Response.Write("{\"statusCode\":\"200\", \"message\":\"操作成功\",\"callbackType\":\"forward\",\"forwardUrl\":\"/T_CGD/Index\"}");
             else
                 Response.Write("{\"statusCode\":\"300\", \"message\":\"操作失败\"}");
+        }
+        private string GetRoleCode()
+        {
+            return Session["RoleCode"] == null ? "" : Session["RoleCode"].ToString();
         }
     }
 }

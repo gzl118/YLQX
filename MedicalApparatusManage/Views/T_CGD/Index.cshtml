@@ -9,6 +9,13 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>采购单</title>
+    <script type="text/javascript">
+        $(function () {
+            $("#strCGPerson").chosen({
+                search_contains: true
+            });
+        });
+    </script>
 </head>
 <body>
     <div id="pageContent">
@@ -28,14 +35,14 @@
                                 采购人:
                             </td>
                             <td>
-                                @Html.DropDownList("strCGPerson", ViewBag.Persons as SelectList, "请选择", ViewData["strCGPerson"])
+                                @Html.DropDownList("strCGPerson", ViewBag.Persons as SelectList, "请选择", new { id = "strCGPerson", style = "width:250px;" })
                             </td>
                             <td>
                                 采购日期:
                             </td>
                             <td>
                                 @{ string strStart = Model.StartTime.HasValue ? Model.StartTime.Value.ToString("yyyy/MM/dd") : "";
-                                 string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
+                                    string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
                                 }
                                 <input id="StartDate" name="StartTime" class="Wdate" type="text" value="@strStart"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
@@ -75,13 +82,13 @@
                 @*<li><a class="icon" href="/T_CGD/Save/{sid_user}/Details" target="dialog"  mask="true" width="1050" height="500"><span>查看详情</span></a></li>*@
                 @*<li><a class="icon" href="/T_CGMX/Index/{sid_user}" target="dialog" mask="true" width="1050" height="500"><span>采购单明细</span></a></li>*@
                 @*@if (ViewData["shUserId"].ToString() == "1" || ViewData["shUserId"].ToString() == "2")
-                {
-                    <li> <a class="edit" href="/T_CGD/CGDSPIndex/{sid_user}" target="dialog" mask="true" title="审核" width="1050" height="580"><span>审核</span></a></li>
-                }*@
+                    {
+                        <li> <a class="edit" href="/T_CGD/CGDSPIndex/{sid_user}" target="dialog" mask="true" title="审核" width="1050" height="580"><span>审核</span></a></li>
+                    }*@
             </ul>
         </div>
         <table width="100%" layouth="112" class="table" id="T_CGDTable">
-           <thead>
+            <thead>
                 <tr>
                     <th>
                         采购单号

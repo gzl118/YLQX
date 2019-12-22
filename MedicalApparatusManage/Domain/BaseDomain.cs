@@ -39,7 +39,7 @@ namespace MedicalApparatusManage.Domain
                     return hContext1.SaveChanges();
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     return 0;
                 }

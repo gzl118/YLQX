@@ -3,6 +3,7 @@ using MedicalApparatusManage.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -82,6 +83,13 @@ namespace MedicalApparatusManage.Controllers
         [CheckLogin()]
         public void Delete(System.Int32 id)
         {
+            Expression<Func<T_YLCP, bool>> where = p => p.CPLXID == id;
+            var list = T_YLCPDomain.GetInstance().GetAllModels<int>(where);
+            if (list != null && list.Count > 0)
+            {
+                Response.Write("{\"statusCode\":\"300\", \"message\":\"该类型下已有产品，不能删除！\"}");
+                return;
+            }
             int result = T_CPLXDomain.GetInstance().DeleteModelById(id);
             Response.ContentType = "text/json";
             if (result > 0)

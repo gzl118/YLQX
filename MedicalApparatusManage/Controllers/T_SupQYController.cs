@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -133,12 +134,7 @@ namespace MedicalApparatusManage.Controllers
             model.JYFWList = T_JYFWDomain.GetInstance().GetAllT_JYFW(jyfwmodels.DataModel).ToList();
 
             model.Tag = tag;
-            string roleId = Session["RoleId"].ToString();
-            ViewData["IsLeader"] = false;
-            if (roleId == "1" || roleId == "2")
-            {
-                ViewData["IsLeader"] = true;
-            }
+            model.RoleCode = GetRoleCode();
             return View("~/Views/T_SupQY/Save.cshtml", model);
         }
 
@@ -192,13 +188,13 @@ namespace MedicalApparatusManage.Controllers
 
         [HttpPost]
         [CheckLogin()]
-        public void through(T_SupQYModels model, string id)
+        public void through(T_SupQYModels model, int id)
         {
             int result = 0;
             try
             {
                 Int32 supqyid = model.DataModel.SupID;
-                result = T_SupQYDomain.GetInstance().Sh(supqyid, id == "1" ? 1 : 2);
+                result = T_SupQYDomain.GetInstance().Sh(supqyid, id);
             }
             catch { }
             Response.ContentType = "text/json";
@@ -212,6 +208,30 @@ namespace MedicalApparatusManage.Controllers
         [CheckLogin()]
         public void Delete(System.Int32 id)
         {
+            var rCode = GetRoleCode();
+            if (rCode != "1")
+            {
+                var temp = T_SupQYDomain.GetInstance().GetModelById(id);
+                if (temp != null && (temp.SupStatus == 1))
+                {
+                    Response.Write("{\"statusCode\":\"300\", \"message\":\"已审批通过的数据不能删除！\"}");
+                    return;
+                }
+            }
+            Expression<Func<T_YLCP, bool>> where = p => (p.CPGYSID == id || p.CPSCQYID == id);
+            var list = T_YLCPDomain.GetInstance().GetAllModels<int>(where);
+            if (list != null && list.Count > 0)
+            {
+                Response.Write("{\"statusCode\":\"300\", \"message\":\"该企业下已有产品，不能删除！\"}");
+                return;
+            }
+            Expression<Func<T_CGMX, bool>> whereCGD = p => (p.SupID == id || p.CPSCQYID == id);
+            var lstCGMX = T_CGMXDomain.GetInstance().GetAllModels<int>(whereCGD);
+            if (lstCGMX != null && lstCGMX.Count > 0)
+            {
+                Response.Write("{\"statusCode\":\"300\", \"message\":\"该企业下已有采购单，不能删除！\"}");
+                return;
+            }
             int result = T_SupQYDomain.GetInstance().DeleteModelById(id);
             Response.ContentType = "text/json";
             if (result > 0)
@@ -253,6 +273,10 @@ namespace MedicalApparatusManage.Controllers
             string path = directory + "\\" + filename;
             Filedata.SaveAs(path);
             return Json(new { status = "OK", filename = filename, path = "/UploadFiles/供货企业资质/" + filename });
+        }
+        private string GetRoleCode()
+        {
+            return Session["RoleCode"] == null ? "" : Session["RoleCode"].ToString();
         }
     }
 }

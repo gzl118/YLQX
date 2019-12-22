@@ -9,6 +9,13 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>T_YLCP</title>
+    <script type="text/javascript">
+        $(function () {
+            $("#strCPSCQY").chosen({
+                search_contains: true
+            });
+        });
+    </script>
 </head>
 <body>
     <div id="pageContent">
@@ -34,8 +41,7 @@
                                 生产企业:
                             </td>
                             <td>
-                                @Html.DropDownList("strCPSCQY", ViewBag.Persons as SelectList, "--请选择--", ViewData["SUPQY"])
-                                @*@Html.TextBox("strCPSCQY")*@
+                                @Html.DropDownList("strCPSCQY", ViewBag.Persons as SelectList, "请选择", new { id = "strCPSCQY", style = "width:250px;" })
                             </td>
                             <td>
                                 <ul>
@@ -158,7 +164,7 @@
                                     <td></td>; break;
                             }}
                     </tr>
-                            }
+                }
             </tbody>
         </table>
         <form id="pagerForm" method="post" onsubmit="return navTabSearch(this);">

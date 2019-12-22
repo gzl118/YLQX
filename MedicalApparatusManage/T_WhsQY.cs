@@ -46,6 +46,9 @@ namespace MedicalApparatusManage
         public Nullable<System.DateTime> WhsYXQKS { get; set; }
         public Nullable<System.DateTime> WhsYXQJS { get; set; }
         public string WhsZZSC { get; set; }
+        public Nullable<System.DateTime> JYXKZFZRQ { get; set; }
+        public Nullable<System.DateTime> JYXKZYXQKS { get; set; }
+        public Nullable<System.DateTime> JYXKZYXQJS { get; set; }
     
         public virtual ICollection<T_CusQY> T_CusQY { get; set; }
         public virtual ICollection<T_Person> T_Person { get; set; }

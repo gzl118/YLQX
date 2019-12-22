@@ -17,5 +17,6 @@ namespace MedicalApparatusManage
         public int ID { get; set; }
         public Nullable<int> BJDATE { get; set; }
         public Nullable<int> BJCode { get; set; }
+        public string BJCodeDesc { get; set; }
     }
 }

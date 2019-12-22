@@ -12,7 +12,7 @@
 </head>
 <body>
     <div id="pageContent">
-        <div class="pageHeader" style="hight: 80px;">
+        <div class="pageHeader">
             @using (Html.BeginForm("Index", "T_SupQY", FormMethod.Post, new
             {
                 name = "formSerachMA",
@@ -67,10 +67,10 @@
                 <li><a class="delete" href="/T_SupQY/Delete/{sid_user}" target="ajaxTodo" title="确定删除吗?" mask="true"><span>删除</span></a></li>
                 <li><a class="edit" href="/T_SupQY/Save/{sid_user}/Edit" target="dialog" mask="true" title="查看详情" width="1050" height="500"><span>查看详情</span></a></li>
                 @*<li><a class="icon" href="/T_SupQY/Save/{sid_user}/Details" target="dialog" mask="true" width="1050" height="500"><span>查看详情</span></a></li>
-                @if (ViewData["shUserId"].ToString() == "1" || ViewData["shUserId"].ToString() == "2")
-                {
-                    <li> <a class="edit" href="/T_SupQY/AuditIndex/{sid_user}" target="dialog" mask="true" title="审核" width="1050" height="580"><span>审核</span></a></li>
-                }*@
+                    @if (ViewData["shUserId"].ToString() == "1" || ViewData["shUserId"].ToString() == "2")
+                    {
+                        <li> <a class="edit" href="/T_SupQY/AuditIndex/{sid_user}" target="dialog" mask="true" title="审核" width="1050" height="580"><span>审核</span></a></li>
+                    }*@
             </ul>
         </div>
         <table width="100%" layouth="112" class="table" id="T_SupQYTable">
@@ -111,38 +111,38 @@
             </thead>
             <tbody>
                 @{foreach (var item in Model.DataList)
-                {
-                    string SurQS = @item.SupJYKSSJ.HasValue ? @item.SupJYKSSJ.Value.ToLongDateString().ToString() : "";
-                    string SurJS = @item.SupJXJSSJ.HasValue ? @item.SupJXJSSJ.Value.ToLongDateString().ToString() : "";
+                    {
+                        string SurQS = @item.SupJYKSSJ.HasValue ? @item.SupJYKSSJ.Value.ToLongDateString().ToString() : "";
+                        string SurJS = @item.SupJXJSSJ.HasValue ? @item.SupJXJSSJ.Value.ToLongDateString().ToString() : "";
 
-                    string SurZCRQ = @item.SupZCSJ.HasValue ? @item.SupZCSJ.Value.ToLongDateString().ToString() : "";
+                        string SurZCRQ = @item.SupZCSJ.HasValue ? @item.SupZCSJ.Value.ToLongDateString().ToString() : "";
 
-                    string SurQX = SurQS + " 至 " + SurJS;
-                    <tr target="sid_user" rel="@item.SupID">
-                        <td>@item.SupMC</td>
-                        <td>@item.SupFSDB</td>
-                        <td>@item.SupZZJGDM</td>
-                        <td>@item.SupDWXZ</td>
-                        <td>@item.SupZCZB</td>
-                        <td>@SurZCRQ</td>
-                        <td>@item.SupZCDZ</td>
-                        @*<td><a href="~/UploadFiles/供货企业资质/@item.SupZZSC" target="_blank">@item.SupZZSC</a></td>*@
-                        <td>@item.SupKHH</td>
-                        <td>@item.SupZH</td>
-                        @{
-                            switch (item.SupStatus)
-                            {
-                                case 0:
-                                    <td style="background-color:deepskyblue;">未审批</td>; break;
-                                case 1:
-                                    <td style="background-color:limegreen;">已审批</td>; break;
-                                case 2:
-                                    <td style="background-color:orangered;">审批未通过</td> ; break;
-                                default:
-                                    <td></td>; break;
-                            }}
-                    </tr>
-                }}
+                        string SurQX = SurQS + " 至 " + SurJS;
+                <tr target="sid_user" rel="@item.SupID">
+                    <td>@item.SupMC</td>
+                    <td>@item.SupFSDB</td>
+                    <td>@item.SupZZJGDM</td>
+                    <td>@item.SupDWXZ</td>
+                    <td>@item.SupZCZB</td>
+                    <td>@SurZCRQ</td>
+                    <td>@item.SupZCDZ</td>
+                    @*<td><a href="~/UploadFiles/供货企业资质/@item.SupZZSC" target="_blank">@item.SupZZSC</a></td>*@
+                    <td>@item.SupKHH</td>
+                    <td>@item.SupZH</td>
+                    @{
+                        switch (item.SupStatus)
+                        {
+                            case 0:
+                                <td style="background-color:deepskyblue;">未审批</td>; break;
+                            case 1:
+                                <td style="background-color:limegreen;">已审批</td>; break;
+                            case 2:
+                                <td style="background-color:orangered;">审批未通过</td> ; break;
+                            default:
+                                <td></td>; break;
+                        }}
+                </tr>
+                    }}
             </tbody>
         </table>
         <form id="pagerForm" method="post" onsubmit="return navTabSearch(this);">

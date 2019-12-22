@@ -240,7 +240,7 @@
                             <label>
                                 入库日期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.JSRQ, new { name = "JSRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
+                            @Html.TextBoxFor(m => m.DataModel.JSRQ, new { name = "JSRQ", @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">
@@ -284,9 +284,9 @@
                             <select id="supId" name="DataModel.SupID" style="width:285px" onchange="dropQyChange(this.value)">
                                 <option>请选择</option>
                                 @{foreach (var item in ViewData["SupID"] as SelectList)
-                                {
-                                    <option value="@item.Value">@item.Text</option>
-                                }}
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }}
                             </select>
                         </div>
                         <div class="unit">
@@ -394,9 +394,9 @@
                             <select id="ckid" name="DataModel.CKID" style="width:285px" onchange="dropCkChange(this.value)">
                                 <option>请选择</option>
                                 @{foreach (var item in ViewData["CK"] as SelectList)
-                                {
-                                    <option value="@item.Value">@item.Text</option>
-                                }}
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }}
                             </select>
                         </div>
                         <div class="unit">

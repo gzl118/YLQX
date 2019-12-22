@@ -113,6 +113,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BJDATE" Type="int" />
           <Property Name="BJCode" Type="int" />
+          <Property Name="BJCodeDesc" Type="nvarchar" MaxLength="30" />
         </EntityType>
         <EntityType Name="T_CGD">
           <Key>
@@ -164,6 +165,7 @@
           <Property Name="CKGLY" Type="nvarchar" MaxLength="50" />
           <Property Name="FLAG" Type="nvarchar" MaxLength="50" />
           <Property Name="CKLX" Type="nvarchar" MaxLength="50" />
+          <Property Name="CJSJ" Type="date" />
         </EntityType>
         <EntityType Name="T_CKD">
           <Key>
@@ -263,6 +265,11 @@
           <Property Name="CusLXR" Type="nvarchar" MaxLength="50" />
           <Property Name="CusSFZH" Type="nvarchar" MaxLength="50" />
           <Property Name="CusLXDH" Type="nvarchar" MaxLength="50" />
+          <Property Name="JYXKZFZRQ" Type="date" />
+          <Property Name="JYXKZYXQKS" Type="date" />
+          <Property Name="JYXKZYXQJS" Type="date" />
+          <Property Name="SQSKS" Type="date" />
+          <Property Name="SQSJS" Type="date" />
         </EntityType>
         <EntityType Name="T_CusQYZZ">
           <Key>
@@ -520,6 +527,11 @@
           <Property Name="SupLXR" Type="nvarchar" MaxLength="50" />
           <Property Name="SupSFZH" Type="nvarchar" MaxLength="50" />
           <Property Name="SupLXDH" Type="nvarchar" MaxLength="50" />
+          <Property Name="JYXKZFZRQ" Type="date" />
+          <Property Name="JYXKZYXQKS" Type="date" />
+          <Property Name="JYXKZYXQJS" Type="date" />
+          <Property Name="SQSKS" Type="date" />
+          <Property Name="SQSJS" Type="date" />
         </EntityType>
         <EntityType Name="T_THD">
           <Key>
@@ -579,6 +591,9 @@
           <Property Name="WhsYXQKS" Type="date" />
           <Property Name="WhsYXQJS" Type="date" />
           <Property Name="WhsZZSC" Type="nvarchar" MaxLength="400" />
+          <Property Name="JYXKZFZRQ" Type="date" />
+          <Property Name="JYXKZYXQKS" Type="date" />
+          <Property Name="JYXKZYXQJS" Type="date" />
         </EntityType>
         <EntityType Name="T_WhsQYZZ">
           <Key>
@@ -667,6 +682,7 @@
           <Property Name="YXQXJS" Type="date" />
           <Property Name="CPSCQYID" Type="int" />
           <Property Name="BJSL" Type="int" />
+          <Property Name="BJDate" Type="int" />
         </EntityType>
         <EntityType Name="T_YLCPZZ">
           <Key>
@@ -2041,6 +2057,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="BJDATE" Type="Int32" />
           <Property Name="BJCode" Type="Int32" />
+          <Property Name="BJCodeDesc" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="T_CGD">
           <Key>
@@ -2102,6 +2119,7 @@
           <NavigationProperty Name="T_KC" Relationship="MedicalApparatusManageModel.FK_T_KC_T_CK" FromRole="T_CK" ToRole="T_KC" />
           <NavigationProperty Name="T_RKMX" Relationship="MedicalApparatusManageModel.FK_T_RKMX_T_CK" FromRole="T_CK" ToRole="T_RKMX" />
           <NavigationProperty Name="T_THMX" Relationship="MedicalApparatusManageModel.FK_T_THMX_T_CK" FromRole="T_CK" ToRole="T_THMX" />
+          <Property Name="CJSJ" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="T_CKD">
           <Key>
@@ -2217,6 +2235,11 @@
           <NavigationProperty Name="T_THD" Relationship="MedicalApparatusManageModel.FK_T_THD_T_CusQY" FromRole="T_CusQY" ToRole="T_THD" />
           <NavigationProperty Name="T_XSD" Relationship="MedicalApparatusManageModel.FK_T_XSD_T_CusQY" FromRole="T_CusQY" ToRole="T_XSD" />
           <NavigationProperty Name="T_XSHT" Relationship="MedicalApparatusManageModel.FK_T_XSHT_T_CusQY" FromRole="T_CusQY" ToRole="T_XSHT" />
+          <Property Name="JYXKZFZRQ" Type="DateTime" Precision="0" />
+          <Property Name="JYXKZYXQKS" Type="DateTime" Precision="0" />
+          <Property Name="JYXKZYXQJS" Type="DateTime" Precision="0" />
+          <Property Name="SQSKS" Type="DateTime" Precision="0" />
+          <Property Name="SQSJS" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="T_CusQYZZ">
           <Key>
@@ -2511,6 +2534,11 @@
           <NavigationProperty Name="T_YLCP1" Relationship="MedicalApparatusManageModel.FK_T_YLCP_T_SupQY1" FromRole="T_SupQY" ToRole="T_YLCP" />
           <NavigationProperty Name="T_YSMX" Relationship="MedicalApparatusManageModel.FK_T_YSMX_T_SupQY" FromRole="T_SupQY" ToRole="T_YSMX" />
           <NavigationProperty Name="T_YSMX1" Relationship="MedicalApparatusManageModel.FK_T_YSMX_T_SupQY1" FromRole="T_SupQY" ToRole="T_YSMX" />
+          <Property Name="JYXKZFZRQ" Type="DateTime" Precision="0" />
+          <Property Name="JYXKZYXQKS" Type="DateTime" Precision="0" />
+          <Property Name="JYXKZYXQJS" Type="DateTime" Precision="0" />
+          <Property Name="SQSKS" Type="DateTime" Precision="0" />
+          <Property Name="SQSJS" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="T_THD">
           <Key>
@@ -2580,6 +2608,9 @@
           <NavigationProperty Name="T_Person" Relationship="MedicalApparatusManageModel.FK_T_Person_T_SupQY" FromRole="T_WhsQY" ToRole="T_Person" />
           <NavigationProperty Name="T_SupQY" Relationship="MedicalApparatusManageModel.FK_T_SupQY_T_WhsQY" FromRole="T_WhsQY" ToRole="T_SupQY" />
           <NavigationProperty Name="T_WhsQYZZ" Relationship="MedicalApparatusManageModel.FK_T_WhsQYZZ_T_WhsQY" FromRole="T_WhsQY" ToRole="T_WhsQYZZ" />
+          <Property Name="JYXKZFZRQ" Type="DateTime" Precision="0" />
+          <Property Name="JYXKZYXQKS" Type="DateTime" Precision="0" />
+          <Property Name="JYXKZYXQJS" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="T_WhsQYZZ">
           <Key>
@@ -2688,6 +2719,7 @@
           <NavigationProperty Name="T_XSMX" Relationship="MedicalApparatusManageModel.FK_T_XSMX_T_YLCP" FromRole="T_YLCP" ToRole="T_XSMX" />
           <NavigationProperty Name="T_YLCPZZ" Relationship="MedicalApparatusManageModel.FK_T_YLCPZZ_T_YLCP" FromRole="T_YLCP" ToRole="T_YLCPZZ" />
           <NavigationProperty Name="T_YSMX" Relationship="MedicalApparatusManageModel.FK_T_YSMX_T_YLCP" FromRole="T_YLCP" ToRole="T_YSMX" />
+          <Property Name="BJDate" Type="Int32" />
         </EntityType>
         <EntityType Name="T_YLCPZZ">
           <Key>
@@ -3517,6 +3549,7 @@
           <EntitySetMapping Name="T_BJDate">
             <EntityTypeMapping TypeName="MedicalApparatusManageModel.T_BJDate">
               <MappingFragment StoreEntitySet="T_BJDate">
+                <ScalarProperty Name="BJCodeDesc" ColumnName="BJCodeDesc" />
                 <ScalarProperty Name="BJCode" ColumnName="BJCode" />
                 <ScalarProperty Name="BJDATE" ColumnName="BJDATE" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -3565,6 +3598,7 @@
           <EntitySetMapping Name="T_CK">
             <EntityTypeMapping TypeName="MedicalApparatusManageModel.T_CK">
               <MappingFragment StoreEntitySet="T_CK">
+                <ScalarProperty Name="CJSJ" ColumnName="CJSJ" />
                 <ScalarProperty Name="CKLX" ColumnName="CKLX" />
                 <ScalarProperty Name="FLAG" ColumnName="FLAG" />
                 <ScalarProperty Name="CKGLY" ColumnName="CKGLY" />
@@ -3649,6 +3683,11 @@
           <EntitySetMapping Name="T_CusQY">
             <EntityTypeMapping TypeName="MedicalApparatusManageModel.T_CusQY">
               <MappingFragment StoreEntitySet="T_CusQY">
+                <ScalarProperty Name="SQSJS" ColumnName="SQSJS" />
+                <ScalarProperty Name="SQSKS" ColumnName="SQSKS" />
+                <ScalarProperty Name="JYXKZYXQJS" ColumnName="JYXKZYXQJS" />
+                <ScalarProperty Name="JYXKZYXQKS" ColumnName="JYXKZYXQKS" />
+                <ScalarProperty Name="JYXKZFZRQ" ColumnName="JYXKZFZRQ" />
                 <ScalarProperty Name="CusLXDH" ColumnName="CusLXDH" />
                 <ScalarProperty Name="CusSFZH" ColumnName="CusSFZH" />
                 <ScalarProperty Name="CusLXR" ColumnName="CusLXR" />
@@ -3921,6 +3960,11 @@
           <EntitySetMapping Name="T_SupQY">
             <EntityTypeMapping TypeName="MedicalApparatusManageModel.T_SupQY">
               <MappingFragment StoreEntitySet="T_SupQY">
+                <ScalarProperty Name="SQSJS" ColumnName="SQSJS" />
+                <ScalarProperty Name="SQSKS" ColumnName="SQSKS" />
+                <ScalarProperty Name="JYXKZYXQJS" ColumnName="JYXKZYXQJS" />
+                <ScalarProperty Name="JYXKZYXQKS" ColumnName="JYXKZYXQKS" />
+                <ScalarProperty Name="JYXKZFZRQ" ColumnName="JYXKZFZRQ" />
                 <ScalarProperty Name="SupLXDH" ColumnName="SupLXDH" />
                 <ScalarProperty Name="SupSFZH" ColumnName="SupSFZH" />
                 <ScalarProperty Name="SupLXR" ColumnName="SupLXR" />
@@ -3989,6 +4033,9 @@
           <EntitySetMapping Name="T_WhsQY">
             <EntityTypeMapping TypeName="MedicalApparatusManageModel.T_WhsQY">
               <MappingFragment StoreEntitySet="T_WhsQY">
+                <ScalarProperty Name="JYXKZYXQJS" ColumnName="JYXKZYXQJS" />
+                <ScalarProperty Name="JYXKZYXQKS" ColumnName="JYXKZYXQKS" />
+                <ScalarProperty Name="JYXKZFZRQ" ColumnName="JYXKZFZRQ" />
                 <ScalarProperty Name="WhsZZSC" ColumnName="WhsZZSC" />
                 <ScalarProperty Name="WhsYXQJS" ColumnName="WhsYXQJS" />
                 <ScalarProperty Name="WhsYXQKS" ColumnName="WhsYXQKS" />
@@ -4081,6 +4128,7 @@
           <EntitySetMapping Name="T_YLCP">
             <EntityTypeMapping TypeName="MedicalApparatusManageModel.T_YLCP">
               <MappingFragment StoreEntitySet="T_YLCP">
+                <ScalarProperty Name="BJDate" ColumnName="BJDate" />
                 <ScalarProperty Name="BJSL" ColumnName="BJSL" />
                 <ScalarProperty Name="CPSCQYID" ColumnName="CPSCQYID" />
                 <ScalarProperty Name="YXQXJS" ColumnName="YXQXJS" />
