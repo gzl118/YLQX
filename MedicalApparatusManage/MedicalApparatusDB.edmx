@@ -137,6 +137,7 @@
           <Property Name="CGCJR" Type="nvarchar" MaxLength="50" />
           <Property Name="CGCJRQ" Type="date" />
           <Property Name="CGDH" Type="varchar" MaxLength="50" />
+          <Property Name="CGTotalPrice" Type="float" />
         </EntityType>
         <EntityType Name="T_CGMX">
           <Key>
@@ -351,6 +352,14 @@
           <Property Name="CPYXQ" Type="date" />
           <Property Name="SupID" Type="int" />
           <Property Name="ScqyID" Type="int" />
+        </EntityType>
+        <EntityType Name="T_PackingUnit">
+          <Key>
+            <PropertyRef Name="PUID" />
+          </Key>
+          <Property Name="PUID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PUName" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="T_Person">
           <Key>
@@ -1407,6 +1416,7 @@
           <EntitySet Name="T_HT" EntityType="Self.T_HT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_JYFW" EntityType="Self.T_JYFW" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_KC" EntityType="Self.T_KC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_PackingUnit" EntityType="Self.T_PackingUnit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_Person" EntityType="Self.T_Person" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_QYSH" EntityType="Self.T_QYSH" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_QYZZ" EntityType="Self.T_QYZZ" Schema="dbo" store:Type="Tables" />
@@ -1930,6 +1940,7 @@
             <End Role="T_YSD" EntitySet="T_YSD" />
             <End Role="T_YSMX" EntitySet="T_YSMX" />
           </AssociationSet>
+          <EntitySet Name="T_PackingUnit" EntityType="MedicalApparatusManageModel.T_PackingUnit" />
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -2083,6 +2094,7 @@
           <Property Name="CGDH" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="T_CGMX" Relationship="MedicalApparatusManageModel.FK_T_CGMX_T_CGD" FromRole="T_CGD" ToRole="T_CGMX" />
           <NavigationProperty Name="T_FP" Relationship="MedicalApparatusManageModel.FK_T_FP_T_CGD" FromRole="T_CGD" ToRole="T_FP" />
+          <Property Name="CGTotalPrice" Type="Double" />
         </EntityType>
         <EntityType Name="T_CGMX">
           <Key>
@@ -3405,6 +3417,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="T_PackingUnit">
+          <Key>
+            <PropertyRef Name="PUID" />
+          </Key>
+          <Property Name="PUID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PUName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3559,6 +3579,7 @@
           <EntitySetMapping Name="T_CGD">
             <EntityTypeMapping TypeName="MedicalApparatusManageModel.T_CGD">
               <MappingFragment StoreEntitySet="T_CGD">
+                <ScalarProperty Name="CGTotalPrice" ColumnName="CGTotalPrice" />
                 <ScalarProperty Name="CGDH" ColumnName="CGDH" />
                 <ScalarProperty Name="CGCJRQ" ColumnName="CGCJRQ" />
                 <ScalarProperty Name="CGCJR" ColumnName="CGCJR" />
@@ -4199,6 +4220,15 @@
                 <ScalarProperty Name="GUID" ColumnName="GUID" />
                 <ScalarProperty Name="YSID" ColumnName="YSID" />
                 <ScalarProperty Name="MXID" ColumnName="MXID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_PackingUnit">
+            <EntityTypeMapping TypeName="MedicalApparatusManageModel.T_PackingUnit">
+              <MappingFragment StoreEntitySet="T_PackingUnit">
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="PUName" ColumnName="PUName" />
+                <ScalarProperty Name="PUID" ColumnName="PUID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

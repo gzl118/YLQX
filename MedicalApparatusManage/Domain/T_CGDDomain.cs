@@ -34,9 +34,12 @@ namespace MedicalApparatusManage.Domain
                 where = where.And(p => p.CGPERSON.Contains(info.CGPERSON));
             }
 
-            if (startTime != null && endTime != null)
+            if (startTime != null)
             {
                 where = where.And(p => p.CGRQ >= startTime.Value);
+            }
+            if (endTime != null)
+            {
                 where = where.And(p => p.CGRQ <= endTime.Value);
             }
 

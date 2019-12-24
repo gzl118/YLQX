@@ -1961,6 +1961,7 @@
     <Compile Include="Controllers\T_HTController.cs" />
     <Compile Include="Controllers\T_JYFWController.cs" />
     <Compile Include="Controllers\T_KCController.cs" />
+    <Compile Include="Controllers\T_PackingUnitController.cs" />
     <Compile Include="Controllers\T_PersonController.cs" />
     <Compile Include="Controllers\T_QYSHController.cs" />
     <Compile Include="Controllers\T_QYZZController.cs" />
@@ -2005,6 +2006,7 @@
     <Compile Include="Domain\T_HTDomain.cs" />
     <Compile Include="Domain\T_JYFWDomain.cs" />
     <Compile Include="Domain\T_KCDomain.cs" />
+    <Compile Include="Domain\T_PackingUnitDomain.cs" />
     <Compile Include="Domain\T_PersonDomain.cs" />
     <Compile Include="Domain\T_QYSHDomain.cs" />
     <Compile Include="Domain\T_QYZZDomain.cs" />
@@ -2069,6 +2071,7 @@
     <Compile Include="Models\T_HTModels.cs" />
     <Compile Include="Models\T_JYFWModels.cs" />
     <Compile Include="Models\T_KCModels.cs" />
+    <Compile Include="Models\T_PackingUnitModels.cs" />
     <Compile Include="Models\T_PersonModels.cs" />
     <Compile Include="Models\T_QYSHModels.cs" />
     <Compile Include="Models\T_QYZZModels.cs" />
@@ -2163,6 +2166,9 @@
       <DependentUpon>MedicalApparatusDB.tt</DependentUpon>
     </Compile>
     <Compile Include="T_KC.cs">
+      <DependentUpon>MedicalApparatusDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_PackingUnit.cs">
       <DependentUpon>MedicalApparatusDB.tt</DependentUpon>
     </Compile>
     <Compile Include="T_Person.cs">
@@ -2364,6 +2370,8 @@
     <Content Include="Views\T_XSHZ\Index.cshtml" />
     <Content Include="Views\T_XSMX\XSMXTable.cshtml" />
     <Content Include="Views\T_CKMX\CKMXTable.cshtml" />
+    <Content Include="Views\T_PackingUnit\Index.cshtml" />
+    <Content Include="Views\T_PackingUnit\Save.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

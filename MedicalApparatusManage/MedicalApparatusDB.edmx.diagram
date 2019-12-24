@@ -103,6 +103,7 @@
         <AssociationConnector Association="MedicalApparatusManageModel.FK_T_YLCPZZ_T_YLCP" />
         <AssociationConnector Association="MedicalApparatusManageModel.FK_T_YSMX_T_YLCP" />
         <AssociationConnector Association="MedicalApparatusManageModel.FK_T_YSMX_T_YSD" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_PackingUnit" Width="1.5" PointX="11.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

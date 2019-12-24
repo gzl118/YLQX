@@ -1,4 +1,5 @@
-﻿using MedicalApparatusManage.Domain;
+﻿using MedicalApparatusManage.Common;
+using MedicalApparatusManage.Domain;
 using MedicalApparatusManage.Models;
 using System;
 using System.Collections.Generic;
@@ -109,6 +110,8 @@ namespace MedicalApparatusManage.Controllers
             if (UserModel.UserCompanyID != null)
                 person.PsQYID = (int)UserModel.UserCompanyID;
             ViewBag.Persons = new SelectList(T_PersonDomain.GetInstance().GetAllT_Person(person), "PsMZ", "PsMZ");
+            //Expression<Func<T_PackingUnit, bool>> where = PredicateBuilder.True<T_PackingUnit>();
+            //ViewBag.PackingUnit = new SelectList(T_PackingUnitDomain.GetInstance().GetAllModels<int>(where), "PUName", "PUName");
             model.Tag = tag;
             model.RoleCode = GetRoleCode();
             return View("~/Views/T_CGD/Save.cshtml", model);

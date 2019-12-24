@@ -72,6 +72,7 @@ namespace MedicalApparatusManage
         public virtual DbSet<T_YLCPZZ> T_YLCPZZ { get; set; }
         public virtual DbSet<T_YSD> T_YSD { get; set; }
         public virtual DbSet<T_YSMX> T_YSMX { get; set; }
+        public virtual DbSet<T_PackingUnit> T_PackingUnit { get; set; }
     
         public virtual int proc_get_bjd()
         {

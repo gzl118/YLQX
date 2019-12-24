@@ -249,8 +249,11 @@
         };
 
         function refreshCgmxGrid() {
+            var tempIsSH = $("#ISSH").val();
+            if (tempIsSH == null || tempIsSH == "")
+                tempIsSH = 0;
             $("#cgmxBox").loadUrl("/T_CGMX/CGMXTable", {
-                id: $("#cgidMain").val(), cgdh: $("#CGDH").val(), canEdit: 1, isSH: $("#ISSH").val()
+                id: $("#cgidMain").val(), cgdh: $("#CGDH").val(), canEdit: 1, isSH: tempIsSH
             });
         };
     </script>
@@ -289,7 +292,8 @@
                             <label>
                                 采购总额(元)：
                             </label>
-                            <input id="cgze" type="text" style="width:279px" readonly="readonly" value="" />
+                            @*<input id="cgze" type="text" style="width:279px" readonly="readonly" value="" />*@
+                            @Html.TextBoxFor(m => m.DataModel.CGTotalPrice, new { id = "cgze", name = "CGTotalPrice", style = "width:279px", ReadOnly = true })
                         </div>
                     </div>
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
