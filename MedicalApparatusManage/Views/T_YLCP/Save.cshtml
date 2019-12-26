@@ -212,23 +212,7 @@
                             <label>
                                 产品单位：
                             </label>
-                            @{
-                                List<SelectListItem>
-                                list = new List<SelectListItem>
-                                    ();
-                                list.Add(new SelectListItem { Text = "盒", Value = "盒" });
-                                list.Add(new SelectListItem { Text = "袋", Value = "袋" });
-                                list.Add(new SelectListItem { Text = "桶", Value = "桶" });
-                                list.Add(new SelectListItem { Text = "筒", Value = "筒" });
-                                list.Add(new SelectListItem { Text = "支", Value = "支" });
-                                list.Add(new SelectListItem { Text = "瓶", Value = "瓶" });
-                                list.Add(new SelectListItem { Text = "台", Value = "台" });
-                                list.Add(new SelectListItem { Text = "个", Value = "个" });
-                                list.Add(new SelectListItem { Text = "张", Value = "张" });
-                                list.Add(new SelectListItem { Text = "ML", Value = "ML" });
-                                list.Add(new SelectListItem { Text = "L", Value = "L" });
-                                @Html.DropDownListFor(m => m.DataModel.CPDW, list, new { style = "width:285px" })
-                            }
+                            @Html.DropDownListFor(m => m.DataModel.CPDW, ViewBag.PUnit as SelectList, new { style = "width:285px" })
                         </div>
                         <div class="unit">
                             <label>

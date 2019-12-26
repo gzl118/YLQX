@@ -108,32 +108,34 @@
             });
             $('.dialogContent').css('overflow', 'auto');
         });
-        function dropQyChange(id) {
-            if (id != "" && id != "请选择") {
-                $.ajax({
-                    type: "post",
-                    dataType: "json",
-                    url: "/T_YLCP/GetCpByQy",
-                    data: { id: id },
-                    success: function (json) {
-                        if (!json) return;
-                        var html = '';
-                        $.each(json, function (i) {
-                            if (json[i] && json[i].length > 1) {
-                                html += '<option value="' + json[i][0] + '">' + json[i][1] + '</option>';
-                            }
-                        });
-                        var $ref = $("#YLCP");
-                        var $refCombox = $ref.parents("div.combox:first");
-                        $ref.html(html).insertAfter($refCombox);
-                        $refCombox.remove();
-                    },
-                    error: function () {
-                        alertMsg.error('发生错误！');
-                    }
-                });
-            }
-        };
+        //function dropQyChange(id,cpid) {
+        //    if (id != "" && id != "请选择") {
+        //        $.ajax({
+        //            type: "post",
+        //            dataType: "json",
+        //            url: "/T_YLCP/GetCpByQy",
+        //            data: { id: id },
+        //            success: function (json) {
+        //                if (!json) return;
+        //                var html = '';
+        //                $.each(json, function (i) {
+        //                    if (json[i] && json[i].length > 1) {
+        //                        html += '<option value="' + json[i][0] + '">' + json[i][1] + '</option>';
+        //                    }
+        //                });
+        //                var $ref = $("#YLCP");
+        //                var $refCombox = $ref.parents("div.combox:first");
+        //                $ref.html(html).insertAfter($refCombox);
+        //                $refCombox.remove();
+        //                $("#YLCP").val(cpid);
+        //                dropChange(cpid);
+        //            },
+        //            error: function () {
+        //                alertMsg.error('发生错误！');
+        //            }
+        //        });
+        //    }
+        //};
         function dropChange(id) {
             if (id != "") {
                 $.ajax({
@@ -144,12 +146,17 @@
                     success: function (json) {
                         var tes = eval("(" + json + ")");
                         $("#cpbh").val(tes.CPBH);
-                        $("#scqy").val(tes.SCQYMC);
+                        $("#cpscqyid").val(tes.SCQYID);
                         $("#cpgg").val(tes.CPGG);
                         $("#cpxh").val(tes.CPXH);
                         $("#cpdw").val(tes.CPDW);
                         $("#cpzczh").val(tes.ZCZH);
                         $("#cpxkzh").val(tes.XKZH);
+                        $("#cpscqyName").val(tes.SCQYMC);
+                        $("#cpmc").val(tes.CPMC);
+                        $("#supqyId").val(tes.SUPQYID);
+                        $("#supqyName").val(tes.SUPQYMC);
+                        $("#supcpId").val(id);
                     },
                     error: function () {
                         alertMsg.error('发生错误！');
@@ -163,11 +170,14 @@
                 return false;
             }
             var cgdh = $("#cgd").find("option:selected").val();
-            $("#cgmxBox").loadUrl("/T_CGMX/CGMXTable", { id: 0, cgdh: cgdh, canEdit: 0 });
+            $("#cgmxBox").loadUrl("/T_CGMX/CGMXTable", { id: 0, cgdh: cgdh, canEdit: 0,ISSH:1 });
         };
         function refreshYsmxGrid() {
             $("#ysmxBox").loadUrl("/T_YSD/YSMXTable", { id: 0, ysdh: $("#YSDH").val(), canEdit: 1 });
         };
+        function bindCGMX(cpId) {
+            dropChange(cpId);
+        }
     </script>
 </head>
 <body>
@@ -186,7 +196,7 @@
                             <label>
                                 采购单号：
                             </label>
-                            @Html.DropDownListFor(m => m.DataModel.CGDH, ViewData["CGD"] as SelectList, "请选择", new { ID = "cgd", style = "width:279px" })
+                            @Html.DropDownListFor(m => m.DataModel.CGDH, ViewData["CGD"] as SelectList, "请选择", new { ID = "cgd", style = "width:279px", @class = "required" })
                             <button value="提取" onclick="tqCgd();">
                                 提取
                             </button>
@@ -195,7 +205,7 @@
                             <label>
                                 验收日期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.YSRQ, new { name = "YSRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:273px" })
+                            @Html.TextBoxFor(m => m.DataModel.YSRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.YSRQ), name = "YSRQ", @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:273px" })
                         </div>
                         <div class="unit">
                             <div style="float:left;width:80%;">
@@ -221,14 +231,19 @@
                             <label>
                                 验收人：
                             </label>
-                            @Html.DropDownListFor(m => m.DataModel.YSR, ViewBag.Persons as SelectList, "请选择", new { style = "width:285px" })
+                            @Html.DropDownListFor(m => m.DataModel.YSR, ViewBag.Persons as SelectList, "请选择", new { style = "width:285px", @class = "required" })
                             @*@Html.TextBoxFor(m => m.DataModel.YSR, new { name = "YSR", style = "width:279px" })*@
                         </div>
                         <div class="unit">
                             <label>
                                 验收结果：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.YSFLAG, new { name = "YSFLAG", style = "width:279px" })
+                            @{
+                                List<SelectListItem> ysjgList = new List<SelectListItem>();
+                                ysjgList.Add(new SelectListItem { Text = "合格收货", Value = "合格收货" });
+                                ysjgList.Add(new SelectListItem { Text = "不合格", Value = "不合格" });
+                                @Html.DropDownListFor(m => m.DataModel.YSFLAG, ysjgList, new { name = "YSFLAG", style = "width:279px" })
+                            }
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">
@@ -263,6 +278,8 @@
                     @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Value = "Add", Name = "Tag" })
                     @Html.HiddenFor(m => m.YSMXModel.MXID, new { Name = "DataModel.MXID" })
                     @Html.HiddenFor(m => m.YSMXModel.ScqyID, new { ID = "cpscqyid", Name = "DataModel.ScqyID" })
+                    @Html.HiddenFor(m => m.YSMXModel.SupID, new { ID = "supqyId", Name = "DataModel.SupID" })
+                    @Html.HiddenFor(m => m.YSMXModel.CPID, new { ID = "supcpId", Name = "DataModel.CPID" })
                     <input type="hidden" id="YSID" name="YSDH">
                     <input type="hidden" id="guid">
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
@@ -270,13 +287,14 @@
                             <label>
                                 供货企业：
                             </label>
-                            <select id="supId" name="DataModel.SupID" style="width:285px" onchange="dropQyChange(this.value)">
-                                <option>请选择</option>
-                                @{foreach (var item in ViewData["SupID"] as SelectList)
-                                {
-                                    <option value="@item.Value">@item.Text</option>
-                                }}
-                            </select>
+                            @*<select id="supId" style="width:285px" disabled>
+                                    <option>请选择</option>
+                                    @{foreach (var item in ViewData["SupID"] as SelectList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }}
+                                </select>*@
+                            <input type="text" name="" id="supqyName" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>
@@ -288,15 +306,23 @@
                             <label>
                                 产品名称：
                             </label>
-                            <select id="YLCP" name="DataModel.CPID" style="width:285px" onchange="dropChange(this.value)">
-                                <option>请选择</option>
-                            </select>
+                            @*<select id="YLCP" style="width:285px" disabled>
+                                    <option>请选择</option>
+                                </select>*@
+                            <input type="text" id="cpmc" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>
                                 生产企业：
                             </label>
-                            <input type="text" name="" id="scqy" style="width:279px" readonly="readonly" value="" />
+                            @*<select id="scqy" style="width:285px" disabled>
+                                    <option>请选择</option>
+                                    @{foreach (var item in ViewData["SupID"] as SelectList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }}
+                                </select>*@
+                            <input type="text" id="cpscqyName" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>

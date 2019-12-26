@@ -147,7 +147,7 @@ namespace MedicalApparatusManage.Controllers
             {
                 model.CGMXList = T_CGMXDomain.GetInstance().GetT_YSMXByCgdh(cgdh);
             }
-            ViewData["canEdit"] = canEdit;
+            ViewBag.canEdit = canEdit;
             model.RoleCode = GetRoleCode();
             return View("~/Views/T_CGMX/CGMXTable.cshtml", model);
         }

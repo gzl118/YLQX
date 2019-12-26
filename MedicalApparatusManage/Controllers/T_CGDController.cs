@@ -217,5 +217,19 @@ namespace MedicalApparatusManage.Controllers
         {
             return Session["RoleCode"] == null ? "" : Session["RoleCode"].ToString();
         }
+        [HttpPost]
+        [CheckLogin()]
+        public int SaveTPrice(int id, string tPrice)
+        {
+            int result = 0;
+            try
+            {
+                double d = 0;
+                double.TryParse(tPrice, out d);
+                result = T_CGDDomain.GetInstance().SaveTPrice(id, d);
+            }
+            catch { }
+            return result;
+        }
     }
 }

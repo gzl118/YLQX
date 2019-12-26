@@ -171,6 +171,7 @@ namespace MedicalApparatusManage.Domain
                     if (cp != null && cp.CPSCQYID.HasValue)
                     {
                         cp.T_SupQY1 = hContext1.Set<T_SupQY>().Find(cp.CPSCQYID);
+                        cp.T_SupQY = hContext1.Set<T_SupQY>().Find(cp.CPGYSID);
                     }
                 }
                 catch (Exception ex)

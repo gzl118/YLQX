@@ -13,6 +13,9 @@
         $(function () {
             if ($('#cgze').length > 0) {
                 Jszj();
+                if ($("#hdIsChange").val() == "1") {
+                    SavePrice();
+                }
             }
         });
         function deleteCGMX(obj) {
@@ -22,7 +25,9 @@
                     $.post("/T_CGMX/Delete", { Guid: guid1 }, function (data) {
                         if (data.statusCode == "200") {
                             //刷新table
-                            $("#cgmxBox").loadUrl("/T_CGMX/CGMXTable", { id: 0, cgdh: $("#CGDH").val(), canEdit: 1 });
+                            $("#cgmxBox").loadUrl("/T_CGMX/CGMXTable", {
+                                id: 0, cgdh: $("#CGDH").val(), canEdit: 1, isSH: $("#hdISSH").val()
+                            });
                             alertMsg.correct('删除成功！');
                         } else {
                             alertMsg.error('删除失败！');
@@ -31,13 +36,26 @@
                 }
             });
         };
+        function switchData(item) {
+            if (bindCGMX) {
+                var tds = $(item).find("td");
+                var cpId = tds.eq(1).text();
+                bindCGMX(cpId);
+            }
+        }
     </script>
 </head>
 <body>
     <div>
-        <table width="100%" layouth="280" class="table">
+        <table width="100%" layouth="280" class="table" id="tbCGMX">
             <thead>
                 <tr>
+                    <th style="display:none;">
+                        供货企业ID
+                    </th>
+                    <th style="display:none;">
+                        产品ID
+                    </th>
                     <th>
                         供货企业
                     </th>
@@ -88,7 +106,9 @@
                     double? cpgs = @item.CPNUM;
                     double? cpdj = @item.CPPRICE;
                     double? cpzj = cpgs * cpdj;
-                    <tr target="sid_user">
+                    <tr target="sid_user" onclick="switchData(this)">
+                        <td style="display:none;">@(item.T_SupQY != null ? item.T_SupQY.SupID : 0)</td>
+                        <td style="display:none;">@(item.T_YLCP != null ? item.T_YLCP.CPID : 0)</td>
                         <td>@(item.T_SupQY != null && !string.IsNullOrEmpty(item.T_SupQY.SupMC) ? item.T_SupQY.SupMC : "")</td>
                         <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPBH) ? item.T_YLCP.CPBH : "")</td>
                         <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPMC) ? item.T_YLCP.CPMC : "")</td>
@@ -111,7 +131,8 @@
                 }
             </tbody>
         </table>
-
+        <input type="hidden" value="@Model.DataModel.ISSH" id="hdISSH" />
+        <input type="hidden" value="@ViewBag.canEdit" id="hdIsChange" />
     </div>
 </body>
 </html>

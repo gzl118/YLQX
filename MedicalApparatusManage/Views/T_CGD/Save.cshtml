@@ -9,7 +9,7 @@
     <title>Save</title>
     <script type="text/javascript" language="javascript">
         $(function () {
-            refreshCgmxGrid();
+            refreshCgmxGrid(0);
             $("#CGPERSON").chosen({
                 search_contains: true
             });
@@ -90,7 +90,7 @@
                             //AddRow();
                             //清空表单
                             RefreshForm();
-                            refreshCgmxGrid();
+                            refreshCgmxGrid(1);
                         } else {
                             //$("#lblCgdmx").text("保存失败！");
                             alertMsg.error('保存失败！')
@@ -233,7 +233,19 @@
             });
             $('#cgze').val(totalRow);
         };
-
+        function SavePrice() {
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/T_CGD/SaveTPrice/",
+                data: {
+                    id: $("#cgidMain").val(),
+                    tPrice: $('#cgze').val()
+                },
+                success: function (data, textStatus) {
+                }
+            });
+        }
         function through(type) {
             var elements = document.forms['formT_CGD'];
             var bl = validateCallback(elements);
@@ -248,12 +260,12 @@
             }
         };
 
-        function refreshCgmxGrid() {
+        function refreshCgmxGrid(isChange) {
             var tempIsSH = $("#ISSH").val();
             if (tempIsSH == null || tempIsSH == "")
                 tempIsSH = 0;
             $("#cgmxBox").loadUrl("/T_CGMX/CGMXTable", {
-                id: $("#cgidMain").val(), cgdh: $("#CGDH").val(), canEdit: 1, isSH: tempIsSH
+                id: $("#cgidMain").val(), cgdh: $("#CGDH").val(), canEdit: isChange, isSH: tempIsSH
             });
         };
     </script>
@@ -307,13 +319,13 @@
                             <label>
                                 采购日期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CGRQ, new { name = "CGRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
+                            @Html.TextBoxFor(m => m.DataModel.CGRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CGRQ), name = "CGRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
                         </div>
                         <div class="unit">
                             <label>
                                 申请日期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.SQRQ, new { name = "SQRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
+                            @Html.TextBoxFor(m => m.DataModel.SQRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.SQRQ), name = "SQRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
                         </div>
                     </div>
                 </form>

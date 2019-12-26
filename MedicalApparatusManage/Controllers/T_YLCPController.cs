@@ -1,4 +1,5 @@
-﻿using MedicalApparatusManage.Domain;
+﻿using MedicalApparatusManage.Common;
+using MedicalApparatusManage.Domain;
 using MedicalApparatusManage.Models;
 using Newtonsoft.Json;
 using System;
@@ -106,6 +107,9 @@ namespace MedicalApparatusManage.Controllers
             {
                 model.DataModel.CPBH = T_YLCPDomain.GetInstance().GetCpOrderNum("CP", CurUser);
             }
+            Expression<Func<T_PackingUnit, bool>> where = PredicateBuilder.True<T_PackingUnit>();
+            var lstUnit = T_PackingUnitDomain.GetInstance().GetAllModels<int>(where);
+            ViewBag.PUnit = new SelectList(lstUnit, "PUName", "PUName");
             model.Tag = tag;
             model.RoleCode = GetRoleCode();
             return View("~/Views/T_YLCP/Save.cshtml", model);
@@ -184,7 +188,10 @@ namespace MedicalApparatusManage.Controllers
                     ZCZH = cp.CPZCZ,
                     SCQYID = cp.CPSCQYID,
                     CPPrice = cp.CPPrice,
-                    XSJG = cp.XSJG
+                    SUPQYID = cp.CPGYSID,
+                    SUPQYMC = (cp.T_SupQY != null && !string.IsNullOrEmpty(cp.T_SupQY.SupMC)) ? cp.T_SupQY.SupMC : "",
+                    XSJG = cp.XSJG,
+                    CPMC = cp.CPMC
                 });
                 return Json(resultStr);
             }

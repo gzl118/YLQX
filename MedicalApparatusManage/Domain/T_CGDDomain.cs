@@ -123,5 +123,24 @@ namespace MedicalApparatusManage.Domain
             }
             return result;
         }
+        public int SaveTPrice(int id, double tPrice)
+        {
+            int result = 0;
+            using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
+            {
+                try
+                {
+                    var model = hContext1.Set<T_CGD>().Find(id);
+                    model.CGTotalPrice = tPrice;
+                    hContext1.SaveChanges();
+                    result = 1;
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            return result;
+        }
     }
 }
