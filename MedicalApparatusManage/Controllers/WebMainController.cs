@@ -38,6 +38,7 @@ namespace MedicalApparatusManage.Controllers
 
         public ActionResult Login()
         {
+            CommonDomain.ExecProc();
             return View();
         }
 

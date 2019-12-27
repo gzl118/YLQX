@@ -1984,6 +1984,7 @@
     <Compile Include="Controllers\WebMainController.cs" />
     <Compile Include="Domain\ActivityInfoDomain.cs" />
     <Compile Include="Domain\BaseDomain.cs" />
+    <Compile Include="Domain\CommonDomain.cs" />
     <Compile Include="Domain\SysFavoriteDomain.cs" />
     <Compile Include="Domain\SysResourceDomain.cs" />
     <Compile Include="Domain\SysRoleDomain.cs" />
