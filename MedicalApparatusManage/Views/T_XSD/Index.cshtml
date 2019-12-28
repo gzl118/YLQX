@@ -9,17 +9,27 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>销售单</title>
+    <script type="text/javascript" language="javascript">
+        $(function () {
+            $("#strCUSQY").chosen({
+                search_contains: true
+            });
+            $("#strXSPerson").chosen({
+                search_contains: true
+            });
+        });
+    </script>
 </head>
 <body>
     <div id="pageContent">
         <div class="pageHeader" style="hight: 80px;">
             @using (Html.BeginForm("Index", "T_XSD", FormMethod.Post, new
-                {
-                    name = "formSerachMA",
-                    id = "formSerachMA",
-                    onsubmit = "return navTabSearch(this);"
+            {
+                name = "formSerachMA",
+                id = "formSerachMA",
+                onsubmit = "return navTabSearch(this);"
 
-                }))
+            }))
             {
                 <div class="searchBar">
                     <table class="searchContent">
@@ -28,20 +38,29 @@
                                 销售单号:
                             </td>
                             <td>
-                                @Html.TextBox("strXSDMC")
+                                @Html.TextBox("strXSDMC", Model.DataModel.XSDH)
+                            </td>
+                            <td>
+                                销售人:
+                            </td>
+                            <td>
+                                @Html.DropDownList("strXSPerson", ViewBag.Persons as SelectList, "请选择", new { Value = ViewData["strXSPerson"], id = "strXSPerson", style = "width:150px;" })
                             </td>
                             <td>
                                 购货企业:
                             </td>
                             <td>
-                                @Html.DropDownList("strCUSQY", ViewBag.CUSQY as SelectList, "请选择", ViewData["strCUSQY"])
+                                @Html.DropDownList("strCUSQY", ViewBag.CUSQY as SelectList, "请选择", new { Value = ViewData["strCUSQY"], id = "strCUSQY", style = "width:250px;" })
                             </td>
+
+                        </tr>
+                        <tr style="margin-top:5px;">
                             <td>
                                 销售日期:
                             </td>
                             <td>
                                 @{ string strStart = Model.StartTime.HasValue ? Model.StartTime.Value.ToString("yyyy/MM/dd") : "";
-                                 string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
+                                    string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
                                 }
                                 <input id="StartDate" name="StartTime" class="Wdate" type="text" value="@strStart"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
@@ -54,7 +73,7 @@
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', minDate: '#F{$dp.$D(\'StartDate\')}' })" />
                             </td>
 
-                            <td>
+                            <td colspan="2" style="padding-left: 100px;">
                                 <ul>
                                     <li>
                                         <div class="buttonActive">
@@ -76,13 +95,13 @@
             <ul class="toolBar">
                 <li><a class="add" href="/T_XSD/Save/0/Add" target="dialog" mask="true" title="新增" width="1200" height="500"><span>新增</span></a></li>
                 <li><a class="delete" href="/T_XSD/Delete/{sid_user}" target="ajaxTodo" title="确定删除吗?" mask="true"><span>删除</span></a></li>
-                <li><a class="edit" href="/T_XSD/Save/{sid_user}/Edit" target="dialog" mask="true" title="查看详情" width="1200" height="500"><span>查看详情</span></a></li>            
+                <li><a class="edit" href="/T_XSD/Save/{sid_user}/Edit" target="dialog" mask="true" title="查看详情" width="1200" height="500"><span>查看详情</span></a></li>
                 @*<li><a class="icon" href="/T_XSD/Save/{sid_user}/Details" target="dialog" mask="true" width="1050" height="500"><span>查看详情</span></a></li>*@
                 @*<li><a class="icon" href="/T_XSMX/Index/{sid_user}" target="dialog" mask="true" width="1050" height="500"><span>销售单明细</span></a></li>*@
                 @*@if (ViewData["shUserId"].ToString() == "1" || ViewData["shUserId"].ToString() == "2")
-                {
-                    <li> <a class="edit" href="/T_XSD/XSDSPIndex/{sid_user}" target="dialog" mask="true" title="审核" width="1050" height="580"><span>审核</span></a></li>
-                }*@
+                    {
+                        <li> <a class="edit" href="/T_XSD/XSDSPIndex/{sid_user}" target="dialog" mask="true" title="审核" width="1050" height="580"><span>审核</span></a></li>
+                    }*@
             </ul>
         </div>
         <table width="100%" layouth="112" class="table" id="T_XSDTable">
@@ -103,36 +122,52 @@
                     <th>
                         销售日期
                     </th>
-@*
-            <th>
-                销售金额
-            </th>
-            <th>
-                销售复核人
-            </th>
-    *@
-            <th>
-                审核日期
-            </th>
-            <th>
-                是否审核
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.DataList)
-        {
-            <tr target="sid_user" rel="@item.XSID">
-                <td>@item.XSDH</td>
-                <td>@((item.T_CusQY != null && !string.IsNullOrEmpty(item.T_CusQY.CusMC)) ? item.T_CusQY.CusMC : "")</td>
-                <td>@((item.T_Person != null && !string.IsNullOrEmpty(item.T_Person.PsMZ)) ? item.T_Person.PsMZ : "")</td>
-                @*<td>@item.T_XSHT.HTBH</td>*@
-                        <td>@item.XSRQ</td>
-                @*
-                        <td>@item.XSJE</td>
-                        <td>@item.XSFHR</td>
+                    @*
+                        <th>
+                            销售金额
+                        </th>
+                        <th>
+                            销售复核人
+                        </th>
                     *@
-                        <td>@item.XSSHRQ</td>
+                    <th>
+                        审核日期
+                    </th>
+                    <th>
+                        是否审核
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.DataList)
+                {
+                    <tr target="sid_user" rel="@item.XSID">
+                        <td>@item.XSDH</td>
+                        <td>@((item.T_CusQY != null && !string.IsNullOrEmpty(item.T_CusQY.CusMC)) ? item.T_CusQY.CusMC : "")</td>
+                        <td>@((item.T_Person != null && !string.IsNullOrEmpty(item.T_Person.PsMZ)) ? item.T_Person.PsMZ : "")</td>
+                        @*<td>@item.T_XSHT.HTBH</td>*@
+                        @{ if (item.XSRQ == null)
+                            {
+                                <td></td>
+                            }
+                            else
+                            {
+                                <td>@item.XSRQ.Value.ToString("yyyy/MM/dd")</td>
+                            }
+                        }
+                        @*
+                            <td>@item.XSJE</td>
+                            <td>@item.XSFHR</td>
+                        *@
+                        @{ if (item.XSSHRQ == null)
+                            {
+                                <td></td>
+                            }
+                            else
+                            {
+                                <td>@item.XSSHRQ.Value.ToString("yyyy/MM/dd")</td>
+                            }
+                        }
                         @{
                             switch (item.XSFLAG)
                             {

@@ -33,17 +33,24 @@ namespace MedicalApparatusManage.Domain
             {
                 where = where.And(p => p.XSDH.Contains(info.XSDH));
             }
-            if(info.KHID != null && info.KHID > 0)
+            if (info.KHID != null && info.KHID > 0)
             {
                 where = where.And(p => p.KHID == info.KHID);
             }
-            if (startTime != null && endTime != null)
+            if (!string.IsNullOrEmpty(info.XSRY))
+            {
+                where = where.And(p => info.XSRY.Equals(p.XSRY));
+            }
+            if (startTime != null)
             {
                 where = where.And(p => p.XSRQ >= startTime.Value);
+            }
+            if (endTime != null)
+            {
                 where = where.And(p => p.XSRQ <= endTime.Value);
             }
-            Func<T_XSD, System.Int32> order = p => p.XSID;
-            return GetPageInfo<System.Int32>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);
+            Func<T_XSD, System.String> order = p => p.XSDH;
+            return GetPageInfo<System.String>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);
         }
 
         public List<T_XSD> GetAllT_XSD(T_XSD info)
@@ -111,6 +118,25 @@ namespace MedicalApparatusManage.Domain
                 {
                     var model = hContext1.Set<T_XSD>().Find(id);
                     model.XSFLAG = status;
+                    hContext1.SaveChanges();
+                    result = 1;
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            return result;
+        }
+        public int SaveTPrice(int id, double tPrice)
+        {
+            int result = 0;
+            using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
+            {
+                try
+                {
+                    var model = hContext1.Set<T_XSD>().Find(id);
+                    model.XSJE = tPrice;
                     hContext1.SaveChanges();
                     result = 1;
                 }

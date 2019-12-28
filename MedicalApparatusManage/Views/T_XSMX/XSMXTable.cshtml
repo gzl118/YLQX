@@ -13,18 +13,29 @@
         $(function () {
             if ($('#cgze').length > 0) {
                 Jszj();
+                if ($("#hdIsChange").val() == "1") {
+                    if (SavePrice)
+                        SavePrice();
+                }
             }
         });
         function deleteXSMX(obj) {
             var guid1 = obj.getAttribute("name");
             $.post("/T_XSMX/Delete", { Guid: guid1 }, function (data) {
                 if (data.statusCode == "200") {
-                    $("#xsmxBox").loadUrl("/T_XSMX/XSMXTable", { id: 0, xsdh: $("#XSDH").val(), canEdit: 1 });
+                    $("#xsmxBox").loadUrl("/T_XSMX/XSMXTable", { id: 0, xsdh: $("#XSDH").val(), canEdit: 1, isSH: $("#hdISSH").val() });
                     alertMsg.correct('删除成功！');
                 } else {
                     alertMsg.error('删除失败！');
                 }
             }, "json");
+        }
+        function switchData(item) {
+            if (bindXSMX) {
+                var tds = $(item).find("td");
+                var mxId = tds.eq(0).text();
+                bindXSMX(mxId);
+            }
         }
     </script>
 </head>
@@ -33,6 +44,9 @@
         <table width="100%" layouth="280" class="table">
             <thead>
                 <tr>
+                    <th style="display:none;">
+                        销售明细ID
+                    </th>
                     <th>
                         产品编号
                     </th>
@@ -66,12 +80,12 @@
                     <th>
                         产品总价(元)
                     </th>
-                    @{if (ViewData["canEdit"].ToString() == "1" && (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.XSFLAG != 1))
-                    {
-                        <th type="del">
-                            操作
-                        </th>
-                    }}
+                    @{if (Model.DataModel.XSFLAG != 1)
+                        {
+                            <th type="del">
+                                操作
+                            </th>
+                        }}
                 </tr>
             </thead>
             <tbody id="wtlb">
@@ -80,7 +94,8 @@
                     double? cpgs = @item.CPSL;
                     double? cpdj = @item.XSJG;
                     double? cpzj = cpgs * cpdj;
-                    <tr target="sid_user">
+                    <tr target="sid_user" onclick="switchData(this)">
+                        <td style="display:none;">@item.MXID</td>
                         <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPBH) ? item.T_YLCP.CPBH : "")</td>
                         <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPMC) ? item.T_YLCP.CPMC : "")</td>
                         <td>@(item.T_YLCP != null && item.T_YLCP.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_YLCP.T_SupQY1.SupMC) ? item.T_YLCP.T_SupQY1.SupMC : "")</td>
@@ -92,17 +107,18 @@
                         <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPZCZ) ? item.T_YLCP.CPZCZ : "")</td>
                         <td>@item.XSJG</td>
                         <td>@cpzj</td>
-                        @{if (ViewData["canEdit"].ToString() == "1" && (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.XSFLAG != 1))
-                        {
-                            <td>
-                                <a href="javascript:void(0)" name="@item.GUID" class="btnDel" onclick="deleteXSMX(this);">删除</a>
-                            </td>
-                        }}
+                        @{if (Model.DataModel.XSFLAG != 1)
+                            {
+                                <td>
+                                    <a href="javascript:void(0)" name="@item.GUID" class="btnDel" onclick="deleteXSMX(this);">删除</a>
+                                </td>
+                            }}
                     </tr>
                 }
             </tbody>
         </table>
-
+        <input type="hidden" value="@Model.DataModel.XSFLAG" id="hdISSH" />
+        <input type="hidden" value="@ViewBag.canEdit" id="hdIsChange" />
     </div>
 </body>
 </html>

@@ -10,6 +10,9 @@
     <script type="text/javascript" language="javascript">
         $(function () {
             refreshRkmxGrid();
+            $("#CKGLRY").chosen({
+                search_contains: true
+            });
         });
         function Save() {
             $.pdialog.closeCurrent();
@@ -152,18 +155,27 @@
                 $.ajax({
                     type: "post",
                     dataType: "json",
-                    url: "/T_YLCP/GetYLCPDetails",
-                    data: { cpid: id },
+                    url: "/T_YSD/GetYLCPDetailsByMXID",
+                    data: { mxid: id },
                     success: function (json) {
                         var tes = eval("(" + json + ")");
+                        $("#supcpId").val(tes.CPID);
                         $("#cpbh").val(tes.CPBH);
-                        $("#scqy").val(tes.SCQYMC);
-                        $("#cpgg").val(tes.CPGG);
-                        $("#cpxh").val(tes.CPXH);
-                        $("#cpdw").val(tes.CPDW);
-                        $("#cpzczh").val(tes.ZCZH);
-                        $("#cpxkzh").val(tes.XKZH);
                         $("#cpscqyid").val(tes.SCQYID);
+                        $("#cpscqyName").val(tes.SCQYMC);
+                        $("#supqyId").val(tes.SUPQYID);
+                        $("#supqyName").val(tes.SUPQYMC);
+                        $("#cpmc").val(tes.CPMC);
+                        $("#cpdw").val(tes.CPDW);
+                        $("#cpxkzh").val(tes.XKZH);
+                        $("#cpzczh").val(tes.ZCZH);
+                        $("#cpxh").val(tes.CPXH);
+                        $("#cpgg").val(tes.CPGG);
+
+                        $("#cpnum").val(tes.CPNUM);
+                        $("#cpph").val(tes.CPPH);
+                        $("#CPSCRQ").val(tes.SCRQ);
+                        $("#CPYXQ").val(tes.YQX);
                     },
                     error: function () {
                         alertMsg.error('发生错误！');
@@ -199,6 +211,22 @@
         function refreshRkmxGrid() {
             $("#rkmxRkPageBox").loadUrl("/T_RKMX/RKMXTable", { id: 0, rkdh: $("#RKDH").val(), canEdit: 0 });
         };
+        function bindMX(mxId) {
+            dropChange(mxId);
+        }
+        function through(type) {
+            var elements = document.forms['formT_CGD'];
+            var bl = validateCallback(elements);
+            if (bl) {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/T_RKD/through/" + type,
+                    data: $("#formT_RKD").serializeArray(),
+                    success: dialogAjaxDone
+                });
+            }
+        };
     </script>
 </head>
 <body>
@@ -206,7 +234,7 @@
         <div class="pageFormContent" layouth="58">
             <fieldset>
                 <legend>入库单</legend>
-                <form id="formT_RKD" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
+                <form id="formT_RKD" method="post" onsubmit="return false;" class="pageForm required-validate-noalert" style="overflow: visible;">
                     @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Name = "Tag" })
                     @Html.HiddenFor(m => m.DataModel.RKID, new { ID = "RkidMain", Name = "DataModel.RKID" })
                     @Html.HiddenFor(m => m.DataModel.RKCJR, new { Name = "DataModel.RKCJR" })
@@ -225,7 +253,7 @@
                             <label>
                                 入库人：
                             </label>
-                            @Html.DropDownListFor(m => m.DataModel.CKGLRY, ViewBag.Persons as SelectList, "请选择", new { style = "width:285px" })
+                            @Html.DropDownListFor(m => m.DataModel.CKGLRY, ViewBag.Persons as SelectList, "请选择", new { id = "CKGLRY", style = "width:285px" })
                             @*@Html.TextBoxFor(m => m.DataModel.CKGLRY, new { name = "RKMC", style = "width:279px" })*@
                         </div>
                     </div>
@@ -240,7 +268,7 @@
                             <label>
                                 入库日期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.JSRQ, new { name = "JSRQ", @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
+                            @Html.TextBoxFor(m => m.DataModel.JSRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.JSRQ), name = "JSRQ", @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">
@@ -254,13 +282,16 @@
                 </form>
                 <div style="width:91%;border:1px solid #ffffff;margin:5px;">
                     <div><label id="lblRkd" style="width:50%;color:red;"></label></div>
-                    <div class="button" id="divSaveRkd" style="float:right;">
-                        <div class="buttonContent">
-                            <button id="btnRkd" value="保存入库单" onclick="SaveRkd();">
-                                保存入库单
-                            </button>
+                    @if (Model.DataModel.ISSH != 1)
+                    {
+                        <div class="button" id="divSaveRkd" style="float:right;">
+                            <div class="buttonContent">
+                                <button id="btnRkd" value="保存入库单" onclick="SaveRkd();">
+                                    保存入库单
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
             </fieldset>
             <fieldset>
@@ -273,7 +304,9 @@
                 <form id="formT_RKMX" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
                     @Html.HiddenFor(m => m.Tag, new { Value = "Add", Name = "Tag" })
                     @Html.HiddenFor(m => m.T_RKMXModel.MXID, new { Name = "DataModel.MXID" })
+                    @Html.HiddenFor(m => m.T_RKMXModel.SupID, new { ID = "supqyId", Name = "DataModel.SupID" })
                     @Html.HiddenFor(m => m.T_RKMXModel.ScqyID, new { ID = "cpscqyid", Name = "DataModel.ScqyID" })
+                    @Html.HiddenFor(m => m.T_RKMXModel.CPID, new { ID = "supcpId", Name = "DataModel.CPID" })
                     <input type="hidden" id="RKID" name="RKDH">
                     <input type="hidden" id="guid">
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
@@ -281,13 +314,14 @@
                             <label>
                                 供货企业：
                             </label>
-                            <select id="supId" name="DataModel.SupID" style="width:285px" onchange="dropQyChange(this.value)">
-                                <option>请选择</option>
-                                @{foreach (var item in ViewData["SupID"] as SelectList)
-                                    {
-                                        <option value="@item.Value">@item.Text</option>
-                                    }}
-                            </select>
+                            @*<select id="supId" name="DataModel.SupID" style="width:285px" onchange="dropQyChange(this.value)">
+                                    <option>请选择</option>
+                                    @{foreach (var item in ViewData["SupID"] as SelectList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }}
+                                </select>*@
+                            <input type="text" name="" id="supqyName" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>
@@ -299,15 +333,16 @@
                             <label>
                                 产品名称：
                             </label>
-                            <select id="YLCP" name="DataModel.CPID" style="width:285px" onchange="dropChange(this.value)">
-                                <option>请选择</option>
-                            </select>
+                            @*<select id="YLCP" name="DataModel.CPID" style="width:285px" onchange="dropChange(this.value)">
+                                    <option>请选择</option>
+                                </select>*@
+                            <input type="text" id="cpmc" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>
                                 生产企业：
                             </label>
-                            <input type="text" name="" id="scqy" style="width:279px" readonly="readonly" value="" />
+                            <input type="text" name="" id="cpscqyName" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>
@@ -331,13 +366,13 @@
                             <label>
                                 产品数量：
                             </label>
-                            @Html.TextBox("DataModel.CPNUM", "", new { id = "cpnum", style = "width:279px", @class = "required number" })
+                            @Html.TextBox("DataModel.CPNUM", "", new { id = "cpnum", style = "width:279px", @class = "required digits" })
                         </div>
                         <div class="unit">
                             <label>
                                 产品批号：
                             </label>
-                            @Html.TextBox("DataModel.CPPH", "", new { style = "width:279px", @class = "required" })
+                            @Html.TextBox("DataModel.CPPH", "", new { id = "cpph", style = "width:279px", @readonly = "readonly" })
                         </div>
                     </div>
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
@@ -345,13 +380,21 @@
                             <label>
                                 生产日期：
                             </label>
-                            @Html.TextBox("DataModel.CPSCRQ", "", new { @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
+                            @*@Html.TextBox("DataModel.CPSCRQ", "", new { id = "CPSCRQ", @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px", @readonly="readonly"  })*@
+                            @Html.TextBox("DataModel.CPSCRQ", "", new { id = "CPSCRQ", style = "width:279px", @readonly = "readonly" })
                         </div>
                         <div class="unit">
                             <label>
                                 有效期：
                             </label>
-                            @Html.TextBox("DataModel.CPYXQ", "", new { @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
+                            @*@Html.TextBox("DataModel.CPYXQ", "", new { id = "CPYXQ", @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px", @readonly = "readonly" })*@
+                            @Html.TextBox("DataModel.CPYXQ", "", new { id = "CPYXQ", style = "width:279px", @readonly = "readonly" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                有效期预警期限(天)：
+                            </label>
+                            @Html.TextBox("DataModel.YXQBJDATE", "", new { id = "YXQBJDATE", style = "width:279px", @class = "digits" })
                         </div>
                         <div class="unit">
                             <label>
@@ -411,13 +454,16 @@
                 </form>
                 <div style="width:91%;border:1px solid #ffffff;margin:5px;">
                     <div><label id="lblRkmx" style="width:50%;color:red;"></label></div>
-                    <div class="button" id="divSaveRkMx" style="float:right;">
-                        <div class="buttonContent">
-                            <button value="保存明细" onclick="SaveRkmx();">
-                                保存明细
-                            </button>
+                    @if (Model.DataModel.ISSH != 1)
+                    {
+                        <div class="button" id="divSaveRkMx" style="float:right;">
+                            <div class="buttonContent">
+                                <button value="保存明细" onclick="SaveRkmx();">
+                                    保存明细
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
             </fieldset>
             <fieldset>
@@ -427,6 +473,30 @@
         </div>
         <div class="formBar">
             <ul>
+                @{if (Model.RoleCode == "2")
+                    {
+                        if (Model.DataModel.ISSH != 1 && Model.DataModel.RKID != 0)
+                        {
+                            <li>
+                                <div class="button">
+                                    <div class="buttonContent">
+                                        <button value="通过" onclick="through(1);">
+                                            通过
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="button">
+                                    <div class="buttonContent">
+                                        <button value="不通过" onclick="through(2);">
+                                            不通过
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    }}
                 <li>
                     <div class="button" id="divSave">
                         <div class="buttonContent">

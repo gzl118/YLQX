@@ -167,10 +167,11 @@ namespace MedicalApparatusManage.Controllers
         }
 
         [CheckLogin()]
-        public ActionResult XSMXTable(System.Int32 id, string xsdh, int canEdit)
+        public ActionResult XSMXTable(System.Int32 id, string xsdh, int canEdit, int isSH)
         {
             T_XSDModels model = new T_XSDModels();
             model.DataModel = new T_XSD();
+            model.DataModel.XSFLAG = isSH;
             if (id != 0)
             {
                 model.XSMXList = T_XSMXDomain.GetInstance().GetT_XSMXByXsid(id);

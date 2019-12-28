@@ -20,6 +20,13 @@
                 }
             }, "json");
         }
+        function switchData(item) {
+            if (bindMX) {
+                var tds = $(item).find("td");
+                var mxId = tds.eq(0).text();
+                bindMX(mxId);
+            }
+        }
     </script>
 </head>
 <body>
@@ -27,6 +34,9 @@
         <table width="100%" layouth="280" class="table">
             <thead>
                 <tr>
+                    <th style="display:none;">
+                        验收明细ID
+                    </th>
                     <th>
                         供货企业
                     </th>
@@ -72,40 +82,51 @@
                     <th>
                         是否收货
                     </th>
-                    @{if (ViewData["canEdit"].ToString() == "1")
+
+                    @if (ViewData["canEdit"].ToString() == "1")
                     {
-                        <th type="del">
-                            操作
-                        </th>
-                    }}
+                        if (Model.RoleCode == "2" || Model.DataModel.YSID == 0)
+                        {
+                            <th type="del">
+                                操作
+                            </th>
+                        }
+                    }
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.YSMXList)
+                @if (Model.YSMXList != null)
                 {
-                    <tr target="sid_user">
-                        <td>@(item.T_SupQY != null && !string.IsNullOrEmpty(item.T_SupQY.SupMC) ? item.T_SupQY.SupMC : "")</td>
-                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPBH) ? item.T_YLCP.CPBH : "")</td>
-                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPMC) ? item.T_YLCP.CPMC : "")</td>
-                        <td>@(item.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_SupQY1.SupMC) ? item.T_SupQY1.SupMC : "")</td>
-                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPGG) ? item.T_YLCP.CPGG : "")</td>
-                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPXH) ? item.T_YLCP.CPXH : "")</td>
-                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPDW) ? item.T_YLCP.CPDW : "")</td>
-                        <td>@item.CPNUM</td>
-                        <td>@item.CPPH</td>
-                        <td>@(item.CPSCRQ.HasValue ? item.CPSCRQ.Value.ToString("yyyy/MM/dd") : "")</td>
-                        <td>@(item.CPYXQ.HasValue ? item.CPYXQ.Value.ToString("yyyy/MM/dd") : "")</td>
-                        <td>@(item.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_SupQY1.SupXKZBH) ? item.T_SupQY1.SupXKZBH : "")</td>
-                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPZCZ) ? item.T_YLCP.CPZCZ : "")</td>
-                        <td>@(item.ISHG == 1 ? "是" : "否")</td>
-                        <td>@(item.ISSH == 1 ? "是" : "否")</td>
-                        @if (ViewData["canEdit"].ToString() == "1")
-                        {
-                            <td>
-                                <a href="javascript:void(0)" name="@item.GUID" class="btnDel" onclick="deleteYSMX(this);">删除</a>
-                            </td>
-                        }
-                    </tr>
+                    foreach (var item in Model.YSMXList)
+                    {
+                        <tr target="sid_user" onclick="switchData(this)">
+                            <td style="display:none;">@item.MXID</td>
+                            <td>@(item.T_SupQY != null && !string.IsNullOrEmpty(item.T_SupQY.SupMC) ? item.T_SupQY.SupMC : "")</td>
+                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPBH) ? item.T_YLCP.CPBH : "")</td>
+                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPMC) ? item.T_YLCP.CPMC : "")</td>
+                            <td>@(item.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_SupQY1.SupMC) ? item.T_SupQY1.SupMC : "")</td>
+                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPGG) ? item.T_YLCP.CPGG : "")</td>
+                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPXH) ? item.T_YLCP.CPXH : "")</td>
+                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPDW) ? item.T_YLCP.CPDW : "")</td>
+                            <td>@item.CPNUM</td>
+                            <td>@item.CPPH</td>
+                            <td>@(item.CPSCRQ.HasValue ? item.CPSCRQ.Value.ToString("yyyy/MM/dd") : "")</td>
+                            <td>@(item.CPYXQ.HasValue ? item.CPYXQ.Value.ToString("yyyy/MM/dd") : "")</td>
+                            <td>@(item.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_SupQY1.SupXKZBH) ? item.T_SupQY1.SupXKZBH : "")</td>
+                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPZCZ) ? item.T_YLCP.CPZCZ : "")</td>
+                            <td>@(item.ISHG == 1 ? "是" : "否")</td>
+                            <td>@(item.ISSH == 1 ? "是" : "否")</td>
+                            @if (ViewData["canEdit"].ToString() == "1")
+                            {
+                                if (Model.RoleCode == "2" || Model.DataModel.YSID == 0)
+                                {
+                                    <td>
+                                        <a href="javascript:void(0)" name="@item.GUID" class="btnDel" onclick="deleteYSMX(this);">删除</a>
+                                    </td>
+                                }
+                            }
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

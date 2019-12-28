@@ -168,10 +168,16 @@ namespace MedicalApparatusManage.Domain
                 try
                 {
                     cp = base.GetModelById(cpid);
-                    if (cp != null && cp.CPSCQYID.HasValue)
+                    if (cp != null)
                     {
-                        cp.T_SupQY1 = hContext1.Set<T_SupQY>().Find(cp.CPSCQYID);
-                        cp.T_SupQY = hContext1.Set<T_SupQY>().Find(cp.CPGYSID);
+                        if (cp.CPSCQYID.HasValue)
+                        {
+                            cp.T_SupQY1 = hContext1.Set<T_SupQY>().Find(cp.CPSCQYID);
+                        }
+                        if (cp.CPGYSID.HasValue)
+                        {
+                            cp.T_SupQY = hContext1.Set<T_SupQY>().Find(cp.CPGYSID);
+                        }
                     }
                 }
                 catch (Exception ex)

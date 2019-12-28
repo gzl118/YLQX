@@ -25,17 +25,38 @@ namespace MedicalApparatusManage.Domain
             }
             return _instance;
         }
+        public int Sh(int id, int status)
+        {
+            int result = 0;
+            using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
+            {
+                try
+                {
+                    var model = hContext1.Set<T_RKD>().Find(id);
+                    model.ISSH = status;
+                    hContext1.SaveChanges();
+                    result = 1;
+                }
+                catch (Exception ex)
+                {
 
+                }
+            }
+            return result;
+        }
         public List<T_RKD> PageT_RKD(T_RKD info, DateTime? startTime, DateTime? endTime, int pageIndex, int pageSize, out int pageCount, out int totalRecord)
         {
             Expression<Func<T_RKD, bool>> where = PredicateBuilder.True<T_RKD>();
-            if (!String.IsNullOrEmpty(info.RKMC))
+            if (!String.IsNullOrEmpty(info.CKGLRY))
             {
-                where = where.And(p => p.RKMC.Contains(info.RKMC));
+                where = where.And(p => info.CKGLRY.Equals(p.CKGLRY));
             }
-            if (startTime != null && endTime != null)
+            if (startTime != null)
             {
                 where = where.And(p => p.JSRQ >= startTime.Value);
+            }
+            if (endTime != null)
+            {
                 where = where.And(p => p.JSRQ <= endTime.Value);
             }
             Func<T_RKD, System.Int32> order = p => p.RKID;

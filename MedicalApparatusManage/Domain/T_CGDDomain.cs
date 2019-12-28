@@ -31,7 +31,7 @@ namespace MedicalApparatusManage.Domain
             Expression<Func<T_CGD, bool>> where = PredicateBuilder.True<T_CGD>();
             if (!String.IsNullOrEmpty(info.CGPERSON))
             {
-                where = where.And(p => p.CGPERSON.Contains(info.CGPERSON));
+                where = where.And(p => info.CGPERSON.Equals(p.CGPERSON));
             }
 
             if (startTime != null)

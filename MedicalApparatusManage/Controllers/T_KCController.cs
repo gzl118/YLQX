@@ -58,7 +58,7 @@ namespace MedicalApparatusManage.Controllers
 
             qymode.DataModel = qymode.DataModel ?? new T_SupQY();
 
-            qymode.DataList = T_SupQYDomain.GetInstance().GetAllT_SupQY(qymode.DataModel);
+            qymode.DataList = T_SupQYDomain.GetInstance().GetAllT_SupQY(qymode.DataModel).Where(p => p.SupStatus == 1).ToList();
             ViewData["QY"] = new SelectList(qymode.DataList, "SupID", "SupMC");
 
 

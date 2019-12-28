@@ -9,6 +9,13 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>验收单</title>
+    <script type="text/javascript" language="javascript">
+        $(function () {
+            $("#strYSPerson").chosen({
+                search_contains: true
+            });
+        });
+    </script>
 </head>
 <body>
     <div id="pageContent">
@@ -28,7 +35,7 @@
                                 验收人:
                             </td>
                             <td>
-                                @Html.DropDownList("strYSPerson", ViewBag.Persons as SelectList, "请选择", ViewData["strYSPerson"])
+                                @Html.DropDownList("strYSPerson", ViewBag.Persons as SelectList, "请选择", new { id = "strYSPerson", style = "width:150px;" })
                                 @*@Html.TextBox("strYSPS")*@
                             </td>
 
@@ -37,16 +44,16 @@
                             </td>
                             <td>
                                 @{ string strStart = Model.StartTime.HasValue ? Model.StartTime.Value.ToString("yyyy/MM/dd") : "";
-                                 string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
+                                    string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
                                 }
-                                <input id="StartDate" name="StartTime" class="Wdate" type="text" value="@strStart"
+                                <input id="StartDate" name="StartTime" class="Wdate" type="text" autocomplete="off" value="@strStart"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
                             </td>
                             <td>
                                 至
                             </td>
                             <td>
-                                <input id="EndDate" name="EndTime" class="Wdate" type="text" value="@strEnd"
+                                <input id="EndDate" name="EndTime" class="Wdate" type="text" autocomplete="off" value="@strEnd"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', minDate: '#F{$dp.$D(\'StartDate\')}' })" />
                             </td>
 
@@ -103,17 +110,28 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.DataList)
+                @if (Model.DataList != null)
                 {
-                    <tr target="sid_user" rel="@item.YSID">
-                        <td>@item.YSDH</td>
-                        <td>@item.CGDH</td>
-                        <td>@item.YSR</td>
-                        <td>@item.YSRQ</td>
-                        <td><a href="~/UploadFiles/验收报告/@item.YSBG" target="_blank">@item.YSBG</a></td>
-                        <td>@item.YSFLAG</td>
-                        <td>@item.BZ</td>
-                    </tr>
+                    foreach (var item in Model.DataList)
+                    {
+                        <tr target="sid_user" rel="@item.YSID">
+                            <td>@item.YSDH</td>
+                            <td>@item.CGDH</td>
+                            <td>@item.YSR</td>
+                            @{ if (item.YSRQ == null)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>@item.YSRQ.Value.ToString("yyyy/MM/dd")</td>
+                                }
+                            }
+                            <td><a href="~/UploadFiles/验收报告/@item.YSBG" target="_blank">@item.YSBG</a></td>
+                            <td>@item.YSFLAG</td>
+                            <td>@item.BZ</td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

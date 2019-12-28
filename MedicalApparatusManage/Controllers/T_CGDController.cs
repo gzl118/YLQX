@@ -1,6 +1,7 @@
 ﻿using MedicalApparatusManage.Common;
 using MedicalApparatusManage.Domain;
 using MedicalApparatusManage.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,7 +59,7 @@ namespace MedicalApparatusManage.Controllers
             //获取本企业下的人员列表
             T_Person person = new T_Person();
             person.PsQYID = (int)UserModel.UserCompanyID;
-            ViewBag.Persons = new SelectList(T_PersonDomain.GetInstance().GetAllT_Person(person), "PsID", "PsMZ");
+            ViewBag.Persons = new SelectList(T_PersonDomain.GetInstance().GetAllT_Person(person), "PsMZ", "PsMZ");
             ViewData["strCGPerson"] = strCGPerson;
 
             evalModel.DataList = T_CGDDomain.GetInstance().PageT_CGD(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, out pagecount, out resultCount);
@@ -230,6 +231,45 @@ namespace MedicalApparatusManage.Controllers
             }
             catch { }
             return result;
+        }
+
+        /// <summary>
+        /// 通过明细ID获取产品信息
+        /// </summary>
+        /// <param name="mxid"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [CheckLogin()]
+        public JsonResult GetYLCPDetailsByMXID(int mxid)
+        {
+            var mxModel = T_CGMXDomain.GetInstance().GetModelById(mxid);
+            if (mxModel != null)
+            {
+                T_YLCP cp = T_YLCPDomain.GetInstance().GetCpDetailsById(mxModel.CPID);
+                if (cp != null)
+                {
+                    string resultStr = JsonConvert.SerializeObject(new
+                    {
+                        CPID = cp.CPID,
+                        CPBH = cp.CPBH,
+                        SCQYMC = (cp.T_SupQY1 != null && !string.IsNullOrEmpty(cp.T_SupQY1.SupMC)) ? cp.T_SupQY1.SupMC : "",
+                        CPGG = cp.CPGG,
+                        CPXH = cp.CPXH,
+                        CPDW = cp.CPDW,
+                        XKZH = (cp.T_SupQY1 != null && !string.IsNullOrEmpty(cp.T_SupQY1.SupXKZBH)) ? cp.T_SupQY1.SupXKZBH : "",
+                        ZCZH = cp.CPZCZ,
+                        SCQYID = cp.CPSCQYID,
+                        CPPrice = cp.CPPrice,
+                        SUPQYID = cp.CPGYSID,
+                        SUPQYMC = (cp.T_SupQY != null && !string.IsNullOrEmpty(cp.T_SupQY.SupMC)) ? cp.T_SupQY.SupMC : "",
+                        XSJG = cp.XSJG,
+                        CPMC = cp.CPMC,
+                        CPNUM = mxModel.CPNUM
+                    });
+                    return Json(resultStr);
+                }
+            }
+            return Json("");
         }
     }
 }

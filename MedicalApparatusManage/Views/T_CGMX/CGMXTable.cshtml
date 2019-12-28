@@ -14,7 +14,8 @@
             if ($('#cgze').length > 0) {
                 Jszj();
                 if ($("#hdIsChange").val() == "1") {
-                    SavePrice();
+                    if (SavePrice)
+                        SavePrice();
                 }
             }
         });
@@ -39,8 +40,8 @@
         function switchData(item) {
             if (bindCGMX) {
                 var tds = $(item).find("td");
-                var cpId = tds.eq(1).text();
-                bindCGMX(cpId);
+                var mxId = tds.eq(0).text();
+                bindCGMX(mxId);
             }
         }
     </script>
@@ -50,6 +51,9 @@
         <table width="100%" layouth="280" class="table" id="tbCGMX">
             <thead>
                 <tr>
+                    <th style="display:none;">
+                        采购明细ID
+                    </th>
                     <th style="display:none;">
                         供货企业ID
                     </th>
@@ -107,6 +111,7 @@
                     double? cpdj = @item.CPPRICE;
                     double? cpzj = cpgs * cpdj;
                     <tr target="sid_user" onclick="switchData(this)">
+                        <td style="display:none;">@item.MXID</td>
                         <td style="display:none;">@(item.T_SupQY != null ? item.T_SupQY.SupID : 0)</td>
                         <td style="display:none;">@(item.T_YLCP != null ? item.T_YLCP.CPID : 0)</td>
                         <td>@(item.T_SupQY != null && !string.IsNullOrEmpty(item.T_SupQY.SupMC) ? item.T_SupQY.SupMC : "")</td>

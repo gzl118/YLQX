@@ -9,6 +9,16 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>入库单</title>
+    <script type="text/javascript" language="javascript">
+        $(function () {
+            $("#strRKPerson").chosen({
+                search_contains: true
+            });
+            //$("#strCPMC").chosen({
+            //    search_contains: true
+            //});
+        });
+    </script>
 </head>
 <body>
     <div id="pageContent">
@@ -24,28 +34,33 @@
                 <div class="searchBar">
                     <table class="searchContent">
                         <tr>
+                            @*<td>
+                                    产品名称:
+                                </td>
+                                <td>
+                                    @Html.DropDownList("strCPMC", ViewBag.Persons as SelectList, "请选择", new { id = "strCPMC", style = "width:150px;" })
+                                </td>*@
                             <td>
-                                入库名称:
+                                入库人:
                             </td>
                             <td>
-                                @Html.TextBox("strRKMC")
+                                @Html.DropDownList("strYSPerson", ViewBag.Persons as SelectList, "请选择", new { id = "strRKPerson", style = "width:150px;" })
                             </td>
-
                             <td>
                                 入库日期:
                             </td>
                             <td>
                                 @{ string strStart = Model.StartTime.HasValue ? Model.StartTime.Value.ToString("yyyy/MM/dd") : "";
-                                 string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
+                                    string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
                                 }
-                                <input id="StartDate" name="StartTime" class="Wdate" type="text" value="@strStart"
+                                <input id="StartDate" name="StartTime" class="Wdate" type="text" autocomplete="off" value="@strStart"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
                             </td>
                             <td>
                                 至
                             </td>
                             <td>
-                                <input id="EndDate" name="EndTime" class="Wdate" type="text" value="@strEnd"
+                                <input id="EndDate" name="EndTime" class="Wdate" type="text" autocomplete="off" value="@strEnd"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', minDate: '#F{$dp.$D(\'StartDate\')}' })" />
                             </td>
 
@@ -96,15 +111,26 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.DataList)
+                @if (Model.DataList != null)
                 {
-                    <tr target="sid_user" rel="@item.RKID">
-                        <td>@item.RKDH</td>
-                        <td>@item.YSDH</td>
-                        <td>@item.CKGLRY</td>
-                        <td>@item.JSRQ</td>
-                        <td>@item.RKBZ</td>
-                    </tr>
+                    foreach (var item in Model.DataList)
+                    {
+                        <tr target="sid_user" rel="@item.RKID">
+                            <td>@item.RKDH</td>
+                            <td>@item.YSDH</td>
+                            <td>@item.CKGLRY</td>
+                            @{ if (item.JSRQ == null)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>@item.JSRQ.Value.ToString("yyyy/MM/dd")</td>
+                                }
+                            }
+                            <td>@item.RKBZ</td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

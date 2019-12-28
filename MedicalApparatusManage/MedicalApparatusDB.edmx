@@ -423,6 +423,7 @@
           <Property Name="RKCJRQ" Type="date" />
           <Property Name="RKDH" Type="varchar" MaxLength="50" />
           <Property Name="YSDH" Type="varchar" MaxLength="50" />
+          <Property Name="ISSH" Type="int" />
         </EntityType>
         <EntityType Name="T_RKMX">
           <Key>
@@ -443,6 +444,7 @@
           <Property Name="ISHG" Type="int" />
           <Property Name="ISSH" Type="int" />
           <Property Name="YSY" Type="int" />
+          <Property Name="YXQBJDATE" Type="int" />
         </EntityType>
         <EntityType Name="T_SHFW">
           <Key>
@@ -2408,6 +2410,7 @@
           <Property Name="RKDH" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="YSDH" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="T_RKMX" Relationship="MedicalApparatusManageModel.FK_T_RKMX_T_RKD" FromRole="T_RKD" ToRole="T_RKMX" />
+          <Property Name="ISSH" Type="Int32" />
         </EntityType>
         <EntityType Name="T_RKMX">
           <Key>
@@ -2433,6 +2436,7 @@
           <NavigationProperty Name="T_SupQY" Relationship="MedicalApparatusManageModel.FK_T_RKMX_T_SupQY" FromRole="T_RKMX" ToRole="T_SupQY" />
           <NavigationProperty Name="T_SupQY1" Relationship="MedicalApparatusManageModel.FK_T_RKMX_T_SupQY1" FromRole="T_RKMX" ToRole="T_SupQY" />
           <NavigationProperty Name="T_YLCP" Relationship="MedicalApparatusManageModel.FK_T_RKMX_T_YLCP" FromRole="T_RKMX" ToRole="T_YLCP" />
+          <Property Name="YXQBJDATE" Type="Int32" />
         </EntityType>
         <EntityType Name="T_SHFW">
           <Key>
@@ -3880,6 +3884,7 @@
           <EntitySetMapping Name="T_RKD">
             <EntityTypeMapping TypeName="MedicalApparatusManageModel.T_RKD">
               <MappingFragment StoreEntitySet="T_RKD">
+                <ScalarProperty Name="ISSH" ColumnName="ISSH" />
                 <ScalarProperty Name="YSDH" ColumnName="YSDH" />
                 <ScalarProperty Name="RKDH" ColumnName="RKDH" />
                 <ScalarProperty Name="RKCJRQ" ColumnName="RKCJRQ" />
@@ -3898,6 +3903,7 @@
           <EntitySetMapping Name="T_RKMX">
             <EntityTypeMapping TypeName="MedicalApparatusManageModel.T_RKMX">
               <MappingFragment StoreEntitySet="T_RKMX">
+                <ScalarProperty Name="YXQBJDATE" ColumnName="YXQBJDATE" />
                 <ScalarProperty Name="YSY" ColumnName="YSY" />
                 <ScalarProperty Name="ISSH" ColumnName="ISSH" />
                 <ScalarProperty Name="ISHG" ColumnName="ISHG" />

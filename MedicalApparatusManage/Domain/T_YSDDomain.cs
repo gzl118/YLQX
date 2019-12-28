@@ -29,13 +29,16 @@ namespace MedicalApparatusManage.Domain
         public List<T_YSD> PageT_YSD(T_YSD info, DateTime? startTime, DateTime? endTime, int pageIndex, int pageSize, out int pageCount, out int totalRecord)
         {
             Expression<Func<T_YSD, bool>> where = PredicateBuilder.True<T_YSD>();
-            if(!String.IsNullOrEmpty(info.YSR))
+            if (!String.IsNullOrEmpty(info.YSR))
             {
-                where = where.And(p => p.YSR.Contains(info.YSR));
+                where = where.And(p => info.YSR.Equals(p.YSR));
             }
-            if(startTime != null && endTime != null)
+            if (startTime != null)
             {
                 where = where.And(p => p.YSRQ >= startTime.Value);
+            }
+            if (endTime != null)
+            {
                 where = where.And(p => p.YSRQ <= endTime.Value);
             }
             Func<T_YSD, System.Int32> order = p => p.YSID;
@@ -72,7 +75,7 @@ namespace MedicalApparatusManage.Domain
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     return null;
                 }

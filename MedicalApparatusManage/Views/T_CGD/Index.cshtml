@@ -35,7 +35,7 @@
                                 采购人:
                             </td>
                             <td>
-                                @Html.DropDownList("strCGPerson", ViewBag.Persons as SelectList, "请选择", new { id = "strCGPerson", style = "width:250px;" })
+                                @Html.DropDownList("strCGPerson", ViewBag.Persons as SelectList, "请选择", new { id = "strCGPerson", style = "width:150px;" })
                             </td>
                             <td>
                                 采购日期:
@@ -44,14 +44,14 @@
                                 @{ string strStart = Model.StartTime.HasValue ? Model.StartTime.Value.ToString("yyyy/MM/dd") : "";
                                     string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
                                 }
-                                <input id="StartDate" name="StartTime" class="Wdate" type="text" value="@strStart"
+                                <input id="StartDate" name="StartTime" class="Wdate" type="text" autocomplete="off" value="@strStart"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
                             </td>
                             <td>
                                 至
                             </td>
                             <td>
-                                <input id="EndDate" name="EndTime" class="Wdate" type="text" value="@strEnd"
+                                <input id="EndDate" name="EndTime" class="Wdate" type="text" autocomplete="off" value="@strEnd"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', minDate: '#F{$dp.$D(\'StartDate\')}' })" />
                             </td>
 
@@ -115,29 +115,48 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.DataList)
+                @if (Model.DataList != null)
                 {
-                    <tr target="sid_user" rel="@item.CGID">
-                        <td>@item.CGDH</td>
-                        <td>@item.CGDMC</td>
-                        <td>@item.CGTotalPrice</td>
-                        <td>@item.CGPERSON</td>
-                        <td>@item.CGRQ</td>
-                        <td>@item.SQPERSON</td>
-                        <td>@item.SQRQ</td>
-                        @{
-                            switch (item.ISSH)
-                            {
-                                case 0:
-                                    <td style="background-color:deepskyblue;">未审批</td>; break;
-                                case 1:
-                                    <td style="background-color:limegreen;">已审批</td>; break;
-                                case 2:
-                                    <td style="background-color:orangered;">审批未通过</td> ; break;
-                                default:
-                                    <td></td>; break;
-                            }}
-                    </tr>
+                    foreach (var item in Model.DataList)
+                    {
+                        <tr target="sid_user" rel="@item.CGID">
+                            <td>@item.CGDH</td>
+                            <td>@item.CGDMC</td>
+                            <td>@item.CGTotalPrice</td>
+                            <td>@item.CGPERSON</td>
+                            @{ if (item.CGRQ == null)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>@item.CGRQ.Value.ToString("yyyy/MM/dd")</td>
+                                }
+                            }
+                            <td>@item.SQPERSON</td>
+                            @{ if (item.SQRQ == null)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>@item.SQRQ.Value.ToString("yyyy/MM/dd")</td>
+                                }
+                            }
+                            @{
+                                switch (item.ISSH)
+                                {
+                                    case 0:
+                                        <td style="background-color:deepskyblue;">未审批</td>; break;
+                                    case 1:
+                                        <td style="background-color:limegreen;">已审批</td>; break;
+                                    case 2:
+                                        <td style="background-color:orangered;">审批未通过</td> ; break;
+                                    default:
+                                        <td></td>; break;
+                                }}
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

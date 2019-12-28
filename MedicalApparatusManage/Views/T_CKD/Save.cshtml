@@ -256,12 +256,15 @@
                 alertMsg.error('请选择销售单！');
                 return false;
             }
-            $("#xsmxBox").loadUrl("/T_XSMX/XSMXTable", { id: xsid, xsdh: "", canEdit: 0 });
+            $("#xsmxBox").loadUrl("/T_XSMX/XSMXTable", { id: xsid, xsdh: "", canEdit: 0, ISSH: 1 });
         };
 
         function refreshCkmxGrid() {
             $("#ckmxCkPageBox").loadUrl("/T_CKMX/CKMXTable", { id: 0, ckdh: $("#CKDH").val(), canEdit: 0 });
         };
+        function bindXSMX(mxId) {
+            //dropChange(mxId);
+        }
     </script>
 </head>
 <body>
@@ -385,9 +388,9 @@
                             <select id="CPMC" name="DataModel.CPID" style="width:285px" onchange="dropCkChange(this.value)">
                                 <option>请选择</option>
                                 @{foreach (var item in ViewData["YLCP"] as SelectList)
-                                {
-                                    <option value="@item.Value">@item.Text</option>
-                                }}
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }}
                             </select>
                         </div>
                         <div class="unit">

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -51,7 +52,7 @@ namespace MedicalApparatusManage.Controllers
             //获取本企业下的人员列表
             T_Person person = new T_Person();
             person.PsQYID = (int)UserModel.UserCompanyID;
-            ViewBag.Persons = new SelectList(T_PersonDomain.GetInstance().GetAllT_Person(person), "PsID", "PsMZ");
+            ViewBag.Persons = new SelectList(T_PersonDomain.GetInstance().GetAllT_Person(person), "PsMZ", "PsMZ");
             ViewData["strYSPerson"] = strYSPerson;
 
             evalModel.DataList = T_YSDDomain.GetInstance().PageT_YSD(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, out pagecount, out resultCount);
@@ -66,7 +67,7 @@ namespace MedicalApparatusManage.Controllers
             //采购单列表
             T_CGDModels cgdQymode = new T_CGDModels();
             cgdQymode.DataModel = cgdQymode.DataModel ?? new T_CGD();
-            cgdQymode.DataList = T_CGDDomain.GetInstance().GetAllT_CGD(cgdQymode.DataModel).ToList();
+            cgdQymode.DataList = T_CGDDomain.GetInstance().GetAllT_CGD(cgdQymode.DataModel).Where(p => p.ISSH == 1).OrderByDescending(p => p.CGDH).ToList();
             ViewData["CGD"] = new SelectList(cgdQymode.DataList, "CGDH", "CGDH");
 
             //加载企业列表
@@ -96,6 +97,7 @@ namespace MedicalApparatusManage.Controllers
 
 
             model.Tag = tag;
+            model.RoleCode = GetRoleCode();
             return View("~/Views/T_YSD/Save.cshtml", model);
         }
 
@@ -157,18 +159,34 @@ namespace MedicalApparatusManage.Controllers
         [CheckLogin()]
         public void Delete(System.Int32 id)
         {
-            T_YSDModels model = new T_YSDModels();
-            model.DataModel = new T_YSD();
+            var rCode = GetRoleCode();
+            if (rCode != "1" && rCode != "2")
+            {
+                Response.Write("{\"statusCode\":\"300\", \"message\":\"该数据不能删除！\"}");
+                return;
+            }
+            var ysdModel = new T_YSD();
             if (id != 0)
             {
-                model.DataModel = T_YSDDomain.GetInstance().GetModelById(id);
+                ysdModel = T_YSDDomain.GetInstance().GetModelById(id);
             }
-            if (!string.IsNullOrEmpty(model.DataModel.YSBG))
+            if (ysdModel != null)
             {
-                string filePath = Path.Combine(Server.MapPath("~/UploadFiles/"), "购货商资料", model.DataModel.YSBG);
-                if (System.IO.File.Exists(filePath))
+                //如果验收单未被使用，管理员、超级管理员可删除。否则，任何人不能删除
+                Expression<Func<T_RKD, bool>> where = p => (p.YSDH == ysdModel.YSDH);
+                var lst = T_RKDDomain.GetInstance().GetAllModels<int>(where);
+                if (lst != null && lst.Count > 0)
                 {
-                    System.IO.File.Delete(filePath);
+                    Response.Write("{\"statusCode\":\"300\", \"message\":\"该验收单单已存在入库单，不能删除！\"}");
+                    return;
+                }
+                if (!string.IsNullOrEmpty(ysdModel.YSBG))
+                {
+                    string filePath = Path.Combine(Server.MapPath("~/UploadFiles/"), "购货商资料", ysdModel.YSBG);
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
                 }
             }
             int result = T_YSDDomain.GetInstance().DeleteModelById(id);
@@ -194,6 +212,9 @@ namespace MedicalApparatusManage.Controllers
                 model.YSMXList = T_YSMXDomain.GetInstance().GetT_YSMXByYsdh(ysdh);
             }
             ViewData["canEdit"] = canEdit;
+            model.RoleCode = GetRoleCode();
+            model.DataModel = new T_YSD();
+            model.DataModel.YSID = id;
             return View("~/Views/T_YSD/YSMXTable.cshtml", model);
         }
 
@@ -241,5 +262,53 @@ namespace MedicalApparatusManage.Controllers
         }
 
         #endregion
+        private string GetRoleCode()
+        {
+            return Session["RoleCode"] == null ? "" : Session["RoleCode"].ToString();
+        }
+        /// <summary>
+        /// 通过验收明细ID获取产品信息
+        /// </summary>
+        /// <param name="mxid"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [CheckLogin()]
+        public JsonResult GetYLCPDetailsByMXID(int mxid)
+        {
+            var mxModel = T_YSMXDomain.GetInstance().GetModelById(mxid);
+            if (mxModel != null)
+            {
+                if (mxModel.CPID != null)
+                {
+                    T_YLCP cp = T_YLCPDomain.GetInstance().GetCpDetailsById((int)mxModel.CPID);
+                    if (cp != null)
+                    {
+                        string resultStr = JsonConvert.SerializeObject(new
+                        {
+                            CPID = cp.CPID,
+                            CPBH = cp.CPBH,
+                            SCQYMC = (cp.T_SupQY1 != null && !string.IsNullOrEmpty(cp.T_SupQY1.SupMC)) ? cp.T_SupQY1.SupMC : "",
+                            CPGG = cp.CPGG,
+                            CPXH = cp.CPXH,
+                            CPDW = cp.CPDW,
+                            XKZH = (cp.T_SupQY1 != null && !string.IsNullOrEmpty(cp.T_SupQY1.SupXKZBH)) ? cp.T_SupQY1.SupXKZBH : "",
+                            ZCZH = cp.CPZCZ,
+                            SCQYID = cp.CPSCQYID,
+                            CPPrice = cp.CPPrice,
+                            SUPQYID = cp.CPGYSID,
+                            SUPQYMC = (cp.T_SupQY != null && !string.IsNullOrEmpty(cp.T_SupQY.SupMC)) ? cp.T_SupQY.SupMC : "",
+                            XSJG = cp.XSJG,
+                            CPMC = cp.CPMC,
+                            CPNUM = mxModel.CPNUM,
+                            CPPH = mxModel.CPPH,
+                            SCRQ = mxModel.CPSCRQ == null ? "" : mxModel.CPSCRQ.Value.ToString("yyyy/MM/dd"),
+                            YQX = mxModel.CPYXQ == null ? "" : mxModel.CPYXQ.Value.ToString("yyyy/MM/dd")
+                        });
+                        return Json(resultStr);
+                    }
+                }
+            }
+            return Json("");
+        }
     }
 }

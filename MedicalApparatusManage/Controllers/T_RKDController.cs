@@ -46,6 +46,21 @@ namespace MedicalApparatusManage.Controllers
                     evalModel.DataModel.RKMC = str;
                 }
             }
+            string strYSPerson = "请选择";
+            if (Request["strYSPerson"] != null)
+            {
+                strYSPerson = Request["strYSPerson"].ToString();
+                if (!String.IsNullOrEmpty(strYSPerson))
+                {
+                    evalModel.DataModel.CKGLRY = strYSPerson;
+                }
+            }
+
+            SysUser UserModel = Session["UserModel"] as SysUser;
+            T_Person person = new T_Person();
+            person.PsQYID = (int)UserModel.UserCompanyID;
+            ViewBag.Persons = new SelectList(T_PersonDomain.GetInstance().GetAllT_Person(person), "PsMZ", "PsMZ");
+
             evalModel.DataList = T_RKDDomain.GetInstance().PageT_RKD(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, out pagecount, out resultCount);
             evalModel.resultCount = resultCount;
             return View("~/Views/T_RKD/Index.cshtml", evalModel);
@@ -57,7 +72,7 @@ namespace MedicalApparatusManage.Controllers
 
             //加载验收单
             List<T_YSD> ysdList = new List<T_YSD>();
-            ysdList = T_YSDDomain.GetInstance().GetAllT_YSD(new T_YSD()).ToList(); ;
+            ysdList = T_YSDDomain.GetInstance().GetAllT_YSD(new T_YSD()).OrderByDescending(p => p.YSDH).ToList();
             ViewData["YSD"] = new SelectList(ysdList, "YSDH", "YSDH");
 
             //加载仓库列表
@@ -94,6 +109,7 @@ namespace MedicalApparatusManage.Controllers
             person.PsQYID = (int)CurUser.UserCompanyID;
             ViewBag.Persons = new SelectList(T_PersonDomain.GetInstance().GetAllT_Person(person), "PsMZ", "PsMZ");
             model.Tag = tag;
+            model.RoleCode = GetRoleCode();
             return View("~/Views/T_RKD/Save.cshtml", model);
         }
 
@@ -187,13 +203,13 @@ namespace MedicalApparatusManage.Controllers
             {
                 rkdinfo = rkmxList[0];
             }
-            string ghqy = rkdinfo.T_SupQY.SupMC;
+            string ghqy = rkdinfo.T_SupQY == null ? "" : rkdinfo.T_SupQY.SupMC;
 
 
             //命名导出表格的StringBuilder变量
             StringBuilder sHtml = new StringBuilder(string.Empty);
             //打印表头
-            sHtml.Append("<table border=\"0\" width=\"100%\">");
+            sHtml.Append("<table border=\"0\" width=\"100%\">"); // width=\"100%\"
             sHtml.Append("<tr height=\"40\"><td colspan=\"10\" align=\"center\" style='font-size:24px'><b>入库单" + "</b></td></tr>");
             sHtml.Append("<tr height=\"40\"><td colspan=\"8\" align=\"left\">供货企业：" + ghqy + "</td><td align=\"right\">日期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\">入库单号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
             sHtml.Append("</table>");
@@ -201,9 +217,10 @@ namespace MedicalApparatusManage.Controllers
             //sHtml.Append("<tr height=\"40\"><td colspan=\"10\" align=\"center\" style='font-size:24px'><b>出库单" + "</b></td></tr>");
             //sHtml.Append("<tr height=\"40\"><td colspan=\"8\" align=\"left\">&nbsp;购买单位：" + xsqyName + "</td><td align=\"right\">日期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\">单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
             //打印列名
-            sHtml.Append("<tr height=\"30\" align=\"center\" ><td>产品名称</td><td>产品规格</td><td>生产厂家</td><td>单位</td><td>数量</td><td>单价</td>"
+            //sHtml.Append("<tr height=\"30\" align=\"center\" ><td style='width:150px;'>产品名称</td><td style='width:60px;'>产品规格</td><td style='width:150px;'>生产厂家</td><td  style='width:60px;'>生产日期</td><td  style='width:30px;'>单位</td><td style='width:30px;'>数量</td><td style='width:60px;'>单价</td>"
+            //    + "<td style='width:80px;'>金额</td><td style='width:80px;'>产品批号</td><td style='width:60px;'>产品有效期</td><td style='width:100px;'>经营许可证号</td><td style='width:100px;'>注册证号</td></tr>");
+            sHtml.Append("<tr height=\"30\" align=\"center\" ><td>产品名称</td><td>产品规格</td><td>生产厂家</td><td>生产日期</td><td>单位</td><td>数量</td><td>单价</td>"
                 + "<td>金额</td><td>产品批号</td><td>产品有效期</td><td>经营许可证号</td><td>注册证号</td></tr>");
-
             //合计
             double total = 0.0;
             for (int i = 0; i < rkmxList.Count; i++)
@@ -220,14 +237,19 @@ namespace MedicalApparatusManage.Controllers
                 //产品批号
                 string scPh = rkmx.CPPH ?? "";
                 //产品有效期
-                string scRq = "";
+                string yxq = "";
                 if (rkmx.CPYXQ != null)
                 {
-                    scRq = rkmx.CPYXQ.Value.ToLongDateString();
+                    yxq = rkmx.CPYXQ.Value.ToString("yyyyMMdd");
+                }
+                var scrq = "";
+                if (rkmx.CPSCRQ != null)
+                {
+                    scrq = rkmx.CPSCRQ.Value.ToString("yyyyMMdd");
                 }
 
                 //生产企业
-                string cpScqy = rkmx.T_YLCP.CPSCQY ?? "";
+                string cpScqy = rkdinfo.T_SupQY1 == null ? "" : rkdinfo.T_SupQY1.SupMC;
                 //单价
                 double cpPrice = rkmx.T_YLCP.CPPrice ?? 0.0;
                 //产品总价
@@ -240,8 +262,9 @@ namespace MedicalApparatusManage.Controllers
                 string xkzbh = rkmx.T_SupQY.SupXKZBH;
                 sHtml.Append("<tr height=\"30\" align=\"center\"><td>" + cpName
                             + "</td><td>" + cpGg + "</td><td>" + cpScqy
+                             + "</td><td>" + scrq
                             + "</td><td>" + cpDw + "</td><td>" + cpDj.ToString()
-                            + "</td><td>" + cpPrice.ToString() + "</td><td>" + rowTotal.ToString() + "</td><td>" + scPh + "</td><td>" + scRq
+                            + "</td><td>" + cpPrice.ToString() + "</td><td>" + rowTotal.ToString() + "</td><td>" + scPh + "</td><td>" + yxq
                             + "</td><td>" + xkzbh
                             + "</td><td>" + cpzczh
                             + "</td></tr>");
@@ -259,9 +282,10 @@ namespace MedicalApparatusManage.Controllers
         [CheckLogin()]
         public void ExportToExcel(string FileType, string FileName, string ExcelContent)
         {
-            System.Web.HttpContext.Current.Response.Charset = "GB2312";
-            System.Web.HttpContext.Current.Response.ContentEncoding = System.Text.Encoding.GetEncoding("GB2312");
-            System.Web.HttpContext.Current.Response.AppendHeader("Content-Disposition", "attachment;filename=" + HttpUtility.UrlEncode(FileName, System.Text.Encoding.GetEncoding("GB2312")).ToString());
+            System.Web.HttpContext.Current.Response.Charset = "UTF-8";
+            System.Web.HttpContext.Current.Response.ContentEncoding = System.Text.Encoding.GetEncoding("UTF-8");
+            var fName = HttpUtility.UrlEncode(FileName, System.Text.Encoding.GetEncoding("UTF-8")).ToString();
+            System.Web.HttpContext.Current.Response.AppendHeader("Content-Disposition", "attachment;filename=" + fName);
             System.Web.HttpContext.Current.Response.ContentType = FileType;
             System.IO.StringWriter tw = new System.IO.StringWriter();
             System.Web.HttpContext.Current.Response.Output.Write(ExcelContent.ToString());
@@ -291,21 +315,23 @@ namespace MedicalApparatusManage.Controllers
             {
                 rkdinfo = rkmxList[0];
             }
-            string ghqy = rkdinfo.T_SupQY.SupMC;
-            
+            string ghqy = rkdinfo.T_SupQY == null ? "" : rkdinfo.T_SupQY.SupMC;
+
 
             //命名导出表格的StringBuilder变量
             StringBuilder sHtml = new StringBuilder(string.Empty);
             //打印表头
-            sHtml.Append("<table border=\"0\" width=\"100%\">");
+            sHtml.Append("<table border=\"0\" width=\"100%\">"); //
             sHtml.Append("<tr height=\"40\"><td colspan=\"10\" align=\"center\" style='font-size:24px'><b>入库单" + "</b></td></tr>");
             sHtml.Append("<tr height=\"40\"><td colspan=\"8\" align=\"left\">供货企业：" + ghqy + "</td><td align=\"right\">日期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\">入库单号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
             sHtml.Append("</table>");
-            sHtml.Append("<table border=\"1\" width=\"100%\">");
+            sHtml.Append("<table border=\"1\" width=\"100%\">"); // width=\"100%\"
             //sHtml.Append("<tr height=\"40\"><td colspan=\"10\" align=\"center\" style='font-size:24px'><b>出库单" + "</b></td></tr>");
             //sHtml.Append("<tr height=\"40\"><td colspan=\"8\" align=\"left\">&nbsp;购买单位：" + xsqyName + "</td><td align=\"right\">日期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\">单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
             //打印列名
-            sHtml.Append("<tr height=\"30\" align=\"center\" ><td>产品名称</td><td>产品规格</td><td>生产厂家</td><td>单位</td><td>数量</td><td>单价</td>"
+            //sHtml.Append("<tr height=\"30\" align=\"center\" ><td style='width:150px;'>产品名称</td><td style='width:60px;'>产品规格</td><td style='width:150px;'>生产厂家</td><td  style='width:60px;'>生产日期</td><td  style='width:30px;'>单位</td><td style='width:30px;'>数量</td><td style='width:60px;'>单价</td>"
+            //    + "<td style='width:80px;'>金额</td><td style='width:80px;'>产品批号</td><td style='width:60px;'>产品有效期</td><td style='width:100px;'>经营许可证号</td><td style='width:100px;'>注册证号</td></tr>");
+            sHtml.Append("<tr height=\"30\" align=\"center\" ><td>产品名称</td><td>产品规格</td><td>生产厂家</td><td>生产日期</td><td>单位</td><td>数量</td><td>单价</td>"
                 + "<td>金额</td><td>产品批号</td><td>产品有效期</td><td>经营许可证号</td><td>注册证号</td></tr>");
 
             //合计
@@ -324,14 +350,19 @@ namespace MedicalApparatusManage.Controllers
                 //产品批号
                 string scPh = rkmx.CPPH ?? "";
                 //产品有效期
-                string scRq = "";
+                string yxq = "";
                 if (rkmx.CPYXQ != null)
                 {
-                    scRq = rkmx.CPYXQ.Value.ToLongDateString();
+                    yxq = rkmx.CPYXQ.Value.ToString("yyyyMMdd");
+                }
+                var scrq = "";
+                if (rkmx.CPSCRQ != null)
+                {
+                    scrq = rkmx.CPSCRQ.Value.ToString("yyyyMMdd");
                 }
 
                 //生产企业
-                string cpScqy = rkmx.T_YLCP.CPSCQY ?? "";
+                string cpScqy = rkdinfo.T_SupQY1 == null ? "" : rkdinfo.T_SupQY1.SupMC;
                 //单价
                 double cpPrice = rkmx.T_YLCP.CPPrice ?? 0.0;
                 //产品总价
@@ -344,8 +375,9 @@ namespace MedicalApparatusManage.Controllers
                 string xkzbh = rkmx.T_SupQY.SupXKZBH;
                 sHtml.Append("<tr height=\"30\" align=\"center\"><td>" + cpName
                             + "</td><td>" + cpGg + "</td><td>" + cpScqy
+                             + "</td><td>" + scrq
                             + "</td><td>" + cpDw + "</td><td>" + cpDj.ToString()
-                            + "</td><td>" + cpPrice.ToString() + "</td><td>" + rowTotal.ToString() + "</td><td>" + scPh + "</td><td>" + scRq
+                            + "</td><td>" + cpPrice.ToString() + "</td><td>" + rowTotal.ToString() + "</td><td>" + scPh + "</td><td>" + yxq
                             + "</td><td>" + xkzbh
                             + "</td><td>" + cpzczh
                             + "</td></tr>");
@@ -353,7 +385,7 @@ namespace MedicalApparatusManage.Controllers
             //打印表尾
             sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"4\">合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"8\">（小写）" + total.ToString("0.000") + "</td></tr>");
             sHtml.Append("</table>");
-            sHtml.Append("<table  border=\"0\" width=\"100%\">");
+            sHtml.Append("<table  border=\"0\" width=\"100%\">"); // width =\"100%\"
             sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"7\" align=\"left\">制单人：&nbsp;&nbsp</td><td align=\"right\">审核人：&nbsp;&nbsp</td><td align=\"right\">采购员：&nbsp;&nbsp</td><td align=\"center\">质检员：&nbsp;&nbsp</td></tr>");
             sHtml.Append("</table>");
             return sHtml.ToString();
@@ -393,5 +425,26 @@ namespace MedicalApparatusManage.Controllers
             return result;
         }
         #endregion
+        private string GetRoleCode()
+        {
+            return Session["RoleCode"] == null ? "" : Session["RoleCode"].ToString();
+        }
+        [HttpPost]
+        [CheckLogin()]
+        public void through(T_RKDModels model, int id)
+        {
+            int result = 0;
+            try
+            {
+                Int32 cgid = model.DataModel.RKID;
+                result = T_RKDDomain.GetInstance().Sh(cgid, id);
+            }
+            catch { }
+            Response.ContentType = "text/json";
+            if (result > 0)
+                Response.Write("{\"statusCode\":\"200\", \"message\":\"操作成功\",\"callbackType\":\"closeCurrentReloadTab\",\"forwardUrl\":\"/T_RKD/Index\"}");
+            else
+                Response.Write("{\"statusCode\":\"300\", \"message\":\"操作失败\"}");
+        }
     }
 }

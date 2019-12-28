@@ -10,6 +10,15 @@
     <script type="text/javascript" language="javascript">
         $(function () {
             refreshXsmxGrid();
+            $("#XSQYID").chosen({
+                search_contains: true
+            });
+            $("#XSPerson").chosen({
+                search_contains: true
+            });
+            $("#supCPID").chosen({
+                search_contains: true
+            });
         });
         function Save() {
             $.pdialog.closeCurrent();
@@ -163,8 +172,24 @@
             }
         };
         function refreshXsmxGrid() {
-            $("#xsmxBox").loadUrl("/T_XSMX/XSMXTable", { id: 0, xsdh: $("#XSDH").val(), canEdit: 1 });
+            var tempIsSH = $("#XSFLAG").val();
+            if (tempIsSH == null || tempIsSH == "")
+                tempIsSH = 0;
+            $("#xsmxBox").loadUrl("/T_XSMX/XSMXTable", { id: 0, xsdh: $("#XSDH").val(), canEdit: 1, isSH: tempIsSH });
         };
+        function SavePrice() {
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/T_XSD/SaveTPrice/",
+                data: {
+                    id: $("#cgidMain").val(),
+                    tPrice: $('#cgze').val()
+                },
+                success: function (data, textStatus) {
+                }
+            });
+        }
     </script>
 </head>
 <body>
@@ -172,7 +197,7 @@
         <div class="pageFormContent" layouth="58">
             <fieldset>
                 <legend>销售单</legend>
-                <form id="formT_XSD" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
+                <form id="formT_XSD" method="post" onsubmit="return false;" class="pageForm required-validate-noalert" style="overflow:visible;">
                     @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Name = "Tag" })
                     @Html.HiddenFor(m => m.DataModel.XSID, new { ID = "XsidMain", Name = "DataModel.XSID" })
                     @Html.HiddenFor(m => m.DataModel.XSFLAG, new { Name = "DataModel.XSFLAG" })
@@ -189,13 +214,13 @@
                             <label>
                                 购货企业：
                             </label>
-                            @Html.DropDownListFor(m => m.DataModel.KHID, ViewData["CusQY"] as SelectList, "请选择", new { style = "width:285px" })
+                            @Html.DropDownListFor(m => m.DataModel.KHID, ViewData["CusQY"] as SelectList, "请选择", new { id = "XSQYID", style = "width:285px" })
                         </div>
                         <div class="unit">
                             <label>
                                 销售日期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.XSRQ, new { name = "XSRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
+                            @Html.TextBoxFor(m => m.DataModel.XSRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.XSRQ), name = "XSRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
                         </div>
                         @*
                             <div class="unit">
@@ -216,13 +241,13 @@
                             <label>
                                 销售名称：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.XSMC, new { name = "XSMC", style = "width:279px" })
+                            @Html.TextBoxFor(m => m.DataModel.XSMC, new { name = "XSMC", style = "width:279px", @class = "required" })
                         </div>
                         <div class="unit">
                             <label>
                                 销售人员：
                             </label>
-                            @Html.DropDownListFor(m => m.DataModel.XSRID, ViewData["Person"] as SelectList, "请选择", new { style = "width:285px" })
+                            @Html.DropDownListFor(m => m.DataModel.XSRY, ViewData["Person"] as SelectList, "请选择", new { id = "XSPerson", style = "width:285px" })
                         </div>
                         @*
                             <div class="unit">
@@ -235,7 +260,7 @@
                             <label>
                                 审核时间：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.XSSHRQ, new { name = "XSSHRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
+                            @Html.TextBoxFor(m => m.DataModel.XSSHRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.XSSHRQ), name = "XSSHRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">
@@ -261,21 +286,22 @@
                 </form>
                 <div style="width:91%;border:1px solid #ffffff;margin:5px;">
                     <div><label id="lblXsd" style="width:50%;color:red;"></label></div>
-                    @{if (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.XSFLAG != 1)
-                    {
-                        <div class="button" id="divSaveXsd" style="float:right;">
-                            <div class="buttonContent">
-                                <button id="btnXsd" value="保存销售单" onclick="SaveXsd();">
-                                    保存销售单
-                                </button>
+                    @{if (Model.DataModel.XSFLAG != 1)
+                        {
+                            <div class="button" id="divSaveXsd" style="float:right;">
+                                <div class="buttonContent">
+                                    <button id="btnXsd" value="保存销售单" onclick="SaveXsd();">
+                                        保存销售单
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    }}
+                        }
+                    }
                 </div>
             </fieldset>
             <fieldset>
                 <legend>销售明细</legend>
-                <form id="formT_XSMX" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
+                <form id="formT_XSMX" method="post" onsubmit="return false;" class="pageForm required-validate-noalert" style="overflow:visible;">
                     @Html.HiddenFor(m => m.Tag, new { Value = "Add", Name = "Tag" })
                     @Html.HiddenFor(m => m.T_XSMXModel.MXID, new { Name = "DataModel.MXID" })
                     <input type="hidden" id="XSID" name="XSDH">
@@ -291,12 +317,12 @@
                             <label>
                                 产品名称：
                             </label>
-                            <select id="supId" name="DataModel.CPID" style="width:285px" onchange="dropChange(this.value)">
+                            <select id="supCPID" name="DataModel.CPID" style="width:285px" onchange="dropChange(this.value)">
                                 <option>请选择</option>
                                 @{foreach (var item in ViewData["YLCP"] as SelectList)
-                                {
-                                    <option value="@item.Value">@item.Text</option>
-                                }}
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }}
                             </select>
                             @*@Html.DropDownList("DataModel.CPID", ViewData["YLCP"] as SelectList, new { ID = "YLCP", style = "width:270px", onchange = "dropChange(this.value)" })*@
                         </div>
@@ -330,7 +356,7 @@
                             <label>
                                 产品数量：
                             </label>
-                            @Html.TextBox("DataModel.CPSL", "", new { id = "cpnum", style = "width:279px" })
+                            @Html.TextBox("DataModel.CPSL", "", new { id = "cpnum", style = "width:279px", @class = "required digits" })
                         </div>
                         <div class="unit">
                             <label>
@@ -348,7 +374,7 @@
                             <label>
                                 销售单价(元)：
                             </label>
-                            @Html.TextBox("DataModel.XSJG", "", new { id = "cpprice", style = "width:279px" })
+                            @Html.TextBox("DataModel.XSJG", "", new { id = "cpprice", style = "width:279px", @class = "required number" })
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">
@@ -356,16 +382,16 @@
                 </form>
                 <div style="width:91%;border:1px solid #ffffff;margin:5px;">
                     <div><label id="lblXsdmx" style="width:50%;color:red;"></label></div>
-                    @{if (ViewData["IsLeader"].ToString() == "True" || Model.DataModel.XSFLAG != 1)
-                    {
-                        <div class="button" id="divSaveXsdMx" style="float:right;">
-                            <div class="buttonContent">
-                                <button value="保存明细" onclick="SaveXsmx();">
-                                    保存明细
-                                </button>
+                    @{if (Model.DataModel.XSFLAG != 1)
+                        {
+                            <div class="button" id="divSaveXsdMx" style="float:right;">
+                                <div class="buttonContent">
+                                    <button value="保存明细" onclick="SaveXsmx();">
+                                        保存明细
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    }}
+                        }}
                 </div>
             </fieldset>
             <fieldset>
@@ -375,30 +401,30 @@
         </div>
         <div class="formBar">
             <ul>
-                @{if (ViewData["IsLeader"].ToString() == "True")
-                {
-                    if (Model.DataModel.XSFLAG != 1 && Model.DataModel.XSID != 0)
+                @{if (Model.RoleCode == "2")
                     {
-                        <li>
-                            <div class="button">
-                                <div class="buttonContent">
-                                    <button value="通过" onclick="through(1);">
-                                        通过
-                                    </button>
+                        if (Model.DataModel.XSFLAG != 1 && Model.DataModel.XSID != 0)
+                        {
+                            <li>
+                                <div class="button">
+                                    <div class="buttonContent">
+                                        <button value="通过" onclick="through(1);">
+                                            通过
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="button">
-                                <div class="buttonContent">
-                                    <button value="不通过" onclick="through(2);">
-                                        不通过
-                                    </button>
+                            </li>
+                            <li>
+                                <div class="button">
+                                    <div class="buttonContent">
+                                        <button value="不通过" onclick="through(2);">
+                                            不通过
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                    }
-                }}
+                            </li>
+                        }
+                    }}
                 <li>
                     <div class="button" id="divSave">
                         <div class="buttonContent">

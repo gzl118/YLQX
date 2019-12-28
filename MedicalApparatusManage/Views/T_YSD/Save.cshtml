@@ -10,6 +10,9 @@
     <script type="text/javascript" language="javascript">
         $(function () {
             refreshYsmxGrid();
+            $("#YSR").chosen({
+                search_contains: true
+            });
         });
         function Save() {
             $.pdialog.closeCurrent();
@@ -141,8 +144,8 @@
                 $.ajax({
                     type: "post",
                     dataType: "json",
-                    url: "/T_YLCP/GetYLCPDetails",
-                    data: { cpid: id },
+                    url: "/T_CGD/GetYLCPDetailsByMXID",
+                    data: { mxid: id },
                     success: function (json) {
                         var tes = eval("(" + json + ")");
                         $("#cpbh").val(tes.CPBH);
@@ -156,7 +159,8 @@
                         $("#cpmc").val(tes.CPMC);
                         $("#supqyId").val(tes.SUPQYID);
                         $("#supqyName").val(tes.SUPQYMC);
-                        $("#supcpId").val(id);
+                        $("#supcpId").val(tes.CPID);
+                        $("#cpnum").val(tes.CPNUM);
                     },
                     error: function () {
                         alertMsg.error('发生错误！');
@@ -173,10 +177,11 @@
             $("#cgmxBox").loadUrl("/T_CGMX/CGMXTable", { id: 0, cgdh: cgdh, canEdit: 0,ISSH:1 });
         };
         function refreshYsmxGrid() {
-            $("#ysmxBox").loadUrl("/T_YSD/YSMXTable", { id: 0, ysdh: $("#YSDH").val(), canEdit: 1 });
+            $("#ysmxBox").loadUrl("/T_YSD/YSMXTable", {
+                id: $("#ysidMain").val(), ysdh: $("#YSDH").val(), canEdit: 1 });
         };
-        function bindCGMX(cpId) {
-            dropChange(cpId);
+        function bindCGMX(mxId) {
+            dropChange(mxId);
         }
     </script>
 </head>
@@ -185,7 +190,7 @@
         <div class="pageFormContent" layouth="58">
             <fieldset>
                 <legend>验收单</legend>
-                <form id="formT_YSD" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
+                <form id="formT_YSD" method="post" onsubmit="return false;" class="pageForm required-validate-noalert" style="overflow: visible;">
                     @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Name = "Tag" })
                     @Html.HiddenFor(m => m.DataModel.YSID, new { ID = "ysidMain", Name = "DataModel.YSID" })
                     @Html.HiddenFor(m => m.DataModel.YSCJR, new { Name = "DataModel.YSCJR" })
@@ -231,7 +236,7 @@
                             <label>
                                 验收人：
                             </label>
-                            @Html.DropDownListFor(m => m.DataModel.YSR, ViewBag.Persons as SelectList, "请选择", new { style = "width:285px", @class = "required" })
+                            @Html.DropDownListFor(m => m.DataModel.YSR, ViewBag.Persons as SelectList, "请选择", new { id = "YSR", style = "width:285px", @class = "required" })
                             @*@Html.TextBoxFor(m => m.DataModel.YSR, new { name = "YSR", style = "width:279px" })*@
                         </div>
                         <div class="unit">
@@ -258,13 +263,16 @@
                 </form>
                 <div style="width:91%;border:1px solid #ffffff;margin:5px;">
                     <div><label id="lblYsd" style="width:50%;color:red;"></label></div>
-                    <div class="button" id="divSaveCgd" style="float:right;">
-                        <div class="buttonContent">
-                            <button id="btnYsd" value="保存验收单" onclick="SaveYsd();">
-                                保存验收单
-                            </button>
-                        </div>
-                    </div>
+                    @{if (Model.RoleCode == "2" || Model.DataModel.YSID == 0)
+                        {
+                            <div class="button" id="divSaveCgd" style="float:right;">
+                                <div class="buttonContent">
+                                    <button id="btnYsd" value="保存验收单" onclick="SaveYsd();">
+                                        保存验收单
+                                    </button>
+                                </div>
+                            </div>
+                        } }
                 </div>
             </fieldset>
             <fieldset>
@@ -346,7 +354,7 @@
                             <label>
                                 产品数量：
                             </label>
-                            @Html.TextBox("DataModel.CPNUM", "", new { id = "cpnum", style = "width:279px", @class = "required number" })
+                            @Html.TextBox("DataModel.CPNUM", "", new { id = "cpnum", style = "width:279px", @class = "required digits" })
                         </div>
                     </div>
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
@@ -406,13 +414,17 @@
                 </form>
                 <div style="width:91%;border:1px solid #ffffff;margin:5px;">
                     <div><label id="lblYsdmx" style="width:50%;color:red;"></label></div>
-                    <div class="button" style="float:right;">
-                        <div class="buttonContent">
-                            <button value="保存明细" onclick="SaveYsmx();">
-                                保存明细
-                            </button>
-                        </div>
-                    </div>
+                    @{if (Model.RoleCode == "2" || Model.DataModel.YSID == 0)
+                        {
+                            <div class="button" style="float:right;">
+                                <div class="buttonContent">
+                                    <button value="保存明细" onclick="SaveYsmx();">
+                                        保存明细
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    }
                 </div>
             </fieldset>
             <fieldset>
