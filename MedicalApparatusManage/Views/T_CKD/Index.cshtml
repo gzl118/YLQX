@@ -28,7 +28,7 @@
                                 出库单号:
                             </td>
                             <td>
-                                @Html.TextBox("strCKDName")
+                                @Html.TextBox("strCKDName", @ViewData["strCKDName"])
                             </td>
 
                             <td>
@@ -36,16 +36,16 @@
                             </td>
                             <td>
                                 @{ string strStart = Model.StartTime.HasValue ? Model.StartTime.Value.ToString("yyyy/MM/dd") : "";
-                                 string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
+                                    string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
                                 }
-                                <input id="StartDate" name="StartTime" class="Wdate" type="text" value="@strStart"
+                                <input id="StartDate" name="StartTime" class="Wdate" type="text" autocomplete="off" value="@strStart"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
                             </td>
                             <td>
                                 至
                             </td>
                             <td>
-                                <input id="EndDate" name="EndTime" class="Wdate" type="text" value="@strEnd"
+                                <input id="EndDate" name="EndTime" class="Wdate" type="text" autocomplete="off" value="@strEnd"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', minDate: '#F{$dp.$D(\'StartDate\')}' })" />
                             </td>
 
@@ -108,19 +108,46 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.DataList)
+                @if (Model.DataList != null)
                 {
-                    <tr target="sid_user" rel="@item.CKID">
-                        <td>@item.CKDH</td>
-                        <td>@((item.T_XSD != null && !string.IsNullOrEmpty(item.T_XSD.XSDH)) ? item.T_XSD.XSDH : "")</td>
-                        <td>@item.CKSQR</td>
-                        <td>@item.SQRQ</td>
-                        <td>@item.FHR</td>
-                        <td>@item.FHRQ</td>
-                        <td>@item.CKCHR</td>
-                        <td>@item.CHRQ</td>
-                        <td>@item.CHBZ</td>
-                    </tr>
+                    foreach (var item in Model.DataList)
+                    {
+                        <tr target="sid_user" rel="@item.CKID">
+                            <td>@item.CKDH</td>
+                            <td>@((item.T_XSD != null && !string.IsNullOrEmpty(item.T_XSD.XSDH)) ? item.T_XSD.XSDH : "")</td>
+                            <td>@item.CKSQR</td>
+                            @{ if (item.SQRQ == null)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>@item.SQRQ.Value.ToString("yyyy/MM/dd")</td>
+                                }
+                            }
+                            <td>@item.FHR</td>
+                            @{ if (item.FHRQ == null)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>@item.FHRQ.Value.ToString("yyyy/MM/dd")</td>
+                                }
+                            }
+                            <td>@item.CKCHR</td>
+                            @{ if (item.CHRQ == null)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>@item.CHRQ.Value.ToString("yyyy/MM/dd")</td>
+                                }
+                            }
+                            <td>@item.CHBZ</td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

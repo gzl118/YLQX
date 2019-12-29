@@ -104,6 +104,11 @@
         <AssociationConnector Association="MedicalApparatusManageModel.FK_T_YSMX_T_YLCP" />
         <AssociationConnector Association="MedicalApparatusManageModel.FK_T_YSMX_T_YSD" />
         <EntityTypeShape EntityType="MedicalApparatusManageModel.T_PackingUnit" Width="1.5" PointX="11.375" PointY="8.75" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_SHD" Width="1.5" PointX="8.375" PointY="11.75" />
+        <EntityTypeShape EntityType="MedicalApparatusManageModel.T_SHMX" Width="1.5" PointX="10.375" PointY="11.75" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_SHMX_T_CK" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_SHMX_T_SHD" />
+        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_SHMX_T_YLCP" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

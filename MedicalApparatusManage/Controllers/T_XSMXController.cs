@@ -181,12 +181,6 @@ namespace MedicalApparatusManage.Controllers
                 model.XSMXList = T_XSMXDomain.GetInstance().GetT_XSMXByXsdh(xsdh);
             }
             ViewData["canEdit"] = canEdit;
-            string roleId = Session["RoleId"].ToString();
-            ViewData["IsLeader"] = false;
-            if (roleId == "1" || roleId == "2")
-            {
-                ViewData["IsLeader"] = true;
-            }
             return View("~/Views/T_XSMX/XSMXTable.cshtml", model);
         }
     }

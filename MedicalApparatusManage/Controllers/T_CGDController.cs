@@ -186,17 +186,14 @@ namespace MedicalApparatusManage.Controllers
         [CheckLogin()]
         public void Delete(System.Int32 id)
         {
-            var rCode = GetRoleCode();
+            //var rCode = GetRoleCode();
             var temp = T_CGDDomain.GetInstance().GetModelById(id);
             if (temp != null)
             {
                 if (temp.ISSH == 1)
                 {
-                    if (rCode != "1")
-                    {
-                        Response.Write("{\"statusCode\":\"300\", \"message\":\"已审批通过的数据不能删除！\"}");
-                        return;
-                    }
+                    Response.Write("{\"statusCode\":\"300\", \"message\":\"已审批通过的数据不能删除！\"}");
+                    return;
                 }
                 //如果采购单未被使用，超级管理员可删除。否则，任何人不能删除
                 Expression<Func<T_YSD, bool>> where = p => (p.CGDH == temp.CGDH);

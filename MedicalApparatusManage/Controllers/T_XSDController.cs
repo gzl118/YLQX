@@ -232,11 +232,8 @@ namespace MedicalApparatusManage.Controllers
             {
                 if (temp.XSFLAG == 1)
                 {
-                    if (rCode != "1")
-                    {
-                        Response.Write("{\"statusCode\":\"300\", \"message\":\"已审批通过的数据不能删除！\"}");
-                        return;
-                    }
+                    Response.Write("{\"statusCode\":\"300\", \"message\":\"已审批通过的数据不能删除！\"}");
+                    return;
                 }
                 //如果销售单未被使用，超级管理员可删除。否则，任何人不能删除
                 Expression<Func<T_CKD, bool>> where = p => (p.XSID == temp.XSID);
@@ -298,11 +295,12 @@ namespace MedicalApparatusManage.Controllers
                         XKZH = (cp.T_SupQY1 != null && !string.IsNullOrEmpty(cp.T_SupQY1.SupXKZBH)) ? cp.T_SupQY1.SupXKZBH : "",
                         ZCZH = cp.CPZCZ,
                         SCQYID = cp.CPSCQYID,
-                        CPPrice = cp.CPPrice,
+                        CPPrice = mxModel.XSJG,
                         SUPQYID = cp.CPGYSID,
                         SUPQYMC = (cp.T_SupQY != null && !string.IsNullOrEmpty(cp.T_SupQY.SupMC)) ? cp.T_SupQY.SupMC : "",
                         XSJG = cp.XSJG,
                         CPMC = cp.CPMC,
+                        CPNUM = mxModel.CPSL
                     });
                     return Json(resultStr);
                 }

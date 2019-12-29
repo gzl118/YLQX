@@ -9,6 +9,16 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>销售汇总</title>
+    <script type="text/javascript">
+        $(function () {
+            $("#XSHZ_SCQY").chosen({
+                search_contains: true
+            });
+            $("#XSHZ_CPID").chosen({
+                search_contains: true
+            });
+        });
+    </script>
 </head>
 <body>
     <div id="pageContent">
@@ -25,23 +35,29 @@
                                 生产企业:
                             </td>
                             <td>
-                                @Html.DropDownList("QYList", ViewData["QY"] as SelectList, "请选择", ViewData["QYList"])
+                                @Html.DropDownList("QYList", ViewData["QY"] as SelectList, "请选择", new { Value = ViewData["QYList"], id = "XSHZ_SCQY" })
+                            </td>
+                            <td>
+                                产品名称:
+                            </td>
+                            <td>
+                                @Html.DropDownList("XSHZ_CPID", ViewData["XSHZ_YLCP"] as SelectList, "请选择", new { Value = ViewData["XSHZ_CPID"], id = "XSHZ_CPID", style = "width:200px;" })
                             </td>
                             <td>
                                 销售日期:
                             </td>
                             <td>
                                 @{ string strStart = Model.StartTime.HasValue ? Model.StartTime.Value.ToString("yyyy/MM/dd") : "";
-                                 string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
+                                    string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
                                 }
-                                <input id="StartDate" name="StartTime" class="Wdate" type="text" value="@strStart"
+                                <input id="StartDate" name="StartTime" class="Wdate" type="text" autocomplete="off" value="@strStart"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
                             </td>
                             <td>
                                 至
                             </td>
                             <td>
-                                <input id="EndDate" name="EndTime" class="Wdate" type="text" value="@strEnd"
+                                <input id="EndDate" name="EndTime" class="Wdate" type="text" autocomplete="off" value="@strEnd"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', minDate: '#F{$dp.$D(\'StartDate\')}' })" />
                             </td>
 
@@ -105,22 +121,32 @@
                 </tr>
             </thead>
             <tbody id="wtlb">
-                @foreach (var item in Model.DataList)
+                @if (Model.DataList != null)
                 {
-                    <tr target="sid_user">
-                        <td>@(item.T_XSD != null && !string.IsNullOrEmpty(item.T_XSD.XSDH) ? item.T_XSD.XSDH : "")</td>
-                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPMC) ? item.T_YLCP.CPMC : "")</td>
-                        <td>@item.XSJG</td>
-                        <td>@item.CPSL</td>
-                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPDW) ? item.T_YLCP.CPDW : "")</td>
-                        <td>@(item.T_XSD != null && item.T_XSD.T_CusQY != null && !string.IsNullOrEmpty(item.T_XSD.T_CusQY.CusMC) ? item.T_XSD.T_CusQY.CusMC : "")</td>
-                        <td>@(item.T_YLCP != null && item.T_YLCP.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_YLCP.T_SupQY1.SupMC) ? item.T_YLCP.T_SupQY1.SupMC : "")</td>
-                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPGG) ? item.T_YLCP.CPGG : "")</td>
-                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPXH) ? item.T_YLCP.CPXH : "")</td>
-                        <td>@(item.T_YLCP != null && item.T_YLCP.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_YLCP.T_SupQY1.SupXKZBH) ? item.T_YLCP.T_SupQY1.SupXKZBH : "")</td>
-                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPZCZ) ? item.T_YLCP.CPZCZ : "")</td>
-                        <td>@(item.T_XSD != null && item.T_XSD.XSRQ.HasValue ? item.T_XSD.XSRQ.Value.ToString("yyyy/MM/dd") : "")</td>
-                    </tr>
+                    foreach (var item in Model.DataList)
+                    {
+                        <tr target="sid_user">
+                            <td>@(item.T_XSD != null && !string.IsNullOrEmpty(item.T_XSD.XSDH) ? item.T_XSD.XSDH : "")</td>
+                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPMC) ? item.T_YLCP.CPMC : "")</td>
+                            <td>@item.XSJG</td>
+                            <td>@item.CPSL</td>
+                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPDW) ? item.T_YLCP.CPDW : "")</td>
+                            <td>@(item.T_XSD != null && item.T_XSD.T_CusQY != null && !string.IsNullOrEmpty(item.T_XSD.T_CusQY.CusMC) ? item.T_XSD.T_CusQY.CusMC : "")</td>
+                            <td>@(item.T_YLCP != null && item.T_YLCP.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_YLCP.T_SupQY1.SupMC) ? item.T_YLCP.T_SupQY1.SupMC : "")</td>
+                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPGG) ? item.T_YLCP.CPGG : "")</td>
+                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPXH) ? item.T_YLCP.CPXH : "")</td>
+                            <td>@(item.T_YLCP != null && item.T_YLCP.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_YLCP.T_SupQY1.SupXKZBH) ? item.T_YLCP.T_SupQY1.SupXKZBH : "")</td>
+                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPZCZ) ? item.T_YLCP.CPZCZ : "")</td>
+                            <td>@(item.T_XSD != null && item.T_XSD.XSRQ.HasValue ? item.T_XSD.XSRQ.Value.ToString("yyyy/MM/dd") : "")</td>
+                        </tr>
+                    }
+                    if (Model.DataList.Count > 0 && ViewBag.TotalNum != null)
+                    {
+                        <tr>
+                            <td colspan="3">总计：</td>
+                            <td colspan="9">@ViewBag.TotalNum</td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

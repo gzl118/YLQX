@@ -1,4 +1,4 @@
-﻿@model MedicalApparatusManage.Models.T_XSDModels
+﻿@model MedicalApparatusManage.Models.T_SHDModels
 @{
     Layout = null;
 }
@@ -10,22 +10,13 @@
     <meta name="viewport" content="width=device-width" />
     <title></title>
     <script type="text/javascript" language="javascript">
-        $(function () {
-            if ($('#cgze').length > 0) {
-                Jszj();
-                if ($("#hdIsChange").val() == "1") {
-                    if (SavePrice)
-                        SavePrice();
-                }
-            }
-        });
-        function deleteXSMX(obj) {
+        function deleteCKMX(obj) {
             alertMsg.confirm("确定要删除么？", {
                 okCall: function () {
                     var guid1 = obj.getAttribute("name");
-                    $.post("/T_XSMX/Delete", { Guid: guid1 }, function (data) {
+                    $.post("/T_SHMX/Delete", { Guid: guid1 }, function (data) {
                         if (data.statusCode == "200") {
-                            $("#xsmxBox").loadUrl("/T_XSMX/XSMXTable", { id: 0, xsdh: $("#XSDH").val(), canEdit: 1, isSH: $("#hdISSH").val() });
+                            $("#ckmxCkPageBox").loadUrl("/T_SHMX/SHMXTable", { id: 0, ckdh: $("#SHDH").val(), canEdit: 0, isSH: $("#hdISSH").val() });
                             alertMsg.correct('删除成功！');
                         } else {
                             alertMsg.error('删除失败！');
@@ -34,13 +25,6 @@
                 }
             });
         }
-        function switchData(item) {
-            if (bindXSMX) {
-                var tds = $(item).find("td");
-                var mxId = tds.eq(0).text();
-                bindXSMX(mxId);
-            }
-        }
     </script>
 </head>
 <body>
@@ -48,9 +32,6 @@
         <table width="100%" layouth="280" class="table">
             <thead>
                 <tr>
-                    <th style="display:none;">
-                        销售明细ID
-                    </th>
                     <th>
                         产品编号
                     </th>
@@ -73,59 +54,68 @@
                         产品数量
                     </th>
                     <th>
+                        产品批号
+                    </th>
+                    <th>
+                        生产日期
+                    </th>
+                    <th>
+                        有效期
+                    </th>
+                    <th>
                         许可证号
                     </th>
                     <th>
                         注册证号
                     </th>
                     <th>
-                        销售单价(元)
+                        库房
                     </th>
                     <th>
-                        产品总价(元)
+                        库管
                     </th>
-                    @{if (Model.DataModel.XSFLAG != 1)
+                    @{if (Model.DataModel.ISSH != 1)
                         {
                             <th type="del">
                                 操作
                             </th>
-                        }}
+                        }
+                    }
                 </tr>
             </thead>
-            <tbody id="wtlb">
-                @if (Model.XSMXList != null)
+            <tbody>
+                @if (Model.SHMXList != null)
                 {
-                    foreach (var item in Model.XSMXList)
+                    foreach (var item in Model.SHMXList)
                     {
-                        double? cpgs = @item.CPSL;
-                        double? cpdj = @item.XSJG;
-                        double? cpzj = cpgs * cpdj;
-                        <tr target="sid_user" onclick="switchData(this)">
-                            <td style="display:none;">@item.MXID</td>
+                        <tr target="sid_user">
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPBH) ? item.T_YLCP.CPBH : "")</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPMC) ? item.T_YLCP.CPMC : "")</td>
                             <td>@(item.T_YLCP != null && item.T_YLCP.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_YLCP.T_SupQY1.SupMC) ? item.T_YLCP.T_SupQY1.SupMC : "")</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPGG) ? item.T_YLCP.CPGG : "")</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPXH) ? item.T_YLCP.CPXH : "")</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPDW) ? item.T_YLCP.CPDW : "")</td>
-                            <td>@item.CPSL</td>
+                            <td>@item.CPNUM</td>
+                            <td>@item.CPPH</td>
+                            <td>@(item.CPSCRQ.HasValue ? item.CPSCRQ.Value.ToString("yyyy/MM/dd") : "")</td>
+                            <td>@(item.CPYXQ.HasValue ? item.CPYXQ.Value.ToString("yyyy/MM/dd") : "")</td>
                             <td>@(item.T_YLCP != null && item.T_YLCP.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_YLCP.T_SupQY1.SupXKZBH) ? item.T_YLCP.T_SupQY1.SupXKZBH : "")</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPZCZ) ? item.T_YLCP.CPZCZ : "")</td>
-                            <td>@item.XSJG</td>
-                            <td>@cpzj</td>
-                            @{if (Model.DataModel.XSFLAG != 1)
+                            <td>@(item.T_CK != null && !string.IsNullOrEmpty(item.T_CK.CKMC) ? item.T_CK.CKMC : "")</td>
+                            <td>@(item.T_CK != null && !string.IsNullOrEmpty(item.T_CK.CKGLY) ? item.T_CK.CKGLY : "")</td>
+                            @{if (Model.DataModel.ISSH != 1)
                                 {
                                     <td>
-                                        <a href="javascript:void(0)" name="@item.GUID" class="btnDel" onclick="deleteXSMX(this);">删除</a>
+                                        <a href="javascript:void(0)" name="@item.GUID" class="btnDel" onclick="deleteCKMX(this);">删除</a>
                                     </td>
-                                }}
+                                }
+                            }
                         </tr>
                     }
                 }
             </tbody>
         </table>
-        <input type="hidden" value="@Model.DataModel.XSFLAG" id="hdISSH" />
-        <input type="hidden" value="@ViewBag.canEdit" id="hdIsChange" />
+        <input type="hidden" value="@Model.DataModel.ISSH" id="hdISSH" />
     </div>
 </body>
 </html>

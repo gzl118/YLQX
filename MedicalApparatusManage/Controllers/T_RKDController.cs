@@ -1,8 +1,10 @@
-﻿using MedicalApparatusManage.Domain;
+﻿using MedicalApparatusManage.Common;
+using MedicalApparatusManage.Domain;
 using MedicalApparatusManage.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -143,6 +145,16 @@ namespace MedicalApparatusManage.Controllers
         [CheckLogin()]
         public void Delete(System.Int32 id)
         {
+            var rCode = GetRoleCode();
+            var temp = T_RKDDomain.GetInstance().GetModelById(id);
+            if (temp != null)
+            {
+                if (temp.ISSH == 1)
+                {
+                    Response.Write("{\"statusCode\":\"300\", \"message\":\"已审批通过的数据不能删除！\"}");
+                    return;
+                }
+            }
             int result = T_RKDDomain.GetInstance().DeleteModelById(id);
             Response.ContentType = "text/json";
             if (result > 0)
@@ -184,99 +196,103 @@ namespace MedicalApparatusManage.Controllers
         [CheckLogin()]
         public void ExportExcel(System.Int32 id)
         {
+            #region 
             //接收需要导出的数据
-            T_RKD ckdinfo = new T_RKD();
+            //T_RKD ckdinfo = new T_RKD();
 
-            List<T_RKD> list = T_RKDDomain.GetInstance().GetListModelById(id);
-            if (list.Count > 0)
-            {
-                ckdinfo = list[0];
-            }
+            //List<T_RKD> list = T_RKDDomain.GetInstance().GetListModelById(id);
+            //if (list.Count > 0)
+            //{
+            //    ckdinfo = list[0];
+            //}
 
-            //验收单号
-            string rkysdh = ckdinfo.YSDH;
+            ////验收单号
+            //string rkysdh = ckdinfo.YSDH;
 
-            //供货企业名称
-            T_RKMX rkdinfo = new T_RKMX();
-            List<T_RKMX> rkmxList = T_RKMXDomain.GetInstance().GetListModelById(id);
-            if (rkmxList.Count > 0)
-            {
-                rkdinfo = rkmxList[0];
-            }
-            string ghqy = rkdinfo.T_SupQY == null ? "" : rkdinfo.T_SupQY.SupMC;
+            ////供货企业名称
+            //T_RKMX rkdinfo = new T_RKMX();
+            //List<T_RKMX> rkmxList = T_RKMXDomain.GetInstance().GetListModelById(id);
+            //if (rkmxList.Count > 0)
+            //{
+            //    rkdinfo = rkmxList[0];
+            //}
+            //string ghqy = rkdinfo.T_SupQY == null ? "" : rkdinfo.T_SupQY.SupMC;
 
 
-            //命名导出表格的StringBuilder变量
-            StringBuilder sHtml = new StringBuilder(string.Empty);
-            //打印表头
-            sHtml.Append("<table border=\"0\" width=\"100%\">"); // width=\"100%\"
-            sHtml.Append("<tr height=\"40\"><td colspan=\"10\" align=\"center\" style='font-size:24px'><b>入库单" + "</b></td></tr>");
-            sHtml.Append("<tr height=\"40\"><td colspan=\"8\" align=\"left\">供货企业：" + ghqy + "</td><td align=\"right\">日期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\">入库单号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
-            sHtml.Append("</table>");
-            sHtml.Append("<table border=\"1\" width=\"100%\">");
-            //sHtml.Append("<tr height=\"40\"><td colspan=\"10\" align=\"center\" style='font-size:24px'><b>出库单" + "</b></td></tr>");
-            //sHtml.Append("<tr height=\"40\"><td colspan=\"8\" align=\"left\">&nbsp;购买单位：" + xsqyName + "</td><td align=\"right\">日期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\">单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
-            //打印列名
-            //sHtml.Append("<tr height=\"30\" align=\"center\" ><td style='width:150px;'>产品名称</td><td style='width:60px;'>产品规格</td><td style='width:150px;'>生产厂家</td><td  style='width:60px;'>生产日期</td><td  style='width:30px;'>单位</td><td style='width:30px;'>数量</td><td style='width:60px;'>单价</td>"
-            //    + "<td style='width:80px;'>金额</td><td style='width:80px;'>产品批号</td><td style='width:60px;'>产品有效期</td><td style='width:100px;'>经营许可证号</td><td style='width:100px;'>注册证号</td></tr>");
-            sHtml.Append("<tr height=\"30\" align=\"center\" ><td>产品名称</td><td>产品规格</td><td>生产厂家</td><td>生产日期</td><td>单位</td><td>数量</td><td>单价</td>"
-                + "<td>金额</td><td>产品批号</td><td>产品有效期</td><td>经营许可证号</td><td>注册证号</td></tr>");
-            //合计
-            double total = 0.0;
-            for (int i = 0; i < rkmxList.Count; i++)
-            {
-                T_RKMX rkmx = rkmxList[i];
-                //产品名称
-                string cpName = rkmx.T_YLCP.CPMC;
-                //规格
-                string cpGg = rkmx.T_YLCP.CPGG ?? "";
-                //单位
-                string cpDw = rkmx.T_YLCP.CPDW ?? "";
-                //数量
-                double cpDj = rkmx.CPNUM ?? 0;
-                //产品批号
-                string scPh = rkmx.CPPH ?? "";
-                //产品有效期
-                string yxq = "";
-                if (rkmx.CPYXQ != null)
-                {
-                    yxq = rkmx.CPYXQ.Value.ToString("yyyyMMdd");
-                }
-                var scrq = "";
-                if (rkmx.CPSCRQ != null)
-                {
-                    scrq = rkmx.CPSCRQ.Value.ToString("yyyyMMdd");
-                }
+            ////命名导出表格的StringBuilder变量
+            //StringBuilder sHtml = new StringBuilder(string.Empty);
+            ////打印表头
+            //sHtml.Append("<table border=\"0\" width=\"100%\">"); // width=\"100%\"
+            //sHtml.Append("<tr height=\"40\"><td colspan=\"10\" align=\"center\" style='font-size:24px'><b>入库单" + "</b></td></tr>");
+            //sHtml.Append("<tr height=\"40\"><td colspan=\"8\" align=\"left\">供货企业：" + ghqy + "</td><td align=\"right\">日期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\">入库单号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
+            //sHtml.Append("</table>");
+            //sHtml.Append("<table border=\"1\" width=\"100%\">");
+            ////sHtml.Append("<tr height=\"40\"><td colspan=\"10\" align=\"center\" style='font-size:24px'><b>出库单" + "</b></td></tr>");
+            ////sHtml.Append("<tr height=\"40\"><td colspan=\"8\" align=\"left\">&nbsp;购买单位：" + xsqyName + "</td><td align=\"right\">日期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\">单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
+            ////打印列名
+            ////sHtml.Append("<tr height=\"30\" align=\"center\" ><td style='width:150px;'>产品名称</td><td style='width:60px;'>产品规格</td><td style='width:150px;'>生产厂家</td><td  style='width:60px;'>生产日期</td><td  style='width:30px;'>单位</td><td style='width:30px;'>数量</td><td style='width:60px;'>单价</td>"
+            ////    + "<td style='width:80px;'>金额</td><td style='width:80px;'>产品批号</td><td style='width:60px;'>产品有效期</td><td style='width:100px;'>经营许可证号</td><td style='width:100px;'>注册证号</td></tr>");
+            //sHtml.Append("<tr height=\"30\" align=\"center\" ><td>产品名称</td><td>产品规格</td><td>生产厂家</td><td>生产日期</td><td>单位</td><td>数量</td><td>单价</td>"
+            //    + "<td>金额</td><td>产品批号</td><td>产品有效期</td><td>经营许可证号</td><td>注册证号</td></tr>");
+            ////合计
+            //double total = 0.0;
+            //for (int i = 0; i < rkmxList.Count; i++)
+            //{
+            //    T_RKMX rkmx = rkmxList[i];
+            //    //产品名称
+            //    string cpName = rkmx.T_YLCP.CPMC;
+            //    //规格
+            //    string cpGg = rkmx.T_YLCP.CPGG ?? "";
+            //    //单位
+            //    string cpDw = rkmx.T_YLCP.CPDW ?? "";
+            //    //数量
+            //    double cpDj = rkmx.CPNUM ?? 0;
+            //    //产品批号
+            //    string scPh = rkmx.CPPH ?? "";
+            //    //产品有效期
+            //    string yxq = "";
+            //    if (rkmx.CPYXQ != null)
+            //    {
+            //        yxq = rkmx.CPYXQ.Value.ToString("yyyyMMdd");
+            //    }
+            //    var scrq = "";
+            //    if (rkmx.CPSCRQ != null)
+            //    {
+            //        scrq = rkmx.CPSCRQ.Value.ToString("yyyyMMdd");
+            //    }
 
-                //生产企业
-                string cpScqy = rkdinfo.T_SupQY1 == null ? "" : rkdinfo.T_SupQY1.SupMC;
-                //单价
-                double cpPrice = rkmx.T_YLCP.CPPrice ?? 0.0;
-                //产品总价
-                double rowTotal = cpDj * cpPrice;
+            //    //生产企业
+            //    string cpScqy = rkdinfo.T_SupQY1 == null ? "" : rkdinfo.T_SupQY1.SupMC;
+            //    //单价
+            //    double cpPrice = rkmx.T_YLCP.CPPrice ?? 0.0;
+            //    //产品总价
+            //    double rowTotal = cpDj * cpPrice;
 
-                total = total + rowTotal;
-                //注册证号
-                string cpzczh = rkmx.T_YLCP.CPZCZ;
-                //经营许可证号
-                string xkzbh = rkmx.T_SupQY.SupXKZBH;
-                sHtml.Append("<tr height=\"30\" align=\"center\"><td>" + cpName
-                            + "</td><td>" + cpGg + "</td><td>" + cpScqy
-                             + "</td><td>" + scrq
-                            + "</td><td>" + cpDw + "</td><td>" + cpDj.ToString()
-                            + "</td><td>" + cpPrice.ToString() + "</td><td>" + rowTotal.ToString() + "</td><td>" + scPh + "</td><td>" + yxq
-                            + "</td><td>" + xkzbh
-                            + "</td><td>" + cpzczh
-                            + "</td></tr>");
-            }
-            //打印表尾
-            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"4\">合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"8\">（小写）" + total.ToString("0.000") + "</td></tr>");
-            sHtml.Append("</table>");
-            sHtml.Append("<table  border=\"0\" width=\"100%\">");
-            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"7\" align=\"left\">制单人：&nbsp;&nbsp</td><td align=\"right\">审核人：&nbsp;&nbsp</td><td align=\"right\">采购员：&nbsp;&nbsp</td><td align=\"center\">质检员：&nbsp;&nbsp</td></tr>");
-            sHtml.Append("</table>");
+            //    total = total + rowTotal;
+            //    //注册证号
+            //    string cpzczh = rkmx.T_YLCP.CPZCZ;
+            //    //经营许可证号
+            //    string xkzbh = rkmx.T_SupQY.SupXKZBH;
+            //    sHtml.Append("<tr height=\"30\" align=\"center\"><td>" + cpName
+            //                + "</td><td>" + cpGg + "</td><td>" + cpScqy
+            //                 + "</td><td>" + scrq
+            //                + "</td><td>" + cpDw + "</td><td>" + cpDj.ToString()
+            //                + "</td><td>" + cpPrice.ToString() + "</td><td>" + rowTotal.ToString() + "</td><td>" + scPh + "</td><td>" + yxq
+            //                + "</td><td>" + xkzbh
+            //                + "</td><td>" + cpzczh
+            //                + "</td></tr>");
+            //}
+            ////打印表尾
+            //sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"5\">合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"8\">（小写）" + total.ToString("0.000") + "</td></tr>");
+            //sHtml.Append("</table>");
+            //sHtml.Append("<table  border=\"0\" width=\"100%\">");
+            //sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"7\" align=\"left\">制单人：&nbsp;&nbsp</td><td align=\"right\">审核人：&nbsp;&nbsp</td><td align=\"right\">采购员：&nbsp;&nbsp</td><td align=\"center\">质检员：&nbsp;&nbsp</td></tr>");
+            //sHtml.Append("</table>");
+
+            #endregion
+            var str = ExportExcelPR(id);
             //调用输出Excel表的方法
-            ExportToExcel("application/vnd.ms-excel", "入库单.xls", sHtml.ToString());
+            ExportToExcel("application/vnd.ms-excel", "入库单.xls", str);
         }
 
         [CheckLogin()]
@@ -326,11 +342,6 @@ namespace MedicalApparatusManage.Controllers
             sHtml.Append("<tr height=\"40\"><td colspan=\"8\" align=\"left\">供货企业：" + ghqy + "</td><td align=\"right\">日期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\">入库单号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
             sHtml.Append("</table>");
             sHtml.Append("<table border=\"1\" width=\"100%\">"); // width=\"100%\"
-            //sHtml.Append("<tr height=\"40\"><td colspan=\"10\" align=\"center\" style='font-size:24px'><b>出库单" + "</b></td></tr>");
-            //sHtml.Append("<tr height=\"40\"><td colspan=\"8\" align=\"left\">&nbsp;购买单位：" + xsqyName + "</td><td align=\"right\">日期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\">单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
-            //打印列名
-            //sHtml.Append("<tr height=\"30\" align=\"center\" ><td style='width:150px;'>产品名称</td><td style='width:60px;'>产品规格</td><td style='width:150px;'>生产厂家</td><td  style='width:60px;'>生产日期</td><td  style='width:30px;'>单位</td><td style='width:30px;'>数量</td><td style='width:60px;'>单价</td>"
-            //    + "<td style='width:80px;'>金额</td><td style='width:80px;'>产品批号</td><td style='width:60px;'>产品有效期</td><td style='width:100px;'>经营许可证号</td><td style='width:100px;'>注册证号</td></tr>");
             sHtml.Append("<tr height=\"30\" align=\"center\" ><td>产品名称</td><td>产品规格</td><td>生产厂家</td><td>生产日期</td><td>单位</td><td>数量</td><td>单价</td>"
                 + "<td>金额</td><td>产品批号</td><td>产品有效期</td><td>经营许可证号</td><td>注册证号</td></tr>");
 
@@ -383,10 +394,19 @@ namespace MedicalApparatusManage.Controllers
                             + "</td></tr>");
             }
             //打印表尾
-            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"4\">合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"8\">（小写）" + total.ToString("0.000") + "</td></tr>");
+            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"5\">合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"8\">（小写）" + total.ToString("0.000") + "</td></tr>");
             sHtml.Append("</table>");
             sHtml.Append("<table  border=\"0\" width=\"100%\">"); // width =\"100%\"
-            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"7\" align=\"left\">制单人：&nbsp;&nbsp</td><td align=\"right\">审核人：&nbsp;&nbsp</td><td align=\"right\">采购员：&nbsp;&nbsp</td><td align=\"center\">质检员：&nbsp;&nbsp</td></tr>");
+            Expression<Func<T_YSD, bool>> where = p => p.YSDH == ckdinfo.YSDH;
+            var ysd = T_YSDDomain.GetInstance().GetAllModels<int>(where).FirstOrDefault();
+            var cgdModel = new T_CGD();
+            if (ysd != null && ysd.YSID != 0)
+            {
+                Expression<Func<T_CGD, bool>> where1 = p => p.CGDH == ysd.CGDH;
+                cgdModel = T_CGDDomain.GetInstance().GetAllModels<int>(where1).FirstOrDefault();
+            }
+
+            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"2\" align=\"left\">制单人：&nbsp;&nbsp" + ckdinfo.RKCJR + "</td><td align=\"left\" colspan=\"4\">审核人：&nbsp;&nbsp" + cgdModel.SHR + "</td><td align=\"left\" colspan=\"4\">采购员：&nbsp;&nbsp" + cgdModel.CGPERSON + "</td><td align=\"left\" colspan=\"3\">质检员：&nbsp;&nbsp</td></tr>");
             sHtml.Append("</table>");
             return sHtml.ToString();
         }

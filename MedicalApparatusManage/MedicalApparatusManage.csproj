@@ -1967,7 +1967,9 @@
     <Compile Include="Controllers\T_QYZZController.cs" />
     <Compile Include="Controllers\T_RKDController.cs" />
     <Compile Include="Controllers\T_RKMXController.cs" />
+    <Compile Include="Controllers\T_SHDController.cs" />
     <Compile Include="Controllers\T_SHFWController.cs" />
+    <Compile Include="Controllers\T_SHMXController.cs" />
     <Compile Include="Controllers\T_SJZDFLController.cs" />
     <Compile Include="Controllers\T_SJZDLXController.cs" />
     <Compile Include="Controllers\T_SupPersonController.cs" />
@@ -2013,7 +2015,9 @@
     <Compile Include="Domain\T_QYZZDomain.cs" />
     <Compile Include="Domain\T_RKDDomain.cs" />
     <Compile Include="Domain\T_RKMXDomain.cs" />
+    <Compile Include="Domain\T_SHDDomain.cs" />
     <Compile Include="Domain\T_SHFWDomain.cs" />
+    <Compile Include="Domain\T_SHMXDomain.cs" />
     <Compile Include="Domain\T_SJZDFLDomain.cs" />
     <Compile Include="Domain\T_SJZDLXDomain.cs" />
     <Compile Include="Domain\T_SupPersonDomain.cs" />
@@ -2078,7 +2082,9 @@
     <Compile Include="Models\T_QYZZModels.cs" />
     <Compile Include="Models\T_RKDModels.cs" />
     <Compile Include="Models\T_RKMXModels.cs" />
+    <Compile Include="Models\T_SHDModels.cs" />
     <Compile Include="Models\T_SHFWModels.cs" />
+    <Compile Include="Models\T_SHMXModels.cs" />
     <Compile Include="Models\T_SJZDFLModels.cs" />
     <Compile Include="Models\T_SJZDLXModels.cs" />
     <Compile Include="Models\T_SupPersonModels.cs" />
@@ -2187,7 +2193,13 @@
     <Compile Include="T_RKMX.cs">
       <DependentUpon>MedicalApparatusDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="T_SHD.cs">
+      <DependentUpon>MedicalApparatusDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="T_SHFW.cs">
+      <DependentUpon>MedicalApparatusDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_SHMX.cs">
       <DependentUpon>MedicalApparatusDB.tt</DependentUpon>
     </Compile>
     <Compile Include="T_SJZDFL.cs">
@@ -2373,6 +2385,10 @@
     <Content Include="Views\T_CKMX\CKMXTable.cshtml" />
     <Content Include="Views\T_PackingUnit\Index.cshtml" />
     <Content Include="Views\T_PackingUnit\Save.cshtml" />
+    <Content Include="Views\T_SHD\Details.cshtml" />
+    <Content Include="Views\T_SHD\Index.cshtml" />
+    <Content Include="Views\T_SHD\Save.cshtml" />
+    <Content Include="Views\T_SHD\SHMXTable.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2386,6 +2402,7 @@
     <Folder Include="UploadFiles\本企业人员身份证\" />
     <Folder Include="UploadFiles\购货商资料\" />
     <Folder Include="Views\Home\" />
+    <Folder Include="Views\T_SHMX\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

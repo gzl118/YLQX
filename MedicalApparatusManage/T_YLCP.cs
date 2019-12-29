@@ -24,6 +24,7 @@ namespace MedicalApparatusManage
             this.T_XSMX = new HashSet<T_XSMX>();
             this.T_YLCPZZ = new HashSet<T_YLCPZZ>();
             this.T_YSMX = new HashSet<T_YSMX>();
+            this.T_SHMX = new HashSet<T_SHMX>();
         }
     
         public int CPID { get; set; }
@@ -64,5 +65,6 @@ namespace MedicalApparatusManage
         public virtual ICollection<T_XSMX> T_XSMX { get; set; }
         public virtual ICollection<T_YLCPZZ> T_YLCPZZ { get; set; }
         public virtual ICollection<T_YSMX> T_YSMX { get; set; }
+        public virtual ICollection<T_SHMX> T_SHMX { get; set; }
     }
 }

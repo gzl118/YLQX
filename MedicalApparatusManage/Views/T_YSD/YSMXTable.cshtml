@@ -9,16 +9,20 @@
     <title></title>
     <script type="text/javascript" language="javascript">
         function deleteYSMX(obj) {
-            var guid1 = obj.getAttribute("name");
-            $.post("/T_YSD/DeleteYSMX", { Guid: guid1 }, function (data) {
-                if (data.statusCode == "200") {
-                    //刷新table
-                    $("#ysmxBox").loadUrl("/T_YSD/YSMXTable", { id: 0, ysdh: $("#YSDH").val(), canEdit: 1 });
-                    alertMsg.correct('删除成功！');
-                } else {
-                    alertMsg.error('删除失败！');
+            alertMsg.confirm("确定要删除么？", {
+                okCall: function () {
+                    var guid1 = obj.getAttribute("name");
+                    $.post("/T_YSD/DeleteYSMX", { Guid: guid1 }, function (data) {
+                        if (data.statusCode == "200") {
+                            //刷新table
+                            $("#ysmxBox").loadUrl("/T_YSD/YSMXTable", { id: 0, ysdh: $("#YSDH").val(), canEdit: 1 });
+                            alertMsg.correct('删除成功！');
+                        } else {
+                            alertMsg.error('删除失败！');
+                        }
+                    }, "json");
                 }
-            }, "json");
+            });
         }
         function switchData(item) {
             if (bindMX) {

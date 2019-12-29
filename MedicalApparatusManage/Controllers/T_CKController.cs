@@ -2,6 +2,7 @@
 using MedicalApparatusManage.Models;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -154,13 +155,24 @@ namespace MedicalApparatusManage.Controllers
                 T_KC kc = new T_KC();
                 kc.CPID = int.Parse(id);
                 var list = T_KCDomain.GetInstance().GetAllT_KC(kc);
-                foreach (var item in list)
+                if (list != null && list.Count > 0)
                 {
-                    result.Append(",[");
-                    result.Append("\"" + item.T_CK.CKID + "\",");
-                    result.Append("\"" + item.T_CK.CKMC + "\"");
-                    result.Append("]");
+                    Hashtable ht = new Hashtable();
+                    foreach (var item in list)
+                    {
+                        if (!ht.ContainsKey(item.T_CK.CKID))
+                            ht.Add(item.T_CK.CKID, item.T_CK.CKMC);
+
+                    }
+                    foreach (var key in ht.Keys)
+                    {
+                        result.Append(",[");
+                        result.Append("\"" + key + "\",");
+                        result.Append("\"" + ht[key].ToString() + "\"");
+                        result.Append("]");
+                    }
                 }
+
                 result.Append("]");
                 result1 = result.ToString();
             }

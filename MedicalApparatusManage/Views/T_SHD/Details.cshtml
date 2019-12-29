@@ -1,4 +1,4 @@
-﻿@model MedicalApparatusManage.Models.T_CKDModels
+﻿@model MedicalApparatusManage.Models.T_SHDModels
 @{
     Layout = null;
 }
@@ -9,7 +9,7 @@
     <title>Details</title>
     <script type="text/javascript" language="javascript">
         function ExportCkd() {
-            document.location.href = "/T_CKD/ExportExcel/" + $("#CkidMain").val();
+            document.location.href = "/T_SHD/ExportExcel/" + $("#shidMain").val();
         };
         function prickd() {
             $("#printckd").jqprint();
@@ -20,15 +20,15 @@
     <div class="pageContent">
         <div class="pageFormContent" layouth="58">
             <div id="printckd">@Html.Raw(ViewData["ParaStr"].ToString())</div>
-            @Html.HiddenFor(m => m.DataModel.CKID, new { ID = "CkidMain", Name = "DataModel.CKID" })
+            @Html.HiddenFor(m => m.DataModel.SHID, new { ID = "shidMain", Name = "DataModel.SHID" })
         </div>
         <div class="formBar">
             <ul>
                 <li>
                     <div class="button">
                         <div class="buttonContent">
-                            <button value="导出出库单" onclick="ExportCkd();">
-                                导出出库单
+                            <button value="导出损耗单" onclick="ExportCkd();">
+                                导出损耗单
                             </button>
                         </div>
                     </div>
@@ -36,8 +36,8 @@
                 <li>
                     <div class="button">
                         <div class="buttonContent">
-                            <button value="打印出库单" onclick="prickd();">
-                                打印出库单
+                            <button value="打印损耗单" onclick="prickd();">
+                                打印损耗单
                             </button>
                         </div>
                     </div>

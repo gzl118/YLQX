@@ -12,23 +12,22 @@ namespace MedicalApparatusManage
     using System;
     using System.Collections.Generic;
     
-    public partial class T_CKMX
+    public partial class T_SHMX
     {
-        public int CKMID { get; set; }
-        public int CPID { get; set; }
-        public int CKID { get; set; }
-        public Nullable<int> CKDID { get; set; }
-        public Nullable<double> CPNUM { get; set; }
-        public string BZ { get; set; }
+        public int SHMXID { get; set; }
+        public Nullable<int> SHID { get; set; }
+        public Nullable<int> CPID { get; set; }
+        public Nullable<int> CKID { get; set; }
+        public Nullable<int> CPNUM { get; set; }
+        public string CPPH { get; set; }
         public string GUID { get; set; }
         public Nullable<double> CPPRICE { get; set; }
-        public string CPPH { get; set; }
+        public Nullable<double> CPTPRICE { get; set; }
         public Nullable<System.DateTime> CPSCRQ { get; set; }
         public Nullable<System.DateTime> CPYXQ { get; set; }
-        public string CYTJ { get; set; }
     
         public virtual T_CK T_CK { get; set; }
-        public virtual T_CKD T_CKD { get; set; }
+        public virtual T_SHD T_SHD { get; set; }
         public virtual T_YLCP T_YLCP { get; set; }
     }
 }

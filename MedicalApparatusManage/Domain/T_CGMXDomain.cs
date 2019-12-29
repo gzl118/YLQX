@@ -34,10 +34,17 @@ namespace MedicalApparatusManage.Domain
                 where = where.And(p => p.T_SupQY1 != null && p.T_SupQY1.SupID == info.T_SupQY1.SupID);
             }
 
-            if (startTime != null && endTime != null)
+            if (startTime != null)
             {
                 where = where.And(p => p.T_CGD.CGRQ >= startTime.Value);
+            }
+            if (endTime != null)
+            {
                 where = where.And(p => p.T_CGD.CGRQ <= endTime.Value);
+            }
+            if (info.CPID != 0)
+            {
+                where = where.And(p => p.CPID == info.CPID);
             }
             Func<T_CGMX, System.Int32> order = p => p.CPID;
             return GetPageInfo<System.Int32>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);

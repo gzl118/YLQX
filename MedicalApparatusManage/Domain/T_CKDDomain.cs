@@ -33,13 +33,16 @@ namespace MedicalApparatusManage.Domain
             {
                 where = where.And(p => p.CKDH.Contains(info.CKDH));
             }
-            if (startTime != null && endTime != null)
+            if (startTime != null)
             {
                 where = where.And(p => p.CHRQ >= startTime.Value);
+            }
+            if (endTime != null)
+            {
                 where = where.And(p => p.CHRQ <= endTime.Value);
             }
-            Func<T_CKD, System.Int32> order = p => p.CKID;
-            return GetPageInfo<System.Int32>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);
+            Func<T_CKD, System.String> order = p => p.CKDH;
+            return GetPageInfo<System.String>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);
         }
 
         public List<T_CKD> GetAllT_CKD(T_CKD info)

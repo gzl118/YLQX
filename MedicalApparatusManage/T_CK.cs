@@ -20,6 +20,7 @@ namespace MedicalApparatusManage
             this.T_KC = new HashSet<T_KC>();
             this.T_RKMX = new HashSet<T_RKMX>();
             this.T_THMX = new HashSet<T_THMX>();
+            this.T_SHMX = new HashSet<T_SHMX>();
         }
     
         public int CKID { get; set; }
@@ -37,5 +38,6 @@ namespace MedicalApparatusManage
         public virtual ICollection<T_KC> T_KC { get; set; }
         public virtual ICollection<T_RKMX> T_RKMX { get; set; }
         public virtual ICollection<T_THMX> T_THMX { get; set; }
+        public virtual ICollection<T_SHMX> T_SHMX { get; set; }
     }
 }

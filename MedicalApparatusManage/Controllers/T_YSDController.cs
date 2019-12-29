@@ -159,33 +159,34 @@ namespace MedicalApparatusManage.Controllers
         [CheckLogin()]
         public void Delete(System.Int32 id)
         {
-            var rCode = GetRoleCode();
-            if (rCode != "1" && rCode != "2")
-            {
-                Response.Write("{\"statusCode\":\"300\", \"message\":\"该数据不能删除！\"}");
-                return;
-            }
+            //var rCode = GetRoleCode();
+            //var temp = T_YSDDomain.GetInstance().GetModelById(id);
+            //if (temp != null)
+            //{
+            //    Response.Write("{\"statusCode\":\"300\", \"message\":\"该数据不能删除！\"}");
+            //    return;
+            //}
             var ysdModel = new T_YSD();
             if (id != 0)
             {
                 ysdModel = T_YSDDomain.GetInstance().GetModelById(id);
-            }
-            if (ysdModel != null)
-            {
-                //如果验收单未被使用，管理员、超级管理员可删除。否则，任何人不能删除
-                Expression<Func<T_RKD, bool>> where = p => (p.YSDH == ysdModel.YSDH);
-                var lst = T_RKDDomain.GetInstance().GetAllModels<int>(where);
-                if (lst != null && lst.Count > 0)
+                if (ysdModel != null)
                 {
-                    Response.Write("{\"statusCode\":\"300\", \"message\":\"该验收单单已存在入库单，不能删除！\"}");
-                    return;
-                }
-                if (!string.IsNullOrEmpty(ysdModel.YSBG))
-                {
-                    string filePath = Path.Combine(Server.MapPath("~/UploadFiles/"), "购货商资料", ysdModel.YSBG);
-                    if (System.IO.File.Exists(filePath))
+                    //如果验收单未被使用，管理员、超级管理员可删除。否则，任何人不能删除
+                    Expression<Func<T_RKD, bool>> where = p => (p.YSDH == ysdModel.YSDH);
+                    var lst = T_RKDDomain.GetInstance().GetAllModels<int>(where);
+                    if (lst != null && lst.Count > 0)
                     {
-                        System.IO.File.Delete(filePath);
+                        Response.Write("{\"statusCode\":\"300\", \"message\":\"该验收单单已存在入库单，不能删除！\"}");
+                        return;
+                    }
+                    if (!string.IsNullOrEmpty(ysdModel.YSBG))
+                    {
+                        string filePath = Path.Combine(Server.MapPath("~/UploadFiles/"), "购货商资料", ysdModel.YSBG);
+                        if (System.IO.File.Exists(filePath))
+                        {
+                            System.IO.File.Delete(filePath);
+                        }
                     }
                 }
             }

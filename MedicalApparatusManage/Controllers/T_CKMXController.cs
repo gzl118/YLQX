@@ -338,7 +338,14 @@ namespace MedicalApparatusManage.Controllers
             {
                 model.CKMXList = T_CKMXDomain.GetInstance().GetT_CKMXByCkdh(ckdh);
             }
+            model.RoleCode = GetRoleCode();
+            model.DataModel = new T_CKD();
+            model.DataModel.CKID = id;
             return View("~/Views/T_CKMX/CKMXTable.cshtml", model);
+        }
+        private string GetRoleCode()
+        {
+            return Session["RoleCode"] == null ? "" : Session["RoleCode"].ToString();
         }
     }
 }
