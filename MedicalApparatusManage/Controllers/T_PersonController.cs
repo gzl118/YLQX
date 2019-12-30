@@ -47,6 +47,7 @@ namespace MedicalApparatusManage.Controllers
                 {
                     evalModel.DataModel.PsMZ = strName;
                 }
+                ViewData["strName"] = strName;
             }
 
             if (Request["strCode"] != null)
@@ -56,6 +57,7 @@ namespace MedicalApparatusManage.Controllers
                 {
                     evalModel.DataModel.PsSFZ = strCode;
                 }
+                ViewData["strCode"] = strCode;
             }
 
             evalModel.DataList = T_PersonDomain.GetInstance().PageT_Person(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, out pagecount, out resultCount);
@@ -74,10 +76,10 @@ namespace MedicalApparatusManage.Controllers
             T_WhsQYModels whsQymode = new T_WhsQYModels();
 
             whsQymode.DataModel = whsQymode.DataModel ?? new T_WhsQY();
-          
+
             whsQymode.DataList = T_WhsQYDomain.GetInstance().GetAllT_WhsQY(whsQymode.DataModel);
 
-            ViewData["WHSQY"] = new SelectList(whsQymode.DataList,"WhsID","WhsMC","请选择");
+            ViewData["WHSQY"] = new SelectList(whsQymode.DataList, "WhsID", "WhsMC", "请选择");
 
             model.DataModel = new T_Person();
             if (id != 0)
@@ -91,14 +93,14 @@ namespace MedicalApparatusManage.Controllers
             list.Add(new SelectListItem { Text = "男", Value = "男" });
             list.Add(new SelectListItem { Text = "女", Value = "女" });
 
-            ViewData["XB"] = new SelectList(list, "Value","Text","请选择");
+            ViewData["XB"] = new SelectList(list, "Value", "Text", "请选择");
 
             //加载学历类型
             List<SelectListItem> xlList = new List<SelectListItem>();
-            xlList.Add(new SelectListItem{Text="大专",Value="大专"});
-            xlList.Add(new SelectListItem{Text="本科",Value="本科"});
-            xlList.Add(new SelectListItem{Text="硕士",Value="硕士"});
-            xlList.Add(new SelectListItem{Text="博士",Value="博士"});
+            xlList.Add(new SelectListItem { Text = "大专", Value = "大专" });
+            xlList.Add(new SelectListItem { Text = "本科", Value = "本科" });
+            xlList.Add(new SelectListItem { Text = "硕士", Value = "硕士" });
+            xlList.Add(new SelectListItem { Text = "博士", Value = "博士" });
 
             ViewData["XL"] = new SelectList(xlList, "Value", "Text", "请选择");
 
@@ -150,7 +152,7 @@ namespace MedicalApparatusManage.Controllers
             {
                 directory = Path.Combine(Server.MapPath("~/UploadFiles/"), "本企业人员身份证扫描件");
             }
-            else 
+            else
             {
                 directory = Path.Combine(Server.MapPath("~/UploadFiles/"), "本企业人员资质");
             }
@@ -165,7 +167,7 @@ namespace MedicalApparatusManage.Controllers
             string path = directory + "\\" + filename;
             Filedata.SaveAs(path);
             return Json(new { status = "OK", filename = filename });
-        }    
+        }
 
         [HttpPost]
         [CheckLogin()]

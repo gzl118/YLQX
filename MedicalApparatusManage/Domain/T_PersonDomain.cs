@@ -29,14 +29,14 @@ namespace MedicalApparatusManage.Domain
         public List<T_Person> PageT_Person(T_Person info, DateTime? startTime, DateTime? endTime, int pageIndex, int pageSize, out int pageCount, out int totalRecord)
         {
             Expression<Func<T_Person, bool>> where = PredicateBuilder.True<T_Person>();
-            if(!String.IsNullOrEmpty(info.PsMZ))
+            if (!String.IsNullOrEmpty(info.PsMZ))
             {
-                where = where.And(p => p.PsMZ.Contains(info.PsMZ.Trim()));
+                where = where.And(p => p.PsMZ != null && p.PsMZ.Contains(info.PsMZ.Trim()));
             }
 
-            if(!String.IsNullOrEmpty(info.PsSFZ))
+            if (!String.IsNullOrEmpty(info.PsSFZ))
             {
-                where = where.And(p => p.PsSFZ.Contains(info.PsSFZ.Trim()));
+                where = where.And(p => p.PsSFZ != null && p.PsSFZ.Contains(info.PsSFZ.Trim()));
             }
             Func<T_Person, System.Int32> order = p => p.PsID;
             return GetPageInfo<System.Int32>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);
@@ -45,10 +45,10 @@ namespace MedicalApparatusManage.Domain
         public List<T_Person> GetAllT_Person(T_Person info)
         {
             Expression<Func<T_Person, bool>> where = PredicateBuilder.True<T_Person>();
-            if(info.PsQYID != null && info.PsQYID != 0)
+            if (info.PsQYID != null && info.PsQYID != 0)
             {
                 int iCompanyId = (int)info.PsQYID;
-                where =  where.And(p => p.PsQYID == iCompanyId);
+                where = where.And(p => p.PsQYID == iCompanyId);
             }
             return base.GetAllModels<System.Int32>(where);
         }

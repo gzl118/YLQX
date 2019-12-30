@@ -263,10 +263,13 @@
                             @*@Html.TextBoxFor(m => m.DataModel.WhsJYFW, new { name = "WhsJYFW", style = "width:81.3%;" })*@
                             @*@Html.DropDownList("JYList", ViewData["JYFW"] as SelectList, "请选择")*@
                             <select id="example_tem" name="AuditStatus" multiple="multiple" style="width: 300px">
-                                @foreach (var item in Model.JYFWList)
+                                @if (Model.JYFWList != null)
                                 {
-                                    <option value="@item.FWBM  @item.FWMC">@item.FWBM  @item.FWMC</option>
-                                    @*<option value="1" selected="selected">6801 基础外科手术器械</option>*@
+                                    foreach (var item in Model.JYFWList)
+                                    {
+                                        <option value="@item.FWBM  @item.FWMC">@item.FWBM  @item.FWMC</option>
+                                        @*<option value="1" selected="selected">6801 基础外科手术器械</option>*@
+                                    }
                                 }
                             </select>
                         </div>
@@ -370,15 +373,18 @@
                     <legend>资质列表</legend>
                     <table width="100%" layouth="280" class="table">
                         <tbody id="wtlb">
-                            @foreach (var item in Model.CusQYZZList)
+                            @if (Model.CusQYZZList != null)
                             {
-                                <tr target="sid_user">
-                                    <td><a href="/UploadFiles/购货企业资质/@item.ZZFJ" target="_blank">@item.ZZFJ</a></td>
-                                    @if (Model.RoleCode == "1" || Model.DataModel.CusStatus != 1)
-                                    {
-                                        <td><a href="javascript:void(0)" class="btnDel" onclick="deleteQYZZ(this);">删除</a></td>
-                                    }
-                                </tr>
+                                foreach (var item in Model.CusQYZZList)
+                                {
+                                    <tr target="sid_user">
+                                        <td><a href="/UploadFiles/购货企业资质/@item.ZZFJ" target="_blank">@item.ZZFJ</a></td>
+                                        @if (Model.RoleCode == "1" || Model.DataModel.CusStatus != 1)
+                                        {
+                                            <td><a href="javascript:void(0)" class="btnDel" onclick="deleteQYZZ(this);">删除</a></td>
+                                        }
+                                    </tr>
+                                }
                             }
                         </tbody>
                     </table>

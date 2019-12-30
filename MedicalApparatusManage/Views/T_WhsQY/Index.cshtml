@@ -16,9 +16,9 @@
     <div id="pageContent">
         <div class="panelBar" id="EntLimitMenu">
             <ul class="toolBar">
-                <li><a class="add" href="/T_WhsQY/Save/0/Add" target="dialog" mask="true" title="新增" width="1050" height="540"><span>新增</span></a></li>
+                @*<li><a class="add" href="/T_WhsQY/Save/0/Add" target="dialog" mask="true" title="新增" width="1050" height="540"><span>新增</span></a></li>*@
                 @*<li> <a class="edit" href="/T_WhsQY/Save/{sid_user}/Edit" target="dialog" mask="true" title="修改" width="1050" height="540"><span>修改</span></a></li>*@
-                <li><a class="delete" href="/T_WhsQY/Delete/{sid_user}" target="ajaxTodo" title="确定删除吗?" mask="true"><span>删除</span></a></li>
+                @*<li><a class="delete" href="/T_WhsQY/Delete/{sid_user}" target="ajaxTodo" title="确定删除吗?" mask="true"><span>删除</span></a></li>*@
                 <li><a class="icon" href="/T_WhsQY/Save/{sid_user}/Edit" target="dialog" mask="true" width="1050" height="540"><span>查看详情</span></a></li>
                 @*<li><a class="icon" href="/T_WhsQY/Save/{sid_user}/Details" target="dialog" mask="true" width="1050" height="540"><span>查看详情</span></a></li>*@
             </ul>
@@ -59,27 +59,30 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.DataList)
+                @if (Model.DataList != null)
                 {
-                    string whsQS = @item.WhsJYKSSJ.HasValue ? @item.WhsJYKSSJ.Value.ToLongDateString().ToString() : "";
-                    string whsJS = @item.WhsJXJSSJ.HasValue ? @item.WhsJXJSSJ.Value.ToLongDateString().ToString() : "";
+                    foreach (var item in Model.DataList)
+                    {
+                        string whsQS = @item.WhsJYKSSJ.HasValue ? @item.WhsJYKSSJ.Value.ToLongDateString().ToString() : "";
+                        string whsJS = @item.WhsJXJSSJ.HasValue ? @item.WhsJXJSSJ.Value.ToLongDateString().ToString() : "";
 
-                    string whsZCRQ = @item.WhsZCSJ.HasValue ? @item.WhsZCSJ.Value.ToLongDateString().ToString() : "";
+                        string whsZCRQ = @item.WhsZCSJ.HasValue ? @item.WhsZCSJ.Value.ToLongDateString().ToString() : "";
 
-                    string whsQX = whsQS + " 至 " + whsJS;
+                        string whsQX = whsQS + " 至 " + whsJS;
 
-                    <tr target="sid_user" rel="@item.WhsID">
-                        <td>@item.WhsMC</td>
-                        <td>@item.WhsFSDB</td>
-                        <td>@item.WhsZZJGDM</td>
-                        <td>@item.WhsDWXZ</td>
-                        <td>@whsZCRQ</td>
-                        <td>@item.WhsZCDZ</td>
-                        <td>@whsQX</td>
-                        @*<td><a href="~/UploadFiles/本企业资质/@item.WhsZZSC" target="_blank">@item.WhsZZSC</a></td>*@
-                        <td>@item.WhsKHH</td>
-                        <td>@item.WhsZH</td>
-                    </tr>
+                        <tr target="sid_user" rel="@item.WhsID">
+                            <td>@item.WhsMC</td>
+                            <td>@item.WhsFSDB</td>
+                            <td>@item.WhsZZJGDM</td>
+                            <td>@item.WhsDWXZ</td>
+                            <td>@whsZCRQ</td>
+                            <td>@item.WhsZCDZ</td>
+                            <td>@whsQX</td>
+                            @*<td><a href="~/UploadFiles/本企业资质/@item.WhsZZSC" target="_blank">@item.WhsZZSC</a></td>*@
+                            <td>@item.WhsKHH</td>
+                            <td>@item.WhsZH</td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

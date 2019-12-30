@@ -99,30 +99,30 @@ namespace MedicalApparatusManage.Domain
                     model.RKID = rkid;
                     hContext1.Set<T_RKMX>().Add(model);
                     //对新库存数据进行修改
-                    DbSet<T_KC> kcdb = hContext1.Set<T_KC>();
-                    var newkc = kcdb.Where(p => p.CPID == model.CPID && p.CPPH == model.CPPH && p.CKID == model.CKID).FirstOrDefault();
-                    if (newkc == null)
-                    {
-                        T_KC newKc = new T_KC()
-                        {
-                            CPID = model.CPID,
-                            CKID = model.CKID,
-                            CPNUM = Convert.ToInt32(model.CPNUM),
-                            FlAG = 1,
-                            CPPH = model.CPPH,
-                            CPSCRQ = model.CPSCRQ,
-                            CPYXQ = model.CPYXQ,
-                            SupID = model.SupID,
-                            ScqyID = model.ScqyID
-                        };
-                        kcdb.Add(newKc);
-                    }
-                    else
-                    {
-                        newkc.CPNUM = newkc.CPNUM + Convert.ToInt32(model.CPNUM);
-                        newkc.CPYXQ = model.CPYXQ;
-                        newkc.CPSCRQ = model.CPSCRQ;
-                    }
+                    //DbSet<T_KC> kcdb = hContext1.Set<T_KC>();
+                    //var newkc = kcdb.Where(p => p.CPID == model.CPID && p.CPPH == model.CPPH && p.CKID == model.CKID).FirstOrDefault();
+                    //if (newkc == null)
+                    //{
+                    //    T_KC newKc = new T_KC()
+                    //    {
+                    //        CPID = model.CPID,
+                    //        CKID = model.CKID,
+                    //        CPNUM = Convert.ToInt32(model.CPNUM),
+                    //        FlAG = 1,
+                    //        CPPH = model.CPPH,
+                    //        CPSCRQ = model.CPSCRQ,
+                    //        CPYXQ = model.CPYXQ,
+                    //        SupID = model.SupID,
+                    //        ScqyID = model.ScqyID
+                    //    };
+                    //    kcdb.Add(newKc);
+                    //}
+                    //else
+                    //{
+                    //    newkc.CPNUM = newkc.CPNUM + Convert.ToInt32(model.CPNUM);
+                    //    newkc.CPYXQ = model.CPYXQ;
+                    //    newkc.CPSCRQ = model.CPSCRQ;
+                    //}
                     return hContext1.SaveChanges();
                 }
                 catch (Exception ex)
@@ -160,12 +160,12 @@ namespace MedicalApparatusManage.Domain
                     DbSet<T_RKMX> db = hContext1.Set<T_RKMX>();
                     T_RKMX model = db.Where(p => p.GUID == guid).FirstOrDefault();
                     //对原库存数据进行修改
-                    DbSet<T_KC> kcdb = hContext1.Set<T_KC>();
-                    var oldkc = kcdb.Where(p => p.CPID == model.CPID && p.CPPH == model.CPPH && p.CKID == model.CKID).FirstOrDefault();
-                    if (oldkc != null)
-                    {
-                        oldkc.CPNUM = oldkc.CPNUM - Convert.ToInt32(model.CPNUM);
-                    }
+                    //DbSet<T_KC> kcdb = hContext1.Set<T_KC>();
+                    //var oldkc = kcdb.Where(p => p.CPID == model.CPID && p.CPPH == model.CPPH && p.CKID == model.CKID).FirstOrDefault();
+                    //if (oldkc != null)
+                    //{
+                    //    oldkc.CPNUM = oldkc.CPNUM - Convert.ToInt32(model.CPNUM);
+                    //}
                     db.Remove(model);
                     return hContext1.SaveChanges();
                 }

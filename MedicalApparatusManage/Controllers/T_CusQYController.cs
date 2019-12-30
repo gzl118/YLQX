@@ -47,6 +47,7 @@ namespace MedicalApparatusManage.Controllers
                 {
                     evalModel.DataModel.CusMC = str;
                 }
+                ViewData["strCusMc"] = str;
             }
             string strQYLX = "--请选择--";
             if (Request["strQYLX"] != null)

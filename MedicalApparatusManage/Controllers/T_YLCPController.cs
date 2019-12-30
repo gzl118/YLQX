@@ -52,6 +52,7 @@ namespace MedicalApparatusManage.Controllers
                 {
                     evalModel.DataModel.CPMC = str.Trim();
                 }
+                ViewData["strCPMC"] = str;
             }
 
             if (Request["strCPSCQY"] != null)

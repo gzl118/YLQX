@@ -108,6 +108,9 @@
                     <th>
                         备注
                     </th>
+                    <th>
+                        是否审核
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -129,6 +132,18 @@
                                 }
                             }
                             <td>@item.RKBZ</td>
+                            @{
+                                switch (item.ISSH)
+                                {
+                                    case 0:
+                                        <td style="background-color:deepskyblue;">未审批</td>; break;
+                                    case 1:
+                                        <td style="background-color:limegreen;">已审批</td>; break;
+                                    case 2:
+                                        <td style="background-color:orangered;">审批未通过</td> ; break;
+                                    default:
+                                        <td></td>; break;
+                                }}
                         </tr>
                     }
                 }

@@ -23,9 +23,10 @@ namespace MedicalApparatusManage.Controllers
             {
                 try
                 {
-                    SysUser UserModel = Session["UserModel"] as SysUser;
-                    ViewData["shUserId"] = UserModel.UserId;
-                    evalModel.currentPage = int.Parse(Request["pageNum"].ToString());
+                    //SysUser UserModel = Session["UserModel"] as SysUser;
+                    ViewData["shUserId"] = loginUser.UserId;
+                    if (Request["pageNum"] != null)
+                        evalModel.currentPage = int.Parse(Request["pageNum"].ToString());
                 }
                 catch { }
                 string order = "";
@@ -51,6 +52,7 @@ namespace MedicalApparatusManage.Controllers
                     {
                         evalModel.DataModel.SupMC = str;
                     }
+                    ViewData["strSupMc"] = str;
                 }
                 string strQYLX = "--请选择--";
                 if (Request["strQYLX"] != null)

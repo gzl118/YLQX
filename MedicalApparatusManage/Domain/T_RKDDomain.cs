@@ -34,6 +34,48 @@ namespace MedicalApparatusManage.Domain
                 {
                     var model = hContext1.Set<T_RKD>().Find(id);
                     model.ISSH = status;
+                    if (status == 1) //审核通过，修改库存
+                    {
+                        var lst = hContext1.Set<T_RKMX>().Where(p => p.RKID == id).ToList();
+                        if (lst != null && lst.Count > 0)
+                        {
+                            lst.ForEach(item =>
+                            {
+                                //对新库存数据进行修改
+                                //DbSet<T_KC> kcdb = hContext1.Set<T_KC>();
+                                //var kc = kcdb.Where(p => p.CPID == item.CPID && p.CPPH == item.CPPH && p.CKID == item.CKID).FirstOrDefault();
+                                //if (kc != null)
+                                //{
+                                //    kc.CPNUM = kc.CPNUM - Convert.ToInt32(item.CPNUM);
+                                //}
+
+                                DbSet<T_KC> kcdb = hContext1.Set<T_KC>();
+                                var newkc = kcdb.Where(p => p.CPID == item.CPID && p.CPPH == item.CPPH && p.CKID == item.CKID).FirstOrDefault();
+                                if (newkc == null)
+                                {
+                                    T_KC newKc = new T_KC()
+                                    {
+                                        CPID = item.CPID,
+                                        CKID = item.CKID,
+                                        CPNUM = Convert.ToInt32(item.CPNUM),
+                                        FlAG = 1,
+                                        CPPH = item.CPPH,
+                                        CPSCRQ = item.CPSCRQ,
+                                        CPYXQ = item.CPYXQ,
+                                        SupID = item.SupID,
+                                        ScqyID = item.ScqyID
+                                    };
+                                    kcdb.Add(newKc);
+                                }
+                                else
+                                {
+                                    newkc.CPNUM = newkc.CPNUM + Convert.ToInt32(item.CPNUM);
+                                    newkc.CPYXQ = item.CPYXQ;
+                                    newkc.CPSCRQ = item.CPSCRQ;
+                                }
+                            });
+                        }
+                    }
                     hContext1.SaveChanges();
                     result = 1;
                 }

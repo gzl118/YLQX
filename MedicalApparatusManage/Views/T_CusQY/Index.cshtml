@@ -28,7 +28,7 @@
                                 企业名称:
                             </td>
                             <td>
-                                @Html.TextBox("strCusMc")
+                                @Html.TextBox("strCusMc", ViewData["strCusMc"])
                             </td>
                             <td>
                                 企业类型:
@@ -110,38 +110,41 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.DataList)
+                @if (Model.DataList != null)
                 {
-                    string CusQS = @item.CusJYKSSJ.HasValue ? @item.CusJYKSSJ.Value.ToLongDateString().ToString() : "";
-                    string CusJS = @item.CusJXJSSJ.HasValue ? @item.CusJXJSSJ.Value.ToLongDateString().ToString() : "";
+                    foreach (var item in Model.DataList)
+                    {
+                        string CusQS = @item.CusJYKSSJ.HasValue ? @item.CusJYKSSJ.Value.ToLongDateString().ToString() : "";
+                        string CusJS = @item.CusJXJSSJ.HasValue ? @item.CusJXJSSJ.Value.ToLongDateString().ToString() : "";
 
-                    string CusZCRQ = @item.CusZCSJ.HasValue ? @item.CusZCSJ.Value.ToLongDateString().ToString() : "";
+                        string CusZCRQ = @item.CusZCSJ.HasValue ? @item.CusZCSJ.Value.ToLongDateString().ToString() : "";
 
-                    string CusQX = CusQS + " 至 " + CusJS;
-                    <tr target="sid_user" rel="@item.CusID">
-                        <td>@item.CusMC</td>
-                        <td>@item.CusFSDB</td>
-                        <td>@item.CusZZJGDM</td>
-                        <td>@item.CusDWXZ</td>
-                        <td>@CusZCRQ</td>
-                        <td>@item.CusZCDZ</td>
-                        <td>@CusQX</td>
-                        @*<td><a href="~/UploadFiles/购货企业资质/@item.CusZZSC" target="_blank">@item.CusZZSC</a></td>*@
-                        <td>@item.CusKHH</td>
-                        <td>@item.CusZH</td>
-                        @{
-                            switch (item.CusStatus)
-                            {
-                                case 0:
-                                    <td style="background-color:deepskyblue;">未审批</td>; break;
-                                case 1:
-                                    <td style="background-color:limegreen;">已审批</td>; break;
-                                case 2:
-                                    <td style="background-color:orangered;">审批未通过</td> ; break;
-                                default:
-                                    <td></td>; break;
-                            }}
-                    </tr>
+                        string CusQX = CusQS + " 至 " + CusJS;
+                        <tr target="sid_user" rel="@item.CusID">
+                            <td>@item.CusMC</td>
+                            <td>@item.CusFSDB</td>
+                            <td>@item.CusZZJGDM</td>
+                            <td>@item.CusDWXZ</td>
+                            <td>@CusZCRQ</td>
+                            <td>@item.CusZCDZ</td>
+                            <td>@CusQX</td>
+                            @*<td><a href="~/UploadFiles/购货企业资质/@item.CusZZSC" target="_blank">@item.CusZZSC</a></td>*@
+                            <td>@item.CusKHH</td>
+                            <td>@item.CusZH</td>
+                            @{
+                                switch (item.CusStatus)
+                                {
+                                    case 0:
+                                        <td style="background-color:deepskyblue;">未审批</td>; break;
+                                    case 1:
+                                        <td style="background-color:limegreen;">已审批</td>; break;
+                                    case 2:
+                                        <td style="background-color:orangered;">审批未通过</td> ; break;
+                                    default:
+                                        <td></td>; break;
+                                }}
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

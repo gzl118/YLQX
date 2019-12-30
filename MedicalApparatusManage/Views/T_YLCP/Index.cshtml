@@ -35,7 +35,7 @@
                                 产品名称:
                             </td>
                             <td>
-                                @Html.TextBox("strCPMC")
+                                @Html.TextBox("strCPMC", ViewData["strCPMC"])
                             </td>
                             <td>
                                 生产企业:
@@ -124,46 +124,49 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.DataList)
+                @if (Model.DataList != null)
                 {
-                    <tr target="sid_user" rel="@item.CPID">
-                        <td>@item.CPBH</td>
-                        <td>@item.CPMC</td>
-                        @*<td>@item.CPZCZ</td>
-                            <td>@item.T_CPLX.LXMC</td>
-                            <td>@item.CPGG</td>
-                            <td>@item.CPXH</td>*@
-                        @*<td><a href="~/UploadFiles/供货商产品附件/@item.CPFJ" target="_blank">@item.CPFJ</a></td>*@
-                        @{string supMCstr = "";
-                            if (item.T_SupQY != null && !string.IsNullOrEmpty(item.T_SupQY.SupMC))
-                            {
-                                supMCstr = item.T_SupQY.SupMC;
-                            }}
-                        <td>@supMCstr</td>
-                        @{string scqyMc = "";
-                            if (item.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_SupQY1.SupMC))
-                            {
-                                scqyMc = item.T_SupQY1.SupMC;
-                            }}
-                        <td>@scqyMc</td>
-                        <td>@item.CPDW</td>
-                        <td>@item.CPPrice</td>
-                        <td>@item.XSJG</td>
-                        <td>@item.CPLRRQ</td>
-                        <td>@item.CPLRR</td>
-                        @{
-                            switch (item.CPStatus)
-                            {
-                                case 0:
-                                    <td style="background-color:deepskyblue;">未审批</td>; break;
-                                case 1:
-                                    <td style="background-color:limegreen;">已审批</td>; break;
-                                case 2:
-                                    <td style="background-color:orangered;">审批未通过</td> ; break;
-                                default:
-                                    <td></td>; break;
-                            }}
-                    </tr>
+                    foreach (var item in Model.DataList)
+                    {
+                        <tr target="sid_user" rel="@item.CPID">
+                            <td>@item.CPBH</td>
+                            <td>@item.CPMC</td>
+                            @*<td>@item.CPZCZ</td>
+                                <td>@item.T_CPLX.LXMC</td>
+                                <td>@item.CPGG</td>
+                                <td>@item.CPXH</td>*@
+                            @*<td><a href="~/UploadFiles/供货商产品附件/@item.CPFJ" target="_blank">@item.CPFJ</a></td>*@
+                            @{string supMCstr = "";
+                                if (item.T_SupQY != null && !string.IsNullOrEmpty(item.T_SupQY.SupMC))
+                                {
+                                    supMCstr = item.T_SupQY.SupMC;
+                                }}
+                            <td>@supMCstr</td>
+                            @{string scqyMc = "";
+                                if (item.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_SupQY1.SupMC))
+                                {
+                                    scqyMc = item.T_SupQY1.SupMC;
+                                }}
+                            <td>@scqyMc</td>
+                            <td>@item.CPDW</td>
+                            <td>@item.CPPrice</td>
+                            <td>@item.XSJG</td>
+                            <td>@item.CPLRRQ</td>
+                            <td>@item.CPLRR</td>
+                            @{
+                                switch (item.CPStatus)
+                                {
+                                    case 0:
+                                        <td style="background-color:deepskyblue;">未审批</td>; break;
+                                    case 1:
+                                        <td style="background-color:limegreen;">已审批</td>; break;
+                                    case 2:
+                                        <td style="background-color:orangered;">审批未通过</td> ; break;
+                                    default:
+                                        <td></td>; break;
+                                }}
+                        </tr>
+                    }
                 }
             </tbody>
         </table>
