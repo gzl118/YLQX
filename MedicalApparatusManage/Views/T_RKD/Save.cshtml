@@ -390,12 +390,12 @@
                             @*@Html.TextBox("DataModel.CPYXQ", "", new { id = "CPYXQ", @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px", @readonly = "readonly" })*@
                             @Html.TextBox("DataModel.CPYXQ", "", new { id = "CPYXQ", style = "width:279px", @readonly = "readonly" })
                         </div>
-                        <div class="unit">
-                            <label>
-                                有效期预警期限(天)：
-                            </label>
-                            @Html.TextBox("DataModel.YXQBJDATE", "", new { id = "YXQBJDATE", style = "width:279px", @class = "digits" })
-                        </div>
+                        @*<div class="unit">
+                                <label>
+                                    有效期预警期限(天)：
+                                </label>
+                                @Html.TextBox("DataModel.YXQBJDATE", "", new { id = "YXQBJDATE", style = "width:279px", @class = "digits" })
+                            </div>*@
                         <div class="unit">
                             <label>
                                 许可证号：

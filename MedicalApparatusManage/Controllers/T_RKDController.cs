@@ -124,11 +124,13 @@ namespace MedicalApparatusManage.Controllers
             {
                 if (model.Tag == "Add")
                 {
+                    model.DataModel.ISSH = 0;
                     model.DataModel.RKMC = model.DataModel.RKMC + DateTime.Now.ToLongDateString();
                     result = T_RKDDomain.GetInstance().AddModel(model.DataModel);
                 }
                 else if (model.Tag == "Edit")
                 {
+                    model.DataModel.ISSH = 0;
                     result = T_RKDDomain.GetInstance().UpdateModel(model.DataModel, model.DataModel.RKID);
                 }
 

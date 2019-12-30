@@ -155,6 +155,7 @@ namespace MedicalApparatusManage.Controllers
                 }
                 else if (model.Tag == "Edit")
                 {
+                    model.DataModel.XSFLAG = 0;
                     result = T_XSDDomain.GetInstance().UpdateModel(model.DataModel, model.DataModel.XSID);
                 }
             }

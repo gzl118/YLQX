@@ -142,6 +142,7 @@ namespace MedicalApparatusManage.Controllers
                 }
                 else if (model.Tag == "Edit")
                 {
+                    model.DataModel.CusStatus = 0;
                     result = T_CusQYDomain.GetInstance().UpdateModel(model.DataModel, model.DataModel.CusID);
                 }
                 //企业资质操作

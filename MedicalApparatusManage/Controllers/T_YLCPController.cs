@@ -129,6 +129,7 @@ namespace MedicalApparatusManage.Controllers
                 }
                 else if (model.Tag == "Edit")
                 {
+                    model.DataModel.CPStatus = 0;
                     result = T_YLCPDomain.GetInstance().UpdateModel(model.DataModel, model.DataModel.CPID);
 
                 }

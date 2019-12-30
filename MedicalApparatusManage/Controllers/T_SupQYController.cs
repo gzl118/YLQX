@@ -154,6 +154,7 @@ namespace MedicalApparatusManage.Controllers
                 }
                 else if (model.Tag == "Edit")
                 {
+                    model.DataModel.SupStatus = 0;
                     result = T_SupQYDomain.GetInstance().UpdateModel(model.DataModel, model.DataModel.SupID);
                 }
                 //企业资质操作

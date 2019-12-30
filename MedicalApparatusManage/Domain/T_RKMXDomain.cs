@@ -120,6 +120,8 @@ namespace MedicalApparatusManage.Domain
                     else
                     {
                         newkc.CPNUM = newkc.CPNUM + Convert.ToInt32(model.CPNUM);
+                        newkc.CPYXQ = model.CPYXQ;
+                        newkc.CPSCRQ = model.CPSCRQ;
                     }
                     return hContext1.SaveChanges();
                 }

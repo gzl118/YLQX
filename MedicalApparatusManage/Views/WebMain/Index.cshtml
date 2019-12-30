@@ -95,7 +95,7 @@
                 }
             });
             $("#MainFrame").attr("height", $(window).height());
-            requestAlarm();
+            requestTips();
         });
 
         //注销
@@ -120,6 +120,23 @@
             });
             $.ajaxSettings.global = true;
         };
+        function requestTips() {
+            $.ajaxSettings.global = false;
+            $.get("/T_BJD/GetTipInfo", function (result) {
+                //console.log(result);
+                if (result != "0") {
+                    $.messager.lays(300, 200);
+                    $.messager.anim('fade', 1000);
+                    //rel="" target="navTab"
+                    $.messager.show("提示信息", result, 0);
+                }
+            });
+            $.ajaxSettings.global = true;
+        };
+        function showMsg(tabid,url,tip) {
+            navTab.openTab(tabid, url, { title: tip });
+            //$("#message_close").click();
+        }
 
         function showwin() {
             navTab.openTab("alarmManage", "/T_BJD/Index/", { title: "预警通知" });

@@ -134,6 +134,7 @@ namespace MedicalApparatusManage.Controllers
                 }
                 else if (model.Tag == "Edit")
                 {
+                    model.DataModel.ISSH = 0;
                     result = T_CGDDomain.GetInstance().UpdateModel(model.DataModel, model.DataModel.CGID);
                 }
             }
