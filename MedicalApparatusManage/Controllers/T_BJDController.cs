@@ -133,7 +133,8 @@ namespace MedicalApparatusManage.Controllers
             Expression<Func<T_SHD, bool>> whereSHD = p => p.ISSH == 0;
             var SHDCount = T_SHDDomain.GetInstance().GetAllModels<int>(whereSHD).Count; //待审批的损耗单数量
 
-            Expression<Func<ActivityInfo, bool>> whereActivityInfo = p => (p.EndTime != null && DateTime.Now < p.EndTime);
+            Expression<Func<ActivityInfo, bool>> whereActivityInfo = p => (p.EndTime != null && DateTime.Now <= p.EndTime.Value);
+            whereActivityInfo = whereActivityInfo.And(p => p.StartTime != null && p.StartTime.Value >= DateTime.Now);
             var ActivityInfoCount = ActivityInfoDomain.GetInstance().GetAllModels<int>(whereActivityInfo).Count; //有效的公告数量
 
             var AlarmCount = T_BJDDomain.GetInstance().GetCount(); //报警数量
