@@ -57,6 +57,7 @@ namespace MedicalApparatusManage.Controllers
                     evalModel.DataModel.CKGLRY = strYSPerson;
                 }
             }
+            ViewData["strYSPerson"] = strYSPerson;
 
             SysUser UserModel = Session["UserModel"] as SysUser;
             T_Person person = new T_Person();
@@ -147,7 +148,7 @@ namespace MedicalApparatusManage.Controllers
         [CheckLogin()]
         public void Delete(System.Int32 id)
         {
-            var rCode = GetRoleCode();
+            //var rCode = GetRoleCode();
             var temp = T_RKDDomain.GetInstance().GetModelById(id);
             if (temp != null)
             {

@@ -211,16 +211,16 @@ namespace MedicalApparatusManage.Controllers
         [CheckLogin()]
         public void Delete(System.Int32 id)
         {
-            var rCode = GetRoleCode();
-            if (rCode != "1")
+            //var rCode = GetRoleCode();
+            //if (rCode != "1")
+            //{
+            var temp = T_SupQYDomain.GetInstance().GetModelById(id);
+            if (temp != null && (temp.SupStatus == 1))
             {
-                var temp = T_SupQYDomain.GetInstance().GetModelById(id);
-                if (temp != null && (temp.SupStatus == 1))
-                {
-                    Response.Write("{\"statusCode\":\"300\", \"message\":\"已审批通过的数据不能删除！\"}");
-                    return;
-                }
+                Response.Write("{\"statusCode\":\"300\", \"message\":\"已审批通过的数据不能删除！\"}");
+                return;
             }
+            //}
             Expression<Func<T_YLCP, bool>> where = p => (p.CPGYSID == id || p.CPSCQYID == id);
             var list = T_YLCPDomain.GetInstance().GetAllModels<int>(where);
             if (list != null && list.Count > 0)

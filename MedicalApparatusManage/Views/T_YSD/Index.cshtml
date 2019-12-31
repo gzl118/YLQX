@@ -35,7 +35,7 @@
                                 验收人:
                             </td>
                             <td>
-                                @Html.DropDownList("strYSPerson", ViewBag.Persons as SelectList, "请选择", new { id = "strYSPerson", style = "width:150px;" })
+                                @Html.DropDownList("strYSPerson", ViewBag.Persons as SelectList, "请选择", new { id = "strYSPerson", style = "width:150px;", Value = @ViewData["strYSPerson"] })
                                 @*@Html.TextBox("strYSPS")*@
                             </td>
 

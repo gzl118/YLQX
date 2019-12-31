@@ -27,8 +27,16 @@ namespace MedicalApparatusManage.Domain
         public List<ActivityInfo> PageActivityInfo(ActivityInfo info, DateTime? startTime, DateTime? endTime, int pageIndex, int pageSize, out int pageCount, out int totalRecord)
         {
             Expression<Func<ActivityInfo, bool>> where = PredicateBuilder.True<ActivityInfo>();
-            Func<ActivityInfo, System.Int32> order = p => p.ID;
-            return base.GetPageInfo<System.Int32>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);
+            if (startTime != null)
+            {
+                where = where.And(p => p.CreateTime >= startTime.Value);
+            }
+            if (endTime != null)
+            {
+                where = where.And(p => p.CreateTime <= endTime.Value);
+            }
+            Func<ActivityInfo, System.DateTime?> order = p => p.CreateTime;
+            return base.GetPageInfo<System.DateTime?>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);
         }
     }
 }

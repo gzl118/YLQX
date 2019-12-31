@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -45,6 +46,7 @@ namespace MedicalApparatusManage.Controllers
                 {
                     evalModel.DataModel.CKMC = str;
                 }
+                ViewData["strCKName"] = str;
             }
             var strCKPerson = "请选择";
             if (Request["strCKPerson"] != null)
@@ -112,6 +114,29 @@ namespace MedicalApparatusManage.Controllers
         [CheckLogin()]
         public void Delete(System.Int32 id)
         {
+            Expression<Func<T_RKMX, bool>> where = p => (p.CKID == id);
+            var lst = T_RKMXDomain.GetInstance().GetAllModels<int>(where);
+            if (lst != null && lst.Count > 0)
+            {
+                Response.Write("{\"statusCode\":\"300\", \"message\":\"该仓库已有入库数据，不能删除！\"}");
+                return;
+            }
+            Expression<Func<T_CKMX, bool>> whereCKMX = p => (p.CKID == id);
+            var lstCKMX = T_CKMXDomain.GetInstance().GetAllModels<int>(whereCKMX);
+            if (lstCKMX != null && lstCKMX.Count > 0)
+            {
+                Response.Write("{\"statusCode\":\"300\", \"message\":\"该仓库已有出库数据，不能删除！\"}");
+                return;
+            }
+
+            Expression<Func<T_KC, bool>> whereKC = p => (p.CKID == id);
+            var lstKC = T_KCDomain.GetInstance().GetAllModels<int>(whereKC);
+            if (lstKC != null && lstKC.Count > 0)
+            {
+                Response.Write("{\"statusCode\":\"300\", \"message\":\"该仓库已有库存数据，不能删除！\"}");
+                return;
+            }
+
             int result = T_CKDomain.GetInstance().DeleteModelById(id);
             Response.ContentType = "text/json";
             if (result > 0)

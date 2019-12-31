@@ -55,18 +55,18 @@
                         </tr>
                     </table>
                 </div>
-                                    }
+            }
         </div>
         <div class="panelBar" id="EntLimitMenu">
             <ul class="toolBar">
-                <li><a class="add" href="/ActivityInfo/Save/0/Add" target="dialog"  mask="true" title="新增" width="1050" height="500"><span>新增</span></a></li>
+                <li><a class="add" href="/ActivityInfo/Save/0/Add" target="dialog" mask="true" title="新增" width="1050" height="500"><span>新增</span></a></li>
                 <li> <a class="edit" href="/ActivityInfo/Save/{sid_user}/Edit" target="dialog" mask="true" title="修改" width="1050" height="500"><span>修改</span></a></li>
                 <li><a class="delete" href="/ActivityInfo/Delete/{sid_user}" target="ajaxTodo" title="确定删除吗?" mask="true"><span>删除</span></a></li>
-                <li><a class="icon" href="/ActivityInfo/Save/{sid_user}/Details" target="dialog"  mask="true" width="1050" height="500"><span>查看详情</span></a></li>
+                <li><a class="icon" href="/ActivityInfo/Save/{sid_user}/Details" target="dialog" mask="true" width="1050" height="500"><span>查看详情</span></a></li>
             </ul>
         </div>
         <table width="100%" layouth="112" class="table" id="ActivityInfoTable">
-           <thead>
+            <thead>
                 <tr>
                     <th>
                         公告内容
@@ -89,16 +89,19 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.DataList)
+                @if (Model.DataList != null)
                 {
-                    <tr target="sid_user" rel="@item.ID">
-                        <td>@item.Content</td>
-                        <td>@item.StartTime</td>
-                        <td>@item.EndTime</td>
-                        <td>@item.CreateTime</td>
-                        <td>@item.CreatePersom</td>
-                        <td>@item.ReplyNum</td>
-                    </tr>
+                    foreach (var item in Model.DataList)
+                    {
+                        <tr target="sid_user" rel="@item.ID">
+                            <td>@item.Content</td>
+                            <td>@item.StartTime</td>
+                            <td>@item.EndTime</td>
+                            <td>@item.CreateTime</td>
+                            <td>@item.CreatePersom</td>
+                            <td>@item.ReplyNum</td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

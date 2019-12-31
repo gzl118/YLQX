@@ -227,7 +227,7 @@ namespace MedicalApparatusManage.Controllers
         [CheckLogin()]
         public void Delete(System.Int32 id)
         {
-            var rCode = GetRoleCode();
+            //var rCode = GetRoleCode();
             var temp = T_XSDDomain.GetInstance().GetModelById(id);
             if (temp != null)
             {

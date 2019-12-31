@@ -83,13 +83,16 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.DataList)
+                @if (Model.DataList != null)
                 {
-                    <tr target="sid_user" rel="@item.RoleId">
-                        <td>@item.RoleName</td>
-                        <td>@(item.RoleCode == "1" ? "超级管理员" : (item.RoleCode == "2" ? "部门领导" : "普通职员"))</td>
-                        <td>@item.RoleRemark</td>
-                    </tr>
+                    foreach (var item in Model.DataList)
+                    {
+                        <tr target="sid_user" rel="@item.RoleId">
+                            <td>@item.RoleName</td>
+                            <td>@(item.RoleCode == "1" ? "超级管理员" : (item.RoleCode == "2" ? "部门领导" : "普通职员"))</td>
+                            <td>@item.RoleRemark</td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

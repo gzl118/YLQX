@@ -105,34 +105,37 @@
                 </tr>
             </thead>
             <tbody id="wtlb">
-                @foreach (var item in Model.CGMXList)
+                @if (Model.CGMXList != null)
                 {
-                    double? cpgs = @item.CPNUM;
-                    double? cpdj = @item.CPPRICE;
-                    double? cpzj = cpgs * cpdj;
-                    <tr target="sid_user" onclick="switchData(this)">
-                        <td style="display:none;">@item.MXID</td>
-                        <td style="display:none;">@(item.T_SupQY != null ? item.T_SupQY.SupID : 0)</td>
-                        <td style="display:none;">@(item.T_YLCP != null ? item.T_YLCP.CPID : 0)</td>
-                        <td>@(item.T_SupQY != null && !string.IsNullOrEmpty(item.T_SupQY.SupMC) ? item.T_SupQY.SupMC : "")</td>
-                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPBH) ? item.T_YLCP.CPBH : "")</td>
-                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPMC) ? item.T_YLCP.CPMC : "")</td>
-                        <td>@(item.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_SupQY1.SupMC) ? item.T_SupQY1.SupMC : "")</td>
-                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPGG) ? item.T_YLCP.CPGG : "")</td>
-                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPXH) ? item.T_YLCP.CPXH : "")</td>
-                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPDW) ? item.T_YLCP.CPDW : "")</td>
-                        <td>@item.CPNUM</td>
-                        <td>@(item.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_SupQY1.SupXKZBH) ? item.T_SupQY1.SupXKZBH : "")</td>
-                        <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPZCZ) ? item.T_YLCP.CPZCZ : "")</td>
-                        <td>@item.CPPRICE</td>
-                        <td>@cpzj</td>
-                        @{if (Model.DataModel.ISSH != 1)
-                            {
-                                <td>
-                                    <a href="javascript:void(0)" name="@item.GUID" class="btnDel" onclick="deleteCGMX(this);">删除</a>
-                                </td>
-                            }}
-                    </tr>
+                    foreach (var item in Model.CGMXList)
+                    {
+                        double? cpgs = @item.CPNUM;
+                        double? cpdj = @item.CPPRICE;
+                        double? cpzj = cpgs * cpdj;
+                        <tr target="sid_user" onclick="switchData(this)">
+                            <td style="display:none;">@item.MXID</td>
+                            <td style="display:none;">@(item.T_SupQY != null ? item.T_SupQY.SupID : 0)</td>
+                            <td style="display:none;">@(item.T_YLCP != null ? item.T_YLCP.CPID : 0)</td>
+                            <td>@(item.T_SupQY != null && !string.IsNullOrEmpty(item.T_SupQY.SupMC) ? item.T_SupQY.SupMC : "")</td>
+                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPBH) ? item.T_YLCP.CPBH : "")</td>
+                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPMC) ? item.T_YLCP.CPMC : "")</td>
+                            <td>@(item.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_SupQY1.SupMC) ? item.T_SupQY1.SupMC : "")</td>
+                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPGG) ? item.T_YLCP.CPGG : "")</td>
+                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPXH) ? item.T_YLCP.CPXH : "")</td>
+                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPDW) ? item.T_YLCP.CPDW : "")</td>
+                            <td>@item.CPNUM</td>
+                            <td>@(item.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_SupQY1.SupXKZBH) ? item.T_SupQY1.SupXKZBH : "")</td>
+                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPZCZ) ? item.T_YLCP.CPZCZ : "")</td>
+                            <td>@item.CPPRICE</td>
+                            <td>@cpzj</td>
+                            @{if (Model.DataModel.ISSH != 1)
+                                {
+                                    <td>
+                                        <a href="javascript:void(0)" name="@item.GUID" class="btnDel" onclick="deleteCGMX(this);">删除</a>
+                                    </td>
+                                }}
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

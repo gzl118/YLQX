@@ -35,37 +35,40 @@
         <form id="formActivityInfo" method="post" onsubmit="return false;" class="pageForm required-validate-noalert">
             <div class="pageFormContent" layouth="58">
                 @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Name = "Tag" })
-                @Html.HiddenFor(m=>m.DataModel.ID,new { Name = "DataModel.ID" })
-            <div class="unit">
-                <label>
-                    公告内容：</label>
-                @Html.TextBoxFor(m => m.DataModel.Content, new {name = "Content" })
-            </div>
-            <div class="unit">
-                <label>
-                    开始时间：</label>
-                @Html.TextBoxFor(m => m.DataModel.StartTime, new { name = "StartTime", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd HH:mm:ss', maxDate: '#F{$dp.$D(\\'EndTime\\')}' })" })
-            </div>
-            <div class="unit">
-                <label>
-                    结束时间：</label>
-                @Html.TextBoxFor(m => m.DataModel.EndTime, new { name = "EndTime", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd HH:mm:ss', minDate: '#F{$dp.$D(\\'StartTime\\')}' })" })
-            </div>
-            <div class="unit">
-                <label>
-                    创建时间：</label>
-                @Html.TextBoxFor(m => m.DataModel.CreateTime, new { name = "CreateTime", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd HH:mm:ss' })" })
-            </div>
-            <div class="unit">
-                <label>
-                    创建人：</label>
-                @Html.TextBoxFor(m => m.DataModel.CreatePersom, new {name = "CreatePersom" })
-            </div>
-            <div class="unit">
-                <label>
-                    回复数量：</label>
-                @Html.TextBoxFor(m => m.DataModel.ReplyNum, new {name = "ReplyNum" })
-            </div>
+                @Html.HiddenFor(m => m.DataModel.ID, new { Name = "DataModel.ID" })
+                <div class="unit">
+                    <label>
+                        公告内容：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.Content, new { name = "Content" })
+                </div>
+                <div class="unit">
+                    <label>
+                        开始时间：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.StartTime, new { name = "StartTime", @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd HH:mm:ss', maxDate: '#F{$dp.$D(\\'EndTime\\')}' })" })
+                </div>
+                <div class="unit">
+                    <label>
+                        结束时间：
+                    </label>
+                    @Html.TextBoxFor(m => m.DataModel.EndTime, new { name = "EndTime", @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd HH:mm:ss', minDate: '#F{$dp.$D(\\'StartTime\\')}' })" })
+                </div>
+                @*<div class="unit">
+                        <label>
+                            创建时间：</label>
+                        @Html.TextBoxFor(m => m.DataModel.CreateTime, new { name = "CreateTime", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd HH:mm:ss' })" })
+                    </div>
+                    <div class="unit">
+                        <label>
+                            创建人：</label>
+                        @Html.TextBoxFor(m => m.DataModel.CreatePersom, new {name = "CreatePersom" })
+                    </div>*@
+                @*<div class="unit">
+                        <label>
+                            回复数量：</label>
+                        @Html.TextBoxFor(m => m.DataModel.ReplyNum, new {name = "ReplyNum" })
+                    </div>*@
             </div>
             <div class="formBar">
                 <ul>

@@ -13,63 +13,63 @@
 <body>
     <div id="pageContent">
         @*<div class="pageHeader" style="hight: 80px;">
-            @using (Html.BeginForm("Index", "SysUser", FormMethod.Post, new
-            {
-                name = "formSerachMA",
-                id = "formSerachMA",
-                onsubmit = "return navTabSearch(this);"
+                @using (Html.BeginForm("Index", "SysUser", FormMethod.Post, new
+                {
+                    name = "formSerachMA",
+                    id = "formSerachMA",
+                    onsubmit = "return navTabSearch(this);"
 
-            }))
-            {
-                <div class="searchBar">
-                    <table class="searchContent">
-                        <tr>
-                            <td>
-                                开始日期:
-                            </td>
-                            <td>
-                                @{ string strStart = Model.StartTime.HasValue ? Model.StartTime.Value.ToString("yyyy/MM/dd") : "";
-                                    string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
-                                }
-                                <input id="StartDate" name="StartTime" class="Wdate" type="text" value="@strStart"
-                                       onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
-                            </td>
-                            <td>
-                                结束日期:
-                            </td>
-                            <td>
-                                <input id="EndDate" name="EndTime" class="Wdate" type="text" value="@strEnd"
-                                       onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', minDate: '#F{$dp.$D(\'StartDate\')}' })" />
-                            </td>
-
-                            <td>
-                                <ul>
-                                    <li>
-                                        <div class="buttonActive">
-                                            <div class="buttonContent">
-                                                <button type="submit" id="Button1" name="btnSerachOl">
-                                                    检索
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
+                }))
+                {
+                    <div class="searchBar">
+                        <table class="searchContent">
+                            <tr>
+                                <td>
+                                    开始日期:
+                                </td>
+                                <td>
+                                    @{ string strStart = Model.StartTime.HasValue ? Model.StartTime.Value.ToString("yyyy/MM/dd") : "";
+                                        string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
                                     }
-        </div>*@
+                                    <input id="StartDate" name="StartTime" class="Wdate" type="text" value="@strStart"
+                                           onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
+                                </td>
+                                <td>
+                                    结束日期:
+                                </td>
+                                <td>
+                                    <input id="EndDate" name="EndTime" class="Wdate" type="text" value="@strEnd"
+                                           onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', minDate: '#F{$dp.$D(\'StartDate\')}' })" />
+                                </td>
+
+                                <td>
+                                    <ul>
+                                        <li>
+                                            <div class="buttonActive">
+                                                <div class="buttonContent">
+                                                    <button type="submit" id="Button1" name="btnSerachOl">
+                                                        检索
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                                        }
+            </div>*@
         <div class="panelBar" id="EntLimitMenu">
             <ul class="toolBar">
-                <li><a class="add" href="/SysUser/Save/0/Add" target="dialog"  mask="true" title="新增" width="1050" height="500"><span>新增</span></a></li>
+                <li><a class="add" href="/SysUser/Save/0/Add" target="dialog" mask="true" title="新增" width="1050" height="500"><span>新增</span></a></li>
                 <li> <a class="edit" href="/SysUser/Save/{sid_user}/Edit" target="dialog" mask="true" title="修改" width="1050" height="500"><span>修改</span></a></li>
                 <li><a class="delete" href="/SysUser/Delete/{sid_user}" target="ajaxTodo" title="确定删除吗?" mask="true"><span>删除</span></a></li>
-                <li><a class="icon" href="/SysUser/Save/{sid_user}/Details" target="dialog"  mask="true" width="1050" height="500"><span>查看详情</span></a></li>
+                <li><a class="icon" href="/SysUser/Save/{sid_user}/Details" target="dialog" mask="true" width="1050" height="500"><span>查看详情</span></a></li>
             </ul>
         </div>
         <table width="100%" layouth="75" class="table" id="SysUserTable">
-           <thead>
+            <thead>
                 <tr>
                     <th>
                         用户帐户
@@ -98,26 +98,29 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.DataList)
+                @if (Model.DataList != null)
                 {
-                    <tr target="sid_user" rel="@item.UserId">
-                        <td>@item.UserAccount</td>
-                        <td>@item.UserPassword</td>
-                        <td>@item.UserName</td>
-                        <td>@item.UserPhone</td>
-                        <td>@item.UserEmail</td>
-                        
-                        @if (item.UserState == 1)
-                        {
-                          <td>启用</td>
-                        }
-                        else 
-                        {
-                           <td>禁用</td> 
-                        }                      
-                        <td>@item.UserCreateDate</td>
-                        <td>@item.UserLastLoginTime</td>
-                    </tr>
+                    foreach (var item in Model.DataList)
+                    {
+                        <tr target="sid_user" rel="@item.UserId">
+                            <td>@item.UserAccount</td>
+                            <td>@item.UserPassword</td>
+                            <td>@item.UserName</td>
+                            <td>@item.UserPhone</td>
+                            <td>@item.UserEmail</td>
+
+                            @if (item.UserState == 1)
+                            {
+                                <td>启用</td>
+                            }
+                            else
+                            {
+                                <td>禁用</td>
+                            }
+                            <td>@item.UserCreateDate</td>
+                            <td>@item.UserLastLoginTime</td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

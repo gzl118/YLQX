@@ -44,7 +44,7 @@
                                 入库人:
                             </td>
                             <td>
-                                @Html.DropDownList("strYSPerson", ViewBag.Persons as SelectList, "请选择", new { id = "strRKPerson", style = "width:150px;" })
+                                @Html.DropDownList("strYSPerson", ViewBag.Persons as SelectList, "请选择", new { id = "strRKPerson", style = "width:150px;", Value = @ViewData["strYSPerson"] })
                             </td>
                             <td>
                                 入库日期:

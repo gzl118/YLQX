@@ -60,6 +60,12 @@ namespace MedicalApparatusManage.Controllers
             int result = 0;
             try
             {
+                model.DataModel.CreateTime = DateTime.Now;
+                SysUser UserModel = Session["UserModel"] as SysUser;
+                if (UserModel != null)
+                {
+                    model.DataModel.CreatePersom = UserModel.UserAccount;
+                }
                 if (model.Tag == "Add")
                 {
                     result = ActivityInfoDomain.GetInstance().AddModel(model.DataModel);

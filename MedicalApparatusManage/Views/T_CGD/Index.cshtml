@@ -35,7 +35,7 @@
                                 采购人:
                             </td>
                             <td>
-                                @Html.DropDownList("strCGPerson", ViewBag.Persons as SelectList, "请选择", new { id = "strCGPerson", style = "width:150px;" })
+                                @Html.DropDownList("strCGPerson", ViewBag.Persons as SelectList, "请选择", new { id = "strCGPerson", style = "width:150px;", Value = @ViewData["strCGPerson"] })
                             </td>
                             <td>
                                 采购日期:
