@@ -7,12 +7,15 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Details</title>
+    @*<link href="~/Content/css/stylepage.css" media="print" />*@
     <script type="text/javascript" language="javascript">
         function ExportRkd() {
             document.location.href = "/T_RKD/ExportExcel/" + $("#RkidMain").val();
         };
         function prirkd() {
             $("#printrkd").jqprint();
+            //var defaultstyle = "../../Content/css/stylepage.css";
+            //$("#printrkd").print({ iframe: false, mediaPrint: false, stylesheet: defaultstyle });
         }
     </script>
 
@@ -22,19 +25,19 @@
         <div class="pageFormContent" layouth="58">
             <div id="printrkd">@Html.Raw(ViewData["ParaStr"].ToString())</div>
             @*<div style="width:91%;border:1px solid #ffffff;margin:5px;margin-right:84px;float:right;">
-                <div class="button" style="width:20%;float:right;">
-                    <div class="buttonContent" style="float:left;">
-                        <button value="导出入库单" onclick="ExportRkd();">
-                            导出入库单
-                        </button>
+                    <div class="button" style="width:20%;float:right;">
+                        <div class="buttonContent" style="float:left;">
+                            <button value="导出入库单" onclick="ExportRkd();">
+                                导出入库单
+                            </button>
+                        </div>
+                        <div class="buttonContent" style="float:right;">
+                            <button value="打印入库单" onclick="prirkd();">
+                                打印入库单
+                            </button>
+                        </div>
                     </div>
-                    <div class="buttonContent" style="float:right;">
-                        <button value="打印入库单" onclick="prirkd();">
-                            打印入库单
-                        </button>
-                    </div>
-                </div>
-            </div>*@
+                </div>*@
             <div style="display:none;">
                 <fieldset>
                     <legend>入库单</legend>

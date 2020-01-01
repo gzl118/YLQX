@@ -106,6 +106,7 @@
     <Content Include="Content\css\jquery.treeTable.css" />
     <Content Include="Content\css\login.css" />
     <Content Include="Content\css\Site.css" />
+    <Content Include="Content\css\stylepage.css" />
     <Content Include="Content\icons\32X32\address.gif" />
     <Content Include="Content\icons\32X32\administrative_docs.gif" />
     <Content Include="Content\icons\32X32\advertising.gif" />
@@ -1926,6 +1927,8 @@
     <Content Include="Scripts\jquery.messager.js" />
     <Content Include="Scripts\jquery.multiselect.js" />
     <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\print\jQuery.print.js" />
+    <Content Include="Scripts\print\jQuery.print.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
