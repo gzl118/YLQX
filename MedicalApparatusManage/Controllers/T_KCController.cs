@@ -88,9 +88,10 @@ namespace MedicalApparatusManage.Controllers
                 qyid = Request["QYList"].ToString();
                 if (!String.IsNullOrEmpty(qyid))
                 {
-                    T_YLCP qycp = new T_YLCP();
-                    qycp.CPSCQY = qyid;
-                    evalModel.DataModel.T_YLCP = qycp;
+                    //T_YLCP qycp = new T_YLCP();
+                    //qycp.CPSCQY = qyid;
+                    //evalModel.DataModel.T_YLCP = qycp;
+                    evalModel.DataModel.ScqyID = Convert.ToInt16(qyid);
                 }
             }
 

@@ -32,6 +32,10 @@ namespace MedicalApparatusManage.Domain
             {
                 where = where.And(p => p.SHDH.Contains(info.SHDH));
             }
+            if (!String.IsNullOrEmpty(info.SQR))
+            {
+                where = where.And(p => info.SQR.Contains(p.SQR));
+            }
             if (startTime != null)
             {
                 where = where.And(p => p.SHCJRQ >= startTime.Value);
@@ -126,7 +130,7 @@ namespace MedicalApparatusManage.Domain
                     if (ckd != null)
                     {
                         DbSet<T_SHMX> db = hContext1.Set<T_SHMX>();
-                        DbQuery<T_SHMX> dbq = db.Include("T_YLCP").Include("T_SHD").Include("T_YLCP.T_SupQY1");
+                        DbQuery<T_SHMX> dbq = db.Include("T_YLCP").Include("T_CK").Include("T_YLCP.T_SupQY1");
                         list = dbq.Where(p => p.SHID == ckd.SHID).ToList();
                     }
                 }
@@ -162,6 +166,30 @@ namespace MedicalApparatusManage.Domain
                             });
                         }
                     }
+                    hContext1.SaveChanges();
+                    result = 1;
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            return result;
+        }
+        public int Delete(int id)
+        {
+            int result = 0;
+            using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
+            {
+                try
+                {
+                    var dbchild = hContext1.Set<T_SHMX>();
+                    var lst = dbchild.Where(p => p.SHID == id);
+                    if (lst != null && lst.Count() > 0)
+                        dbchild.RemoveRange(lst);
+                    var db = hContext1.Set<T_SHD>();
+                    var model = db.Find(id);
+                    db.Remove(model);
                     hContext1.SaveChanges();
                     result = 1;
                 }

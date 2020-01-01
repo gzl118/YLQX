@@ -29,9 +29,12 @@ namespace MedicalApparatusManage.Domain
         public List<T_BJD> PageT_BJD(T_BJD info, DateTime? startTime, DateTime? endTime, int pageIndex, int pageSize, out int pageCount, out int totalRecord)
         {
             Expression<Func<T_BJD, bool>> where = PredicateBuilder.True<T_BJD>();
-            if(startTime != null && endTime != null)
+            if (startTime != null)
             {
                 where = where.And(p => p.BJRQ >= startTime.Value);
+            }
+            if (endTime != null)
+            {
                 where = where.And(p => p.BJRQ <= endTime.Value);
             }
             Func<T_BJD, System.Int32> order = p => p.BJID;
@@ -39,7 +42,7 @@ namespace MedicalApparatusManage.Domain
         }
 
 
-        
+
 
         public List<T_BJD> GetAllT_BJD(T_BJD info)
         {
@@ -47,7 +50,7 @@ namespace MedicalApparatusManage.Domain
             return base.GetAllModels<System.Int32>(where);
         }
 
-        public  List<T_BJD> GetEntityPageInfo<S>(Expression<Func<T_BJD, bool>> where, Func<T_BJD, S> order, bool desc, int pageIndex, int pageSize, out int pageCount, out int totalRecord)
+        public List<T_BJD> GetEntityPageInfo<S>(Expression<Func<T_BJD, bool>> where, Func<T_BJD, S> order, bool desc, int pageIndex, int pageSize, out int pageCount, out int totalRecord)
         {
             totalRecord = 0;
             pageCount = 0;

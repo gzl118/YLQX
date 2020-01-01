@@ -225,7 +225,7 @@
         function Jszj() {
             var totalRow = 0;
             $('#wtlb tr').each(function () {
-                $(this).find('td:eq(11)').each(function () {
+                $(this).find('td:eq(14)').each(function () {
                     if (parseFloat($(this).text())) {
                         totalRow += parseFloat($(this).text());
                     }
@@ -240,7 +240,8 @@
                 url: "/T_CGD/SaveTPrice/",
                 data: {
                     id: $("#cgidMain").val(),
-                    tPrice: $('#cgze').val()
+                    tPrice: $('#cgze').val(),
+                    dhid: $("#CGDH").val()
                 },
                 success: function (data, textStatus) {
                 }

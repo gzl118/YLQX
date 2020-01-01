@@ -95,9 +95,12 @@ namespace MedicalApparatusManage.Domain
             {
                 try
                 {
-                    int rkid = hContext1.Set<T_RKD>().Where(p => p.RKDH == RKDH).FirstOrDefault().RKID;
+                    var parentModel = hContext1.Set<T_RKD>().Where(p => p.RKDH == RKDH).FirstOrDefault();
+                    parentModel.ISSH = 0;
+                    var rkid = parentModel.RKID;
                     model.RKID = rkid;
                     hContext1.Set<T_RKMX>().Add(model);
+                    #region 
                     //对新库存数据进行修改
                     //DbSet<T_KC> kcdb = hContext1.Set<T_KC>();
                     //var newkc = kcdb.Where(p => p.CPID == model.CPID && p.CPPH == model.CPPH && p.CKID == model.CKID).FirstOrDefault();
@@ -123,6 +126,9 @@ namespace MedicalApparatusManage.Domain
                     //    newkc.CPYXQ = model.CPYXQ;
                     //    newkc.CPSCRQ = model.CPSCRQ;
                     //}
+
+                    #endregion
+
                     return hContext1.SaveChanges();
                 }
                 catch (Exception ex)
@@ -159,6 +165,7 @@ namespace MedicalApparatusManage.Domain
                 {
                     DbSet<T_RKMX> db = hContext1.Set<T_RKMX>();
                     T_RKMX model = db.Where(p => p.GUID == guid).FirstOrDefault();
+                    #region 
                     //对原库存数据进行修改
                     //DbSet<T_KC> kcdb = hContext1.Set<T_KC>();
                     //var oldkc = kcdb.Where(p => p.CPID == model.CPID && p.CPPH == model.CPPH && p.CKID == model.CKID).FirstOrDefault();
@@ -166,6 +173,11 @@ namespace MedicalApparatusManage.Domain
                     //{
                     //    oldkc.CPNUM = oldkc.CPNUM - Convert.ToInt32(model.CPNUM);
                     //}
+
+                    #endregion
+
+                    var dbparent = hContext1.Set<T_RKD>().Find(model.RKID);
+                    dbparent.ISSH = 0;
                     db.Remove(model);
                     return hContext1.SaveChanges();
                 }

@@ -205,7 +205,7 @@ namespace MedicalApparatusManage.Controllers
                     return;
                 }
             }
-            int result = T_CGDDomain.GetInstance().DeleteModelById(id);
+            int result = T_CGDDomain.GetInstance().Delete(id);
             Response.ContentType = "text/json";
             if (result > 0)
                 Response.Write("{\"statusCode\":\"200\", \"message\":\"操作成功\",\"callbackType\":\"forward\",\"forwardUrl\":\"/T_CGD/Index\"}");
@@ -218,14 +218,14 @@ namespace MedicalApparatusManage.Controllers
         }
         [HttpPost]
         [CheckLogin()]
-        public int SaveTPrice(int id, string tPrice)
+        public int SaveTPrice(int id, string tPrice, string dhid)
         {
             int result = 0;
             try
             {
                 double d = 0;
                 double.TryParse(tPrice, out d);
-                result = T_CGDDomain.GetInstance().SaveTPrice(id, d);
+                result = T_CGDDomain.GetInstance().SaveTPrice(id, d, dhid);
             }
             catch { }
             return result;

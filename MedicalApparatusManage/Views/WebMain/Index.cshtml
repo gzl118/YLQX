@@ -123,7 +123,7 @@
         function requestTips() {
             $.ajaxSettings.global = false;
             $.get("/T_BJD/GetTipInfo", function (result) {
-                console.log(result);
+                //console.log(result);
                 if (result != "") {
                     $.messager.lays(300, 200);
                     $.messager.anim('fade', 1000);

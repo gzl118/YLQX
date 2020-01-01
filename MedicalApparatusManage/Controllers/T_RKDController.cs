@@ -40,14 +40,17 @@ namespace MedicalApparatusManage.Controllers
             int currentPage = Convert.ToInt32(evalModel.currentPage);
             evalModel.DataModel = evalModel.DataModel ?? new T_RKD();
 
-            if (Request["strRKMC"] != null)
+            var cpId = 0;
+            if (Request["strRKCPMC"] != null)
             {
-                string str = Request["strRKMC"].ToString();
+                string str = Request["strRKCPMC"].ToString();
                 if (!String.IsNullOrEmpty(str))
                 {
-                    evalModel.DataModel.RKMC = str;
+                    cpId = Convert.ToInt32(str);
                 }
+                ViewData["strRKCPMC"] = str;
             }
+
             string strYSPerson = "请选择";
             if (Request["strYSPerson"] != null)
             {
@@ -64,7 +67,12 @@ namespace MedicalApparatusManage.Controllers
             person.PsQYID = (int)UserModel.UserCompanyID;
             ViewBag.Persons = new SelectList(T_PersonDomain.GetInstance().GetAllT_Person(person), "PsMZ", "PsMZ");
 
-            evalModel.DataList = T_RKDDomain.GetInstance().PageT_RKD(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, out pagecount, out resultCount);
+            T_YLCPModels ylcpQymode = new T_YLCPModels();
+            ylcpQymode.DataModel = ylcpQymode.DataModel ?? new T_YLCP();
+            ylcpQymode.DataList = T_YLCPDomain.GetInstance().GetAllT_YLCP(ylcpQymode.DataModel).Where(p => p.CPStatus == 1).ToList();
+            ViewData["YLCP"] = new SelectList(ylcpQymode.DataList, "CPID", "CPMC");
+
+            evalModel.DataList = T_RKDDomain.GetInstance().PageT_RKD(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, cpId, out pagecount, out resultCount);
             evalModel.resultCount = resultCount;
             return View("~/Views/T_RKD/Index.cshtml", evalModel);
         }

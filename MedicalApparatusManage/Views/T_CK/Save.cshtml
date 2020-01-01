@@ -96,7 +96,7 @@
                     <label>
                         仓库管理员：
                     </label>
-                    @Html.DropDownListFor(m => m.DataModel.CKGLY, ViewBag.Persons as SelectList, "请选择", new { id = "CKGLY", style = "width:266px" })
+                    @Html.DropDownListFor(m => m.DataModel.CKGLY, ViewBag.Persons as SelectList, "请选择", new { id = "CKGLY", style = "width:266px", @class = "required" })
                 </div>
                 <div class="unit">
                     <label>

@@ -92,9 +92,9 @@
                     <th>
                         创建日期
                     </th>
-                    <th>
-                        最后登录时间
-                    </th>
+                    @*<th>
+                            最后登录时间
+                        </th>*@
                 </tr>
             </thead>
             <tbody>
@@ -117,8 +117,16 @@
                             {
                                 <td>禁用</td>
                             }
-                            <td>@item.UserCreateDate</td>
-                            <td>@item.UserLastLoginTime</td>
+                            @{ if (item.UserCreateDate == null)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>@item.UserCreateDate.Value.ToString("yyyy/MM/dd")</td>
+                                }
+                            }
+                            @*<td>@item.UserLastLoginTime</td>*@
                         </tr>
                     }
                 }

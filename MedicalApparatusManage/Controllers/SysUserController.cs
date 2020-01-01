@@ -88,10 +88,12 @@ namespace MedicalApparatusManage.Controllers
                 }
                 if (model.Tag == "Add")
                 {
+                    model.DataModel.UserCreateDate = DateTime.Now;
                     result = SysUserDomain.GetInstance().AddModel(model.DataModel);
                 }
                 else if (model.Tag == "Edit")
                 {
+                    model.DataModel.UserCreateDate = DateTime.Now;
                     result = SysUserDomain.GetInstance().UpdateModel(model.DataModel, model.DataModel.UserId);
                 }
 

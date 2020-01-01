@@ -50,6 +50,23 @@ namespace MedicalApparatusManage.Controllers
                 ViewData["strSHDH"] = str;
             }
 
+            if (Request["strSHSQPerson"] != null)
+            {
+                string str = Request["strSHSQPerson"].ToString();
+                if (!String.IsNullOrEmpty(str))
+                {
+                    evalModel.DataModel.SQR = str.Trim();
+                }
+                ViewData["strSHSQPerson"] = str;
+            }
+
+
+            //获取本企业下的人员列表
+            SysUser UserModel = Session["UserModel"] as SysUser;
+            T_Person person = new T_Person();
+            person.PsQYID = (int)UserModel.UserCompanyID;
+            ViewBag.Persons = new SelectList(T_PersonDomain.GetInstance().GetAllT_Person(person), "PsMZ", "PsMZ");
+
             evalModel.DataList = T_SHDDomain.GetInstance().PageT_SHD(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, out pagecount, out resultCount);
             evalModel.resultCount = resultCount;
             return View("~/Views/T_SHD/Index.cshtml", evalModel);
@@ -127,7 +144,7 @@ namespace MedicalApparatusManage.Controllers
                     return;
                 }
             }
-            int result = T_SHDDomain.GetInstance().DeleteModelById(id);
+            int result = T_SHDDomain.GetInstance().Delete(id);
             Response.ContentType = "text/json";
             if (result > 0)
                 Response.Write("{\"statusCode\":\"200\", \"message\":\"操作成功\",\"callbackType\":\"forward\",\"forwardUrl\":\"/T_SHD/Index\"}");

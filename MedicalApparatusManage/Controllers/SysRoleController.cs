@@ -82,6 +82,11 @@ namespace MedicalApparatusManage.Controllers
         [CheckLogin()]
         public void Delete(System.Int32 id)
         {
+            if (id < 4)
+            {
+                Response.Write("{\"statusCode\":\"300\", \"message\":\"内置角色不能删除\"}");
+                return;
+            }
             int result = SysRoleDomain.GetInstance().DeleteModelById(id);
             Response.ContentType = "text/json";
             if (result > 0)

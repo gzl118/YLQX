@@ -209,7 +209,12 @@
             $("#ysmxRkPageBox").loadUrl("/T_YSD/YSMXTable", { id: 0, ysdh: ysdh, canEdit: 0 });
         };
         function refreshRkmxGrid() {
-            $("#rkmxRkPageBox").loadUrl("/T_RKMX/RKMXTable", { id: 0, rkdh: $("#RKDH").val(), canEdit: 0 });
+            var tempIsSH = $("#hdISSH").val();
+            if (tempIsSH == null || tempIsSH == "")
+                tempIsSH = 0;
+            $("#rkmxRkPageBox").loadUrl("/T_RKMX/RKMXTable", {
+                id: 0, rkdh: $("#RKDH").val(), canEdit: tempIsSH
+            });
         };
         function bindMX(mxId) {
             dropChange(mxId);
@@ -239,15 +244,19 @@
                     @Html.HiddenFor(m => m.DataModel.RKID, new { ID = "RkidMain", Name = "DataModel.RKID" })
                     @Html.HiddenFor(m => m.DataModel.RKCJR, new { Name = "DataModel.RKCJR" })
                     @Html.HiddenFor(m => m.DataModel.RKCJRQ, new { Name = "DataModel.RKCJRQ" })
+                    <input type="hidden" id="hdISSH" value="@Model.DataModel.ISSH" />
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
                                 验收单号：
                             </label>
                             @Html.DropDownListFor(m => m.DataModel.YSDH, ViewData["YSD"] as SelectList, new { ID = "ysd", style = "width:279px" })
-                            <button value="提取" onclick="tqYsd();">
-                                提取
-                            </button>
+                            @if (Model.DataModel.ISSH != 1)
+                            {
+                                <button value="提取" onclick="tqYsd();">
+                                    提取
+                                </button>
+                            }
                         </div>
                         <div class="unit">
                             <label>
@@ -427,14 +436,14 @@
                                 List<SelectListItem> ishgList = new List<SelectListItem>();
                                 ishgList.Add(new SelectListItem { Text = "是", Value = "1" });
                                 ishgList.Add(new SelectListItem { Text = "否", Value = "0" });
-                                @Html.DropDownList("DataModel.ISSH", ishgList, new { style = "width:285px" })
+                                @Html.DropDownList("DataModel.ISSHHUO", ishgList, new { style = "width:285px" })
                             }
                         </div>
                         <div class="unit">
                             <label>
                                 库房：
                             </label>
-                            <select id="ckid" name="DataModel.CKID" style="width:285px" onchange="dropCkChange(this.value)">
+                            <select id="ckid" name="DataModel.CKID" style="width:285px" onchange="dropCkChange(this.value)" class="required">
                                 <option>请选择</option>
                                 @{foreach (var item in ViewData["CK"] as SelectList)
                                     {

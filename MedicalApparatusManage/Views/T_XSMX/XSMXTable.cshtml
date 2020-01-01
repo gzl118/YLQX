@@ -14,12 +14,14 @@
             if ($('#cgze').length > 0) {
                 Jszj();
                 if ($("#hdIsChange").val() == "1") {
-                    if (SavePrice)
-                        SavePrice();
+                    if (window.SaveXSPrice)
+                        SaveXSPrice();
                 }
             }
         });
-        function deleteXSMX(obj) {
+        function deleteXSMX(obj, e) {
+            if (e)
+                e.stopPropagation();
             alertMsg.confirm("确定要删除么？", {
                 okCall: function () {
                     var guid1 = obj.getAttribute("name");
@@ -34,8 +36,8 @@
                 }
             });
         }
-        function switchData(item) {
-            if (bindXSMX) {
+        function switchXSMXData(item) {
+            if (window.bindXSMX) {
                 var tds = $(item).find("td");
                 var mxId = tds.eq(0).text();
                 bindXSMX(mxId);
@@ -100,7 +102,7 @@
                         double? cpgs = @item.CPSL;
                         double? cpdj = @item.XSJG;
                         double? cpzj = cpgs * cpdj;
-                        <tr target="sid_user" onclick="switchData(this)">
+                        <tr target="sid_user" onclick="switchXSMXData(this)">
                             <td style="display:none;">@item.MXID</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPBH) ? item.T_YLCP.CPBH : "")</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPMC) ? item.T_YLCP.CPMC : "")</td>
@@ -116,7 +118,7 @@
                             @{if (Model.DataModel.XSFLAG != 1)
                                 {
                                     <td>
-                                        <a href="javascript:void(0)" name="@item.GUID" class="btnDel" onclick="deleteXSMX(this);">删除</a>
+                                        <a href="javascript:void(0)" name="@item.GUID" class="btnDel" onclick="deleteXSMX(this,event);">删除</a>
                                     </td>
                                 }}
                         </tr>

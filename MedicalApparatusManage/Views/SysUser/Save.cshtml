@@ -74,7 +74,7 @@
                     </label>
                     @Html.DropDownListFor(m => m.DataModel.UserState, ViewData["ZT"] as SelectList, new { style = "width:152px" })
                 </div>
-                <div class="unit">
+                @*<div class="unit">
                     <label>
                         创建日期：
                     </label>
@@ -85,7 +85,7 @@
                         最后登录时间：
                     </label>
                     @Html.TextBoxFor(m => m.DataModel.UserLastLoginTime, new { name = "UserLastLoginTime", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd HH:mm:ss' })" })
-                </div>
+                </div>*@
                 <div class="unit">
                     <label>
                         用户所属角色：

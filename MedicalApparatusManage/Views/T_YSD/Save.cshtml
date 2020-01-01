@@ -202,9 +202,12 @@
                                 采购单号：
                             </label>
                             @Html.DropDownListFor(m => m.DataModel.CGDH, ViewData["CGD"] as SelectList, "请选择", new { ID = "cgd", style = "width:279px", @class = "required" })
-                            <button value="提取" onclick="tqCgd();">
-                                提取
-                            </button>
+                            @{if (Model.DataModel.YSID == 0)
+                                {
+                                    <button value="提取" onclick="tqCgd();">
+                                        提取
+                                    </button>
+                                } }
                         </div>
                         <div class="unit">
                             <label>
@@ -220,9 +223,12 @@
                                 <a id="aYSBG" href='@Model.YSBGPath' target="_blank">@Model.DataModel.YSBG</a>
                                 @Html.TextBoxFor(m => m.DataModel.YSBG, new { id = "txtYSBG", name = "YSBG", style = "width:81.3%;display:none;" })
                             </div>
-                            <div style="float:right;width:20%;">
-                                <span id="uploadify"></span>
-                            </div>
+                            @{if (Model.DataModel.YSID == 0)
+                                {
+                                    <div style="float:right;width:20%;">
+                                        <span id="uploadify"></span>
+                                    </div>
+                                } }
                         </div>
                     </div>
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
@@ -263,7 +269,7 @@
                 </form>
                 <div style="width:91%;border:1px solid #ffffff;margin:5px;">
                     <div><label id="lblYsd" style="width:50%;color:red;"></label></div>
-                    @{if (Model.RoleCode == "2" || Model.DataModel.YSID == 0)
+                    @{if (Model.DataModel.YSID == 0)
                         {
                             <div class="button" id="divSaveCgd" style="float:right;">
                                 <div class="buttonContent">
@@ -414,7 +420,7 @@
                 </form>
                 <div style="width:91%;border:1px solid #ffffff;margin:5px;">
                     <div><label id="lblYsdmx" style="width:50%;color:red;"></label></div>
-                    @{if (Model.RoleCode == "2" || Model.DataModel.YSID == 0)
+                    @{if (Model.DataModel.YSID == 0)
                         {
                             <div class="button" style="float:right;">
                                 <div class="buttonContent">

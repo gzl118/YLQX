@@ -14,12 +14,14 @@
             if ($('#cgze').length > 0) {
                 Jszj();
                 if ($("#hdIsChange").val() == "1") {
-                    if (SavePrice)
+                    if (window.SavePrice)
                         SavePrice();
                 }
             }
         });
-        function deleteCGMX(obj) {
+        function deleteCGMX(obj, e) {
+            if (e)
+                e.stopPropagation();
             alertMsg.confirm("确定要删除么？", {
                 okCall: function () {
                     var guid1 = obj.getAttribute("name");
@@ -37,8 +39,8 @@
                 }
             });
         };
-        function switchData(item) {
-            if (bindCGMX) {
+        function switchCGMXData(item) {
+            if (window.bindCGMX) {
                 var tds = $(item).find("td");
                 var mxId = tds.eq(0).text();
                 bindCGMX(mxId);
@@ -112,7 +114,7 @@
                         double? cpgs = @item.CPNUM;
                         double? cpdj = @item.CPPRICE;
                         double? cpzj = cpgs * cpdj;
-                        <tr target="sid_user" onclick="switchData(this)">
+                        <tr target="sid_user" onclick="switchCGMXData(this)">
                             <td style="display:none;">@item.MXID</td>
                             <td style="display:none;">@(item.T_SupQY != null ? item.T_SupQY.SupID : 0)</td>
                             <td style="display:none;">@(item.T_YLCP != null ? item.T_YLCP.CPID : 0)</td>
@@ -131,7 +133,7 @@
                             @{if (Model.DataModel.ISSH != 1)
                                 {
                                     <td>
-                                        <a href="javascript:void(0)" name="@item.GUID" class="btnDel" onclick="deleteCGMX(this);">删除</a>
+                                        <a href="javascript:void(0)" name="@item.GUID" class="btnDel" onclick="deleteCGMX(this,event);">删除</a>
                                     </td>
                                 }}
                         </tr>

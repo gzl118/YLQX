@@ -23,7 +23,7 @@ namespace MedicalApparatusManage
         public string YSR { get; set; }
         public Nullable<System.DateTime> YSRQ { get; set; }
         public string YSBG { get; set; }
-        public Nullable<int> YSFLAG { get; set; }
+        public string YSFLAG { get; set; }
         public string BZ { get; set; }
         public string CGDH { get; set; }
         public string YSDH { get; set; }

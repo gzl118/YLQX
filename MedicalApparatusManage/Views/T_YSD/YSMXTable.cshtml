@@ -8,7 +8,9 @@
     <meta name="viewport" content="width=device-width" />
     <title></title>
     <script type="text/javascript" language="javascript">
-        function deleteYSMX(obj) {
+        function deleteYSMX(obj, e) {
+            if (e)
+                e.stopPropagation();
             alertMsg.confirm("确定要删除么？", {
                 okCall: function () {
                     var guid1 = obj.getAttribute("name");
@@ -24,8 +26,8 @@
                 }
             });
         }
-        function switchData(item) {
-            if (bindMX) {
+        function switchYSMXData(item) {
+            if (window.bindMX) {
                 var tds = $(item).find("td");
                 var mxId = tds.eq(0).text();
                 bindMX(mxId);
@@ -103,7 +105,7 @@
                 {
                     foreach (var item in Model.YSMXList)
                     {
-                        <tr target="sid_user" onclick="switchData(this)">
+                        <tr target="sid_user" onclick="switchYSMXData(this)">
                             <td style="display:none;">@item.MXID</td>
                             <td>@(item.T_SupQY != null && !string.IsNullOrEmpty(item.T_SupQY.SupMC) ? item.T_SupQY.SupMC : "")</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPBH) ? item.T_YLCP.CPBH : "")</td>
@@ -122,10 +124,10 @@
                             <td>@(item.ISSH == 1 ? "是" : "否")</td>
                             @if (ViewData["canEdit"].ToString() == "1")
                             {
-                                if (Model.RoleCode == "2" || Model.DataModel.YSID == 0)
+                                if (Model.DataModel.YSID == 0)
                                 {
                                     <td>
-                                        <a href="javascript:void(0)" name="@item.GUID" class="btnDel" onclick="deleteYSMX(this);">删除</a>
+                                        <a href="javascript:void(0)" name="@item.GUID" class="btnDel" onclick="deleteYSMX(this,event);">删除</a>
                                     </td>
                                 }
                             }

@@ -51,11 +51,11 @@
                 $("#SHID").val($("#SHDH").val());
             }
             if (parseFloat($("#kcnum").val()) < parseFloat($("#cpnum").val())) {
-                $("#lblCkmx").text("出库数量超出库存数量，无法出库");
+                $("#lblCkmx").text("损耗数量超出库存数量，请确认信息");
                 return false;
             }
             if ($("#SHID").val() == 0 || $("#SHID").val() == "") {
-                $("#lblCkmx").text("请先填写出库单！");
+                $("#lblCkmx").text("请先填写损耗单！");
                 return false;
             }
             if ($("#CPPH").find("option:selected").text() == "请选择") {
@@ -268,7 +268,7 @@
             if (tempIsSH == null || tempIsSH == "")
                 tempIsSH = 0;
             $("#ckmxCkPageBox").loadUrl("/T_SHMX/SHMXTable", {
-                id: $("#SHidMain").val(), ckdh: $("#CKDH").val(), canEdit: 0, isSH: tempIsSH
+                id: $("#SHidMain").val(), ckdh: $("#SHDH").val(), canEdit: 0, isSH: tempIsSH
             });
         };
         function dropMxChange(id) {
@@ -335,7 +335,7 @@
                             <label>
                                 申请人：
                             </label>
-                            @Html.DropDownListFor(m => m.DataModel.SQR, ViewBag.Persons as SelectList, "请选择", new { id = "SHDSQR", style = "width:285px" })
+                            @Html.DropDownListFor(m => m.DataModel.SQR, ViewBag.Persons as SelectList, "请选择", new { id = "SHDSQR", style = "width:285px", @class = "required" })
                         </div>
                         <div class="unit">
                             <label>
@@ -379,8 +379,8 @@
                         {
                             <div class="button" id="divSaveCkd" style="float:right;">
                                 <div class="buttonContent">
-                                    <button id="btnCkd" value="保存出库单" onclick="SaveSHd();">
-                                        保存出库单
+                                    <button id="btnCkd" value="保存损耗单" onclick="SaveSHd();">
+                                        保存损耗单
                                     </button>
                                 </div>
                             </div>

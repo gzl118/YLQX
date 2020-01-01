@@ -27,9 +27,9 @@ namespace MedicalApparatusManage
         public Nullable<System.DateTime> CPSCRQ { get; set; }
         public Nullable<System.DateTime> CPYXQ { get; set; }
         public Nullable<int> ISHG { get; set; }
-        public Nullable<int> ISSH { get; set; }
         public Nullable<int> YSY { get; set; }
         public Nullable<int> YXQBJDATE { get; set; }
+        public Nullable<int> ISSHHUO { get; set; }
     
         public virtual T_CK T_CK { get; set; }
         public virtual T_RKD T_RKD { get; set; }

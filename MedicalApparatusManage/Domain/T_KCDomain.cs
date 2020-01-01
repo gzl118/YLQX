@@ -37,9 +37,13 @@ namespace MedicalApparatusManage.Domain
             {
                 where = where.And(p => p.CPID == info.CPID);
             }
-            if(info.T_YLCP != null && info.T_YLCP.CPSCQY != "")
+            //if(info.T_YLCP != null && info.T_YLCP.CPSCQY != "")
+            //{
+            //    where = where.And(p => p.T_YLCP.CPSCQY == info.T_YLCP.CPSCQY);
+            //}
+            if (info.ScqyID != null && info.ScqyID != 0)
             {
-                where = where.And(p => p.T_YLCP.CPSCQY == info.T_YLCP.CPSCQY);
+                where = where.And(p => p.ScqyID == info.ScqyID);
             }
             Func<T_KC, System.Int32> order = p => p.CPID;
             return GetPageInfo<System.Int32>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);
@@ -56,7 +60,7 @@ namespace MedicalApparatusManage.Domain
             {
                 where = where.And(p => p.CKID == info.CKID);
             }
-            if(info.CPPH != null && info.CPPH != "")
+            if (info.CPPH != null && info.CPPH != "")
             {
                 where = where.And(p => p.CPPH == info.CPPH);
             }
@@ -139,7 +143,7 @@ namespace MedicalApparatusManage.Domain
             return result;
         }
 
-        public T_KC GetKCByPara(int CKID,int CPID,string CPPH)
+        public T_KC GetKCByPara(int CKID, int CPID, string CPPH)
         {
             T_KC result = null;
 

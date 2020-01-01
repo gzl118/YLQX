@@ -339,9 +339,13 @@
                             </label>
                             @*@Html.DropDownListFor(m => m.DataModel.XSID, ViewData["XSD"] as SelectList, "请选择", new { ID = "xsd", style = "width:270px", onchange = "dropChange(this.value)" })*@
                             @Html.DropDownListFor(m => m.DataModel.XSID, ViewData["XSD"] as SelectList, "请选择", new { ID = "xsd", style = "width:285px" })
-                            <button value="提取" onclick="tqXsd();">
-                                提取
-                            </button>
+                            @{if (Model.DataModel.CKID == 0)
+                                {
+                                    <button value="提取" onclick="tqXsd();">
+                                        提取
+                                    </button>
+                                }
+                            }
                         </div>
                         <div class="unit">
                             <label>
@@ -395,7 +399,7 @@
                 </form>
                 <div style="width:91%;border:1px solid #ffffff;margin:5px;">
                     <div><label id="lblCkd" style="width:50%;color:red;"></label></div>
-                    @{if (Model.RoleCode == "2" || Model.DataModel.CKID == 0)
+                    @{if (Model.DataModel.CKID == 0)
                         {
                             <div class="button" id="divSaveCkd" style="float:right;">
                                 <div class="buttonContent">
@@ -536,7 +540,7 @@
                 </form>
                 <div style="width:91%;border:1px solid #ffffff;margin:5px;">
                     <div><label id="lblCkmx" style="width:50%;color:red;"></label></div>
-                    @{if (Model.RoleCode == "2" || Model.DataModel.CKID == 0)
+                    @{if (Model.DataModel.CKID == 0)
                         {
                             <div class="button" id="divSaveCkMx" style="float:right;">
                                 <div class="buttonContent">

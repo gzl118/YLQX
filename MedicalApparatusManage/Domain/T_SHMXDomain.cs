@@ -94,9 +94,10 @@ namespace MedicalApparatusManage.Domain
             {
                 try
                 {
-                    int ckid = hContext1.Set<T_SHD>().Where(p => p.SHDH == SHDH).FirstOrDefault().SHID;
-                    model.SHID = ckid;
-
+                    var parentModel = hContext1.Set<T_SHD>().Where(p => p.SHDH == SHDH).FirstOrDefault();
+                    parentModel.ISSH = 0;
+                    model.SHID = parentModel.SHID;
+                    #region 
                     //对新库存数据进行修改
                     //DbSet<T_KC> kcdb = hContext1.Set<T_KC>();
                     //var kc = kcdb.Where(p => p.CPID == model.CPID && p.CPPH == model.CPPH && p.CKID == model.CKID).FirstOrDefault();
@@ -105,6 +106,9 @@ namespace MedicalApparatusManage.Domain
                     //    return 0;
                     //}
                     //kc.CPNUM = kc.CPNUM - Convert.ToInt32(model.CPNUM);
+
+                    #endregion
+
                     model.CPTPRICE = (model.CPPRICE ?? 0) * (model.CPNUM ?? 0);
                     hContext1.Set<T_SHMX>().Add(model);
                     return hContext1.SaveChanges();
@@ -143,13 +147,19 @@ namespace MedicalApparatusManage.Domain
                 {
                     DbSet<T_SHMX> db = hContext1.Set<T_SHMX>();
                     T_SHMX model = db.Where(p => p.GUID == guid).FirstOrDefault();
+                    #region
                     //对原库存数据进行修改
-                    DbSet<T_KC> kcdb = hContext1.Set<T_KC>();
-                    var oldkc = kcdb.Where(p => p.CPID == model.CPID && p.CPPH == model.CPPH && p.CKID == model.CKID).FirstOrDefault();
-                    if (oldkc != null)
-                    {
-                        oldkc.CPNUM = oldkc.CPNUM + Convert.ToInt32(model.CPNUM);
-                    }
+                    //DbSet<T_KC> kcdb = hContext1.Set<T_KC>();
+                    //var oldkc = kcdb.Where(p => p.CPID == model.CPID && p.CPPH == model.CPPH && p.CKID == model.CKID).FirstOrDefault();
+                    //if (oldkc != null)
+                    //{
+                    //    oldkc.CPNUM = oldkc.CPNUM + Convert.ToInt32(model.CPNUM);
+                    //}
+                    #endregion
+
+                    var parentModel = hContext1.Set<T_SHD>().Find(model.SHID);
+                    parentModel.ISSH = 0;
+
                     db.Remove(model);
                     return hContext1.SaveChanges();
                 }

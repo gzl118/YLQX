@@ -9,6 +9,13 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>损耗单</title>
+    <script type="text/javascript" language="javascript">
+        $(function () {
+            $("#strSHSQPerson").chosen({
+                search_contains: true
+            });
+        });
+    </script>
 </head>
 <body>
     <div id="pageContent">
@@ -30,9 +37,14 @@
                             <td>
                                 @Html.TextBox("strSHDH", @ViewData["strSHDH"])
                             </td>
-
                             <td>
-                                损耗日期:
+                                申请人:
+                            </td>
+                            <td>
+                                @Html.DropDownList("strSHSQPerson", ViewBag.Persons as SelectList, "请选择", new { Value = ViewData["strSHSQPerson"], id = "strSHSQPerson", style = "width:150px;" })
+                            </td>
+                            <td>
+                                申请日期:
                             </td>
                             <td>
                                 @{ string strStart = Model.StartTime.HasValue ? Model.StartTime.Value.ToString("yyyy/MM/dd") : "";

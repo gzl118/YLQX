@@ -118,7 +118,9 @@ namespace MedicalApparatusManage.Domain
             {
                 try
                 {
-                    int xsid = hContext1.Set<T_XSD>().Where(p => p.XSDH == XSDH).FirstOrDefault().XSID;
+                    var parentModel = hContext1.Set<T_XSD>().Where(p => p.XSDH == XSDH).FirstOrDefault();
+                    var xsid = parentModel.XSID;
+                    parentModel.XSFLAG = 0;
                     model.XSID = xsid;
                     hContext1.Set<T_XSMX>().Add(model);
                     return hContext1.SaveChanges();
@@ -179,6 +181,9 @@ namespace MedicalApparatusManage.Domain
                 {
                     DbSet<T_XSMX> db = hContext1.Set<T_XSMX>();
                     T_XSMX model = db.Where(p => p.GUID == guid).FirstOrDefault();
+                    var dbparent = hContext1.Set<T_XSD>().Find(model.XSID);
+                    dbparent.XSFLAG = 0;
+
                     db.Remove(model);
                     return hContext1.SaveChanges();
                 }

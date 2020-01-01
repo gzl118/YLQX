@@ -443,7 +443,7 @@
           <Property Name="CPSCRQ" Type="date" />
           <Property Name="CPYXQ" Type="date" />
           <Property Name="ISHG" Type="int" />
-          <Property Name="ISSH" Type="int" />
+          <Property Name="ISSHHUO" Type="int" />
           <Property Name="YSY" Type="int" />
           <Property Name="YXQBJDATE" Type="int" />
         </EntityType>
@@ -744,7 +744,7 @@
           <Property Name="YSR" Type="nvarchar" MaxLength="50" />
           <Property Name="YSRQ" Type="datetime" />
           <Property Name="YSBG" Type="nvarchar" MaxLength="100" />
-          <Property Name="YSFLAG" Type="int" />
+          <Property Name="YSFLAG" Type="nvarchar" MaxLength="20" />
           <Property Name="BZ" Type="nvarchar" MaxLength="300" />
           <Property Name="CGDH" Type="varchar" MaxLength="50" />
           <Property Name="YSDH" Type="varchar" MaxLength="50" />
@@ -2528,7 +2528,6 @@
           <Property Name="CPSCRQ" Type="DateTime" Precision="0" />
           <Property Name="CPYXQ" Type="DateTime" Precision="0" />
           <Property Name="ISHG" Type="Int32" />
-          <Property Name="ISSH" Type="Int32" />
           <Property Name="YSY" Type="Int32" />
           <NavigationProperty Name="T_CK" Relationship="MedicalApparatusManageModel.FK_T_RKMX_T_CK" FromRole="T_RKMX" ToRole="T_CK" />
           <NavigationProperty Name="T_RKD" Relationship="MedicalApparatusManageModel.FK_T_RKMX_T_RKD" FromRole="T_RKMX" ToRole="T_RKD" />
@@ -2536,6 +2535,7 @@
           <NavigationProperty Name="T_SupQY1" Relationship="MedicalApparatusManageModel.FK_T_RKMX_T_SupQY1" FromRole="T_RKMX" ToRole="T_SupQY" />
           <NavigationProperty Name="T_YLCP" Relationship="MedicalApparatusManageModel.FK_T_RKMX_T_YLCP" FromRole="T_RKMX" ToRole="T_YLCP" />
           <Property Name="YXQBJDATE" Type="Int32" />
+          <Property Name="ISSHHUO" Type="Int32" />
         </EntityType>
         <EntityType Name="T_SHFW">
           <Key>
@@ -2854,7 +2854,7 @@
           <Property Name="YSR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="YSRQ" Type="DateTime" Precision="3" />
           <Property Name="YSBG" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="YSFLAG" Type="Int32" />
+          <Property Name="YSFLAG" Type="String" FixedLength="false" MaxLength="20" Nullable="true" Unicode="true" />
           <Property Name="BZ" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="CGDH" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="YSDH" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -4076,9 +4076,9 @@
           <EntitySetMapping Name="T_RKMX">
             <EntityTypeMapping TypeName="MedicalApparatusManageModel.T_RKMX">
               <MappingFragment StoreEntitySet="T_RKMX">
+                <ScalarProperty Name="ISSHHUO" ColumnName="ISSHHUO" />
                 <ScalarProperty Name="YXQBJDATE" ColumnName="YXQBJDATE" />
                 <ScalarProperty Name="YSY" ColumnName="YSY" />
-                <ScalarProperty Name="ISSH" ColumnName="ISSH" />
                 <ScalarProperty Name="ISHG" ColumnName="ISHG" />
                 <ScalarProperty Name="CPYXQ" ColumnName="CPYXQ" />
                 <ScalarProperty Name="CPSCRQ" ColumnName="CPSCRQ" />

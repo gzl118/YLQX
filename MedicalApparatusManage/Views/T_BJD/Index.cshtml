@@ -31,14 +31,14 @@
                                 @{ string strStart = Model.StartTime.HasValue ? Model.StartTime.Value.ToString("yyyy/MM/dd") : "";
                                     string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
                                 }
-                                <input id="StartDate" name="StartTime" class="Wdate" type="text" value="@strStart"
+                                <input id="StartDate" name="StartTime" class="Wdate" type="text" autocomplete="off" value="@strStart"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
                             </td>
                             <td>
                                 至
                             </td>
                             <td>
-                                <input id="EndDate" name="EndTime" class="Wdate" type="text" value="@strEnd"
+                                <input id="EndDate" name="EndTime" class="Wdate" type="text" autocomplete="off" value="@strEnd"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', minDate: '#F{$dp.$D(\'StartDate\')}' })" />
                             </td>
 
@@ -58,18 +58,18 @@
                         </tr>
                     </table>
                 </div>
-                                    }
+            }
         </div>
         <div class="panelBar" id="EntLimitMenu">
             <ul class="toolBar">
                 @*<li><a class="add" href="/T_BJD/Save/0/Add" target="dialog"  mask="true" title="新增" width="1050" height="500"><span>新增</span></a></li>
-                <li> <a class="edit" href="/T_BJD/Save/{sid_user}/Edit" target="dialog" mask="true" title="修改" width="1050" height="500"><span>修改</span></a></li>*@
+                    <li> <a class="edit" href="/T_BJD/Save/{sid_user}/Edit" target="dialog" mask="true" title="修改" width="1050" height="500"><span>修改</span></a></li>*@
                 <li><a class="delete" href="/T_BJD/Delete/{sid_user}" target="ajaxTodo" title="确定删除吗?" mask="true"><span>删除</span></a></li>
-                <li><a class="icon" href="/T_BJD/Save/{sid_user}/Details" target="dialog"  mask="true" width="1050" height="500"><span>查看详情</span></a></li>
+                <li><a class="icon" href="/T_BJD/Save/{sid_user}/Details" target="dialog" mask="true" width="1050" height="500"><span>查看详情</span></a></li>
             </ul>
         </div>
         <table width="100%" layouth="112" class="table" id="T_BJDTable">
-           <thead>
+            <thead>
                 <tr>
                     <th>
                         报警日期
@@ -92,11 +92,11 @@
                         <td>@item.BJRQ</td>
                         @if (@item.T_SJZDLX == null)
                         {
-                           <td></td>
+                            <td></td>
                         }
                         else
                         {
-                          <td>@item.T_SJZDLX.LXMC</td>
+                            <td>@item.T_SJZDLX.LXMC</td>
                         }
                         <td>@item.BJNR</td>
                         <td>@item.BZ</td>

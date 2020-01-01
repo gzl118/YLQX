@@ -74,7 +74,7 @@
                     <th>
                         库管
                     </th>
-                    @if (Model.RoleCode == "2" || Model.DataModel.CKID == 0)
+                    @if (Model.DataModel.CKID == 0)
                     {
                         <th type="del">
                             操作
@@ -102,7 +102,7 @@
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPZCZ) ? item.T_YLCP.CPZCZ : "")</td>
                             <td>@(item.T_CK != null && !string.IsNullOrEmpty(item.T_CK.CKMC) ? item.T_CK.CKMC : "")</td>
                             <td>@(item.T_CK != null && !string.IsNullOrEmpty(item.T_CK.CKGLY) ? item.T_CK.CKGLY : "")</td>
-                            @if (Model.RoleCode == "2" || Model.DataModel.CKID == 0)
+                            @if (Model.DataModel.CKID == 0)
                             {
                                 <td>
                                     <a href="javascript:void(0)" name="@item.GUID" class="btnDel" onclick="deleteCKMX(this);">删除</a>

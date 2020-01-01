@@ -86,7 +86,7 @@ namespace MedicalApparatusManage.Domain
             }
             return result;
         }
-        public List<T_RKD> PageT_RKD(T_RKD info, DateTime? startTime, DateTime? endTime, int pageIndex, int pageSize, out int pageCount, out int totalRecord)
+        public List<T_RKD> PageT_RKD(T_RKD info, DateTime? startTime, DateTime? endTime, int pageIndex, int pageSize, int cpID, out int pageCount, out int totalRecord)
         {
             Expression<Func<T_RKD, bool>> where = PredicateBuilder.True<T_RKD>();
             if (!String.IsNullOrEmpty(info.CKGLRY))
@@ -102,7 +102,7 @@ namespace MedicalApparatusManage.Domain
                 where = where.And(p => p.JSRQ <= endTime.Value);
             }
             Func<T_RKD, System.Int32> order = p => p.RKID;
-            return GetPageInfo<System.Int32>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);
+            return GetPageInfo<System.Int32>(where, order, true, pageIndex, pageSize, cpID, out pageCount, out totalRecord);
         }
 
         public List<T_RKD> GetAllT_RKD(T_RKD info)
@@ -111,7 +111,7 @@ namespace MedicalApparatusManage.Domain
             return base.GetAllModels<System.Int32>(where);
         }
 
-        public List<T_RKD> GetPageInfo<S>(Expression<Func<T_RKD, bool>> where, Func<T_RKD, S> order, bool desc, int pageIndex, int pageSize, out int pageCount, out int totalRecord)
+        public List<T_RKD> GetPageInfo<S>(Expression<Func<T_RKD, bool>> where, Func<T_RKD, S> order, bool desc, int pageIndex, int pageSize, int cpID, out int pageCount, out int totalRecord)
         {
             totalRecord = 0;
             pageCount = 0;
@@ -120,6 +120,14 @@ namespace MedicalApparatusManage.Domain
             {
                 try
                 {
+                    if (cpID != 0)
+                    {
+                        var dbchild = hContext1.Set<T_RKMX>().Where(p => p.CPID == cpID);
+                        var lst = dbchild.Select(p => p.RKID).ToList();
+                        if (lst != null)
+                            where = where.And(p => lst.Contains(p.RKID));
+                    }
+
                     DbSet<T_RKD> db = hContext1.Set<T_RKD>();
                     totalRecord = db.Where(where.Compile()).Count();
                     if (totalRecord > 0)

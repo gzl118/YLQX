@@ -114,7 +114,9 @@ namespace MedicalApparatusManage.Domain
             {
                 try
                 {
-                    int cgid = hContext1.Set<T_CGD>().Where(p => p.CGDH == CGDH).FirstOrDefault().CGID;
+                    var parentModel = hContext1.Set<T_CGD>().Where(p => p.CGDH == CGDH).FirstOrDefault();
+                    parentModel.ISSH = 0;
+                    var cgid = parentModel.CGID;
                     model.CGID = cgid;
                     hContext1.Set<T_CGMX>().Add(model);
                     return hContext1.SaveChanges();
@@ -175,6 +177,8 @@ namespace MedicalApparatusManage.Domain
                 {
                     DbSet<T_CGMX> db = hContext1.Set<T_CGMX>();
                     T_CGMX model = db.Where(p => p.GUID == guid).FirstOrDefault();
+                    var dbparent = hContext1.Set<T_CGD>().Find(model.CGID);
+                    dbparent.ISSH = 0;
                     db.Remove(model);
                     return hContext1.SaveChanges();
                 }

@@ -335,6 +335,7 @@ namespace MedicalApparatusManage.Controllers
             {
                 model.RKMXList = T_RKMXDomain.GetInstance().GetT_RKMXByRkdh(rkdh);
             }
+            ViewData["ISSH"] = canEdit;
             return View("~/Views/T_RKMX/RKMXTable.cshtml", model);
         }
     }

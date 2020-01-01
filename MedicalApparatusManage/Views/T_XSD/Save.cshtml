@@ -25,6 +25,14 @@
             navTab.reload("/T_XSD/Index");
         };
         function SaveXsd() {
+            if ($("#XSQYID").find("option:selected").text() == "请选择") {
+                $("#lblXsd").text("请选择购货企业！");
+                return false;
+            }
+            if ($("#XSPerson").find("option:selected").text() == "请选择") {
+                $("#lblXsd").text("请选择销售人！");
+                return false;
+            }
             var elements = document.forms['formT_XSD'];
             var bl = validateCallback(elements);
             if (bl) {
@@ -177,13 +185,13 @@
                 tempIsSH = 0;
             $("#xsmxBox").loadUrl("/T_XSMX/XSMXTable", { id: 0, xsdh: $("#XSDH").val(), canEdit: 1, isSH: tempIsSH });
         };
-        function SavePrice() {
+        function SaveXSPrice() {
             $.ajax({
                 type: "post",
                 dataType: "json",
                 url: "/T_XSD/SaveTPrice/",
                 data: {
-                    id: $("#cgidMain").val(),
+                    id: $("#XsidMain").val(),
                     tPrice: $('#cgze').val()
                 },
                 success: function (data, textStatus) {
@@ -200,7 +208,7 @@
                 <form id="formT_XSD" method="post" onsubmit="return false;" class="pageForm required-validate-noalert" style="overflow:visible;">
                     @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Name = "Tag" })
                     @Html.HiddenFor(m => m.DataModel.XSID, new { ID = "XsidMain", Name = "DataModel.XSID" })
-                    @Html.HiddenFor(m => m.DataModel.XSFLAG, new { Name = "DataModel.XSFLAG" })
+                    @Html.HiddenFor(m => m.DataModel.XSFLAG, new { Name = "DataModel.XSFLAG", id = "XSFLAG" })
                     @Html.HiddenFor(m => m.DataModel.XSCJR, new { Name = "DataModel.XSCJR" })
                     @Html.HiddenFor(m => m.DataModel.XSCJRQ, new { Name = "DataModel.XSCJRQ" })
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">

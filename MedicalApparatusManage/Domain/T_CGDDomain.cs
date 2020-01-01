@@ -123,15 +123,50 @@ namespace MedicalApparatusManage.Domain
             }
             return result;
         }
-        public int SaveTPrice(int id, double tPrice)
+        public int SaveTPrice(int id, double tPrice, string dhid)
         {
             int result = 0;
             using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
             {
                 try
                 {
-                    var model = hContext1.Set<T_CGD>().Find(id);
-                    model.CGTotalPrice = tPrice;
+                    if (id == 0)
+                    {
+                        var model = hContext1.Set<T_CGD>().Where(p => p.CGDH == dhid).FirstOrDefault();
+                        if (model.CGID != 0)
+                        {
+                            model.CGTotalPrice = tPrice;
+                        }
+                    }
+                    else
+                    {
+                        var model = hContext1.Set<T_CGD>().Find(id);
+                        model.CGTotalPrice = tPrice;
+                    }
+                    hContext1.SaveChanges();
+                    result = 1;
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            return result;
+        }
+        public int Delete(int id)
+        {
+            int result = 0;
+            using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
+            {
+                try
+                {
+                    var dbchild = hContext1.Set<T_CGMX>();
+                    var lst = dbchild.Where(p => p.CGID == id);
+                    if (lst != null && lst.Count() > 0)
+                        dbchild.RemoveRange(lst);
+                    var db = hContext1.Set<T_CGD>();
+                    var model = db.Find(id);
+                    db.Remove(model);
                     hContext1.SaveChanges();
                     result = 1;
                 }

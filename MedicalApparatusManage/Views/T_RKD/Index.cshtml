@@ -14,9 +14,9 @@
             $("#strRKPerson").chosen({
                 search_contains: true
             });
-            //$("#strCPMC").chosen({
-            //    search_contains: true
-            //});
+            $("#strRKCPMC").chosen({
+                search_contains: true
+            });
         });
     </script>
 </head>
@@ -34,12 +34,12 @@
                 <div class="searchBar">
                     <table class="searchContent">
                         <tr>
-                            @*<td>
-                                    产品名称:
-                                </td>
-                                <td>
-                                    @Html.DropDownList("strCPMC", ViewBag.Persons as SelectList, "请选择", new { id = "strCPMC", style = "width:150px;" })
-                                </td>*@
+                            <td>
+                                产品名称:
+                            </td>
+                            <td>
+                                @Html.DropDownList("strRKCPMC", ViewData["YLCP"] as SelectList, "请选择", new { Value = ViewData["strRKCPMC"], id = "strRKCPMC", style = "width:200px;" })
+                            </td>
                             <td>
                                 入库人:
                             </td>
