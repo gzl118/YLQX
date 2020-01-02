@@ -1,7 +1,4 @@
 @page {
     size: landscape;
-    margin-bottom: 0mm;
-    margin-top: 50mm;
-    margin-left: 50mm;
-    margin-right: 0mm;
+    margin:0;
 }

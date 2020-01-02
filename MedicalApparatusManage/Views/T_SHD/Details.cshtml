@@ -12,16 +12,20 @@
             document.location.href = "/T_SHD/ExportExcel/" + $("#shidMain").val();
         };
         function prickd() {
-            $("#printckd").jqprint();
+            //$("#printckd").jqprint();
+            var defaultstyle = "../../Content/css/stylepage.css";
+            $("#printshd").print({
+                iframe: true, mediaPrint: false, stylesheet: defaultstyle
+            });
         }
     </script>
 </head>
 <body>
-    <div class="pageContent">
-        <div class="pageFormContent" layouth="58">
-            <div id="printckd">@Html.Raw(ViewData["ParaStr"].ToString())</div>
-            @Html.HiddenFor(m => m.DataModel.SHID, new { ID = "shidMain", Name = "DataModel.SHID" })
-        </div>
+    <div>
+        <div id="printshd" style="margin:15px;">@Html.Raw(ViewData["ParaStr"].ToString())</div>
+    </div>
+    <div class="pageContent" style="position: absolute;bottom: 5px;">
+        @Html.HiddenFor(m => m.DataModel.SHID, new { ID = "shidMain", Name = "DataModel.SHID" })
         <div class="formBar">
             <ul>
                 <li>

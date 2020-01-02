@@ -349,10 +349,10 @@ namespace MedicalApparatusManage.Controllers
             StringBuilder sHtml = new StringBuilder(string.Empty);
             //打印表头
             sHtml.Append("<table border=\"0\" width=\"100%\">"); //
-            sHtml.Append("<tr height=\"40\"><td colspan=\"10\" align=\"center\" style='font-size:24px'><b>入库单" + "</b></td></tr>");
-            sHtml.Append("<tr height=\"40\"><td colspan=\"8\" align=\"left\">供货企业：" + ghqy + "</td><td align=\"right\">日期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\">入库单号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
+            sHtml.Append("<tr height=\"40\"><td colspan=\"12\" align=\"center\" style='font-size:24px'><b>入库单" + "</b></td></tr>");
+            sHtml.Append("<tr height=\"40\"><td colspan=\"6\" align=\"left\">供货企业：" + ghqy + "</td><td align=\"center\" colspan=\"4\">日期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\"  colspan=\"2\">入库单号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
             sHtml.Append("</table>");
-            sHtml.Append("<table border=\"1\" width=\"100%\">"); // width=\"100%\"
+            sHtml.Append("<table border=\"1\" width=\"100%\"  style='border-collapse:collapse;border:1px solid black;'>"); // width=\"100%\"
             sHtml.Append("<tr height=\"30\" align=\"center\" ><td>产品名称</td><td>产品规格</td><td>生产厂家</td><td>生产日期</td><td>单位</td><td>数量</td><td>单价</td>"
                 + "<td>金额</td><td>产品批号</td><td>产品有效期</td><td>经营许可证号</td><td>注册证号</td></tr>");
 
@@ -405,7 +405,7 @@ namespace MedicalApparatusManage.Controllers
                             + "</td></tr>");
             }
             //打印表尾
-            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"5\">合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"8\">（小写）" + total.ToString("0.000") + "</td></tr>");
+            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"5\">合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"7\">（小写）" + total.ToString("0.000") + "</td></tr>");
             sHtml.Append("</table>");
             sHtml.Append("<table  border=\"0\" width=\"100%\">"); // width =\"100%\"
             Expression<Func<T_YSD, bool>> where = p => p.YSDH == ckdinfo.YSDH;
@@ -417,7 +417,7 @@ namespace MedicalApparatusManage.Controllers
                 cgdModel = T_CGDDomain.GetInstance().GetAllModels<int>(where1).FirstOrDefault();
             }
 
-            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"2\" align=\"left\">制单人：&nbsp;&nbsp" + ckdinfo.RKCJR + "</td><td align=\"left\" colspan=\"4\">审核人：&nbsp;&nbsp" + cgdModel.SHR + "</td><td align=\"left\" colspan=\"4\">采购员：&nbsp;&nbsp" + cgdModel.CGPERSON + "</td><td align=\"left\" colspan=\"3\">质检员：&nbsp;&nbsp</td></tr>");
+            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"2\" align=\"left\">制单人：&nbsp;" + ckdinfo.RKCJR + "</td><td align=\"left\" colspan=\"4\">审核人：&nbsp;" + cgdModel.SHR + "</td><td align=\"left\" colspan=\"3\">采购员：&nbsp;" + cgdModel.CGPERSON + "</td><td align=\"left\" colspan=\"3\">质检员：&nbsp;</td></tr>");
             sHtml.Append("</table>");
             return sHtml.ToString();
         }

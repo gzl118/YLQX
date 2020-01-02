@@ -374,11 +374,11 @@ namespace MedicalApparatusManage.Controllers
             StringBuilder sHtml = new StringBuilder(string.Empty);
             //打印表头
             sHtml.Append("<table border=\"0\" width=\"100%\">");
-            sHtml.Append("<tr height=\"40\"><td colspan=\"10\" align=\"center\" style='font-size:24px'><b>" + qy.WhsMC + "销售复核出库单" + "</b></td></tr>");
-            sHtml.Append("<tr height=\"40\"><td colspan=\"8\" align=\"left\">购货单位：" + xsqyName + "</td><td align=\"right\">日 期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\">单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
-            sHtml.Append("<tr><td colspan=\"10\">地址：" + xsqyKFDZ + "<td></tr>");
+            sHtml.Append("<tr height=\"40\"><td colspan=\"13\" align=\"center\" style='font-size:24px'><b>" + qy.WhsMC + "销售复核出库单" + "</b></td></tr>");
+            sHtml.Append("<tr height=\"40\"><td colspan=\"6\" align=\"left\">购货单位：" + xsqyName + "</td><td align=\"center\"  colspan=\"4\">日 期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\"  colspan=\"3\">单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
+            sHtml.Append("<tr><td colspan=\"10\" height=\"30\">地址：" + xsqyKFDZ + "<td></tr>");
             sHtml.Append("</table>");
-            sHtml.Append("<table border=\"1\" width=\"100%\">");
+            sHtml.Append("<table border=\"1\" width=\"100%\" style='border-collapse:collapse;border:1px solid black;'>");
             //sHtml.Append("<tr height=\"40\"><td colspan=\"10\" align=\"center\" style='font-size:24px'><b>出库单" + "</b></td></tr>");
             //sHtml.Append("<tr height=\"40\"><td colspan=\"8\" align=\"left\">&nbsp;购买单位：" + xsqyName + "</td><td align=\"right\">日期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\">单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
             //打印列名
@@ -449,7 +449,7 @@ namespace MedicalApparatusManage.Controllers
             sHtml.Append("</table>");
             sHtml.Append("<table  border=\"0\" width=\"100%\">");
             var xsry = ckdinfo.T_XSD == null ? "" : ckdinfo.T_XSD.XSRY;
-            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"2\" align=\"left\">销售员：&nbsp;&nbsp" + xsry + "</td><td align=\"left\" colspan=\"4\">复核员：&nbsp;&nbsp" + ckdinfo.FHR + "</td ><td align =\"left\" colspan=\"4\">出库员：&nbsp;&nbsp" + ckdinfo.CKCHR + "</td ><td align =\"center\" colspan=\"3\">收货员：&nbsp;&nbsp</td></tr>");
+            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"2\" align=\"left\">销售员：&nbsp;" + xsry + "</td><td align=\"left\" colspan=\"4\">复核员：&nbsp;" + ckdinfo.FHR + "</td ><td align =\"left\" colspan=\"4\">出库员：&nbsp;" + ckdinfo.CKCHR + "</td ><td align =\"center\" colspan=\"3\">收货员：&nbsp;</td></tr>");
             sHtml.Append("</table>");
             return sHtml.ToString();
         }

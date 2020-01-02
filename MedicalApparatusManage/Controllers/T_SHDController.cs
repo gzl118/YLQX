@@ -252,9 +252,9 @@ namespace MedicalApparatusManage.Controllers
             //打印表头
             sHtml.Append("<table border=\"0\" width=\"100%\">");
             sHtml.Append("<tr height=\"40\"><td colspan=\"12\" align=\"center\" style='font-size:24px'><b>" + qy.WhsMC + "损耗单" + "</b></td></tr>");
-            sHtml.Append("<tr height=\"40\"><td align=\"left\">日 期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\">单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
+            sHtml.Append("<tr height=\"40\"><td align=\"left\"  colspan=\"8\">日 期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\"  colspan=\"4\">单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
             sHtml.Append("</table>");
-            sHtml.Append("<table border=\"1\" width=\"100%\">");
+            sHtml.Append("<table border=\"1\" width=\"100%\" style='border-collapse:collapse;border:1px solid black;'>");
             sHtml.Append("<tr height=\"30\" align=\"center\" ><td>产品名称</td><td>产品规格（型号）</td><td>生产企业</td><td>生产日期</td><td>单位</td><td>数量</td><td>单价</td>"
                 + "<td>金额</td><td>产品批号</td><td>产品有效期</td><td>经营许可证号</td><td>注册证号</td></tr>");
 
@@ -319,7 +319,7 @@ namespace MedicalApparatusManage.Controllers
             sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"5\">合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"7\">（小写）" + total.ToString("0.000") + "</td></tr>");
             sHtml.Append("</table>");
             sHtml.Append("<table  border=\"0\" width=\"100%\">");
-            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"7\" align=\"left\">申请人：&nbsp;&nbsp" + ckdinfo.SQR + "</td><td align=\"left\" colspan='5'>复核员：&nbsp;&nbsp" + ckdinfo.FHY + "</td></tr>");
+            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"7\" align=\"left\">申请人：&nbsp;" + ckdinfo.SQR + "</td><td align=\"left\" colspan='5'>复核员：&nbsp;" + ckdinfo.FHY + "</td></tr>");
             sHtml.Append("</table>");
             return sHtml.ToString();
         }
