@@ -95,6 +95,15 @@ namespace MedicalApparatusManage.Controllers
 
             ViewData["CPLX"] = new SelectList(cplxQymode.DataList, "LXID", "LXMC", "请选择");
 
+            //加载仓库列表
+            T_CKModels ckmode = new T_CKModels();
+
+            ckmode.DataModel = ckmode.DataModel ?? new T_CK();
+
+            ckmode.DataList = T_CKDomain.GetInstance().GetAllT_CK(ckmode.DataModel);
+
+            ViewData["CK"] = new SelectList(ckmode.DataList, "CKID", "CKMC");
+
             model.DataModel = new T_YLCP();
 
             model.DataModel.CPLRRQ = DateTime.Now;

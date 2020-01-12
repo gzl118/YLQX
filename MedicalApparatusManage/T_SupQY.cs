@@ -66,6 +66,15 @@ namespace MedicalApparatusManage
         public Nullable<System.DateTime> JYXKZYXQJS { get; set; }
         public Nullable<System.DateTime> SQSKS { get; set; }
         public Nullable<System.DateTime> SQSJS { get; set; }
+        public string SCAddr { get; set; }
+        public string SupSCFW { get; set; }
+        public string SupJYXKZBH { get; set; }
+        public string SupBAPZBH { get; set; }
+        public string SupBAJYCS { get; set; }
+        public string SupBAJYFS { get; set; }
+        public string SupBAKFDZ { get; set; }
+        public string SupBAJYFW { get; set; }
+        public Nullable<System.DateTime> SupBARQ { get; set; }
     
         public virtual ICollection<T_CGMX> T_CGMX { get; set; }
         public virtual ICollection<T_CGMX> T_CGMX1 { get; set; }

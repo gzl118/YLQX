@@ -272,6 +272,15 @@
           <Property Name="JYXKZYXQJS" Type="date" />
           <Property Name="SQSKS" Type="date" />
           <Property Name="SQSJS" Type="date" />
+          <Property Name="SCAddr" Type="nvarchar" MaxLength="200" />
+          <Property Name="CusSCFW" Type="nvarchar" MaxLength="400" />
+          <Property Name="CusJYXKZBH" Type="nvarchar" MaxLength="50" />
+          <Property Name="CusBAPZBH" Type="nvarchar" MaxLength="50" />
+          <Property Name="CusBAJYCS" Type="nvarchar" MaxLength="100" />
+          <Property Name="CusBAJYFS" Type="nvarchar" MaxLength="100" />
+          <Property Name="CusBAKFDZ" Type="nvarchar" MaxLength="200" />
+          <Property Name="CusBAJYFW" Type="nvarchar" MaxLength="400" />
+          <Property Name="CusBARQ" Type="date" />
         </EntityType>
         <EntityType Name="T_CusQYZZ">
           <Key>
@@ -576,6 +585,15 @@
           <Property Name="JYXKZYXQJS" Type="date" />
           <Property Name="SQSKS" Type="date" />
           <Property Name="SQSJS" Type="date" />
+          <Property Name="SCAddr" Type="nvarchar" MaxLength="200" />
+          <Property Name="SupSCFW" Type="nvarchar" MaxLength="400" />
+          <Property Name="SupJYXKZBH" Type="nvarchar" MaxLength="50" />
+          <Property Name="SupBAPZBH" Type="nvarchar" MaxLength="50" />
+          <Property Name="SupBAJYCS" Type="nvarchar" MaxLength="100" />
+          <Property Name="SupBAJYFS" Type="nvarchar" MaxLength="100" />
+          <Property Name="SupBAKFDZ" Type="nvarchar" MaxLength="200" />
+          <Property Name="SupBAJYFW" Type="nvarchar" MaxLength="400" />
+          <Property Name="SupBARQ" Type="date" />
         </EntityType>
         <EntityType Name="T_THD">
           <Key>
@@ -727,6 +745,12 @@
           <Property Name="CPSCQYID" Type="int" />
           <Property Name="BJSL" Type="int" />
           <Property Name="BJDate" Type="int" />
+          <Property Name="ZCRName" Type="nvarchar" MaxLength="20" />
+          <Property Name="ZCRAddr" Type="nvarchar" MaxLength="100" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="200" />
+          <Property Name="CCTJ" Type="nvarchar" MaxLength="200" />
+          <Property Name="CKID" Type="int" />
+          <Property Name="YXSC" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="T_YLCPZZ">
           <Key>
@@ -2353,6 +2377,15 @@
           <Property Name="JYXKZYXQJS" Type="DateTime" Precision="0" />
           <Property Name="SQSKS" Type="DateTime" Precision="0" />
           <Property Name="SQSJS" Type="DateTime" Precision="0" />
+          <Property Name="SCAddr" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CusSCFW" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="CusJYXKZBH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CusBAPZBH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CusBAJYCS" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CusBAJYFS" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CusBAKFDZ" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CusBAJYFW" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="CusBARQ" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="T_CusQYZZ">
           <Key>
@@ -2654,6 +2687,15 @@
           <Property Name="JYXKZYXQJS" Type="DateTime" Precision="0" />
           <Property Name="SQSKS" Type="DateTime" Precision="0" />
           <Property Name="SQSJS" Type="DateTime" Precision="0" />
+          <Property Name="SCAddr" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SupSCFW" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="SupJYXKZBH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SupBAPZBH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SupBAJYCS" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SupBAJYFS" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SupBAKFDZ" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SupBAJYFW" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="SupBARQ" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="T_THD">
           <Key>
@@ -2836,6 +2878,12 @@
           <NavigationProperty Name="T_YSMX" Relationship="MedicalApparatusManageModel.FK_T_YSMX_T_YLCP" FromRole="T_YLCP" ToRole="T_YSMX" />
           <Property Name="BJDate" Type="Int32" />
           <NavigationProperty Name="T_SHMX" Relationship="MedicalApparatusManageModel.FK_T_SHMX_T_YLCP" FromRole="T_YLCP" ToRole="T_SHMX" />
+          <Property Name="ZCRName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ZCRAddr" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CCTJ" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CKID" Type="Int32" />
+          <Property Name="YXSC" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="T_YLCPZZ">
           <Key>
@@ -3881,6 +3929,15 @@
           <EntitySetMapping Name="T_CusQY">
             <EntityTypeMapping TypeName="MedicalApparatusManageModel.T_CusQY">
               <MappingFragment StoreEntitySet="T_CusQY">
+                <ScalarProperty Name="CusBARQ" ColumnName="CusBARQ" />
+                <ScalarProperty Name="CusBAJYFW" ColumnName="CusBAJYFW" />
+                <ScalarProperty Name="CusBAKFDZ" ColumnName="CusBAKFDZ" />
+                <ScalarProperty Name="CusBAJYFS" ColumnName="CusBAJYFS" />
+                <ScalarProperty Name="CusBAJYCS" ColumnName="CusBAJYCS" />
+                <ScalarProperty Name="CusBAPZBH" ColumnName="CusBAPZBH" />
+                <ScalarProperty Name="CusJYXKZBH" ColumnName="CusJYXKZBH" />
+                <ScalarProperty Name="CusSCFW" ColumnName="CusSCFW" />
+                <ScalarProperty Name="SCAddr" ColumnName="SCAddr" />
                 <ScalarProperty Name="SQSJS" ColumnName="SQSJS" />
                 <ScalarProperty Name="SQSKS" ColumnName="SQSKS" />
                 <ScalarProperty Name="JYXKZYXQJS" ColumnName="JYXKZYXQJS" />
@@ -4160,6 +4217,15 @@
           <EntitySetMapping Name="T_SupQY">
             <EntityTypeMapping TypeName="MedicalApparatusManageModel.T_SupQY">
               <MappingFragment StoreEntitySet="T_SupQY">
+                <ScalarProperty Name="SupBARQ" ColumnName="SupBARQ" />
+                <ScalarProperty Name="SupBAJYFW" ColumnName="SupBAJYFW" />
+                <ScalarProperty Name="SupBAKFDZ" ColumnName="SupBAKFDZ" />
+                <ScalarProperty Name="SupBAJYFS" ColumnName="SupBAJYFS" />
+                <ScalarProperty Name="SupBAJYCS" ColumnName="SupBAJYCS" />
+                <ScalarProperty Name="SupBAPZBH" ColumnName="SupBAPZBH" />
+                <ScalarProperty Name="SupJYXKZBH" ColumnName="SupJYXKZBH" />
+                <ScalarProperty Name="SupSCFW" ColumnName="SupSCFW" />
+                <ScalarProperty Name="SCAddr" ColumnName="SCAddr" />
                 <ScalarProperty Name="SQSJS" ColumnName="SQSJS" />
                 <ScalarProperty Name="SQSKS" ColumnName="SQSKS" />
                 <ScalarProperty Name="JYXKZYXQJS" ColumnName="JYXKZYXQJS" />
@@ -4328,6 +4394,12 @@
           <EntitySetMapping Name="T_YLCP">
             <EntityTypeMapping TypeName="MedicalApparatusManageModel.T_YLCP">
               <MappingFragment StoreEntitySet="T_YLCP">
+                <ScalarProperty Name="YXSC" ColumnName="YXSC" />
+                <ScalarProperty Name="CKID" ColumnName="CKID" />
+                <ScalarProperty Name="CCTJ" ColumnName="CCTJ" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="ZCRAddr" ColumnName="ZCRAddr" />
+                <ScalarProperty Name="ZCRName" ColumnName="ZCRName" />
                 <ScalarProperty Name="BJDate" ColumnName="BJDate" />
                 <ScalarProperty Name="BJSL" ColumnName="BJSL" />
                 <ScalarProperty Name="CPSCQYID" ColumnName="CPSCQYID" />

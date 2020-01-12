@@ -2401,9 +2401,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="UploadFiles\本企业人员资质\" />
-    <Folder Include="UploadFiles\本企业人员身份证\" />
-    <Folder Include="UploadFiles\购货商资料\" />
     <Folder Include="Views\Home\" />
     <Folder Include="Views\T_SHMX\" />
   </ItemGroup>

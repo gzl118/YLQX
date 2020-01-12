@@ -33,7 +33,10 @@ namespace MedicalApparatusManage.Domain
             {
                 where = where.And(p => info.CGPERSON.Equals(p.CGPERSON));
             }
-
+            if (!String.IsNullOrEmpty(info.CGDMC))
+            {
+                where = where.And(p => p.CGDMC != null && p.CGDMC.Contains(info.CGDMC));
+            }
             if (startTime != null)
             {
                 where = where.And(p => p.CGRQ >= startTime.Value);

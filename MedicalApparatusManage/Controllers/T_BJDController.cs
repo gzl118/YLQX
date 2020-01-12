@@ -152,7 +152,7 @@ namespace MedicalApparatusManage.Controllers
 
                 if (SupQYCount > 0)
                 {
-                    strHtml.Append(string.Format(strTemplete, "SupQYManage", "/T_SupQY/Index/", "供货企业", AlarmCount, "供货企业待审批"));
+                    strHtml.Append(string.Format(strTemplete, "SupQYManage", "/T_SupQY/Index/", "供货企业", SupQYCount, "供货企业待审批"));
                 }
                 if (YLCPCount > 0)
                 {

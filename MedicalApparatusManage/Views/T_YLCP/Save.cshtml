@@ -20,6 +20,29 @@
             $("#CPSCQYID").chosen({
                 search_contains: true
             });
+            $('#CPSCQYID').on('change', function (e, params) {
+                var id = params ? params.selected : "";
+                if (id != "" && id != "请选择") {
+                    $.ajax({
+                        type: "post",
+                        dataType: "json",
+                        url: "/T_SupQY/GetInfoByID",
+                        data: { id: id },
+                        success: function (json) {
+                            if (json) {
+                                var tes = eval("(" + json + ")");
+                                $("#CPSCDZ").val(tes.SCAddr);
+                            }
+                        },
+                        error: function () {
+                            alertMsg.error('发生错误！');
+                        }
+                    });
+                }
+                else {
+                    $("#CPSCDZ").val("");
+                }
+            });
         });
         function Save() {
             if ($("#SUPQY").find("option:selected").text() == "请选择") {
@@ -129,18 +152,34 @@
                     @Html.HiddenFor(m => m.DataModel.CPLRR, new { Name = "DataModel.CPLRR" })
                     @Html.HiddenFor(m => m.DataModel.CPLRRQ, new { Name = "DataModel.CPLRRQ" })
                     @Html.HiddenFor(m => m.CPZZFiles, new { ID = "QYZZFiles", Name = "CPZZFiles" })
-                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                    <div style="width:98%;border:1px solid #ffffff;float:left;margin-left:5px;">
                         <div class="unit">
                             <label>
                                 产品编号：
                             </label>
                             @Html.TextBoxFor(m => m.DataModel.CPBH, new { name = "CPBH", style = "width:279px;", ReadOnly = true })
                         </div>
+                    </div>
+                    <div style="width:98%;border:1px solid #ffffff;float:left;margin-left:5px;">
                         <div class="unit">
                             <label>
-                                注册证号：
+                                产品名称：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CPMC, new { name = "CPMC", style = "width:279px", @class = "required" })
+                        </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                注册证编号：
                             </label>
                             @Html.TextBoxFor(m => m.DataModel.CPZCZ, new { name = "CPZCZ", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                注册人名称：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.ZCRName, new { name = "ZCRName", style = "width:279px" })
                         </div>
                         <div class="unit">
                             <label>
@@ -156,81 +195,38 @@
                         </div>
                         <div class="unit">
                             <label>
-                                进货价格(元)：
+                                生产企业：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CPPrice, new { name = "CPPrice", style = "width:279px", @class = "textInput number" })
-                        </div>
-                        <div class="unit">
-                            <label>
-                                供货企业：
-                            </label>
-                            @Html.DropDownListFor(m => m.DataModel.CPGYSID, ViewData["SUPQY"] as SelectList, "请选择", new { ID = "SUPQY", style = "width:285px" })
+                            @Html.DropDownListFor(m => m.DataModel.CPSCQYID, ViewData["SUPQY"] as SelectList, "请选择", new { ID = "CPSCQYID", style = "width:285px" })
                         </div>
                         <div class="unit">
                             <label>
                                 生产地址：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CPSCDZ, new { name = "CPSCDZ", style = "width:279px" })
+                            @Html.TextBoxFor(m => m.DataModel.CPSCDZ, new { id = "CPSCDZ", name = "CPSCDZ", style = "width:279px" })
                         </div>
                         <div class="unit">
                             <label>
-                                报警数量：
+                                产品有效时长：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.YXSC, new { name = "CCTJ", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                供货价格(元)：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CPPrice, new { name = "CPPrice", style = "width:279px", @class = "textInput number" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                库存预警数量：
                             </label>
                             @Html.TextBoxFor(m => m.DataModel.BJSL, new { name = "BJSL", style = "width:279px", @class = "textInput digits" })
                         </div>
                         <div class="unit">
-                            <label>
-                                报警期限(天)：
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.BJDate, new { name = "BJDate", style = "width:279px", @class = "textInput digits" })
-                        </div>
-                    </div>
-                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
-                        <div class="unit">
-                            <label>
-                                产品名称：
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.CPMC, new { name = "CPMC", style = "width:279px", @class = "required" })
-                        </div>
-                        <div class="unit">
-                            <label>
-                                注册证有效期限：
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.YXQXKS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.YXQXKS), name = "YXQXKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
-                            <label style="width:10px">
-                                至
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.YXQXJS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.YXQXJS), name = "YXQXJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
-                        </div>
-                        <div class="unit">
-                            <label>
-                                产品规格：
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.CPGG, new { name = "CPGG", style = "width:279px" })
-                        </div>
-                        <div class="unit">
-                            <label>
-                                产品单位：
-                            </label>
-                            @Html.DropDownListFor(m => m.DataModel.CPDW, ViewBag.PUnit as SelectList, new { style = "width:285px" })
-                        </div>
-                        <div class="unit">
-                            <label>
-                                销售价格(元)：
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.XSJG, new { name = "XSJG", style = "width:279px", @class = "textInput number" })
-                        </div>
-                        <div class="unit">
-                            <label>
-                                生产企业：
-                            </label>
-                            @Html.DropDownListFor(m => m.DataModel.CPSCQYID, ViewData["SUPQY"] as SelectList, "请选择", new { ID = "CPSCQYID", style = "width:285px" })
-                            @*@Html.TextBoxFor(m => m.DataModel.CPSCQY, new { name = "CPSCQY", style = "width:279px" })*@
-                        </div>
-                        <div class="unit">
                             <div style="float:left;width:72%;">
                                 <label>
-                                    资质上传：
+                                    资质扫描件：
                                 </label>
                             </div>
                             @{if (Model.RoleCode == "1" || Model.DataModel.CPStatus != 1)
@@ -241,48 +237,74 @@
                                 }}
                         </div>
                     </div>
-                    @*<div class="unit">
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
+                        <div class="unit">
                             <label>
-                                产品图片：
+                                注册证有效期限：
                             </label>
-                            <div>
-                                <table class="updatePage">
-                                    <tr><td>@Html.TextBoxFor(m => m.DataModel.CPTP, new { @readonly = "true", name = "CPTP", style = "width:260px" })</td></tr>
-                                    <tr>
-                                        <td style=" padding-top:5px;">
-                                            @if (isReadonlyFlag == 0)
-                                            {
-                                            <span id="uploadify"></span>
-                                            }
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
+                            @Html.TextBoxFor(m => m.DataModel.YXQXKS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.YXQXKS), name = "YXQXKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", autocomplete = "off" })
+                            <label style="width:10px">
+                                至
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.YXQXJS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.YXQXJS), name = "YXQXJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", autocomplete = "off" })
                         </div>
                         <div class="unit">
                             <label>
-                                生产批号：
+                                注册人住所：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CPPH, new { name = "CPPH", style = "width:260px" })
+                            @Html.TextBoxFor(m => m.DataModel.ZCRAddr, new { name = "ZCRName", style = "width:279px" })
                         </div>
                         <div class="unit">
                             <label>
-                                生产时间：
+                                产品规格：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CPSCSJ, new { name = "CPSCSJ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:260px" })
+                            @Html.TextBoxFor(m => m.DataModel.CPGG, new { name = "CPGG", style = "width:279px" })
                         </div>
                         <div class="unit">
                             <label>
-                                录入时间：
+                                包装单位：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CPLRRQ, new { name = "CPLRRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:260px" })
+                            @Html.DropDownListFor(m => m.DataModel.CPDW, ViewBag.PUnit as SelectList, new { style = "width:285px" })
                         </div>
                         <div class="unit">
                             <label>
-                                产品录入人：
+                                供货企业：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CPLRR, new { name = "CPTJR", style = "width:260px" })
-                        </div>*@
+                            @Html.DropDownListFor(m => m.DataModel.CPGYSID, ViewData["SUPQY"] as SelectList, "请选择", new { ID = "SUPQY", style = "width:285px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                储存条件：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CCTJ, new { name = "CCTJ", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                仓储库房：
+                            </label>
+                            @Html.DropDownListFor(m => m.DataModel.CKID, ViewData["CK"] as SelectList, "请选择", new { ID = "CKID", style = "width:285px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                销售价格(元)：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.XSJG, new { name = "XSJG", style = "width:279px", @class = "textInput number" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                预警提示时间(天)：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.BJDate, new { name = "BJDate", style = "width:279px", @class = "textInput digits" })
+                        </div>
+                    </div>
+                    <div style="width:98%;border:1px solid #ffffff;float:left;margin-left:5px;">
+                        <div class="unit">
+                            <label>
+                                备注：
+                            </label>
+                            @Html.TextAreaFor(m => m.DataModel.Remark, new { name = "Remark", style = "width:80%;height:30px;" })
+                        </div>
+                    </div>
                 </fieldset>
                 <fieldset>
                     <legend>资质列表</legend>

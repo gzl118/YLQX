@@ -55,12 +55,61 @@ namespace MedicalApparatusManage.Controllers
                     evalModel.DataModel.CGPERSON = strCGPerson;
                 }
             }
+            var strCGDMC = "";
+            if (Request["strCGDMC"] != null)
+            {
+                strCGDMC = Request["strCGDMC"].ToString();
+                if (!String.IsNullOrEmpty(strCGDMC))
+                {
+                    evalModel.DataModel.CGDMC = strCGDMC;
+                }
+            }
+            var cpId = 0;
+            if (Request["strCGCPMC"] != null)
+            {
+                string str = Request["strCGCPMC"].ToString();
+                if (!String.IsNullOrEmpty(str))
+                {
+                    cpId = Convert.ToInt32(str);
+                }
+                ViewData["strCGCPMC"] = str;
+            }
+            var supId = 0;
+            if (Request["strCGSupQY"] != null)
+            {
+                string str = Request["strCGSupQY"].ToString();
+                if (!String.IsNullOrEmpty(str))
+                {
+                    supId = Convert.ToInt32(str);
+                }
+                ViewData["strCGSupQY"] = str;
+            }
+            var cusId = 0;
+            if (Request["strCusQY"] != null)
+            {
+                string str = Request["strCusQY"].ToString();
+                if (!String.IsNullOrEmpty(str))
+                {
+                    cusId = Convert.ToInt32(str);
+                }
+                ViewData["strCusQY"] = str;
+            }
 
             //获取本企业下的人员列表
             T_Person person = new T_Person();
             person.PsQYID = (int)UserModel.UserCompanyID;
             ViewBag.Persons = new SelectList(T_PersonDomain.GetInstance().GetAllT_Person(person), "PsMZ", "PsMZ");
             ViewData["strCGPerson"] = strCGPerson;
+
+            T_YLCPModels ylcpQymode = new T_YLCPModels();
+            ylcpQymode.DataModel = ylcpQymode.DataModel ?? new T_YLCP();
+            ylcpQymode.DataList = T_YLCPDomain.GetInstance().GetAllT_YLCP(ylcpQymode.DataModel).Where(p => p.CPStatus == 1).ToList();
+            ViewData["YLCP"] = new SelectList(ylcpQymode.DataList, "CPID", "CPMC");
+
+            T_SupQYModels supmode = new T_SupQYModels();
+            supmode.DataModel = supmode.DataModel ?? new T_SupQY();
+            supmode.DataList = T_SupQYDomain.GetInstance().GetAllT_SupQY(supmode.DataModel).Where(p => p.SupStatus == 1).ToList();
+            ViewData["SupQYList"] = new SelectList(supmode.DataList, "SupID", "SupMC");
 
             evalModel.DataList = T_CGDDomain.GetInstance().PageT_CGD(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, out pagecount, out resultCount);
             evalModel.resultCount = resultCount;

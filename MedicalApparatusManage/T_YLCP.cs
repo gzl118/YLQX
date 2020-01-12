@@ -53,6 +53,12 @@ namespace MedicalApparatusManage
         public Nullable<int> CPSCQYID { get; set; }
         public Nullable<int> BJSL { get; set; }
         public Nullable<int> BJDate { get; set; }
+        public string ZCRName { get; set; }
+        public string ZCRAddr { get; set; }
+        public string Remark { get; set; }
+        public string CCTJ { get; set; }
+        public Nullable<int> CKID { get; set; }
+        public string YXSC { get; set; }
     
         public virtual ICollection<T_CGMX> T_CGMX { get; set; }
         public virtual ICollection<T_CKMX> T_CKMX { get; set; }

@@ -1,5 +1,6 @@
 ﻿using MedicalApparatusManage.Domain;
 using MedicalApparatusManage.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -280,6 +281,21 @@ namespace MedicalApparatusManage.Controllers
         private string GetRoleCode()
         {
             return Session["RoleCode"] == null ? "" : Session["RoleCode"].ToString();
+        }
+        [CheckLogin()]
+        public JsonResult GetInfoByID(System.Int32 id)
+        {
+            var result = new T_SupQY();
+            var str = "";
+            if (id != 0)
+            {
+                result = T_SupQYDomain.GetInstance().GetModelById(id);
+                str = JsonConvert.SerializeObject(new
+                {
+                    SCAddr = result.SCAddr
+                });
+            }
+            return Json(str);
         }
     }
 }

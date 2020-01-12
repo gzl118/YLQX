@@ -194,17 +194,17 @@
                             <label>
                                 成立日期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CusZCSJ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CusZCSJ), name = "CusZCSJ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.CusZCSJ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CusZCSJ), name = "CusZCSJ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", autocomplete = "off" })
                         </div>
                         <div class="unit">
                             <label>
                                 经营期限：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CusJYKSSJ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CusJYKSSJ), name = "CusJYKSSJ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.CusJYKSSJ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CusJYKSSJ), name = "CusJYKSSJ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", autocomplete = "off" })
                             <label style="width:10px">
                                 至
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CusJXJSSJ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CusJXJSSJ), name = "CusJXJSSJ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.CusJXJSSJ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CusJXJSSJ), name = "CusJXJSSJ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", autocomplete = "off" })
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">
@@ -218,21 +218,15 @@
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
-                                开户行：
+                                开户行及行号：
                             </label>
                             @Html.TextBoxFor(m => m.DataModel.CusKHH, new { name = "CusKHH", style = "width:279px" })
                         </div>
                         <div class="unit">
                             <label>
-                                许可证编码：
+                                生产许可证编码：
                             </label>
                             @Html.TextBoxFor(m => m.DataModel.CusXKZBH, new { name = "CusXKZBH", style = "width:279px" })
-                        </div>
-                        <div class="unit">
-                            <label>
-                                经营场所：
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.CusJYCS, new { name = "CusJYCS", style = "width:279px" })
                         </div>
                     </div>
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
@@ -244,13 +238,60 @@
                         </div>
                         <div class="unit">
                             <label>
+                                生产地址：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SCAddr, new { name = "SCAddr", style = "width:279px" })
+                        </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;">
+                        <div class="unit">
+                            <label>
+                                生产范围：
+                            </label>
+                            @Html.TextAreaFor(m => m.DataModel.CusSCFW, new { name = "CusSCFW", style = "width:81.3%;height:30px;" })
+                        </div>
+                    </div>
+
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                生产许可证发证日期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CusFZRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CusFZRQ), name = "CusFZRQ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", autocomplete = "off" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                经营许可证编码：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CusJYXKZBH, new { name = "CusJYXKZBH", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                许可经营场所：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CusJYCS, new { name = "CusJYCS", style = "width:279px" })
+                        </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
+                        <div class="unit">
+                            <label>
+                                生产许可证有效期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CusYXQKS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CusYXQKS), name = "CusYXQKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", autocomplete = "off" })
+                            <label style="width:10px">
+                                至
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CusYXQJS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CusYXQJS), name = "CusYXQJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", autocomplete = "off" })
+                        </div>
+                        <div class="unit">
+                            <label>
                                 经营方式：
                             </label>
                             @Html.TextBoxFor(m => m.DataModel.CusJYFS, new { name = "CusJYFS", style = "width:279px" })
                         </div>
                         <div class="unit">
                             <label>
-                                库房地址：
+                                许可库房地址：
                             </label>
                             @Html.TextBoxFor(m => m.DataModel.CusKFDZ, new { name = "CusKFDZ", style = "width:279px" })
                         </div>
@@ -258,7 +299,7 @@
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">
                         <div class="unit">
                             <label>
-                                经营范围：
+                                许可证经营范围：
                             </label>
                             @*@Html.TextBoxFor(m => m.DataModel.WhsJYFW, new { name = "WhsJYFW", style = "width:81.3%;" })*@
                             @*@Html.DropDownList("JYList", ViewData["JYFW"] as SelectList, "请选择")*@
@@ -277,48 +318,21 @@
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
-                                生产许可证发证日期：
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.CusFZRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CusFZRQ), name = "CusFZRQ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
-                        </div>
-                        <div class="unit">
-                            <label>
-                                联系人：
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.CusLXR, new { name = "CusLXR", style = "width:279px" })
-                        </div>
-                        <div class="unit">
-                            <label>
-                                联系方式：
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.CusLXDH, new { name = "CusLXDH", style = "width:279px" })
-                        </div>
-                        <div class="unit">
-                            <label>
                                 经营许可证发证日期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.JYXKZFZRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.JYXKZFZRQ), name = "JYXKZFZRQ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
-                        </div>
-                    </div>
-                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
-                        <div class="unit">
-                            <label>
-                                生产许可证有效期：
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.CusYXQKS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CusYXQKS), name = "CusYXQKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
-                            <label style="width:10px">
-                                至
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.CusYXQJS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CusYXQJS), name = "CusYXQJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.JYXKZFZRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.JYXKZFZRQ), name = "JYXKZFZRQ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", autocomplete = "off" })
                         </div>
                         <div class="unit">
                             <label>
-                                身份证号：
+                                经营备案凭证编号：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CusSFZH, new { name = "CusSFZH", style = "width:279px" })
+                            @Html.TextBoxFor(m => m.DataModel.CusBAPZBH, new { name = "CusBAPZBH", style = "width:279px" })
                         </div>
                         <div class="unit">
-
+                            <label>
+                                备案经营场所：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CusBAJYCS, new { name = "CusBAJYCS", style = "width:279px" })
                         </div>
                     </div>
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
@@ -326,11 +340,61 @@
                             <label>
                                 经营许可证有效期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.JYXKZYXQKS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.JYXKZYXQKS), name = "JYXKZYXQKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.JYXKZYXQKS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.JYXKZYXQKS), name = "JYXKZYXQKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", autocomplete = "off" })
                             <label style="width:10px">
                                 至
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.JYXKZYXQJS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.JYXKZYXQJS), name = "JYXKZYXQJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.JYXKZYXQJS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.JYXKZYXQJS), name = "JYXKZYXQJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", autocomplete = "off" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                备案经营方式：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CusBAJYFS, new { name = "CusBAJYFS", style = "width:279px" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                备案库房地址：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CusBAJYFS, new { name = "CusBAJYFS", style = "width:279px" })
+                        </div>
+                        @*<div class="unit">
+                                <label>
+                                    身份证号：
+                                </label>
+                                @Html.TextBoxFor(m => m.DataModel.CusSFZH, new { name = "CusSFZH", style = "width:279px" })
+                            </div>*@
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;">
+                        <div class="unit">
+                            <label>
+                                备案经营范围：
+                            </label>
+                            @Html.TextAreaFor(m => m.DataModel.CusBAJYFW, new { name = "CusBAJYFW", style = "width:81.3%;height:30px;" })
+                        </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;display:inline-block;">
+                        <div class="unit">
+                            <label>
+                                备案日期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CusBARQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CusBARQ), name = "CusBARQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", autocomplete = "off" })
+                        </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                联系人：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CusLXR, new { name = "CusLXR", style = "width:279px" })
+                        </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
+                        <div class="unit">
+                            <label>
+                                联系方式：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CusLXDH, new { name = "CusLXDH", style = "width:279px" })
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">
@@ -338,18 +402,18 @@
                             <label>
                                 授权书有效期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.SQSKS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.SQSKS), name = "SQSKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.SQSKS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.SQSKS), name = "SQSKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", autocomplete = "off" })
                             <label style="width:10px">
                                 至
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.SQSJS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.SQSJS), name = "SQSJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            @Html.TextBoxFor(m => m.DataModel.SQSJS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.SQSJS), name = "SQSJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", autocomplete = "off" })
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">
                         <div class="unit">
                             <div style="float:left;width:89%;">
                                 <label>
-                                    资质上传：
+                                    资质扫描件：
                                 </label>
                                 @*<a id="aCusZZSC" href='@Model.ZZSCPath' target="_blank">@Model.DataModel.CusZZSC</a>
                                     @Html.TextBoxFor(m => m.DataModel.CusZZSC, new { id = "txtCusZZSC", name = "CusZZSC", style = "width:81.3%;display:none;" })*@
