@@ -793,6 +793,8 @@
           <Property Name="ISHG" Type="int" />
           <Property Name="ISSH" Type="int" />
           <Property Name="YSY" Type="int" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="200" />
+          <Property Name="YSSMJ" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <Association Name="FK_SysFavorite_SysUser">
           <End Role="SysUser" Type="Self.SysUser" Multiplicity="0..1" />
@@ -2932,6 +2934,8 @@
           <NavigationProperty Name="T_SupQY1" Relationship="MedicalApparatusManageModel.FK_T_YSMX_T_SupQY1" FromRole="T_YSMX" ToRole="T_SupQY" />
           <NavigationProperty Name="T_YLCP" Relationship="MedicalApparatusManageModel.FK_T_YSMX_T_YLCP" FromRole="T_YSMX" ToRole="T_YLCP" />
           <NavigationProperty Name="T_YSD" Relationship="MedicalApparatusManageModel.FK_T_YSMX_T_YSD" FromRole="T_YSMX" ToRole="T_YSD" />
+          <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="YSSMJ" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_SysFavorite_SysUser">
           <End Type="MedicalApparatusManageModel.SysUser" Role="SysUser" Multiplicity="0..1" />
@@ -4457,6 +4461,8 @@
           <EntitySetMapping Name="T_YSMX">
             <EntityTypeMapping TypeName="MedicalApparatusManageModel.T_YSMX">
               <MappingFragment StoreEntitySet="T_YSMX">
+                <ScalarProperty Name="YSSMJ" ColumnName="YSSMJ" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="YSY" ColumnName="YSY" />
                 <ScalarProperty Name="ISSH" ColumnName="ISSH" />
                 <ScalarProperty Name="ISHG" ColumnName="ISHG" />

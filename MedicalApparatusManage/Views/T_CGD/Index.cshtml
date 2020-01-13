@@ -14,6 +14,15 @@
             $("#strCGPerson").chosen({
                 search_contains: true
             });
+            $("#strCGCPMC").chosen({
+                search_contains: true
+            });
+            $("#strCGSupQY").chosen({
+                search_contains: true
+            });
+            $("#strCusQY").chosen({
+                search_contains: true
+            });
         });
     </script>
 </head>
@@ -72,15 +81,10 @@
                                 }
                                 <input id="StartDate" name="StartTime" class="Wdate" type="text" autocomplete="off" value="@strStart"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
-                            </td>
-                            <td>
                                 至
-                            </td>
-                            <td>
                                 <input id="EndDate" name="EndTime" class="Wdate" type="text" autocomplete="off" value="@strEnd"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', minDate: '#F{$dp.$D(\'StartDate\')}' })" />
                             </td>
-
                             <td>
                                 <ul>
                                     <li>

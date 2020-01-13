@@ -26,7 +26,7 @@ namespace MedicalApparatusManage.Domain
             return _instance;
         }
 
-        public List<T_CGD> PageT_CGD(T_CGD info, DateTime? startTime, DateTime? endTime, int pageIndex, int pageSize, out int pageCount, out int totalRecord)
+        public List<T_CGD> PageT_CGD(T_CGD info, DateTime? startTime, DateTime? endTime, int pageIndex, int pageSize, int? cpId, int? supId, int? cusId, out int pageCount, out int totalRecord)
         {
             Expression<Func<T_CGD, bool>> where = PredicateBuilder.True<T_CGD>();
             if (!String.IsNullOrEmpty(info.CGPERSON))
@@ -47,7 +47,7 @@ namespace MedicalApparatusManage.Domain
             }
 
             Func<T_CGD, System.Int32> order = p => p.CGID;
-            return base.GetPageInfo<System.Int32>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);
+            return GetPageInfo<System.Int32>(where, order, true, pageIndex, pageSize, cpId, supId, cusId, out pageCount, out totalRecord);
         }
 
         public List<T_CGD> GetAllT_CGD(T_CGD info)
@@ -56,7 +56,7 @@ namespace MedicalApparatusManage.Domain
             return base.GetAllModels<System.Int32>(where);
         }
 
-        public List<T_CGD> GetPageInfo<S>(Expression<Func<T_CGD, bool>> where, Func<T_CGD, S> order, bool desc, int pageIndex, int pageSize, out int pageCount, out int totalRecord)
+        public List<T_CGD> GetPageInfo<S>(Expression<Func<T_CGD, bool>> where, Func<T_CGD, S> order, bool desc, int pageIndex, int pageSize, int? cpId, int? supId, int? cusId, out int pageCount, out int totalRecord)
         {
             totalRecord = 0;
             pageCount = 0;
@@ -65,23 +65,48 @@ namespace MedicalApparatusManage.Domain
             {
                 try
                 {
+                    Expression<Func<T_CGMX, bool>> whereCGMX = PredicateBuilder.True<T_CGMX>();
+                    var isContain = false;
+                    if (cpId != null && cpId != 0)
+                    {
+                        whereCGMX = whereCGMX.And(p => p.CPID == cpId);
+                        isContain = true;
+                    }
+                    if (supId != null && supId != 0)
+                    {
+                        whereCGMX = whereCGMX.And(p => p.SupID == supId);
+                        isContain = true;
+                    }
+                    if (cusId != null && cusId != 0)
+                    {
+                        whereCGMX = whereCGMX.And(p => p.CPSCQYID == cusId);
+                        isContain = true;
+                    }
+                    if (isContain)
+                    {
+                        var dbchild = hContext1.Set<T_CGMX>().Where(whereCGMX.Compile());
+                        var lst = dbchild.Select(p => p.CGID);
+                        if (lst != null)
+                            where = where.And(p => lst.Contains(p.CGID));
+                    }
+
                     DbSet<T_CGD> db = hContext1.Set<T_CGD>();
-                    DbQuery<T_CGD> dbq = db.Include("T_WhsQY");
+                    //DbQuery<T_CGD> dbq = db.Include("T_WhsQY");
                     totalRecord = db.Where(where.Compile()).Count();
                     if (totalRecord > 0)
                     {
                         pageCount = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(totalRecord / pageSize))) + 1;
                         if (desc)
                         {
-                            list = dbq.Where(where.Compile()).OrderByDescending<T_CGD, S>(order).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                            list = db.Where(where.Compile()).OrderByDescending<T_CGD, S>(order).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
                         }
                         else
                         {
-                            list = dbq.Where(where.Compile()).OrderBy<T_CGD, S>(order).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                            list = db.Where(where.Compile()).OrderBy<T_CGD, S>(order).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     return null;
                 }

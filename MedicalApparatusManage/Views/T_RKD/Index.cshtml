@@ -17,6 +17,12 @@
             $("#strRKCPMC").chosen({
                 search_contains: true
             });
+            $("#strCusQY").chosen({
+                search_contains: true
+            });
+            $("#strCGSupQY").chosen({
+                search_contains: true
+            });
         });
     </script>
 </head>
@@ -41,6 +47,20 @@
                                 @Html.DropDownList("strRKCPMC", ViewData["YLCP"] as SelectList, "请选择", new { Value = ViewData["strRKCPMC"], id = "strRKCPMC", style = "width:200px;" })
                             </td>
                             <td>
+                                生产企业:
+                            </td>
+                            <td>
+                                @Html.DropDownList("strCusQY", ViewData["SupQYList"] as SelectList, "请选择", new { id = "strCusQY", style = "width:285px", Value = @ViewData["strCusQY"] })
+                            </td>
+                            <td>
+                                供货企业:
+                            </td>
+                            <td>
+                                @Html.DropDownList("strCGSupQY", ViewData["SupQYList"] as SelectList, "请选择", new { id = "strCGSupQY", style = "width:285px", Value = @ViewData["strCGSupQY"] })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
                                 入库人:
                             </td>
                             <td>
@@ -55,15 +75,11 @@
                                 }
                                 <input id="StartDate" name="StartTime" class="Wdate" type="text" autocomplete="off" value="@strStart"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
-                            </td>
-                            <td>
                                 至
-                            </td>
-                            <td>
                                 <input id="EndDate" name="EndTime" class="Wdate" type="text" autocomplete="off" value="@strEnd"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', minDate: '#F{$dp.$D(\'StartDate\')}' })" />
                             </td>
-
+                            <td></td>
                             <td>
                                 <ul>
                                     <li>

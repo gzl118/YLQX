@@ -14,6 +14,12 @@
             $("#strYSPerson").chosen({
                 search_contains: true
             });
+            $("#strCusQY").chosen({
+                search_contains: true
+            });
+            $("#strYSCPMC").chosen({
+                search_contains: true
+            });
         });
     </script>
 </head>
@@ -32,13 +38,26 @@
                     <table class="searchContent">
                         <tr>
                             <td>
-                                验收人:
+                                生产企业:
+                            </td>
+                            <td>
+                                @Html.DropDownList("strCusQY", ViewData["SupQYList"] as SelectList, "请选择", new { id = "strCusQY", style = "width:285px", Value = @ViewData["strCusQY"] })
+                            </td>
+                            <td>
+                                产品名称:
+                            </td>
+                            <td>
+                                @Html.DropDownList("strYSCPMC", ViewData["YLCP"] as SelectList, "请选择", new { Value = ViewData["strYSCPMC"], id = "strYSCPMC", style = "width:200px;" })
+                            </td>
+                            <td>
+                                验收负责人:
                             </td>
                             <td>
                                 @Html.DropDownList("strYSPerson", ViewBag.Persons as SelectList, "请选择", new { id = "strYSPerson", style = "width:150px;", Value = @ViewData["strYSPerson"] })
                                 @*@Html.TextBox("strYSPS")*@
                             </td>
-
+                        </tr>
+                        <tr>
                             <td>
                                 验收日期:
                             </td>
@@ -48,15 +67,12 @@
                                 }
                                 <input id="StartDate" name="StartTime" class="Wdate" type="text" autocomplete="off" value="@strStart"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
-                            </td>
-                            <td>
                                 至
-                            </td>
-                            <td>
                                 <input id="EndDate" name="EndTime" class="Wdate" type="text" autocomplete="off" value="@strEnd"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', minDate: '#F{$dp.$D(\'StartDate\')}' })" />
                             </td>
-
+                            <td></td>
+                            <td></td>
                             <td>
                                 <ul>
                                     <li>
@@ -93,14 +109,14 @@
                         采购单号
                     </th>
                     <th>
-                        验收人
+                        验收负责人
                     </th>
                     <th>
                         验收日期
                     </th>
-                    <th>
-                        验收报告
-                    </th>
+                    @*<th>
+                            验收报告
+                        </th>*@
                     <th>
                         验收结果
                     </th>
@@ -127,7 +143,7 @@
                                     <td>@item.YSRQ.Value.ToString("yyyy/MM/dd")</td>
                                 }
                             }
-                            <td><a href="~/UploadFiles/验收报告/@item.YSBG" target="_blank">@item.YSBG</a></td>
+                            @*<td><a href="~/UploadFiles/验收报告/@item.YSBG" target="_blank">@item.YSBG</a></td>*@
                             <td>@item.YSFLAG</td>
                             <td>@item.BZ</td>
                         </tr>

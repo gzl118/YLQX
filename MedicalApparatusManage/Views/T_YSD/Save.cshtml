@@ -74,6 +74,7 @@
                             $("#guid").val(data.guid);
                             //刷新table
                             $('#formT_YSDMX')[0].reset();
+                            document.getElementById("aYSBG").innerHTML = "";
                             refreshYsmxGrid();
                         } else {
                             alertMsg.error('保存失败！')
@@ -196,7 +197,7 @@
                     @Html.HiddenFor(m => m.DataModel.YSCJR, new { Name = "DataModel.YSCJR" })
                     @Html.HiddenFor(m => m.DataModel.YSCJRQ, new { Name = "DataModel.YSCJRQ" })
                     @Html.Hidden("DataModel.CGDH", "", new { ID = "cgdhMain" })
-                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
                                 采购单号：
@@ -209,42 +210,32 @@
                                     </button>
                                 } }
                         </div>
-                        <div class="unit">
-                            <label>
-                                验收日期：
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.YSRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.YSRQ), name = "YSRQ", @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:273px" })
-                        </div>
-                        <div class="unit">
-                            <div style="float:left;width:80%;">
-                                <label>
-                                    验收报告：
-                                </label>
-                                <a id="aYSBG" href='@Model.YSBGPath' target="_blank">@Model.DataModel.YSBG</a>
-                                @Html.TextBoxFor(m => m.DataModel.YSBG, new { id = "txtYSBG", name = "YSBG", style = "width:81.3%;display:none;" })
-                            </div>
-                            @{if (Model.DataModel.YSID == 0)
-                                {
-                                    <div style="float:right;width:20%;">
-                                        <span id="uploadify"></span>
-                                    </div>
-                                } }
-                        </div>
                     </div>
-                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
                                 验收单号：
                             </label>
                             @Html.TextBoxFor(m => m.DataModel.YSDH, new { ID = "YSDH", name = "YSDH", style = "width:279px", ReadOnly = true })
                         </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
-                                验收人：
+                                验收负责人：
                             </label>
                             @Html.DropDownListFor(m => m.DataModel.YSR, ViewBag.Persons as SelectList, "请选择", new { id = "YSR", style = "width:285px", @class = "required" })
-                            @*@Html.TextBoxFor(m => m.DataModel.YSR, new { name = "YSR", style = "width:279px" })*@
                         </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                验收日期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.YSRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.YSRQ), name = "YSRQ", @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:273px", autocomplete = "off" })
+                        </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
                                 验收结果：
@@ -257,8 +248,24 @@
                             }
                         </div>
                     </div>
+                    @*<div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
+                            <div class="unit">
+                                <div style="float:left;width:20%;">
+                                    <label>
+                                        检验报告扫描：
+                                    </label>
+                                    <a id="aYSBG" href='@Model.YSBGPath' target="_blank">@Model.DataModel.YSBG</a>
+                                    @Html.TextBoxFor(m => m.DataModel.YSBG, new { id = "txtYSBG", name = "YSBG", style = "width:81.3%;display:none;" })
+                                </div>
+                                @{if (Model.DataModel.YSID == 0)
+                                    {
+                                        <div style="float:left;width:20%;">
+                                            <span id="uploadify"></span>
+                                        </div>
+                                    } }
+                            </div>
+                        </div>*@
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">
-
                         <div class="unit">
                             <label>
                                 备注：
@@ -267,7 +274,7 @@
                         </div>
                     </div>
                 </form>
-                <div style="width:91%;border:1px solid #ffffff;margin:5px;">
+                <div style="width:91%;border:1px solid #ffffff;margin:10px;">
                     <div><label id="lblYsd" style="width:50%;color:red;"></label></div>
                     @{if (Model.DataModel.YSID == 0)
                         {
@@ -299,19 +306,6 @@
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
-                                供货企业：
-                            </label>
-                            @*<select id="supId" style="width:285px" disabled>
-                                    <option>请选择</option>
-                                    @{foreach (var item in ViewData["SupID"] as SelectList)
-                                        {
-                                            <option value="@item.Value">@item.Text</option>
-                                        }}
-                                </select>*@
-                            <input type="text" name="" id="supqyName" style="width:279px" readonly="readonly" value="" />
-                        </div>
-                        <div class="unit">
-                            <label>
                                 产品编号：
                             </label>
                             <input type="text" name="" id="cpbh" style="width:279px" readonly="readonly" value="" />
@@ -320,35 +314,7 @@
                             <label>
                                 产品名称：
                             </label>
-                            @*<select id="YLCP" style="width:285px" disabled>
-                                    <option>请选择</option>
-                                </select>*@
                             <input type="text" id="cpmc" style="width:279px" readonly="readonly" value="" />
-                        </div>
-                        <div class="unit">
-                            <label>
-                                生产企业：
-                            </label>
-                            @*<select id="scqy" style="width:285px" disabled>
-                                    <option>请选择</option>
-                                    @{foreach (var item in ViewData["SupID"] as SelectList)
-                                        {
-                                            <option value="@item.Value">@item.Text</option>
-                                        }}
-                                </select>*@
-                            <input type="text" id="cpscqyName" style="width:279px" readonly="readonly" value="" />
-                        </div>
-                        <div class="unit">
-                            <label>
-                                产品规格：
-                            </label>
-                            <input type="text" name="" id="cpgg" style="width:279px" readonly="readonly" value="" />
-                        </div>
-                        <div class="unit">
-                            <label>
-                                产品型号：
-                            </label>
-                            <input type="text" name="" id="cpxh" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>
@@ -358,12 +324,10 @@
                         </div>
                         <div class="unit">
                             <label>
-                                产品数量：
+                                验收数量：
                             </label>
                             @Html.TextBox("DataModel.CPNUM", "", new { id = "cpnum", style = "width:279px", @class = "required digits" })
                         </div>
-                    </div>
-                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
                         <div class="unit">
                             <label>
                                 产品批号：
@@ -374,23 +338,49 @@
                             <label>
                                 生产日期：
                             </label>
-                            @Html.TextBox("DataModel.CPSCRQ", "", new { @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
+                            @Html.TextBox("DataModel.CPSCRQ", "", new { @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px", autocomplete = "off" })
                         </div>
                         <div class="unit">
                             <label>
                                 有效期：
                             </label>
-                            @Html.TextBox("DataModel.CPYXQ", "", new { @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
+                            @Html.TextBox("DataModel.CPYXQ", "", new { @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px", autocomplete = "off" })
+                        </div>
+                        @*<div class="unit">
+                                <label>
+                                    产品规格：
+                                </label>
+                                <input type="text" name="" id="cpgg" style="width:279px" readonly="readonly" value="" />
+                            </div>
+                            <div class="unit">
+                                <label>
+                                    产品型号：
+                                </label>
+                                <input type="text" name="" id="cpxh" style="width:279px" readonly="readonly" value="" />
+                            </div>*@
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
+                        <div class="unit">
+                            <label>
+                                供货企业：
+                            </label>
+                            <input type="text" name="" id="supqyName" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>
-                                许可证号：
+                                生产企业：
+                            </label>
+                            <input type="text" id="cpscqyName" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                        <div class="unit">
+                            <label>
+                                生产许可证号：
                             </label>
                             <input type="text" name="" id="cpxkzh" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>
-                                注册证号：
+                                产品注册证号：
                             </label>
                             <input type="text" name="" id="cpzczh" style="width:279px" readonly="readonly" value="" />
                         </div>
@@ -415,6 +405,31 @@
                                 ishgList.Add(new SelectListItem { Text = "否", Value = "0" });
                                 @Html.DropDownList("DataModel.ISSH", ishgList, new { style = "width:285px" })
                             }
+                        </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <div style="float:left;width:40%;">
+                                <label>
+                                    检验报告扫描：
+                                </label>
+                                <a id="aYSBG" href='' target="_blank"></a>
+                                @Html.TextBox("DataModel.YSSMJ", "", new { id = "txtYSBG", style = "width:81.3%;display:none;" })
+                            </div>
+                            @{if (Model.DataModel.YSID == 0)
+                                {
+                                    <div style="float:left;width:20%;">
+                                        <span id="uploadify"></span>
+                                    </div>
+                                } }
+                        </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;">
+                        <div class="unit">
+                            <label>
+                                备注：
+                            </label>
+                            @Html.TextBox("DataModel.Remark", "", new { style = "width:78.5%;" })
                         </div>
                     </div>
                 </form>

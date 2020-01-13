@@ -61,6 +61,26 @@ namespace MedicalApparatusManage.Controllers
                 }
             }
             ViewData["strYSPerson"] = strYSPerson;
+            var supId = 0;
+            if (Request["strCGSupQY"] != null)
+            {
+                string str = Request["strCGSupQY"].ToString();
+                if (!String.IsNullOrEmpty(str))
+                {
+                    supId = Convert.ToInt32(str);
+                }
+                ViewData["strCGSupQY"] = str;
+            }
+            var cusId = 0;
+            if (Request["strCusQY"] != null)
+            {
+                string str = Request["strCusQY"].ToString();
+                if (!String.IsNullOrEmpty(str))
+                {
+                    cusId = Convert.ToInt32(str);
+                }
+                ViewData["strCusQY"] = str;
+            }
 
             SysUser UserModel = Session["UserModel"] as SysUser;
             T_Person person = new T_Person();
@@ -71,8 +91,12 @@ namespace MedicalApparatusManage.Controllers
             ylcpQymode.DataModel = ylcpQymode.DataModel ?? new T_YLCP();
             ylcpQymode.DataList = T_YLCPDomain.GetInstance().GetAllT_YLCP(ylcpQymode.DataModel).Where(p => p.CPStatus == 1).ToList();
             ViewData["YLCP"] = new SelectList(ylcpQymode.DataList, "CPID", "CPMC");
+            T_SupQYModels supmode = new T_SupQYModels();
+            supmode.DataModel = supmode.DataModel ?? new T_SupQY();
+            supmode.DataList = T_SupQYDomain.GetInstance().GetAllT_SupQY(supmode.DataModel).Where(p => p.SupStatus == 1).ToList();
+            ViewData["SupQYList"] = new SelectList(supmode.DataList, "SupID", "SupMC");
 
-            evalModel.DataList = T_RKDDomain.GetInstance().PageT_RKD(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, cpId, out pagecount, out resultCount);
+            evalModel.DataList = T_RKDDomain.GetInstance().PageT_RKD(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, cpId, supId, cusId, out pagecount, out resultCount);
             evalModel.resultCount = resultCount;
             return View("~/Views/T_RKD/Index.cshtml", evalModel);
         }

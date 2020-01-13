@@ -28,6 +28,8 @@ namespace MedicalApparatusManage
         public Nullable<int> ISHG { get; set; }
         public Nullable<int> ISSH { get; set; }
         public Nullable<int> YSY { get; set; }
+        public string Remark { get; set; }
+        public string YSSMJ { get; set; }
     
         public virtual T_SupQY T_SupQY { get; set; }
         public virtual T_SupQY T_SupQY1 { get; set; }

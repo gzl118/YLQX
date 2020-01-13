@@ -171,6 +171,7 @@
                         $("#cpzczh").val(tes.ZCZH);
                         $("#cpxh").val(tes.CPXH);
                         $("#cpgg").val(tes.CPGG);
+                        $("#cctj").val(tes.CCTJ);
 
                         $("#cpnum").val(tes.CPNUM);
                         $("#cpph").val(tes.CPPH);
@@ -245,7 +246,7 @@
                     @Html.HiddenFor(m => m.DataModel.RKCJR, new { Name = "DataModel.RKCJR" })
                     @Html.HiddenFor(m => m.DataModel.RKCJRQ, new { Name = "DataModel.RKCJRQ" })
                     <input type="hidden" id="hdISSH" value="@Model.DataModel.ISSH" />
-                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
                                 验收单号：
@@ -258,6 +259,16 @@
                                 </button>
                             }
                         </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                入库单号：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.RKDH, new { id = "RKDH", name = "RKDH", style = "width:279px", ReadOnly = true })
+                        </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
                                 入库人：
@@ -266,18 +277,12 @@
                             @*@Html.TextBoxFor(m => m.DataModel.CKGLRY, new { name = "RKMC", style = "width:279px" })*@
                         </div>
                     </div>
-                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
-                        <div class="unit">
-                            <label>
-                                入库单号：
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.RKDH, new { id = "RKDH", name = "RKDH", style = "width:279px", ReadOnly = true })
-                        </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
                                 入库日期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.JSRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.JSRQ), name = "JSRQ", @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
+                            @Html.TextBoxFor(m => m.DataModel.JSRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.JSRQ), name = "JSRQ", @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px", autocomplete = "off" })
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">
@@ -321,19 +326,6 @@
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
-                                供货企业：
-                            </label>
-                            @*<select id="supId" name="DataModel.SupID" style="width:285px" onchange="dropQyChange(this.value)">
-                                    <option>请选择</option>
-                                    @{foreach (var item in ViewData["SupID"] as SelectList)
-                                        {
-                                            <option value="@item.Value">@item.Text</option>
-                                        }}
-                                </select>*@
-                            <input type="text" name="" id="supqyName" style="width:279px" readonly="readonly" value="" />
-                        </div>
-                        <div class="unit">
-                            <label>
                                 产品编号：
                             </label>
                             <input type="text" name="" id="cpbh" style="width:279px" readonly="readonly" value="" />
@@ -342,28 +334,7 @@
                             <label>
                                 产品名称：
                             </label>
-                            @*<select id="YLCP" name="DataModel.CPID" style="width:285px" onchange="dropChange(this.value)">
-                                    <option>请选择</option>
-                                </select>*@
                             <input type="text" id="cpmc" style="width:279px" readonly="readonly" value="" />
-                        </div>
-                        <div class="unit">
-                            <label>
-                                生产企业：
-                            </label>
-                            <input type="text" name="" id="cpscqyName" style="width:279px" readonly="readonly" value="" />
-                        </div>
-                        <div class="unit">
-                            <label>
-                                产品规格：
-                            </label>
-                            <input type="text" name="" id="cpgg" style="width:279px" readonly="readonly" value="" />
-                        </div>
-                        <div class="unit">
-                            <label>
-                                产品型号：
-                            </label>
-                            <input type="text" name="" id="cpxh" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>
@@ -383,14 +354,68 @@
                             </label>
                             @Html.TextBox("DataModel.CPPH", "", new { id = "cpph", style = "width:279px", @readonly = "readonly" })
                         </div>
-                    </div>
-                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
                         <div class="unit">
                             <label>
                                 生产日期：
                             </label>
                             @*@Html.TextBox("DataModel.CPSCRQ", "", new { id = "CPSCRQ", @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px", @readonly="readonly"  })*@
                             @Html.TextBox("DataModel.CPSCRQ", "", new { id = "CPSCRQ", style = "width:279px", @readonly = "readonly" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                入库库房：
+                            </label>
+                            <select id="ckid" name="DataModel.CKID" style="width:285px" onchange="dropCkChange(this.value)" class="required">
+                                <option>请选择</option>
+                                @{foreach (var item in ViewData["CK"] as SelectList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }}
+                            </select>
+                        </div>
+                        @*<div class="unit">
+                                <label>
+                                    产品规格：
+                                </label>
+                                <input type="text" name="" id="cpgg" style="width:279px" readonly="readonly" value="" />
+                            </div>
+                            <div class="unit">
+                                <label>
+                                    产品型号：
+                                </label>
+                                <input type="text" name="" id="cpxh" style="width:279px" readonly="readonly" value="" />
+                            </div>*@
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
+                        <div class="unit">
+                            <label>
+                                供货企业：
+                            </label>
+                            <input type="text" name="" id="supqyName" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                        <div class="unit">
+                            <label>
+                                生产企业：
+                            </label>
+                            <input type="text" name="" id="cpscqyName" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                        <div class="unit">
+                            <label>
+                                生产许可证号：
+                            </label>
+                            <input type="text" name="" id="cpxkzh" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                        <div class="unit">
+                            <label>
+                                产品注册证号：
+                            </label>
+                            <input type="text" name="" id="cpzczh" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                        <div class="unit">
+                            <label>
+                                储存条件：
+                            </label>
+                            <input type="text" name="" id="cctj" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>
@@ -401,56 +426,26 @@
                         </div>
                         @*<div class="unit">
                                 <label>
-                                    有效期预警期限(天)：
+                                    是否合格：
                                 </label>
-                                @Html.TextBox("DataModel.YXQBJDATE", "", new { id = "YXQBJDATE", style = "width:279px", @class = "digits" })
+                                @{
+                                    List<SelectListItem> isshList = new List<SelectListItem>();
+                                    isshList.Add(new SelectListItem { Text = "是", Value = "1" });
+                                    isshList.Add(new SelectListItem { Text = "否", Value = "0" });
+                                    @Html.DropDownList("DataModel.ISHG", isshList, new { style = "width:285px" })
+                                }
+                            </div>
+                            <div class="unit">
+                                <label>
+                                    是否收货：
+                                </label>
+                                @{
+                                    List<SelectListItem> ishgList = new List<SelectListItem>();
+                                    ishgList.Add(new SelectListItem { Text = "是", Value = "1" });
+                                    ishgList.Add(new SelectListItem { Text = "否", Value = "0" });
+                                    @Html.DropDownList("DataModel.ISSHHUO", ishgList, new { style = "width:285px" })
+                                }
                             </div>*@
-                        <div class="unit">
-                            <label>
-                                许可证号：
-                            </label>
-                            <input type="text" name="" id="cpxkzh" style="width:279px" readonly="readonly" value="" />
-                        </div>
-                        <div class="unit">
-                            <label>
-                                注册证号：
-                            </label>
-                            <input type="text" name="" id="cpzczh" style="width:279px" readonly="readonly" value="" />
-                        </div>
-                        <div class="unit">
-                            <label>
-                                是否合格：
-                            </label>
-                            @{
-                                List<SelectListItem> isshList = new List<SelectListItem>();
-                                isshList.Add(new SelectListItem { Text = "是", Value = "1" });
-                                isshList.Add(new SelectListItem { Text = "否", Value = "0" });
-                                @Html.DropDownList("DataModel.ISHG", isshList, new { style = "width:285px" })
-                            }
-                        </div>
-                        <div class="unit">
-                            <label>
-                                是否收货：
-                            </label>
-                            @{
-                                List<SelectListItem> ishgList = new List<SelectListItem>();
-                                ishgList.Add(new SelectListItem { Text = "是", Value = "1" });
-                                ishgList.Add(new SelectListItem { Text = "否", Value = "0" });
-                                @Html.DropDownList("DataModel.ISSHHUO", ishgList, new { style = "width:285px" })
-                            }
-                        </div>
-                        <div class="unit">
-                            <label>
-                                库房：
-                            </label>
-                            <select id="ckid" name="DataModel.CKID" style="width:285px" onchange="dropCkChange(this.value)" class="required">
-                                <option>请选择</option>
-                                @{foreach (var item in ViewData["CK"] as SelectList)
-                                    {
-                                        <option value="@item.Value">@item.Text</option>
-                                    }}
-                            </select>
-                        </div>
                         <div class="unit">
                             <label>
                                 库管：

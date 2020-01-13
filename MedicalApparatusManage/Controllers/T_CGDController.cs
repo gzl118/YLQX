@@ -111,7 +111,7 @@ namespace MedicalApparatusManage.Controllers
             supmode.DataList = T_SupQYDomain.GetInstance().GetAllT_SupQY(supmode.DataModel).Where(p => p.SupStatus == 1).ToList();
             ViewData["SupQYList"] = new SelectList(supmode.DataList, "SupID", "SupMC");
 
-            evalModel.DataList = T_CGDDomain.GetInstance().PageT_CGD(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, out pagecount, out resultCount);
+            evalModel.DataList = T_CGDDomain.GetInstance().PageT_CGD(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, cpId, supId, cusId, out pagecount, out resultCount);
             evalModel.resultCount = resultCount;
             return View("~/Views/T_CGD/Index.cshtml", evalModel);
         }

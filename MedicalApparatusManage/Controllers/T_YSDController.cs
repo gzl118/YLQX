@@ -49,13 +49,45 @@ namespace MedicalApparatusManage.Controllers
                     evalModel.DataModel.YSR = strYSPerson;
                 }
             }
+
+            var cpId = 0;
+            if (Request["strYSCPMC"] != null)
+            {
+                string str = Request["strYSCPMC"].ToString();
+                if (!String.IsNullOrEmpty(str))
+                {
+                    cpId = Convert.ToInt32(str);
+                }
+                ViewData["strYSCPMC"] = str;
+            }
+            var cusId = 0;
+            if (Request["strCusQY"] != null)
+            {
+                string str = Request["strCusQY"].ToString();
+                if (!String.IsNullOrEmpty(str))
+                {
+                    cusId = Convert.ToInt32(str);
+                }
+                ViewData["strCusQY"] = str;
+            }
+
             //获取本企业下的人员列表
             T_Person person = new T_Person();
             person.PsQYID = (int)UserModel.UserCompanyID;
             ViewBag.Persons = new SelectList(T_PersonDomain.GetInstance().GetAllT_Person(person), "PsMZ", "PsMZ");
             ViewData["strYSPerson"] = strYSPerson;
 
-            evalModel.DataList = T_YSDDomain.GetInstance().PageT_YSD(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, out pagecount, out resultCount);
+            T_YLCPModels ylcpQymode = new T_YLCPModels();
+            ylcpQymode.DataModel = ylcpQymode.DataModel ?? new T_YLCP();
+            ylcpQymode.DataList = T_YLCPDomain.GetInstance().GetAllT_YLCP(ylcpQymode.DataModel).Where(p => p.CPStatus == 1).ToList();
+            ViewData["YLCP"] = new SelectList(ylcpQymode.DataList, "CPID", "CPMC");
+
+            T_SupQYModels supmode = new T_SupQYModels();
+            supmode.DataModel = supmode.DataModel ?? new T_SupQY();
+            supmode.DataList = T_SupQYDomain.GetInstance().GetAllT_SupQY(supmode.DataModel).Where(p => p.SupStatus == 1).ToList();
+            ViewData["SupQYList"] = new SelectList(supmode.DataList, "SupID", "SupMC");
+
+            evalModel.DataList = T_YSDDomain.GetInstance().PageT_YSD(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, cpId, cusId, out pagecount, out resultCount);
             evalModel.resultCount = resultCount;
             return View("~/Views/T_YSD/Index.cshtml", evalModel);
         }
@@ -303,7 +335,8 @@ namespace MedicalApparatusManage.Controllers
                             CPNUM = mxModel.CPNUM,
                             CPPH = mxModel.CPPH,
                             SCRQ = mxModel.CPSCRQ == null ? "" : mxModel.CPSCRQ.Value.ToString("yyyy/MM/dd"),
-                            YQX = mxModel.CPYXQ == null ? "" : mxModel.CPYXQ.Value.ToString("yyyy/MM/dd")
+                            YQX = mxModel.CPYXQ == null ? "" : mxModel.CPYXQ.Value.ToString("yyyy/MM/dd"),
+                            CCTJ = cp.CCTJ
                         });
                         return Json(resultStr);
                     }

@@ -26,7 +26,7 @@ namespace MedicalApparatusManage.Domain
             return _instance;
         }
 
-        public List<T_YSD> PageT_YSD(T_YSD info, DateTime? startTime, DateTime? endTime, int pageIndex, int pageSize, out int pageCount, out int totalRecord)
+        public List<T_YSD> PageT_YSD(T_YSD info, DateTime? startTime, DateTime? endTime, int pageIndex, int pageSize, int? cpId, int? cusId, out int pageCount, out int totalRecord)
         {
             Expression<Func<T_YSD, bool>> where = PredicateBuilder.True<T_YSD>();
             if (!String.IsNullOrEmpty(info.YSR))
@@ -42,7 +42,7 @@ namespace MedicalApparatusManage.Domain
                 where = where.And(p => p.YSRQ <= endTime.Value);
             }
             Func<T_YSD, System.Int32> order = p => p.YSID;
-            return GetPageInfo<System.Int32>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);
+            return GetPageInfo<System.Int32>(where, order, true, pageIndex, pageSize, cpId, cusId, out pageCount, out totalRecord);
         }
 
         public List<T_YSD> GetAllT_YSD(T_YSD info)
@@ -51,7 +51,7 @@ namespace MedicalApparatusManage.Domain
             return base.GetAllModels<System.Int32>(where);
         }
 
-        public List<T_YSD> GetPageInfo<S>(Expression<Func<T_YSD, bool>> where, Func<T_YSD, S> order, bool desc, int pageIndex, int pageSize, out int pageCount, out int totalRecord)
+        public List<T_YSD> GetPageInfo<S>(Expression<Func<T_YSD, bool>> where, Func<T_YSD, S> order, bool desc, int pageIndex, int pageSize, int? cpId, int? cusId, out int pageCount, out int totalRecord)
         {
             totalRecord = 0;
             pageCount = 0;
@@ -60,6 +60,26 @@ namespace MedicalApparatusManage.Domain
             {
                 try
                 {
+                    Expression<Func<T_YSMX, bool>> whereCGMX = PredicateBuilder.True<T_YSMX>();
+                    var isContain = false;
+                    if (cpId != null && cpId != 0)
+                    {
+                        whereCGMX = whereCGMX.And(p => p.CPID == cpId);
+                        isContain = true;
+                    }
+                    if (cusId != null && cusId != 0)
+                    {
+                        whereCGMX = whereCGMX.And(p => p.ScqyID == cusId);
+                        isContain = true;
+                    }
+                    if (isContain)
+                    {
+                        var dbchild = hContext1.Set<T_YSMX>().Where(whereCGMX.Compile());
+                        var lst = dbchild.Select(p => p.YSID);
+                        if (lst != null)
+                            where = where.And(p => lst.Contains(p.YSID));
+                    }
+
                     DbSet<T_YSD> db = hContext1.Set<T_YSD>();
                     totalRecord = db.Where(where.Compile()).Count();
                     if (totalRecord > 0)
