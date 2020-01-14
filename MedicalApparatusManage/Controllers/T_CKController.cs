@@ -1,4 +1,5 @@
-﻿using MedicalApparatusManage.Domain;
+﻿using MedicalApparatusManage.Common;
+using MedicalApparatusManage.Domain;
 using MedicalApparatusManage.Models;
 using Newtonsoft.Json;
 using System;
@@ -44,7 +45,7 @@ namespace MedicalApparatusManage.Controllers
                 string str = Request["strCKName"].ToString();
                 if (!String.IsNullOrEmpty(str))
                 {
-                    evalModel.DataModel.CKMC = str;
+                    evalModel.DataModel.CKID = int.Parse(str);
                 }
                 ViewData["strCKName"] = str;
             }
@@ -62,6 +63,9 @@ namespace MedicalApparatusManage.Controllers
             person.PsQYID = (int)UserModel.UserCompanyID;
             ViewBag.Persons = new SelectList(T_PersonDomain.GetInstance().GetAllT_Person(person), "PsMZ", "PsMZ");
             ViewData["strCKPerson"] = strCKPerson;
+
+            var lstck = GetAllCK();
+            ViewBag.CKList = new SelectList(lstck, "CKID", "CKMC");
 
             evalModel.DataList = T_CKDomain.GetInstance().PageT_CK(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, out pagecount, out resultCount);
             evalModel.resultCount = resultCount;
@@ -288,6 +292,34 @@ namespace MedicalApparatusManage.Controllers
             T_CK ck = T_CKDomain.GetInstance().GetModelById(int.Parse(ckid));
             string ckgly = (ck != null && ck.CKGLY != null) ? ck.CKGLY : "";
             return Json(JsonConvert.SerializeObject(new { CKGLY = ckgly }));
+        }
+
+        //[HttpPost]
+        public List<T_CK> GetAllCK()
+        {
+            var lstResult = new List<T_CK>();
+            try
+            {
+                Expression<Func<T_CK, bool>> where = PredicateBuilder.True<T_CK>();
+                var list = T_CKDomain.GetInstance().GetAllModels<int>(where);
+                if (list != null && list.Count > 0)
+                {
+                    Hashtable ht = new Hashtable();
+                    foreach (var item in list)
+                    {
+                        if (!ht.ContainsKey(item.CKID))
+                        {
+                            ht.Add(item.CKID, item.CKMC);
+                            lstResult.Add(item);
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+            }
+            return lstResult;
         }
     }
 }

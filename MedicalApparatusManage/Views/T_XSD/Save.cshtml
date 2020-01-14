@@ -1,5 +1,7 @@
 ﻿@model MedicalApparatusManage.Models.T_XSDModels
 @{
+    /**/
+
     Layout = null;
 }
 <!DOCTYPE html>
@@ -142,6 +144,7 @@
                         var tes = eval("(" + json + ")");
                         $("#cpbh").val(tes.CPBH);
                         $("#scqy").val(tes.SCQYMC);
+                        $("#supqy").val(tes.SUPQYMC);
                         $("#cpgg").val(tes.CPGG);
                         $("#cpxh").val(tes.CPXH);
                         $("#cpdw").val(tes.CPDW);
@@ -158,7 +161,7 @@
         function Jszj() {
             var totalRow = 0
             $('#wtlb tr').each(function () {
-                $(this).find('td:eq(10)').each(function () {
+                $(this).find('td:eq(11)').each(function () {
                     if (parseFloat($(this).text())) {
                         totalRow += parseFloat($(this).text());
                     }
@@ -192,6 +195,7 @@
                 url: "/T_XSD/SaveTPrice/",
                 data: {
                     id: $("#XsidMain").val(),
+                    dh: $("#XSDH").val(),
                     tPrice: $('#cgze').val()
                 },
                 success: function (data, textStatus) {
@@ -211,19 +215,39 @@
                     @Html.HiddenFor(m => m.DataModel.XSFLAG, new { Name = "DataModel.XSFLAG", id = "XSFLAG" })
                     @Html.HiddenFor(m => m.DataModel.XSCJR, new { Name = "DataModel.XSCJR" })
                     @Html.HiddenFor(m => m.DataModel.XSCJRQ, new { Name = "DataModel.XSCJRQ" })
-                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
                                 销售单号：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.XSDH, new { id = "XSDH", name = "XSDH", style = "width:279px" })
+                            @Html.TextBoxFor(m => m.DataModel.XSDH, new { id = "XSDH", name = "XSDH", style = "width:279px", ReadOnly = true })
                         </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                销售单名称：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.XSMC, new { name = "XSMC", style = "width:279px", @class = "required" })
+                        </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                销售人员：
+                            </label>
+                            @Html.DropDownListFor(m => m.DataModel.XSRY, ViewData["Person"] as SelectList, "请选择", new { id = "XSPerson", style = "width:285px" })
+                        </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
                                 购货企业：
                             </label>
                             @Html.DropDownListFor(m => m.DataModel.KHID, ViewData["CusQY"] as SelectList, "请选择", new { id = "XSQYID", style = "width:285px" })
                         </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
                                 销售日期：
@@ -237,38 +261,21 @@
                                 </label>
                                 @Html.TextBoxFor(m => m.DataModel.XSFHR, new { name = "XSFHR", style = "width:264px" })
                             </div>*@
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                审核日期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.XSSHRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.XSSHRQ), name = "XSSHRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
+                        </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
                                 销售总额(元)：
                             </label>
                             <input id="cgze" type="text" style="width:279px" readonly="readonly" value="" />
-                        </div>
-                    </div>
-                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
-                        <div class="unit">
-                            <label>
-                                销售名称：
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.XSMC, new { name = "XSMC", style = "width:279px", @class = "required" })
-                        </div>
-                        <div class="unit">
-                            <label>
-                                销售人员：
-                            </label>
-                            @Html.DropDownListFor(m => m.DataModel.XSRY, ViewData["Person"] as SelectList, "请选择", new { id = "XSPerson", style = "width:285px" })
-                        </div>
-                        @*
-                            <div class="unit">
-                                <label>
-                                    销售金额(万)：
-                                </label>
-                                @Html.TextBoxFor(m => m.DataModel.XSJE, new { name = "XSJE", style = "width:264px" })
-                            </div>*@
-                        <div class="unit">
-                            <label>
-                                审核时间：
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.XSSHRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.XSSHRQ), name = "XSSHRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">
@@ -314,13 +321,15 @@
                     @Html.HiddenFor(m => m.T_XSMXModel.MXID, new { Name = "DataModel.MXID" })
                     <input type="hidden" id="XSID" name="XSDH">
                     <input type="hidden" id="guid">
-                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
                                 产品编号：
                             </label>
                             <input type="text" name="" id="cpbh" style="width:279px" readonly="readonly" value="" />
                         </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
                                 产品名称：
@@ -332,13 +341,6 @@
                                         <option value="@item.Value">@item.Text</option>
                                     }}
                             </select>
-                            @*@Html.DropDownList("DataModel.CPID", ViewData["YLCP"] as SelectList, new { ID = "YLCP", style = "width:270px", onchange = "dropChange(this.value)" })*@
-                        </div>
-                        <div class="unit">
-                            <label>
-                                生产企业：
-                            </label>
-                            <input type="text" name="" id="scqy" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>
@@ -352,32 +354,48 @@
                             </label>
                             <input type="text" name="" id="cpxh" style="width:279px" readonly="readonly" value="" />
                         </div>
-                    </div>
-                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
                         <div class="unit">
                             <label>
                                 包装单位：
                             </label>
                             <input type="text" name="" id="cpdw" style="width:279px" readonly="readonly" value="" />
                         </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
                         <div class="unit">
                             <label>
-                                产品数量：
+                                生产企业：
                             </label>
-                            @Html.TextBox("DataModel.CPSL", "", new { id = "cpnum", style = "width:279px", @class = "required digits" })
+                            <input type="text" name="" id="scqy" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>
-                                许可证号：
+                                供货企业：
+                            </label>
+                            <input type="text" name="" id="supqy" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                        <div class="unit">
+                            <label>
+                                生产许可证号：
                             </label>
                             <input type="text" name="" id="cpxkzh" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>
-                                注册证号：
+                                产品注册证号：
                             </label>
                             <input type="text" name="" id="cpzczh" style="width:279px" readonly="readonly" value="" />
                         </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                销售数量：
+                            </label>
+                            @Html.TextBox("DataModel.CPSL", "", new { id = "cpnum", style = "width:279px", @class = "required digits" })
+                        </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
                                 销售单价(元)：

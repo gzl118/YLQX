@@ -88,16 +88,23 @@ namespace MedicalApparatusManage.Controllers
                 qyid = Request["QYList"].ToString();
                 if (!String.IsNullOrEmpty(qyid))
                 {
-                    //T_YLCP qycp = new T_YLCP();
-                    //qycp.CPSCQY = qyid;
-                    //evalModel.DataModel.T_YLCP = qycp;
                     evalModel.DataModel.ScqyID = Convert.ToInt16(qyid);
+                }
+            }
+            var supid = "";
+            if (Request["strKCSupQY"] != null)
+            {
+                supid = Request["strKCSupQY"].ToString();
+                if (!String.IsNullOrEmpty(supid))
+                {
+                    evalModel.DataModel.SupID = Convert.ToInt16(supid);
                 }
             }
 
             ViewData["CKList"] = ckid;
             ViewData["CPList"] = cpid;
             ViewData["QYList"] = qyid;
+            ViewData["strKCSupQY"] = supid;
             evalModel.DataList = T_KCDomain.GetInstance().PageT_KC(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, out pagecount, out resultCount);
             evalModel.resultCount = resultCount;
             return View("~/Views/T_KC/Index.cshtml", evalModel);

@@ -179,6 +179,7 @@
                         var $refCombox = $ref.parents("div.combox:first");
                         $ref.html(html).insertAfter($refCombox);
                         $refCombox.remove();
+                        dropCPPHChange($("#CK").val());
                     },
                     error: function () {
                         alertMsg.error('发生错误！');
@@ -270,6 +271,20 @@
                 return false;
             }
             $("#xsmxBox").loadUrl("/T_XSMX/XSMXTable", { id: xsid, xsdh: "", canEdit: 0, ISSH: 1 });
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/T_XSD/GetXsInfoByID",
+                data: { id: xsid },
+                success: function (json) {
+                    var tes = eval("(" + json + ")");
+                    $("#xsperson").val(tes.XSRY);
+                    $("#xsrq").val(tes.XSRQ);
+                },
+                error: function () {
+                    alertMsg.error('发生错误！');
+                }
+            });
         };
 
         function refreshCkmxGrid() {
@@ -278,6 +293,7 @@
             });
         };
         function bindXSMX(mxId) {
+            $("#lblCkmx").text("");
             dropMxChange(mxId);
         }
         function dropMxChange(id) {
@@ -299,6 +315,7 @@
                         $("#cpnum").val(tes.CPNUM);
                         $("#cpxkzh").val(tes.XKZH);
                         $("#cpzczh").val(tes.ZCZH);
+                        $("#CYTJ").val(tes.CYTJ);
                         dropCkChange(tes.CPID);
                     },
                     error: function () {
@@ -319,25 +336,27 @@
                     @Html.HiddenFor(m => m.DataModel.CKID, new { ID = "CkidMain", Name = "DataModel.CKID" })
                     @Html.HiddenFor(m => m.DataModel.CKCJR, new { Name = "DataModel.CKCJR" })
                     @Html.HiddenFor(m => m.DataModel.CKCJRQ, new { Name = "DataModel.CKCJRQ" })
-                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
                                 出库单号：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CKDH, new { id = "CKDH", name = "CKDH", style = "width:279px" })
+                            @Html.TextBoxFor(m => m.DataModel.CKDH, new { id = "CKDH", name = "CKDH", style = "width:279px", ReadOnly = true })
                         </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
-                                申请人：
+                                出库单名称：
                             </label>
-                            @Html.DropDownListFor(m => m.DataModel.CKSQR, ViewBag.Persons as SelectList, "请选择", new { id = "ckdCKSQR", style = "width:285px" })
-                            @*@Html.TextBoxFor(m => m.DataModel.CKSQR, new { name = "CKSQR", style = "width:264px" })*@
+                            @Html.TextBoxFor(m => m.DataModel.CKMC, new { name = "CKMC", style = "width:279px", @class = "required" })
                         </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
                                 销售单号：
                             </label>
-                            @*@Html.DropDownListFor(m => m.DataModel.XSID, ViewData["XSD"] as SelectList, "请选择", new { ID = "xsd", style = "width:270px", onchange = "dropChange(this.value)" })*@
                             @Html.DropDownListFor(m => m.DataModel.XSID, ViewData["XSD"] as SelectList, "请选择", new { ID = "xsd", style = "width:285px" })
                             @{if (Model.DataModel.CKID == 0)
                                 {
@@ -347,45 +366,57 @@
                                 }
                             }
                         </div>
-                        <div class="unit">
-                            <label>
-                                复核日期：
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.FHRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.FHRQ), name = "FHRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
-                        </div>
-                        <div class="unit">
-                            <label>
-                                出货日期：
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.CHRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CHRQ), name = "CHRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
-                        </div>
                     </div>
-                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
-                                出库名称：
+                                申请人：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.CKMC, new { name = "CKMC", style = "width:279px", @class = "required" })
-                        </div>
-                        <div class="unit">
-                            <label>
-                                申请日期：
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.SQRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.SQRQ), name = "SQRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
+                            @Html.DropDownListFor(m => m.DataModel.CKSQR, ViewBag.Persons as SelectList, "请选择", new { id = "ckdCKSQR", style = "width:285px" })
                         </div>
                         <div class="unit">
                             <label>
                                 复核人：
                             </label>
                             @Html.DropDownListFor(m => m.DataModel.FHR, ViewBag.Persons as SelectList, "请选择", new { id = "ckdFHR", style = "width:285px" })
-                            @*@Html.TextBoxFor(m => m.DataModel.FHR, new { name = "FHR", style = "width:264px" })*@
+                        </div>
+                        <div class="unit">
+                            <label>
+                                销售人：
+                            </label>
+                            <input type="text" name="" id="xsperson" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>
                                 仓库出货人：
                             </label>
                             @Html.DropDownListFor(m => m.DataModel.CKCHR, ViewBag.Persons as SelectList, "请选择", new { id = "ckdCKCHR", style = "width:285px" })
-                            @*@Html.TextBoxFor(m => m.DataModel.CKCHR, new { name = "CKCHR", style = "width:264px" })*@
+                        </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
+                        <div class="unit">
+                            <label>
+                                申请日期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SQRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.SQRQ), name = "SQRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px", autocomplete = "off" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                复核日期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.FHRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.FHRQ), name = "FHRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px", autocomplete = "off" })
+                        </div>
+                        <div class="unit">
+                            <label>
+                                销售日期：
+                            </label>
+                            <input type="text" name="" id="xsrq" style="width:279px" readonly="readonly" value="" />
+                        </div>
+                        <div class="unit">
+                            <label>
+                                出货日期：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.CHRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.CHRQ), name = "CHRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px", autocomplete = "off" })
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">
@@ -492,19 +523,19 @@
                         </div>
                         <div class="unit">
                             <label>
-                                有效期：
+                                失效日期：
                             </label>
                             <input type="text" name="DataModel.CPYXQ" id="cpyxq" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>
-                                许可证号：
+                                生产许可证号：
                             </label>
                             <input type="text" name="" id="cpxkzh" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>
-                                注册证号：
+                                产品注册证号：
                             </label>
                             <input type="text" name="" id="cpzczh" style="width:279px" readonly="readonly" value="" />
                         </div>
@@ -532,7 +563,8 @@
                             <label>
                                 储运条件：
                             </label>
-                            @Html.TextBoxFor(m => m.T_CKMXModel.CYTJ, new { id = "CYTJ", name = "DataModel.CYTJ", style = "width:279px" })
+                            @*@Html.TextBoxFor(m => m.T_CKMXModel.CYTJ, new { id = "CYTJ", name = "DataModel.CYTJ", style = "width:279px" })*@
+                            <input type="text" name="DataModel.CYTJ" id="CYTJ" style="width:279px" readonly="readonly" value="" />
                         </div>
                     </div>
                     <div style="width:91%;border:1px solid #ffffff;margin:5px;">

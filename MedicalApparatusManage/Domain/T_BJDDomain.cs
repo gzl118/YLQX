@@ -35,7 +35,7 @@ namespace MedicalApparatusManage.Domain
             }
             if (endTime != null)
             {
-                where = where.And(p => p.BJRQ <= endTime.Value);
+                where = where.And(p => p.BJRQ < endTime.Value.AddDays(1));
             }
             Func<T_BJD, System.Int32> order = p => p.BJID;
             return GetEntityPageInfo<System.Int32>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);

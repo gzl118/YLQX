@@ -190,7 +190,7 @@ namespace MedicalApparatusManage.Controllers
                     return;
                 }
             }
-            int result = T_RKDDomain.GetInstance().DeleteModelById(id);
+            int result = T_RKDDomain.GetInstance().Delete(id);
             Response.ContentType = "text/json";
             if (result > 0)
                 Response.Write("{\"statusCode\":\"200\", \"message\":\"操作成功\",\"callbackType\":\"forward\",\"forwardUrl\":\"/T_RKD/Index\"}");

@@ -41,12 +41,20 @@ namespace MedicalApparatusManage.Controllers
             int currentPage = Convert.ToInt32(evalModel.currentPage);
             evalModel.DataModel = evalModel.DataModel ?? new T_XSD();
             string strCUSQY = "请选择";
+            if (Request["strXSDH"] != null)
+            {
+                string str = Request["strXSDH"].ToString();
+                if (!String.IsNullOrEmpty(str))
+                {
+                    evalModel.DataModel.XSDH = str;
+                }
+            }
             if (Request["strXSDMC"] != null)
             {
                 string str = Request["strXSDMC"].ToString();
                 if (!String.IsNullOrEmpty(str))
                 {
-                    evalModel.DataModel.XSDH = str;
+                    evalModel.DataModel.XSMC = str;
                 }
             }
             if (Request["strCUSQY"] != null)
@@ -67,10 +75,30 @@ namespace MedicalApparatusManage.Controllers
                 }
             }
             ViewData["strXSPerson"] = strXSPerson;
+            var cpId = 0;
+            if (Request["strXSCPMC"] != null)
+            {
+                string str = Request["strXSCPMC"].ToString();
+                if (!String.IsNullOrEmpty(str))
+                {
+                    cpId = Convert.ToInt32(str);
+                }
+                ViewData["strXSCPMC"] = str;
+            }
+            var cusId = 0;
+            if (Request["strXSCusQY"] != null)
+            {
+                string str = Request["strXSCusQY"].ToString();
+                if (!String.IsNullOrEmpty(str))
+                {
+                    cusId = Convert.ToInt32(str);
+                }
+                ViewData["strXSCusQY"] = str;
+            }
 
             //购货企业列表
             T_CusQY cusqy = new T_CusQY();
-            ViewBag.CUSQY = new SelectList(T_CusQYDomain.GetInstance().GetAllT_CusQY(cusqy), "CusID", "CusMC");
+            ViewBag.CUSQY = new SelectList(T_CusQYDomain.GetInstance().GetAllT_CusQY(cusqy).Where(p => p.CusStatus == 1).ToList(), "CusID", "CusMC");
             ViewData["strCUSQY"] = strCUSQY;
 
             //获取本企业下的人员列表
@@ -78,7 +106,16 @@ namespace MedicalApparatusManage.Controllers
             person.PsQYID = (int)UserModel.UserCompanyID;
             ViewBag.Persons = new SelectList(T_PersonDomain.GetInstance().GetAllT_Person(person), "PsMZ", "PsMZ");
 
-            evalModel.DataList = T_XSDDomain.GetInstance().PageT_XSD(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, out pagecount, out resultCount);
+            T_SupQYModels supmode = new T_SupQYModels();
+            supmode.DataModel = supmode.DataModel ?? new T_SupQY();
+            supmode.DataList = T_SupQYDomain.GetInstance().GetAllT_SupQY(supmode.DataModel).Where(p => p.SupStatus == 1).ToList();
+            ViewData["SupQYList"] = new SelectList(supmode.DataList, "SupID", "SupMC");
+            T_YLCPModels ylcpQymode = new T_YLCPModels();
+            ylcpQymode.DataModel = ylcpQymode.DataModel ?? new T_YLCP();
+            ylcpQymode.DataList = T_YLCPDomain.GetInstance().GetAllT_YLCP(ylcpQymode.DataModel).Where(p => p.CPStatus == 1).ToList();
+            ViewData["YLCP"] = new SelectList(ylcpQymode.DataList, "CPID", "CPMC");
+
+            evalModel.DataList = T_XSDDomain.GetInstance().PageT_XSD(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, cpId, cusId, out pagecount, out resultCount);
             evalModel.resultCount = resultCount;
             return View("~/Views/T_XSD/Index.cshtml", evalModel);
         }
@@ -245,7 +282,7 @@ namespace MedicalApparatusManage.Controllers
                     return;
                 }
             }
-            int result = T_XSDDomain.GetInstance().DeleteModelById(id);
+            int result = T_XSDDomain.GetInstance().Delete(id);
             Response.ContentType = "text/json";
             if (result > 0)
                 Response.Write("{\"statusCode\":\"200\", \"message\":\"操作成功\",\"callbackType\":\"forward\",\"forwardUrl\":\"/T_XSD/Index\"}");
@@ -258,14 +295,14 @@ namespace MedicalApparatusManage.Controllers
         }
         [HttpPost]
         [CheckLogin()]
-        public int SaveTPrice(int id, string tPrice)
+        public int SaveTPrice(int id, string dh, string tPrice)
         {
             int result = 0;
             try
             {
                 double d = 0;
                 double.TryParse(tPrice, out d);
-                result = T_XSDDomain.GetInstance().SaveTPrice(id, d);
+                result = T_XSDDomain.GetInstance().SaveTPrice(id, dh, d);
             }
             catch { }
             return result;
@@ -301,10 +338,27 @@ namespace MedicalApparatusManage.Controllers
                         SUPQYMC = (cp.T_SupQY != null && !string.IsNullOrEmpty(cp.T_SupQY.SupMC)) ? cp.T_SupQY.SupMC : "",
                         XSJG = cp.XSJG,
                         CPMC = cp.CPMC,
-                        CPNUM = mxModel.CPSL
+                        CPNUM = mxModel.CPSL,
+                        CYTJ = cp.CCTJ
                     });
                     return Json(resultStr);
                 }
+            }
+            return Json("");
+        }
+        [HttpPost]
+        [CheckLogin()]
+        public JsonResult GetXsInfoByID(int id)
+        {
+            var tModel = T_XSDDomain.GetInstance().GetModelById(id);
+            if (tModel != null)
+            {
+                string resultStr = JsonConvert.SerializeObject(new
+                {
+                    XSRY = tModel.XSRY,
+                    XSRQ = tModel.XSRQ.HasValue ? tModel.XSRQ.Value.ToString("yyyy/MM/dd") : ""
+                });
+                return Json(resultStr);
             }
             return Json("");
         }

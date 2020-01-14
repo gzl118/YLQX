@@ -179,6 +179,7 @@
                         var $refCombox = $ref.parents("div.combox:first");
                         $ref.html(html).insertAfter($refCombox);
                         $refCombox.remove();
+                        dropCPPHChange($("#CK").val());
                     },
                     error: function () {
                         alertMsg.error('发生错误！');
@@ -188,6 +189,7 @@
         };
 
         function dropCPPHChange(ckid) {
+            $("#lblCkmx").text("");
             var cpid = $("#SHDCPMC").val();
             //if (cpid != "" && cpid != "请选择" && ckid != "" && ckid != "请选择") {
             $.ajax({
@@ -237,6 +239,7 @@
         };
 
         function dropCPChange(cpph) {
+            $("#lblCkmx").text("");
             var cpid = $("#SHDCPMC").val();
             var ckid = $("#CK").val();
             if (cpid != "" && cpid != "请选择" && ckid != "" && ckid != "请选择" && cpph != "" && cpph != "请选择") {
@@ -272,6 +275,7 @@
             });
         };
         function dropMxChange(id) {
+            $("#lblCkmx").text("");
             if (id != "") {
                 $.ajax({
                     type: "post",
@@ -324,13 +328,23 @@
                     @Html.HiddenFor(m => m.DataModel.SHCJR, new { Name = "DataModel.SHCJR" })
                     @Html.HiddenFor(m => m.DataModel.SHCJRQ, new { Name = "DataModel.SHCJRQ" })
                     @Html.HiddenFor(m => m.DataModel.ISSH, new { Name = "DataModel.ISSH", id = "SHISSH" })
-                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
-                                损耗单号：
+                                损耗单编号：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.SHDH, new { id = "SHDH", name = "SHDH", style = "width:279px" })
+                            @Html.TextBoxFor(m => m.DataModel.SHDH, new { id = "SHDH", name = "SHDH", style = "width:279px", ReadOnly = true })
                         </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                损耗单名称：
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SHDMC, new { name = "SHDMC", style = "width:279px", @class = "required" })
+                        </div>
+                    </div>
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
                                 申请人：
@@ -339,29 +353,23 @@
                         </div>
                         <div class="unit">
                             <label>
-                                复核日期：
+                                复核人：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.FHRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.FHRQ), name = "FHRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
+                            @Html.DropDownListFor(m => m.DataModel.FHY, ViewBag.Persons as SelectList, "请选择", new { id = "SHDFHY", style = "width:285px" })
                         </div>
                     </div>
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
                         <div class="unit">
                             <label>
-                                损耗单名称：
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.SHDMC, new { name = "SHDMC", style = "width:279px", @class = "required" })
-                        </div>
-                        <div class="unit">
-                            <label>
                                 申请日期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.SQRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.SQRQ), name = "SQRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px" })
+                            @Html.TextBoxFor(m => m.DataModel.SQRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.SQRQ), name = "SQRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px", autocomplete = "off" })
                         </div>
                         <div class="unit">
                             <label>
-                                复核人：
+                                复核日期：
                             </label>
-                            @Html.DropDownListFor(m => m.DataModel.FHY, ViewBag.Persons as SelectList, "请选择", new { id = "SHDFHY", style = "width:285px" })
+                            @Html.TextBoxFor(m => m.DataModel.FHRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.FHRQ), name = "FHRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:279px", autocomplete = "off" })
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">
@@ -461,19 +469,19 @@
                         </div>
                         <div class="unit">
                             <label>
-                                有效期：
+                                失效日期：
                             </label>
                             <input type="text" name="DataModel.CPYXQ" id="cpyxq" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>
-                                许可证号：
+                                生产许可证号：
                             </label>
                             <input type="text" name="" id="cpxkzh" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>
-                                注册证号：
+                                产品注册证号：
                             </label>
                             <input type="text" name="" id="cpzczh" style="width:279px" readonly="readonly" value="" />
                         </div>

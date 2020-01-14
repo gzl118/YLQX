@@ -29,9 +29,9 @@ namespace MedicalApparatusManage.Domain
         public List<T_CK> PageT_CK(T_CK info, DateTime? startTime, DateTime? endTime, int pageIndex, int pageSize, out int pageCount, out int totalRecord)
         {
             Expression<Func<T_CK, bool>> where = PredicateBuilder.True<T_CK>();
-            if (!String.IsNullOrEmpty(info.CKMC))
+            if (info.CKID != 0)
             {
-                where = where.And(p => p.CKMC.Contains(info.CKMC));
+                where = where.And(p => p.CKID == info.CKID);
             }
             if (!String.IsNullOrEmpty(info.CKGLY))
             {

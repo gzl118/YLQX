@@ -45,6 +45,10 @@ namespace MedicalApparatusManage.Domain
             {
                 where = where.And(p => p.ScqyID == info.ScqyID);
             }
+            if (info.SupID != null && info.SupID != 0)
+            {
+                where = where.And(p => p.SupID == info.SupID);
+            }
             Func<T_KC, System.Int32> order = p => p.CPID;
             return GetPageInfo<System.Int32>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);
         }

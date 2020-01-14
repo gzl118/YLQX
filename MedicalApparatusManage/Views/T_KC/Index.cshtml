@@ -17,6 +17,9 @@
             $("#QYList").chosen({
                 search_contains: true
             });
+            $("#strKCSupQY").chosen({
+                search_contains: true
+            });
         });
     </script>
 </head>
@@ -53,6 +56,12 @@
                                 @Html.DropDownList("QYList", ViewData["QY"] as SelectList, "请选择", new { id = "QYList", style = "width:285px", Value = @ViewData["QYList"] })
                             </td>
                             <td>
+                                供货企业:
+                            </td>
+                            <td>
+                                @Html.DropDownList("strKCSupQY", ViewData["QY"] as SelectList, "请选择", new { id = "strKCSupQY", style = "width:285px", Value = @ViewData["strKCSupQY"] })
+                            </td>
+                            <td>
                                 <ul>
                                     <li>
                                         <div class="buttonActive">
@@ -82,19 +91,10 @@
             <thead>
                 <tr>
                     <th>
-                        产品名称
-                    </th>
-                    <th>
                         产品编号
                     </th>
                     <th>
-                        产品批号
-                    </th>
-                    <th>
-                        生产日期
-                    </th>
-                    <th>
-                        有效期
+                        产品名称
                     </th>
                     <th>
                         生产企业
@@ -106,23 +106,35 @@
                         产品型号
                     </th>
                     <th>
-                        产品数量
-                    </th>
-                    <th>
                         包装单位
                     </th>
                     <th>
-                        许可证号
+                        产品数量
                     </th>
                     <th>
-                        注册证号
+                        产品批号
                     </th>
                     <th>
-                        库房
+                        生产日期
                     </th>
                     <th>
-                        库管
+                        失效日期
                     </th>
+                    <th>
+                        生产许可证号
+                    </th>
+                    <th>
+                        产品注册证号
+                    </th>
+                    <th>
+                        供货企业
+                    </th>
+                    <th>
+                        仓储库房
+                    </th>
+                    @*<th>
+                            库管
+                        </th>*@
                 </tr>
             </thead>
             <tbody>
@@ -131,20 +143,21 @@
                     foreach (var item in Model.DataList)
                     {
                         <tr target="sid_user" rel="@item.KCID">
-                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPMC) ? item.T_YLCP.CPMC : "")</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPBH) ? item.T_YLCP.CPBH : "")</td>
-                            <td>@item.CPPH</td>
-                            <td>@(item.CPSCRQ.HasValue ? item.CPSCRQ.Value.ToString("yyyy/MM/dd") : "")</td>
-                            <td>@(item.CPYXQ.HasValue ? item.CPYXQ.Value.ToString("yyyy/MM/dd") : "")</td>
+                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPMC) ? item.T_YLCP.CPMC : "")</td>
                             <td>@(item.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_SupQY1.SupMC) ? item.T_SupQY1.SupMC : "")</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPGG) ? item.T_YLCP.CPGG : "")</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPXH) ? item.T_YLCP.CPXH : "")</td>
-                            <td>@item.CPNUM</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPDW) ? item.T_YLCP.CPDW : "")</td>
+                            <td>@item.CPNUM</td>
+                            <td>@item.CPPH</td>
+                            <td>@(item.CPSCRQ.HasValue ? item.CPSCRQ.Value.ToString("yyyy/MM/dd") : "")</td>
+                            <td>@(item.CPYXQ.HasValue ? item.CPYXQ.Value.ToString("yyyy/MM/dd") : "")</td>
                             <td>@(item.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_SupQY1.SupXKZBH) ? item.T_SupQY1.SupXKZBH : "")</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPZCZ) ? item.T_YLCP.CPZCZ : "")</td>
+                            <td>@(item.T_SupQY != null && !string.IsNullOrEmpty(item.T_SupQY.SupMC) ? item.T_SupQY.SupMC : "")</td>
                             <td>@(item.T_CK != null && !string.IsNullOrEmpty(item.T_CK.CKMC) ? item.T_CK.CKMC : "")</td>
-                            <td>@(item.T_CK != null && !string.IsNullOrEmpty(item.T_CK.CKGLY) ? item.T_CK.CKGLY : "")</td>
+                            @*<td>@(item.T_CK != null && !string.IsNullOrEmpty(item.T_CK.CKGLY) ? item.T_CK.CKGLY : "")</td>*@
                         </tr>
                     }
                 }
