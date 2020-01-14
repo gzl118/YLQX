@@ -2371,7 +2371,6 @@
     <Content Include="Views\T_HT\HTSPIndex.cshtml" />
     <Content Include="Views\T_XSD\XSDSPIndex.cshtml" />
     <Content Include="Views\T_THD\XSSave.cshtml" />
-    <None Include="Properties\PublishProfiles\WebConfig.pubxml" />
     <Content Include="Views\T_YLCP\CPAuditIndex.cshtml" />
     <Content Include="Views\T_XSHT\XSHTSPIndex.cshtml" />
     <Content Include="Views\T_CKD\Details.cshtml" />
