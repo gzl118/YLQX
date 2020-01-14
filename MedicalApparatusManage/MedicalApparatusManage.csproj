@@ -2391,6 +2391,7 @@
     <Content Include="Views\T_SHD\Index.cshtml" />
     <Content Include="Views\T_SHD\Save.cshtml" />
     <Content Include="Views\T_SHD\SHMXTable.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
