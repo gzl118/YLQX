@@ -11,13 +11,13 @@
     <title>库存</title>
     <script type="text/javascript">
         $(function () {
-            $("#CPList").chosen({
+            $("#CPList", $("#formSerachMAKC")).chosen({
                 search_contains: true
             });
-            $("#QYList").chosen({
+            $("#QYList", $("#formSerachMAKC")).chosen({
                 search_contains: true
             });
-            $("#strKCSupQY").chosen({
+            $("#strKCSupQY", $("#formSerachMAKC")).chosen({
                 search_contains: true
             });
         });
@@ -29,7 +29,7 @@
             @using (Html.BeginForm("Index", "T_KC", FormMethod.Post, new
             {
                 name = "formSerachMA",
-                id = "formSerachMA",
+                id = "formSerachMAKC",
                 onsubmit = "return navTabSearch(this);"
 
             }))
@@ -47,19 +47,21 @@
                                 产品名称:
                             </td>
                             <td>
-                                @Html.DropDownList("CPList", ViewData["YLCP"] as SelectList, "请选择", new { id = "CPList", style = "width:285px", Value = @ViewData["CPList"] })
+                                @Html.DropDownList("CPList", ViewData["YLCP"] as SelectList, "请选择", new { id = "CPList", style = "width:220px", Value = @ViewData["CPList"] })
                             </td>
                             <td>
                                 生产企业:
                             </td>
                             <td>
-                                @Html.DropDownList("QYList", ViewData["QY"] as SelectList, "请选择", new { id = "QYList", style = "width:285px", Value = @ViewData["QYList"] })
+                                @Html.DropDownList("QYList", ViewData["QY"] as SelectList, "请选择", new { id = "QYList", style = "width:220px", Value = @ViewData["QYList"] })
                             </td>
+                        </tr>
+                        <tr>
                             <td>
                                 供货企业:
                             </td>
                             <td>
-                                @Html.DropDownList("strKCSupQY", ViewData["QY"] as SelectList, "请选择", new { id = "strKCSupQY", style = "width:285px", Value = @ViewData["strKCSupQY"] })
+                                @Html.DropDownList("strKCSupQY", ViewData["QY"] as SelectList, "请选择", new { id = "strKCSupQY", style = "width:220px", Value = @ViewData["strKCSupQY"] })
                             </td>
                             <td>
                                 <ul>

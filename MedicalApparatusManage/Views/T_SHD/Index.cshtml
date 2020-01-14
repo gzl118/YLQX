@@ -11,7 +11,7 @@
     <title>损耗单</title>
     <script type="text/javascript" language="javascript">
         $(function () {
-            $("#strSHSQPerson").chosen({
+            $("#strSHSQPerson", $("#formSerachMASHD")).chosen({
                 search_contains: true
             });
         });
@@ -23,7 +23,7 @@
             @using (Html.BeginForm("Index", "T_SHD", FormMethod.Post, new
             {
                 name = "formSerachMA",
-                id = "formSerachMA",
+                id = "formSerachMASHD",
                 onsubmit = "return navTabSearch(this);"
 
             }))

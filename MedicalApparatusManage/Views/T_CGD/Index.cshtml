@@ -11,16 +11,16 @@
     <title>采购单</title>
     <script type="text/javascript">
         $(function () {
-            $("#strCGPerson").chosen({
+            $("#strCGPerson", $("#formSerachMACGD")).chosen({
                 search_contains: true
             });
-            $("#strCGCPMC").chosen({
+            $("#strCGCPMC", $("#formSerachMACGD")).chosen({
                 search_contains: true
             });
-            $("#strCGSupQY").chosen({
+            $("#strCGSupQY", $("#formSerachMACGD")).chosen({
                 search_contains: true
             });
-            $("#strCusQY").chosen({
+            $("#strCusQY", $("#formSerachMACGD")).chosen({
                 search_contains: true
             });
         });
@@ -32,7 +32,7 @@
             @using (Html.BeginForm("Index", "T_CGD", FormMethod.Post, new
             {
                 name = "formSerachMA",
-                id = "formSerachMA",
+                id = "formSerachMACGD",
                 onsubmit = "return navTabSearch(this);"
 
             }))
@@ -50,13 +50,13 @@
                                 供货企业:
                             </td>
                             <td>
-                                @Html.DropDownList("strCGSupQY", ViewData["SupQYList"] as SelectList, "请选择", new { id = "strCGSupQY", style = "width:285px", Value = @ViewData["strCGSupQY"] })
+                                @Html.DropDownList("strCGSupQY", ViewData["SupQYList"] as SelectList, "请选择", new { id = "strCGSupQY", style = "width:220px", Value = @ViewData["strCGSupQY"] })
                             </td>
                             <td>
                                 生产企业:
                             </td>
                             <td>
-                                @Html.DropDownList("strCusQY", ViewData["SupQYList"] as SelectList, "请选择", new { id = "strCusQY", style = "width:285px", Value = @ViewData["strCusQY"] })
+                                @Html.DropDownList("strCusQY", ViewData["SupQYList"] as SelectList, "请选择", new { id = "strCusQY", style = "width:220px", Value = @ViewData["strCusQY"] })
                             </td>
                         </tr>
                         <tr>

@@ -11,13 +11,13 @@
     <title>验收单</title>
     <script type="text/javascript" language="javascript">
         $(function () {
-            $("#strYSPerson").chosen({
+            $("#strYSPerson", $("#formSerachMAYSD")).chosen({
                 search_contains: true
             });
-            $("#strCusQY").chosen({
+            $("#strYSDCusQY", $("#formSerachMAYSD")).chosen({
                 search_contains: true
             });
-            $("#strYSCPMC").chosen({
+            $("#strYSCPMC", $("#formSerachMAYSD")).chosen({
                 search_contains: true
             });
         });
@@ -29,7 +29,7 @@
             @using (Html.BeginForm("Index", "T_YSD", FormMethod.Post, new
             {
                 name = "formSerachMA",
-                id = "formSerachMA",
+                id = "formSerachMAYSD",
                 onsubmit = "return navTabSearch(this);"
 
             }))
@@ -41,7 +41,7 @@
                                 生产企业:
                             </td>
                             <td>
-                                @Html.DropDownList("strCusQY", ViewData["SupQYList"] as SelectList, "请选择", new { id = "strCusQY", style = "width:285px", Value = @ViewData["strCusQY"] })
+                                @Html.DropDownList("strCusQY", ViewData["SupQYList"] as SelectList, "请选择", new { id = "strYSDCusQY", style = "width:285px", Value = @ViewData["strCusQY"] })
                             </td>
                             <td>
                                 产品名称:

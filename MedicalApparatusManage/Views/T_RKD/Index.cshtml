@@ -11,16 +11,16 @@
     <title>入库单</title>
     <script type="text/javascript" language="javascript">
         $(function () {
-            $("#strRKPerson").chosen({
+            $("#strRKPerson", $("#formSerachMARKD")).chosen({
                 search_contains: true
             });
-            $("#strRKCPMC").chosen({
+            $("#strRKCPMC", $("#formSerachMARKD")).chosen({
                 search_contains: true
             });
-            $("#strCusQY").chosen({
+            $("#strCusQY", $("#formSerachMARKD")).chosen({
                 search_contains: true
             });
-            $("#strCGSupQY").chosen({
+            $("#strCGSupQY", $("#formSerachMARKD")).chosen({
                 search_contains: true
             });
         });
@@ -32,7 +32,7 @@
             @using (Html.BeginForm("Index", "T_RKD", FormMethod.Post, new
             {
                 name = "formSerachMA",
-                id = "formSerachMA",
+                id = "formSerachMARKD",
                 onsubmit = "return navTabSearch(this);"
 
             }))

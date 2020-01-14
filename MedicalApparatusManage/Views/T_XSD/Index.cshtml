@@ -11,16 +11,16 @@
     <title>销售单</title>
     <script type="text/javascript" language="javascript">
         $(function () {
-            $("#strCUSQY").chosen({
+            $("#strCUSQY", $("#formSerachMAXSD")).chosen({
                 search_contains: true
             });
-            $("#strXSPerson").chosen({
+            $("#strXSPerson", $("#formSerachMAXSD")).chosen({
                 search_contains: true
             });
-            $("#strXSCPMC").chosen({
+            $("#strXSCPMC", $("#formSerachMAXSD")).chosen({
                 search_contains: true
             });
-            $("#strXSCusQY").chosen({
+            $("#strXSCusQY", $("#formSerachMAXSD")).chosen({
                 search_contains: true
             });
         });
@@ -32,7 +32,7 @@
             @using (Html.BeginForm("Index", "T_XSD", FormMethod.Post, new
             {
                 name = "formSerachMA",
-                id = "formSerachMA",
+                id = "formSerachMAXSD",
                 onsubmit = "return navTabSearch(this);"
 
             }))
@@ -53,20 +53,20 @@
                                 @Html.TextBox("strXSDMC", Model.DataModel.XSMC)
                             </td>
                             <td>
+                                购货企业:
+                            </td>
+                            <td>
+                                @Html.DropDownList("strCUSQY", ViewBag.CUSQY as SelectList, "请选择", new { Value = ViewData["strCUSQY"], id = "strCUSQY", style = "width:200px;" })
+                            </td>
+
+                        </tr>
+                        <tr style="margin-top:5px;">
+                            <td>
                                 销售人:
                             </td>
                             <td>
                                 @Html.DropDownList("strXSPerson", ViewBag.Persons as SelectList, "请选择", new { Value = ViewData["strXSPerson"], id = "strXSPerson", style = "width:150px;" })
                             </td>
-                            <td>
-                                购货企业:
-                            </td>
-                            <td>
-                                @Html.DropDownList("strCUSQY", ViewBag.CUSQY as SelectList, "请选择", new { Value = ViewData["strCUSQY"], id = "strCUSQY", style = "width:250px;" })
-                            </td>
-
-                        </tr>
-                        <tr style="margin-top:5px;">
                             <td>
                                 产品名称:
                             </td>
@@ -77,8 +77,10 @@
                                 生产企业:
                             </td>
                             <td>
-                                @Html.DropDownList("strXSCusQY", ViewData["SupQYList"] as SelectList, "请选择", new { id = "strXSCusQY", style = "width:285px", Value = @ViewData["strXSCusQY"] })
+                                @Html.DropDownList("strXSCusQY", ViewData["SupQYList"] as SelectList, "请选择", new { id = "strXSCusQY", style = "width:200px", Value = @ViewData["strXSCusQY"] })
                             </td>
+                        </tr>
+                        <tr style="margin-top:5px;">
                             <td>
                                 销售日期:
                             </td>
@@ -88,7 +90,11 @@
                                 }
                                 <input id="StartDate" name="StartTime" class="Wdate" type="text" autocomplete="off" value="@strStart"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
+                            </td>
+                            <td>
                                 至
+                            </td>
+                            <td>
                                 <input id="EndDate" name="EndTime" class="Wdate" type="text" autocomplete="off" value="@strEnd"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', minDate: '#F{$dp.$D(\'StartDate\')}' })" />
                             </td>
