@@ -89,13 +89,13 @@
                         产品名称
                     </th>
                     <th>
-                        进货单价(元)
-                    </th>
-                    <th>
                         产品数量
                     </th>
                     <th>
                         产品单位
+                    </th>
+                    <th>
+                        进货单价(元)
                     </th>
                     <th>
                         供货企业
@@ -128,9 +128,9 @@
                         <tr target="sid_user">
                             <td>@(item.T_CGD != null && !string.IsNullOrEmpty(item.T_CGD.CGDH) ? item.T_CGD.CGDH : "")</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPMC) ? item.T_YLCP.CPMC : "")</td>
-                            <td>@item.CPPRICE</td>
                             <td>@item.CPNUM</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPDW) ? item.T_YLCP.CPDW : "")</td>
+                            <td>@item.CPPRICE</td>
                             <td>@(item.T_SupQY != null && !string.IsNullOrEmpty(item.T_SupQY.SupMC) ? item.T_SupQY.SupMC : "")</td>
                             <td>@(item.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_SupQY1.SupMC) ? item.T_SupQY1.SupMC : "")</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPGG) ? item.T_YLCP.CPGG : "")</td>
@@ -143,8 +143,8 @@
                     if (Model.DataList.Count > 0 && ViewBag.TotalNum != null)
                     {
                         <tr>
-                            <td colspan="3">总计：</td>
-                            <td colspan="9">@ViewBag.TotalNum</td>
+                            <td colspan="2">总计：</td>
+                            <td colspan="10">@ViewBag.TotalNum</td>
                         </tr>
                     }
                 }

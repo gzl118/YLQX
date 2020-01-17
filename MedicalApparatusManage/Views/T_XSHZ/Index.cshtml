@@ -89,13 +89,13 @@
                         产品名称
                     </th>
                     <th>
-                        销售单价(元)
-                    </th>
-                    <th>
                         产品数量
                     </th>
                     <th>
                         产品单位
+                    </th>
+                    <th>
+                        销售单价(元)
                     </th>
                     <th>
                         购货企业
@@ -128,9 +128,9 @@
                         <tr target="sid_user">
                             <td>@(item.T_XSD != null && !string.IsNullOrEmpty(item.T_XSD.XSDH) ? item.T_XSD.XSDH : "")</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPMC) ? item.T_YLCP.CPMC : "")</td>
-                            <td>@item.XSJG</td>
                             <td>@item.CPSL</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPDW) ? item.T_YLCP.CPDW : "")</td>
+                            <td>@item.XSJG</td>
                             <td>@(item.T_XSD != null && item.T_XSD.T_CusQY != null && !string.IsNullOrEmpty(item.T_XSD.T_CusQY.CusMC) ? item.T_XSD.T_CusQY.CusMC : "")</td>
                             <td>@(item.T_YLCP != null && item.T_YLCP.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_YLCP.T_SupQY1.SupMC) ? item.T_YLCP.T_SupQY1.SupMC : "")</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPGG) ? item.T_YLCP.CPGG : "")</td>
@@ -143,8 +143,8 @@
                     if (Model.DataList.Count > 0 && ViewBag.TotalNum != null)
                     {
                         <tr>
-                            <td colspan="3">总计：</td>
-                            <td colspan="9">@ViewBag.TotalNum</td>
+                            <td colspan="2">总计：</td>
+                            <td colspan="10">@ViewBag.TotalNum</td>
                         </tr>
                     }
                 }

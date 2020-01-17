@@ -85,7 +85,7 @@ namespace MedicalApparatusManage.Domain
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     return null;
                 }
