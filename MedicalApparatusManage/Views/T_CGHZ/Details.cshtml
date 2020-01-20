@@ -1,0 +1,67 @@
+﻿@model MedicalApparatusManage.Controllers.ExcelModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+    <script type="text/javascript" language="javascript">
+        function ExportRkd() {
+            document.location.href = "/T_CGHZ/ExportExcel?SCQYID=" + $("#SCQYID").val() + "&CPID=" + $("#CPID").val() + "&StartDate=" + $("#StartDate").val() + "&EndDate=" + $("#EndDate").val() + "&PageNum=" + $("#PageNum").val() + "&PageSize=" + $("#PageSize").val();
+        };
+        function prirkd() {
+            var defaultstyle = "../../Content/css/stylepage.css";
+            $("#printrkd").print({
+                iframe: true, mediaPrint: false, stylesheet: defaultstyle
+            });
+        }
+    </script>
+
+</head>
+<body>
+    <div>
+        <input type="hidden" value="@Model.SCQYID" id="SCQYID" />
+        <input type="hidden" value="@Model.CPID" id="CPID" />
+        <input type="hidden" value="@Model.StartDate" id="StartDate" />
+        <input type="hidden" value="@Model.EndDate" id="EndDate" />
+        <input type="hidden" value="@Model.PageNum" id="PageNum" />
+        <input type="hidden" value="@Model.PageSize" id="PageSize" />
+        <div id="printrkd" style="margin:15px;">@Html.Raw(ViewData["ParaStr"].ToString())</div>
+    </div>
+    <div class="pageContent" style="position: absolute;bottom: 5px;">
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button value="导出" onclick="ExportRkd();">
+                                导出
+                            </button>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button value="打印" onclick="prirkd();">
+                                打印
+                            </button>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button value="关闭" class="close">
+                                关闭
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

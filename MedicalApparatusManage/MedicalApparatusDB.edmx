@@ -168,6 +168,18 @@
           <Property Name="CKLX" Type="nvarchar" MaxLength="50" />
           <Property Name="CJSJ" Type="date" />
         </EntityType>
+        <EntityType Name="T_CKCollect">
+          <Key>
+            <PropertyRef Name="CollectID" />
+          </Key>
+          <Property Name="CollectID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CKID" Type="int" Nullable="false" />
+          <Property Name="CollectDate" Type="datetime" />
+          <Property Name="CurWD" Type="float" />
+          <Property Name="CurSD" Type="float" />
+          <Property Name="CollectPerson" Type="nvarchar" MaxLength="20" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="200" />
+        </EntityType>
         <EntityType Name="T_CKD">
           <Key>
             <PropertyRef Name="CKID" />
@@ -1456,6 +1468,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="T_CK_Collect">
+          <End Role="T_CK" Type="Self.T_CK" Multiplicity="1" />
+          <End Role="T_CKCollect" Type="Self.T_CKCollect" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_CK">
+              <PropertyRef Name="CKID" />
+            </Principal>
+            <Dependent Role="T_CKCollect">
+              <PropertyRef Name="CKID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="proc_get_bjd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -1502,6 +1526,7 @@
           <EntitySet Name="T_CGD" EntityType="Self.T_CGD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_CGMX" EntityType="Self.T_CGMX" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_CK" EntityType="Self.T_CK" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="T_CKCollect" EntityType="Self.T_CKCollect" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_CKD" EntityType="Self.T_CKD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_CKMX" EntityType="Self.T_CKMX" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_CPLX" EntityType="Self.T_CPLX" Schema="dbo" store:Type="Tables" />
@@ -1756,6 +1781,10 @@
           <AssociationSet Name="FK_T_YSMX_T_YSD" Association="Self.FK_T_YSMX_T_YSD">
             <End Role="T_YSD" EntitySet="T_YSD" />
             <End Role="T_YSMX" EntitySet="T_YSMX" />
+          </AssociationSet>
+          <AssociationSet Name="T_CK_Collect" Association="Self.T_CK_Collect">
+            <End Role="T_CK" EntitySet="T_CK" />
+            <End Role="T_CKCollect" EntitySet="T_CKCollect" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -2066,6 +2095,11 @@
             <End Role="T_YLCP" EntitySet="T_YLCP" />
             <End Role="T_SHMX" EntitySet="T_SHMX" />
           </AssociationSet>
+          <EntitySet Name="T_CKCollect" EntityType="MedicalApparatusManageModel.T_CKCollect" />
+          <AssociationSet Name="T_CK_Collect" Association="MedicalApparatusManageModel.T_CK_Collect">
+            <End Role="T_CK" EntitySet="T_CK" />
+            <End Role="T_CKCollect" EntitySet="T_CKCollect" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -2258,6 +2292,7 @@
           <NavigationProperty Name="T_THMX" Relationship="MedicalApparatusManageModel.FK_T_THMX_T_CK" FromRole="T_CK" ToRole="T_THMX" />
           <Property Name="CJSJ" Type="DateTime" Precision="0" />
           <NavigationProperty Name="T_SHMX" Relationship="MedicalApparatusManageModel.FK_T_SHMX_T_CK" FromRole="T_CK" ToRole="T_SHMX" />
+          <NavigationProperty Name="T_CKCollect" Relationship="MedicalApparatusManageModel.T_CK_Collect" FromRole="T_CK" ToRole="T_CKCollect" />
         </EntityType>
         <EntityType Name="T_CKD">
           <Key>
@@ -3653,6 +3688,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="T_CKCollect">
+          <Key>
+            <PropertyRef Name="CollectID" />
+          </Key>
+          <Property Name="CollectID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CKID" Type="Int32" Nullable="false" />
+          <Property Name="CollectDate" Type="DateTime" Precision="3" />
+          <Property Name="CurWD" Type="Double" />
+          <Property Name="CurSD" Type="Double" />
+          <Property Name="CollectPerson" Type="String" MaxLength="20" />
+          <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="T_CK" Relationship="MedicalApparatusManageModel.T_CK_Collect" FromRole="T_CKCollect" ToRole="T_CK" />
+        </EntityType>
+        <Association Name="T_CK_Collect">
+          <End Type="MedicalApparatusManageModel.T_CK" Role="T_CK" Multiplicity="1" />
+          <End Type="MedicalApparatusManageModel.T_CKCollect" Role="T_CKCollect" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_CK">
+              <PropertyRef Name="CKID" />
+            </Principal>
+            <Dependent Role="T_CKCollect">
+              <PropertyRef Name="CKID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4520,6 +4580,19 @@
                 <ScalarProperty Name="CPID" ColumnName="CPID" />
                 <ScalarProperty Name="SHID" ColumnName="SHID" />
                 <ScalarProperty Name="SHMXID" ColumnName="SHMXID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="T_CKCollect">
+            <EntityTypeMapping TypeName="MedicalApparatusManageModel.T_CKCollect">
+              <MappingFragment StoreEntitySet="T_CKCollect">
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="CollectPerson" ColumnName="CollectPerson" />
+                <ScalarProperty Name="CurSD" ColumnName="CurSD" />
+                <ScalarProperty Name="CurWD" ColumnName="CurWD" />
+                <ScalarProperty Name="CollectDate" ColumnName="CollectDate" />
+                <ScalarProperty Name="CKID" ColumnName="CKID" />
+                <ScalarProperty Name="CollectID" ColumnName="CollectID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

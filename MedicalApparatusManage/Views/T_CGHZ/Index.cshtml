@@ -18,6 +18,16 @@
                 search_contains: true
             });
         });
+        function ExportData(item) {
+            var SCQYID = $("#CGHZSCQY").val();
+            var CPID = $("#CGHZ_CPID").val();
+            var sDate = $("#StartDate").val();
+            var eDate = $("#EndDate").val();
+            var pageNum = $("#pageId").attr("currentpage");
+            var pageSize = $("#pageId").attr("numperpage");
+            var url = "/T_CGHZ/Details?SCQYID=" + SCQYID + "&CPID=" + CPID + "&StartDate=" + sDate + "&EndDate=" + eDate + "&PageNum=" + pageNum + "&PageSize=" + pageSize;
+            $(item).attr("href", url);
+        }
     </script>
 </head>
 <body>
@@ -79,7 +89,12 @@
                 </div>
             }
         </div>
-        <table width="100%" layouth="86" class="table">
+        <div class="panelBar" id="EntLimitMenu">
+            <ul class="toolBar">
+                <li><a class="icon" target="dialog" mask="true" width="1400" height="800" onclick="ExportData(this)"><span>打印导出</span></a></li>
+            </ul>
+        </div>
+        <table width="100%" layouth="110" class="table cghztable" id="cghztable">
             <thead>
                 <tr>
                     <th>
@@ -165,7 +180,7 @@
             <div class="pages">
                 <span style="width: 35px;">显示</span>
                 @{
-                    string[] sL = { "10", "20", "30", "50" };
+                    string[] sL = { "2", "3", "10", "20", "30", "50" };
                     List<SelectListItem>
                         list = new List<SelectListItem>
                             ();
@@ -181,7 +196,7 @@
 
                 }
             </div>
-            <div class="pagination" targettype="navTab" totalcount="@Model.resultCount"
+            <div class="pagination" targettype="navTab" totalcount="@Model.resultCount" id="pageId"
                  numperpage="@Model.pageSize" pagenumshown="@Model.pagecount"
                  currentpage="@Model.currentPage">
             </div>

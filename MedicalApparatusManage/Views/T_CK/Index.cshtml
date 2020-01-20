@@ -51,14 +51,14 @@
                                 @{ string strStart = Model.StartTime.HasValue ? Model.StartTime.Value.ToString("yyyy/MM/dd") : "";
                                     string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
                                 }
-                                <input id="StartDate" name="StartTime" class="Wdate" type="text" value="@strStart"
+                                <input id="StartDate" name="StartTime" class="Wdate" type="text" value="@strStart" autocomplete="off"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
                             </td>
                             <td>
                                 至
                             </td>
                             <td>
-                                <input id="EndDate" name="EndTime" class="Wdate" type="text" value="@strEnd"
+                                <input id="EndDate" name="EndTime" class="Wdate" type="text" value="@strEnd" autocomplete="off"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', minDate: '#F{$dp.$D(\'StartDate\')}' })" />
                             </td>
                             <td>
@@ -105,9 +105,9 @@
                     <th>
                         仓库适宜湿度
                     </th>
-                    <th>
-                        采集日期
-                    </th>
+                    @*<th>
+                            采集日期
+                        </th>*@
                     <th>
                         仓库管理员
                     </th>
@@ -131,15 +131,15 @@
                             <td>@item.CKDZ</td>
                             <td>@item.CKSYWD</td>
                             <td>@item.CKSYSD</td>
-                            @{ if (item.CJSJ == null)
-                                {
-                                    <td></td>
-                                }
-                                else
-                                {
-                                    <td>@item.CJSJ.Value.ToString("yyyy/MM/dd")</td>
-                                }
-                            }
+                            @*@{ if (item.CJSJ == null)
+                                    {
+                                        <td></td>
+                                    }
+                                    else
+                                    {
+                                        <td>@item.CJSJ.Value.ToString("yyyy/MM/dd")</td>
+                                    }
+                                }*@
                             <td>@item.CKGLY</td>
                             <td>@item.FLAG</td>
                             <td>@item.CKBZ</td>

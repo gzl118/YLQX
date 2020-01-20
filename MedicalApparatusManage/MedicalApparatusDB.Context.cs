@@ -75,6 +75,7 @@ namespace MedicalApparatusManage
         public virtual DbSet<T_PackingUnit> T_PackingUnit { get; set; }
         public virtual DbSet<T_SHD> T_SHD { get; set; }
         public virtual DbSet<T_SHMX> T_SHMX { get; set; }
+        public virtual DbSet<T_CKCollect> T_CKCollect { get; set; }
     
         public virtual int proc_get_bjd()
         {

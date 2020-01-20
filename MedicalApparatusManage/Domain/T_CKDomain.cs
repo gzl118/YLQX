@@ -52,6 +52,7 @@ namespace MedicalApparatusManage.Domain
         public List<T_CK> GetAllT_CK(T_CK info)
         {
             Expression<Func<T_CK, bool>> where = PredicateBuilder.True<T_CK>();
+            where = where.And(p => p.FLAG == "是");
             return base.GetAllModels<System.Int32>(where);
         }
 

@@ -1,4 +1,4 @@
-﻿@model MedicalApparatusManage.Models.T_XSMXModels
+﻿@model MedicalApparatusManage.Models.T_CKCollectModels
 @{
     Layout = null;
 }
@@ -8,69 +8,68 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>销售汇总</title>
+    <title>仓库采集</title>
     <script type="text/javascript">
         $(function () {
-            $("#XSHZ_SCQY").chosen({
-                search_contains: true
-            });
-            $("#XSHZ_CPID").chosen({
+            $("#strCKPerson", $("#formSerachMAT_CKCollect")).chosen({
                 search_contains: true
             });
         });
         function ExportData(item) {
-            var SCQYID = $("#XSHZ_SCQY").val();
-            var CPID = $("#XSHZ_CPID").val();
+            var CKID = $("#strCKName").val();
+            var CJRID = $("#strCKPerson").val();
             var sDate = $("#StartDate").val();
             var eDate = $("#EndDate").val();
             var pageNum = $("#pageId").attr("currentpage");
             var pageSize = $("#pageId").attr("numperpage");
-            var url = "/T_XSHZ/Details?SCQYID=" + SCQYID + "&CPID=" + CPID + "&StartDate=" + sDate + "&EndDate=" + eDate + "&PageNum=" + pageNum + "&PageSize=" + pageSize;
+            var url = "/T_CKCollect/Details?CKID=" + CKID + "&CJRID=" + CJRID + "&StartDate=" + sDate + "&EndDate=" + eDate + "&PageNum=" + pageNum + "&PageSize=" + pageSize;
             $(item).attr("href", url);
         }
     </script>
 </head>
 <body>
     <div id="pageContent">
-        <div class="pageHeader" style="hight: 80px;">
-            @using (Html.BeginForm("Index", "T_XSHZ", FormMethod.Post, new
+        <div class="pageHeader">
+            @using (Html.BeginForm("Index", "T_CKCollect", FormMethod.Post, new
             {
+                name = "formSerachMA",
+                id = "formSerachMAT_CKCollect",
                 onsubmit = "return navTabSearch(this);"
+
             }))
             {
                 <div class="searchBar">
                     <table class="searchContent">
                         <tr>
                             <td>
-                                生产企业:
+                                仓库名称:
                             </td>
                             <td>
-                                @Html.DropDownList("QYList", ViewData["QY"] as SelectList, "请选择", new { Value = ViewData["QYList"], id = "XSHZ_SCQY" })
+                                @Html.DropDownList("strCKName", ViewBag.CKList as SelectList, "请选择", new { id = "strCKName", style = "width:150px;", Value = @ViewData["strCKName"] })
                             </td>
                             <td>
-                                产品名称:
+                                采集人:
                             </td>
                             <td>
-                                @Html.DropDownList("XSHZ_CPID", ViewData["XSHZ_YLCP"] as SelectList, "请选择", new { Value = ViewData["XSHZ_CPID"], id = "XSHZ_CPID", style = "width:200px;" })
+                                @Html.DropDownList("strCKPerson", ViewBag.Persons as SelectList, "请选择", new { id = "strCKPerson", style = "width:150px;", Value = @ViewData["strCKPerson"] })
                             </td>
                             <td>
-                                销售日期:
+                                采集日期:
                             </td>
                             <td>
                                 @{ string strStart = Model.StartTime.HasValue ? Model.StartTime.Value.ToString("yyyy/MM/dd") : "";
                                     string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
                                 }
-                                <input id="StartDate" name="StartTime" class="Wdate" type="text" autocomplete="off" value="@strStart"
+                                <input id="StartDate" name="StartTime" class="Wdate" type="text" value="@strStart" autocomplete="off"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
                             </td>
                             <td>
                                 至
                             </td>
                             <td>
-                                <input id="EndDate" name="EndTime" class="Wdate" type="text" autocomplete="off" value="@strEnd"
+                                <input id="EndDate" name="EndTime" class="Wdate" type="text" value="@strEnd" autocomplete="off"
                                        onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', minDate: '#F{$dp.$D(\'StartDate\')}' })" />
                             </td>
-
                             <td>
                                 <ul>
                                     <li>
@@ -91,75 +90,61 @@
         </div>
         <div class="panelBar" id="EntLimitMenu">
             <ul class="toolBar">
+                <li><a class="add" href="/T_CKCollect/Save/0/Add" target="dialog" mask="true" title="新增" width="1050" height="500"><span>新增</span></a></li>
+                <li> <a class="edit" href="/T_CKCollect/Save/{sid_user}/Edit" target="dialog" mask="true" title="修改" width="1050" height="500"><span>查看详情</span></a></li>
+                <li><a class="delete" href="/T_CKCollect/Delete/{sid_user}" target="ajaxTodo" title="确定删除吗?" mask="true"><span>删除</span></a></li>
+                @*<li><a class="icon" href="/T_CKCollect/Save/{sid_user}/Details" target="dialog" mask="true" width="1050" height="500"><span>查看详情</span></a></li>*@
                 <li><a class="icon" target="dialog" mask="true" width="1400" height="800" onclick="ExportData(this)"><span>打印导出</span></a></li>
             </ul>
         </div>
-        <table width="100%" layouth="110" class="table">
+        <table width="100%" layouth="112" class="table" id="T_CKCollectTable">
             <thead>
                 <tr>
                     <th>
-                        销售单号
+                        仓库名称
                     </th>
                     <th>
-                        产品名称
+                        仓库类型
                     </th>
                     <th>
-                        产品数量
+                        仓库当前温度
                     </th>
                     <th>
-                        产品单位
+                        仓库当前湿度
                     </th>
                     <th>
-                        销售单价(元)
+                        采集日期
                     </th>
                     <th>
-                        购货企业
+                        采集人
                     </th>
                     <th>
-                        生产企业
+                        备注
                     </th>
-                    <th>
-                        产品规格
-                    </th>
-                    <th>
-                        产品型号
-                    </th>
-                    <th>
-                        许可证号
-                    </th>
-                    <th>
-                        注册证号
-                    </th>
-                    <th>
-                        销售日期
-                    </th>
+
                 </tr>
             </thead>
-            <tbody id="wtlb">
+            <tbody>
                 @if (Model.DataList != null)
                 {
                     foreach (var item in Model.DataList)
                     {
-                        <tr target="sid_user">
-                            <td>@(item.T_XSD != null && !string.IsNullOrEmpty(item.T_XSD.XSDH) ? item.T_XSD.XSDH : "")</td>
-                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPMC) ? item.T_YLCP.CPMC : "")</td>
-                            <td>@item.CPSL</td>
-                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPDW) ? item.T_YLCP.CPDW : "")</td>
-                            <td>@item.XSJG</td>
-                            <td>@(item.T_XSD != null && item.T_XSD.T_CusQY != null && !string.IsNullOrEmpty(item.T_XSD.T_CusQY.CusMC) ? item.T_XSD.T_CusQY.CusMC : "")</td>
-                            <td>@(item.T_YLCP != null && item.T_YLCP.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_YLCP.T_SupQY1.SupMC) ? item.T_YLCP.T_SupQY1.SupMC : "")</td>
-                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPGG) ? item.T_YLCP.CPGG : "")</td>
-                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPXH) ? item.T_YLCP.CPXH : "")</td>
-                            <td>@(item.T_YLCP != null && item.T_YLCP.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_YLCP.T_SupQY1.SupXKZBH) ? item.T_YLCP.T_SupQY1.SupXKZBH : "")</td>
-                            <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPZCZ) ? item.T_YLCP.CPZCZ : "")</td>
-                            <td>@(item.T_XSD != null && item.T_XSD.XSRQ.HasValue ? item.T_XSD.XSRQ.Value.ToString("yyyy/MM/dd") : "")</td>
-                        </tr>
-                    }
-                    if (Model.DataList.Count > 0 && ViewBag.TotalNum != null)
-                    {
-                        <tr>
-                            <td colspan="2">总计：</td>
-                            <td colspan="10">@ViewBag.TotalNum</td>
+                        <tr target="sid_user" rel="@item.CKID">
+                            <td>@item.T_CK.CKMC</td>
+                            <td>@item.T_CK.CKLX</td>
+                            <td>@item.CurWD</td>
+                            <td>@item.CurSD</td>
+                            @{ if (item.CollectDate == null)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>@item.CollectDate.Value.ToString("yyyy/MM/dd")</td>
+                                }
+                            }
+                            <td>@item.CollectPerson</td>
+                            <td>@item.Remark</td>
                         </tr>
                     }
                 }
@@ -204,3 +189,5 @@
     </div>
 </body>
 </html>
+
+

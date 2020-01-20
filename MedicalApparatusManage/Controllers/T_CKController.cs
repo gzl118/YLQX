@@ -96,12 +96,27 @@ namespace MedicalApparatusManage.Controllers
             int result = 0;
             try
             {
+                var m = T_CKDomain.GetInstance().GetAllModels<int>(p => p.CKMC == model.DataModel.CKMC);
                 if (model.Tag == "Add")
                 {
+                    if (m != null && m.Count > 0)
+                    {
+                        Response.Write("{\"statusCode\":\"300\", \"message\":\"该仓库名称已经存在\"}");
+                        return;
+                    }
                     result = T_CKDomain.GetInstance().AddModel(model.DataModel);
                 }
                 else if (model.Tag == "Edit")
                 {
+                    if (m != null && m.Count > 0)
+                    {
+                        var curm = m.Find(p => p.CKID != model.DataModel.CKID);
+                        if (curm != null)
+                        {
+                            Response.Write("{\"statusCode\":\"300\", \"message\":\"该仓库名称已经存在\"}");
+                            return;
+                        }
+                    }
                     result = T_CKDomain.GetInstance().UpdateModel(model.DataModel, model.DataModel.CKID);
                 }
 
@@ -301,19 +316,8 @@ namespace MedicalApparatusManage.Controllers
             try
             {
                 Expression<Func<T_CK, bool>> where = PredicateBuilder.True<T_CK>();
-                var list = T_CKDomain.GetInstance().GetAllModels<int>(where);
-                if (list != null && list.Count > 0)
-                {
-                    Hashtable ht = new Hashtable();
-                    foreach (var item in list)
-                    {
-                        if (!ht.ContainsKey(item.CKID))
-                        {
-                            ht.Add(item.CKID, item.CKMC);
-                            lstResult.Add(item);
-                        }
-                    }
-                }
+                where = where.And(p => p.FLAG == "是");
+                lstResult = T_CKDomain.GetInstance().GetAllModels<int>(where);
 
             }
             catch (Exception ex)

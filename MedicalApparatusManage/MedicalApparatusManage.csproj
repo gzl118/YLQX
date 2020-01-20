@@ -1952,6 +1952,7 @@
     <Compile Include="Controllers\T_CGDController.cs" />
     <Compile Include="Controllers\T_CGHZController.cs" />
     <Compile Include="Controllers\T_CGMXController.cs" />
+    <Compile Include="Controllers\T_CKCollectController.cs" />
     <Compile Include="Controllers\T_CKController.cs" />
     <Compile Include="Controllers\T_CKDController.cs" />
     <Compile Include="Controllers\T_CKMXController.cs" />
@@ -2000,6 +2001,7 @@
     <Compile Include="Domain\T_BJDDomain.cs" />
     <Compile Include="Domain\T_CGDDomain.cs" />
     <Compile Include="Domain\T_CGMXDomain.cs" />
+    <Compile Include="Domain\T_CKCollectDomain.cs" />
     <Compile Include="Domain\T_CKDDomain.cs" />
     <Compile Include="Domain\T_CKDomain.cs" />
     <Compile Include="Domain\T_CKMXDomain.cs" />
@@ -2067,6 +2069,7 @@
     <Compile Include="Models\T_BJDModels.cs" />
     <Compile Include="Models\T_CGDModels.cs" />
     <Compile Include="Models\T_CGMXModels.cs" />
+    <Compile Include="Models\T_CKCollectModels.cs" />
     <Compile Include="Models\T_CKDModels.cs" />
     <Compile Include="Models\T_CKModels.cs" />
     <Compile Include="Models\T_CKMXModels.cs" />
@@ -2143,6 +2146,9 @@
       <DependentUpon>MedicalApparatusDB.tt</DependentUpon>
     </Compile>
     <Compile Include="T_CK.cs">
+      <DependentUpon>MedicalApparatusDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="T_CKCollect.cs">
       <DependentUpon>MedicalApparatusDB.tt</DependentUpon>
     </Compile>
     <Compile Include="T_CKD.cs">
@@ -2392,6 +2398,11 @@
     <Content Include="Views\T_SHD\Save.cshtml" />
     <Content Include="Views\T_SHD\SHMXTable.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Views\T_CKCollect\Index.cshtml" />
+    <Content Include="Views\T_CKCollect\Save.cshtml" />
+    <Content Include="Views\T_CGHZ\Details.cshtml" />
+    <Content Include="Views\T_XSHZ\Details.cshtml" />
+    <Content Include="Views\T_CKCollect\Details.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
