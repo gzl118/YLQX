@@ -1929,6 +1929,7 @@
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\print\jQuery.print.js" />
     <Content Include="Scripts\print\jQuery.print.min.js" />
+    <Content Include="sqlupdate.sql" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
