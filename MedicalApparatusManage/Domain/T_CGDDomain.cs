@@ -205,5 +205,25 @@ namespace MedicalApparatusManage.Domain
             }
             return result;
         }
+        public void UpdateFinish(string cgdh)
+        {
+            using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
+            {
+                try
+                {
+                    var db = hContext1.Set<T_CGD>();
+                    var model = db.Where(p => p.CGDH == cgdh).First();
+                    if (model != null)
+                    {
+                        model.IsFinish = 1;
+                        hContext1.SaveChanges();
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+        }
     }
 }

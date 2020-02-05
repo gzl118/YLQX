@@ -71,5 +71,42 @@ namespace MedicalApparatusManage.Domain
                 return list;
             }
         }
+        public List<T_THMX> GetT_THMXByYsid(int thid)
+        {
+            List<T_THMX> list = new List<T_THMX>();
+            using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
+            {
+                try
+                {
+                    var db = hContext1.Set<T_THMX>();
+                    var dbq = db.Include("T_YLCP").Include("T_THD").Include("T_CK");
+                    list = dbq.Where(p => p.THID == thid).ToList(); ;
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+            return list;
+        }
+        public int AddModelByRkdh(T_THMX model, string THDH)
+        {
+            using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
+            {
+                try
+                {
+                    var parentModel = hContext1.Set<T_THD>().Where(p => p.THDH == THDH).FirstOrDefault();
+                    parentModel.ISSH = 0;
+                    var rkid = parentModel.THID;
+                    model.THID = rkid;
+                    hContext1.Set<T_THMX>().Add(model);
+                    return hContext1.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+
+            }
+        }
     }
 }

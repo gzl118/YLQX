@@ -23,18 +23,20 @@ namespace MedicalApparatusManage
         public string THMC { get; set; }
         public string SQR { get; set; }
         public Nullable<System.DateTime> SQRQ { get; set; }
-        public string THKHMC { get; set; }
-        public Nullable<int> THQYID { get; set; }
         public string THYY { get; set; }
         public string SHR { get; set; }
         public Nullable<System.DateTime> SHRQ { get; set; }
         public string SHYJ { get; set; }
         public Nullable<int> FLAG { get; set; }
         public string BZ { get; set; }
-        public Nullable<int> XSID { get; set; }
+        public Nullable<int> YSID { get; set; }
+        public Nullable<int> RKFlag { get; set; }
+        public string THDH { get; set; }
+        public Nullable<int> ISSH { get; set; }
+        public string THCJR { get; set; }
+        public Nullable<System.DateTime> THCJRQ { get; set; }
+        public Nullable<int> IsFinish { get; set; }
     
-        public virtual T_CusQY T_CusQY { get; set; }
-        public virtual T_XSD T_XSD { get; set; }
         public virtual ICollection<T_THMX> T_THMX { get; set; }
     }
 }

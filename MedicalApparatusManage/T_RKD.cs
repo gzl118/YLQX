@@ -32,6 +32,7 @@ namespace MedicalApparatusManage
         public string RKDH { get; set; }
         public string YSDH { get; set; }
         public Nullable<int> ISSH { get; set; }
+        public Nullable<int> IsFinish { get; set; }
     
         public virtual ICollection<T_RKMX> T_RKMX { get; set; }
     }

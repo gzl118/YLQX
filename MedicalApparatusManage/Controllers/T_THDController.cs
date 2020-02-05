@@ -1,8 +1,10 @@
-﻿using MedicalApparatusManage.Domain;
+﻿using MedicalApparatusManage.Common;
+using MedicalApparatusManage.Domain;
 using MedicalApparatusManage.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -13,12 +15,10 @@ namespace MedicalApparatusManage.Controllers
         public int resultCount = 0; // 总条数 
 
         [CheckLogin()]
-        public ActionResult Index(T_THDModels evalModel, string id)
+        public ActionResult Index(T_THDModels evalModel)
         {
             try
             {
-                id = "1";
-                ViewData["XSType"] = id;
                 evalModel.currentPage = int.Parse(Request["pageNum"].ToString());
             }
             catch { }
@@ -41,7 +41,7 @@ namespace MedicalApparatusManage.Controllers
             if (Request["strTHMC"] != null)
             {
                 string str = Request["strTHMC"].ToString();
-                if(!String.IsNullOrEmpty(str))
+                if (!String.IsNullOrEmpty(str))
                 {
                     evalModel.DataModel.THMC = str;
                 }
@@ -52,11 +52,11 @@ namespace MedicalApparatusManage.Controllers
                 string str = Request["strTHDW"].ToString();
                 if (!String.IsNullOrEmpty(str))
                 {
-                    evalModel.DataModel.THKHMC = str;
+                    //evalModel.DataModel.THKHMC = str;
                 }
             }
 
-            evalModel.DataList = T_THDDomain.GetInstance().PageT_THD(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, out pagecount, out resultCount).Where(p => p.FLAG == Convert.ToInt32(id)).ToList();
+            evalModel.DataList = T_THDDomain.GetInstance().PageT_THD(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, out pagecount, out resultCount).ToList();
             evalModel.resultCount = resultCount;
             return View("~/Views/T_THD/Index.cshtml", evalModel);
         }
@@ -64,42 +64,45 @@ namespace MedicalApparatusManage.Controllers
         [CheckLogin()]
         public ActionResult Save(System.Int32 id, string tag)
         {
+            //加载企业列表
+            T_SupQYModels supmode = new T_SupQYModels();
+            supmode.DataModel = supmode.DataModel ?? new T_SupQY();
+            supmode.DataList = T_SupQYDomain.GetInstance().GetAllT_SupQY(supmode.DataModel).Where(p => p.SupStatus == 1).ToList();
+            ViewData["SupID"] = new SelectList(supmode.DataList, "SupID", "SupMC");
 
-            //加载购买商商企业列表
-            T_CusQYModels cusQymode = new T_CusQYModels();
-
-            cusQymode.DataModel = cusQymode.DataModel ?? new T_CusQY();
-
-            cusQymode.DataList = T_CusQYDomain.GetInstance().GetAllT_CusQY(cusQymode.DataModel).Where(p => p.CusStatus == Convert.ToInt32("1")).ToList();
-
-            ViewData["CusQY"] = new SelectList(cusQymode.DataList, "CusID", "CusMC");
-
-            //加载购买商商企业列表
-            T_CGDModels cudmode = new T_CGDModels();
-
-            cudmode.DataModel = cudmode.DataModel ?? new T_CGD();
-
-            cudmode.DataList = T_CGDDomain.GetInstance().GetAllT_CGD(cudmode.DataModel).Where(p => p.ISSH == Convert.ToInt32("1")).ToList();
-
-            ViewData["CGD"] = new SelectList(cudmode.DataList, "CGID", "CGDMC");
-
-
-            //加载购买商商企业列表
-            T_XSDModels xsdmode = new T_XSDModels();
-
-            xsdmode.DataModel = xsdmode.DataModel ?? new T_XSD();
-
-            xsdmode.DataList = T_XSDDomain.GetInstance().GetAllT_XSD(xsdmode.DataModel).Where(p => p.XSFLAG == Convert.ToInt32("1")).ToList();
-
-            ViewData["XSD"] = new SelectList(xsdmode.DataList, "XSID", "XSMC");
+            Expression<Func<T_YSD, bool>> where = PredicateBuilder.True<T_YSD>();
+            where = where.And(p => p.IsTHFinish == 0);
+            var yslist = T_YSDDomain.GetInstance().GetAllModels<int>(where);
+            ViewData["YSD"] = new SelectList(yslist, "YSID", "YSDH");
 
             T_THDModels model = new T_THDModels();
             model.DataModel = new T_THD();
+            var CurUser = Session["UserModel"] as SysUser;
+            //获取本企业下的人员列表
+            T_Person person = new T_Person();
+            if (CurUser.UserCompanyID != null)
+                person.PsQYID = (int)CurUser.UserCompanyID;
+            ViewBag.Persons = new SelectList(T_PersonDomain.GetInstance().GetAllT_Person(person), "PsMZ", "PsMZ");
+
+            //加载仓库列表
+            T_CKModels ckmode = new T_CKModels();
+            ckmode.DataModel = ckmode.DataModel ?? new T_CK();
+            ckmode.DataList = T_CKDomain.GetInstance().GetAllT_CK(ckmode.DataModel);
+            ViewData["CK"] = new SelectList(ckmode.DataList, "CKID", "CKMC");
+
             if (id != 0)
             {
                 model.DataModel = T_THDDomain.GetInstance().GetModelById(id);
+                model.THMXList = T_THMXDomain.GetInstance().GetT_THMXByYsid(id);
+            }
+            else
+            {
+                model.DataModel.THDH = T_THDDomain.GetInstance().GetTHOrderNum("TH", CurUser);
+                model.DataModel.THCJR = CurUser.UserAccount;
+                model.DataModel.THCJRQ = DateTime.Now;
             }
             model.Tag = tag;
+            model.RoleCode = GetRoleCode();
             return View("~/Views/T_THD/Save.cshtml", model);
         }
 
@@ -167,6 +170,31 @@ namespace MedicalApparatusManage.Controllers
                 Response.Write("{\"statusCode\":\"200\", \"message\":\"操作成功\",\"callbackType\":\"forward\",\"forwardUrl\":\"/T_THD/Index\"}");
             else
                 Response.Write("{\"statusCode\":\"300\", \"message\":\"操作失败\"}");
+        }
+        [HttpPost]
+        [CheckLogin()]
+        public void through(T_THDModels model, int id)
+        {
+            int result = 0;
+            try
+            {
+                Int32 cgid = model.DataModel.THID;
+                result = T_THDDomain.GetInstance().Sh(cgid, id);
+                if (id == 1 && model.DataModel.IsFinish == 1 && model.DataModel.YSID != 0)
+                {
+                    T_YSDDomain.GetInstance().UpdateFinish((int)model.DataModel.YSID);
+                }
+            }
+            catch { }
+            Response.ContentType = "text/json";
+            if (result > 0)
+                Response.Write("{\"statusCode\":\"200\", \"message\":\"操作成功\",\"callbackType\":\"closeCurrentReloadTab\",\"forwardUrl\":\"/T_CGD/Index\"}");
+            else
+                Response.Write("{\"statusCode\":\"300\", \"message\":\"操作失败\"}");
+        }
+        private string GetRoleCode()
+        {
+            return Session["RoleCode"] == null ? "" : Session["RoleCode"].ToString();
         }
     }
 }

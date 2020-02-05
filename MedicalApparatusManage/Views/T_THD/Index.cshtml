@@ -16,7 +16,7 @@
             @using (Html.BeginForm("Index", "T_THD", FormMethod.Post, new
             {
                 name = "formSerachMA",
-                id = "formSerachMA",
+                id = "formSerachMATHD",
                 onsubmit = "return navTabSearch(this);"
 
             }))
@@ -25,18 +25,11 @@
                     <table class="searchContent">
                         <tr>
                             <td>
-                                退货名称:
+                                退货单名称:
                             </td>
                             <td>
                                 @Html.TextBox("strTHMC")
                             </td>
-                            <td>
-                                退货单位:
-                            </td>
-                            <td>
-                                @Html.TextBox("strTHDW")
-                            </td>
-
                             <td>
                                 <ul>
                                     <li>
@@ -53,28 +46,24 @@
                         </tr>
                     </table>
                 </div>
-                                    }
+            }
         </div>
         <div class="panelBar" id="EntLimitMenu">
             <ul class="toolBar">
-                <li><a class="add" href="/T_THD/Save/0/Add" target="dialog"  mask="true" title="新增" width="1050" height="500"><span>新增</span></a></li>
-                @if (ViewData["XSType"].ToString() == "1")
-                {
-                    <li> <a class="edit" href="/T_THD/Save/{sid_user}/Edit" target="dialog" mask="true" title="修改" width="1050" height="500"><span>修改</span></a></li>
-                }
-                else
-                {
-                    <li> <a class="edit" href="/T_THD/XSSave/{sid_user}/Edit" target="dialog" mask="true" title="修改" width="1050" height="500"><span>修改</span></a></li>
-                }
+                <li><a class="add" href="/T_THD/Save/0/Add" target="dialog" mask="true" title="新增" width="1050" height="500"><span>新增</span></a></li>
+                @*<li> <a class="edit" href="/T_THD/Save/{sid_user}/Edit" target="dialog" mask="true" title="修改" width="1050" height="500"><span>修改</span></a></li>*@
                 <li><a class="delete" href="/T_THD/Delete/{sid_user}" target="ajaxTodo" title="确定删除吗?" mask="true"><span>删除</span></a></li>
-                <li><a class="icon" href="/T_THD/Save/{sid_user}/Details" target="dialog"  mask="true" width="1050" height="500"><span>查看详情</span></a></li>
+                <li><a class="icon" href="/T_THD/Save/{sid_user}/Edit" target="dialog" mask="true" width="1050" height="500"><span>查看详情</span></a></li>
             </ul>
         </div>
         <table width="100%" layouth="112" class="table" id="T_THDTable">
-           <thead>
+            <thead>
                 <tr>
                     <th>
-                        退货名称
+                        退货单名称
+                    </th>
+                    <th>
+                        退货单号
                     </th>
                     <th>
                         申请人
@@ -83,10 +72,7 @@
                         申请日期
                     </th>
                     <th>
-                        退货客户
-                    </th>
-                    <th>
-                        销售单
+                        验收单号
                     </th>
                     <th>
                         退货原因
@@ -100,9 +86,6 @@
                     <th>
                         审核意见
                     </th>
-                    @*<th>
-                        标识
-                    </th>*@
                     <th>
                         备注
                     </th>
@@ -113,17 +96,15 @@
                 {
                     <tr target="sid_user" rel="@item.THID">
                         <td>@item.THMC</td>
+                        <td>@item.THDH</td>
                         <td>@item.SQR</td>
                         <td>@item.SQRQ</td>
-                        <td>@item.THKHMC</td>
-                        <td>@item.THQYID</td>
+                        <td>@item.YSID</td>
                         <td>@item.THYY</td>
                         <td>@item.SHR</td>
                         <td>@item.SHRQ</td>
                         <td>@item.SHYJ</td>
-                        @*<td>@item.FLAG</td>*@
                         <td>@item.BZ</td>
-                        @*<td>@item.XSID</td>*@
                     </tr>
                 }
             </tbody>

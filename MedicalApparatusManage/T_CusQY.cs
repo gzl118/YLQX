@@ -19,7 +19,6 @@ namespace MedicalApparatusManage
             this.T_CusPerson = new HashSet<T_CusPerson>();
             this.T_CusQYZZ = new HashSet<T_CusQYZZ>();
             this.T_SHFW = new HashSet<T_SHFW>();
-            this.T_THD = new HashSet<T_THD>();
             this.T_XSD = new HashSet<T_XSD>();
             this.T_XSHT = new HashSet<T_XSHT>();
         }
@@ -72,7 +71,6 @@ namespace MedicalApparatusManage
         public virtual T_WhsQY T_WhsQY { get; set; }
         public virtual ICollection<T_CusQYZZ> T_CusQYZZ { get; set; }
         public virtual ICollection<T_SHFW> T_SHFW { get; set; }
-        public virtual ICollection<T_THD> T_THD { get; set; }
         public virtual ICollection<T_XSD> T_XSD { get; set; }
         public virtual ICollection<T_XSHT> T_XSHT { get; set; }
     }

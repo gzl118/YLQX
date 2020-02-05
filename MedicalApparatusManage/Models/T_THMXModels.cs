@@ -7,5 +7,6 @@ namespace MedicalApparatusManage.Models
 {
     public class T_THMXModels : BaseModels<T_THMX>
     {
+        public string THDH { get; set; }
     }
 }

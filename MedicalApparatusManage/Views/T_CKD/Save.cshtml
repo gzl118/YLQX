@@ -367,6 +367,19 @@
                             }
                         </div>
                     </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                销售单完结：
+                            </label>
+                            @{
+                                List<SelectListItem> xsdList = new List<SelectListItem>();
+                                xsdList.Add(new SelectListItem { Text = "未完结", Value = "0" });
+                                xsdList.Add(new SelectListItem { Text = "已完结", Value = "1" });
+                                @Html.DropDownListFor(m => m.DataModel.IsFinish, xsdList, new { name = "IsFinish", style = "width:285px",Value=Model.DataModel.IsFinish })
+                            }
+                        </div>
+                    </div>
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>

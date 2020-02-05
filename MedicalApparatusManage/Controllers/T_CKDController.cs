@@ -130,7 +130,10 @@ namespace MedicalApparatusManage.Controllers
                 {
                     result = T_CKDDomain.GetInstance().UpdateModel(model.DataModel, model.DataModel.CKID);
                 }
-
+                if (model.DataModel.IsFinish == 1 && model.DataModel.XSID != 0)
+                {
+                    T_XSDDomain.GetInstance().UpdateFinish((int)model.DataModel.XSID);
+                }
             }
             catch { }
             Response.ContentType = "text/json";

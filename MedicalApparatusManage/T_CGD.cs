@@ -38,6 +38,7 @@ namespace MedicalApparatusManage
         public Nullable<System.DateTime> CGCJRQ { get; set; }
         public string CGDH { get; set; }
         public Nullable<double> CGTotalPrice { get; set; }
+        public Nullable<int> IsFinish { get; set; }
     
         public virtual ICollection<T_CGMX> T_CGMX { get; set; }
         public virtual T_FP T_FP { get; set; }

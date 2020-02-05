@@ -29,6 +29,10 @@ namespace MedicalApparatusManage
         public string YSDH { get; set; }
         public string YSCJR { get; set; }
         public Nullable<System.DateTime> YSCJRQ { get; set; }
+        public Nullable<int> IsFinish { get; set; }
+        public Nullable<int> IsCGFinish { get; set; }
+        public Nullable<int> IsCGYS { get; set; }
+        public Nullable<int> IsTHFinish { get; set; }
     
         public virtual ICollection<T_YSMX> T_YSMX { get; set; }
     }

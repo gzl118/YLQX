@@ -112,5 +112,6 @@ namespace MedicalApparatusManage.Models
         /// 角色Code,1超级管理员，2部门领导，3普通职员
         /// </summary>
         public string RoleCode { get; set; }
+     
     }
 }

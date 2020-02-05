@@ -32,6 +32,7 @@ namespace MedicalApparatusManage
         public string CKCJR { get; set; }
         public Nullable<System.DateTime> CKCJRQ { get; set; }
         public string CKDH { get; set; }
+        public Nullable<int> IsFinish { get; set; }
     
         public virtual T_XSD T_XSD { get; set; }
         public virtual ICollection<T_CKMX> T_CKMX { get; set; }

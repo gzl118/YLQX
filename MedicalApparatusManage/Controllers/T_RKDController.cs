@@ -166,7 +166,6 @@ namespace MedicalApparatusManage.Controllers
                     model.DataModel.ISSH = 0;
                     result = T_RKDDomain.GetInstance().UpdateModel(model.DataModel, model.DataModel.RKID);
                 }
-
             }
             catch { }
             Response.ContentType = "text/json";
@@ -493,6 +492,10 @@ namespace MedicalApparatusManage.Controllers
             {
                 Int32 cgid = model.DataModel.RKID;
                 result = T_RKDDomain.GetInstance().Sh(cgid, id);
+                if (id == 1 && model.DataModel.IsFinish == 1)
+                {
+                    T_YSDDomain.GetInstance().UpdateFinish(model.DataModel.YSDH);
+                }
             }
             catch { }
             Response.ContentType = "text/json";

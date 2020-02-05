@@ -60,6 +60,7 @@ namespace MedicalApparatusManage.Domain
         public List<T_XSD> GetAllT_XSD(T_XSD info)
         {
             Expression<Func<T_XSD, bool>> where = PredicateBuilder.True<T_XSD>();
+            where = where.And(p => p.IsFinish == 0);
             return base.GetAllModels<System.Int32>(where);
         }
 
@@ -204,6 +205,26 @@ namespace MedicalApparatusManage.Domain
                 }
             }
             return result;
+        }
+        public void UpdateFinish(int xsid)
+        {
+            using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
+            {
+                try
+                {
+                    var db = hContext1.Set<T_XSD>();
+                    var model = db.Find(xsid);
+                    if (model != null)
+                    {
+                        model.IsFinish = 1;
+                        hContext1.SaveChanges();
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
         }
     }
 }

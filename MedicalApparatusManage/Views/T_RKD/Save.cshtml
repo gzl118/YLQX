@@ -251,12 +251,25 @@
                             <label>
                                 验收单号：
                             </label>
-                            @Html.DropDownListFor(m => m.DataModel.YSDH, ViewData["YSD"] as SelectList, new { ID = "ysd", style = "width:279px" })
+                            @Html.DropDownListFor(m => m.DataModel.YSDH, ViewData["YSD"] as SelectList, new { ID = "ysd", style = "width:285px" })
                             @if (Model.DataModel.ISSH != 1)
                             {
                                 <button value="提取" onclick="tqYsd();">
                                     提取
                                 </button>
+                            }
+                        </div>
+                    </div>
+                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
+                        <div class="unit">
+                            <label>
+                                验收单完结：
+                            </label>
+                            @{
+                                List<SelectListItem> ysdList = new List<SelectListItem>();
+                                ysdList.Add(new SelectListItem { Text = "未完结", Value = "0" });
+                                ysdList.Add(new SelectListItem { Text = "已完结", Value = "1" });
+                                @Html.DropDownListFor(m => m.DataModel.IsFinish, ysdList, new { name = "IsFinish", style = "width:285px", Value = Model.DataModel.IsFinish })
                             }
                         </div>
                     </div>

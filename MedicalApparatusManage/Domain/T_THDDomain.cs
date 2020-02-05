@@ -30,14 +30,14 @@ namespace MedicalApparatusManage.Domain
         {
             Expression<Func<T_THD, bool>> where = PredicateBuilder.True<T_THD>();
 
-            if(!String.IsNullOrEmpty(info.THMC))
+            if (!String.IsNullOrEmpty(info.THMC))
             {
                 where = where.And(p => p.THMC.Contains(info.THMC));
             }
-            if(!String.IsNullOrEmpty(info.THKHMC))
-            {
-                where = where.And(p => p.THKHMC.Contains(info.THKHMC));
-            }
+            //if(!String.IsNullOrEmpty(info.THKHMC))
+            //{
+            //    where = where.And(p => p.THKHMC.Contains(info.THKHMC));
+            //}
             Func<T_THD, System.Int32> order = p => p.THID;
             return GetPageInfo<System.Int32>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);
         }
@@ -58,7 +58,7 @@ namespace MedicalApparatusManage.Domain
                 try
                 {
                     DbSet<T_THD> db = hContext1.Set<T_THD>();
-                    DbQuery<T_THD> dbq = db.Include("T_XSD").Include("T_CusQY");
+                    DbQuery<T_THD> dbq = db.Include("T_XSD");
                     totalRecord = db.Where(where.Compile()).Count();
                     if (totalRecord > 0)
                     {
@@ -73,12 +73,49 @@ namespace MedicalApparatusManage.Domain
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     return null;
                 }
                 return list;
             }
+        }
+
+        public string GetTHOrderNum(string prefix, SysUser user)
+        {
+            int count = 0;
+            using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
+            {
+                try
+                {
+                    count = hContext1.Set<T_THD>().Where(p => p.THCJR == user.UserAccount).Count() + 1;
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            string result = prefix + DateTime.Now.ToString("yyMMdd") + user.UserId.ToString().PadLeft(3, '0') + (count + 1).ToString().PadLeft(5, '0');
+            return result;
+        }
+        public int Sh(int id, int status)
+        {
+            int result = 0;
+            using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
+            {
+                try
+                {
+                    var model = hContext1.Set<T_THD>().Find(id);
+                    model.ISSH = status;
+                    hContext1.SaveChanges();
+                    result = 1;
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            return result;
         }
     }
 }

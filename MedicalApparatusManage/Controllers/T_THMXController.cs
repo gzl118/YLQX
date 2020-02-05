@@ -95,7 +95,7 @@ namespace MedicalApparatusManage.Controllers
                 if (model.Tag == "Add")
                 {
                     model.DataModel.FLAG = 1;
-                    result = T_THMXDomain.GetInstance().AddModel(model.DataModel);
+                    result = T_THMXDomain.GetInstance().AddModelByRkdh(model.DataModel, model.THDH);
                 }
                 else if (model.Tag == "Edit")
                 {

@@ -41,6 +41,7 @@ namespace MedicalApparatusManage.Domain
             {
                 where = where.And(p => p.YSRQ <= endTime.Value);
             }
+            where = where.And(p => p.IsCGYS == info.IsCGYS);
             Func<T_YSD, System.Int32> order = p => p.YSID;
             return GetPageInfo<System.Int32>(where, order, true, pageIndex, pageSize, cpId, cusId, out pageCount, out totalRecord);
         }
@@ -48,6 +49,7 @@ namespace MedicalApparatusManage.Domain
         public List<T_YSD> GetAllT_YSD(T_YSD info)
         {
             Expression<Func<T_YSD, bool>> where = PredicateBuilder.True<T_YSD>();
+            where = where.And(p => p.IsFinish == 0 && p.YSFLAG == "合格收货");
             return base.GetAllModels<System.Int32>(where);
         }
 
@@ -143,6 +145,92 @@ namespace MedicalApparatusManage.Domain
                 }
             }
             return result;
+        }
+        public void UpdateFinish(string ysdh)
+        {
+            using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
+            {
+                try
+                {
+                    var db = hContext1.Set<T_YSD>();
+                    var model = db.Where(p => p.YSDH == ysdh).First();
+                    if (model != null)
+                    {
+                        model.IsFinish = 1;
+                        hContext1.SaveChanges();
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+        }
+        public void UpdateFinish(int ysid)
+        {
+            using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
+            {
+                try
+                {
+                    var db = hContext1.Set<T_YSD>();
+                    var model = db.Find(ysid);
+                    if (model != null)
+                    {
+                        model.IsTHFinish = 1;
+                        hContext1.SaveChanges();
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+        }
+        public List<T_YSD> GetYSDByCondition(string hflag, int? cpId, int? supId, string cpph)
+        {
+            Expression<Func<T_YSD, bool>> where = PredicateBuilder.True<T_YSD>();
+            if (!String.IsNullOrEmpty(hflag))
+            {
+                where = where.And(p => p.YSFLAG == hflag);
+            }
+            List<T_YSD> list = new List<T_YSD>();
+            using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
+            {
+                try
+                {
+                    Expression<Func<T_YSMX, bool>> whereMX = PredicateBuilder.True<T_YSMX>();
+                    var isContain = false;
+                    if (cpId != null && cpId != 0)
+                    {
+                        whereMX = whereMX.And(p => p.CPID == cpId);
+                        isContain = true;
+                    }
+                    if (supId != null && supId != 0)
+                    {
+                        whereMX = whereMX.And(p => p.SupID == supId);
+                        isContain = true;
+                    }
+                    if (!String.IsNullOrEmpty(cpph))
+                    {
+                        whereMX = whereMX.And(p => !string.IsNullOrEmpty(p.CPPH) && p.CPPH.Contains(cpph));
+                        isContain = true;
+                    }
+                    if (isContain)
+                    {
+                        var dbchild = hContext1.Set<T_YSMX>().Where(whereMX.Compile());
+                        var lst = dbchild.Select(p => p.YSID);
+                        if (lst != null)
+                            where = where.And(p => lst.Contains(p.YSID));
+                    }
+                    DbSet<T_YSD> db = hContext1.Set<T_YSD>();
+                    list = db.Where(where.Compile()).OrderByDescending(p => p.YSDH).ToList();
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+                return list;
+            }
         }
     }
 }

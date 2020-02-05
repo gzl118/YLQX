@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -179,6 +180,7 @@ namespace MedicalApparatusManage.Controllers
                     model.DataModel.ISHG = 0;
                     model.DataModel.ISCG = 0;
                     model.DataModel.ISSH = 0;
+                    model.DataModel.IsFinish = 0;
                     result = T_CGDDomain.GetInstance().AddModel(model.DataModel);
                 }
                 else if (model.Tag == "Edit")
@@ -317,6 +319,33 @@ namespace MedicalApparatusManage.Controllers
                 }
             }
             return Json("");
+        }
+        [HttpPost]
+        [CheckLogin()]
+        public JsonResult GetCGDH(string CGDMC)
+        {
+            var mxModel = T_CGDDomain.GetInstance().GetAllModels<int>(p => p.ISSH == 1 && p.IsFinish == 0 && (string.IsNullOrEmpty(CGDMC) || p.CGDMC.Contains(CGDMC))).OrderByDescending(p => p.CGDH).ToList();
+            var result1 = "";
+            StringBuilder result = new StringBuilder();
+            result.Append("[[\"\",\"请选择\"]");
+            if (mxModel == null)
+            {
+                result.Append("]");
+                result1 = result.ToString();
+            }
+            else
+            {
+                foreach (var item in mxModel)
+                {
+                    result.Append(",[");
+                    result.Append("\"" + item.CGDH + "\",");
+                    result.Append("\"" + item.CGDH + "\"");
+                    result.Append("]");
+                }
+                result.Append("]");
+                result1 = result.ToString();
+            }
+            return Json(result1);
         }
     }
 }

@@ -72,7 +72,6 @@
         <AssociationConnector Association="MedicalApparatusManageModel.FK_T_CusQY_T_SupQY" />
         <AssociationConnector Association="MedicalApparatusManageModel.FK_T_CusQYZZ_T_CusQY" />
         <AssociationConnector Association="MedicalApparatusManageModel.FK_T_SHFW_T_CusQY" />
-        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_THD_T_CusQY" />
         <AssociationConnector Association="MedicalApparatusManageModel.FK_T_XSD_T_CusQY" />
         <AssociationConnector Association="MedicalApparatusManageModel.FK_T_XSHT_T_CusQY" />
         <AssociationConnector Association="MedicalApparatusManageModel.FK_T_FKD_T_SHFW" />
@@ -94,7 +93,6 @@
         <AssociationConnector Association="MedicalApparatusManageModel.FK_T_YLCP_T_SupQY1" />
         <AssociationConnector Association="MedicalApparatusManageModel.FK_T_YSMX_T_SupQY" />
         <AssociationConnector Association="MedicalApparatusManageModel.FK_T_YSMX_T_SupQY1" />
-        <AssociationConnector Association="MedicalApparatusManageModel.FK_T_THD_T_XSD" />
         <AssociationConnector Association="MedicalApparatusManageModel.FK_T_THMX_T_THD" />
         <AssociationConnector Association="MedicalApparatusManageModel.FK_T_THMX_T_YLCP" />
         <AssociationConnector Association="MedicalApparatusManageModel.FK_T_WhsQYZZ_T_WhsQY" />

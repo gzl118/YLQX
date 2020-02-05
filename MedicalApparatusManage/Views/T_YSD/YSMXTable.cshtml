@@ -93,7 +93,7 @@
                     </th>
                     @if (ViewData["canEdit"].ToString() == "1")
                     {
-                        if (Model.RoleCode == "2" || Model.DataModel.YSID == 0)
+                        if (Model.DataModel.YSID == 0)
                         {
                             <th type="del">
                                 操作

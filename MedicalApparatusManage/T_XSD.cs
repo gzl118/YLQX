@@ -17,7 +17,6 @@ namespace MedicalApparatusManage
         public T_XSD()
         {
             this.T_CKD = new HashSet<T_CKD>();
-            this.T_THD = new HashSet<T_THD>();
             this.T_XSMX = new HashSet<T_XSMX>();
         }
     
@@ -36,11 +35,11 @@ namespace MedicalApparatusManage
         public string XSCJR { get; set; }
         public Nullable<System.DateTime> XSCJRQ { get; set; }
         public string XSDH { get; set; }
+        public Nullable<int> IsFinish { get; set; }
     
         public virtual ICollection<T_CKD> T_CKD { get; set; }
         public virtual T_CusQY T_CusQY { get; set; }
         public virtual T_Person T_Person { get; set; }
-        public virtual ICollection<T_THD> T_THD { get; set; }
         public virtual ICollection<T_XSMX> T_XSMX { get; set; }
     }
 }
