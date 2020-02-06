@@ -249,3 +249,240 @@ IF NOT EXISTS(SELECT 1 FROM sys.syscolumns WHERE id = OBJECT_ID('T_THMX') AND na
 			EXECUTE sp_addextendedproperty N'MS_Description', '产品有效期', N'user', N'dbo', N'table', N'T_THMX', N'column', N'CPYXQ';
 		END
 GO
+
+DROP TABLE [dbo].[T_THD]
+GO
+CREATE TABLE [dbo].[T_THD] (
+[THID] int NOT NULL IDENTITY(1,1) ,
+[THMC] nvarchar(50) NULL ,
+[SQR] nvarchar(50) NULL ,
+[SQRQ] datetime NULL ,
+[THYY] nvarchar(400) NULL ,
+[SHR] nvarchar(50) NULL ,
+[SHRQ] date NULL ,
+[SHYJ] nvarchar(200) NULL ,
+[FLAG] int NULL DEFAULT ((0)) ,
+[BZ] nvarchar(200) NULL ,
+[YSID] int NULL ,
+[RKFlag] int NULL DEFAULT ((0)) ,
+[THDH] nvarchar(50) NULL ,
+[ISSH] int NULL ,
+[THCJR] varchar(50) NULL ,
+[THCJRQ] date NULL ,
+[IsFinish] int NULL 
+)
+
+
+GO
+DBCC CHECKIDENT(N'[dbo].[T_THD]', RESEED, 3)
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THD', 
+NULL, NULL)) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'退货单'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'退货单'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THD', 
+'COLUMN', N'THID')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'退货ID'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'THID'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'退货ID'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'THID'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THD', 
+'COLUMN', N'SQR')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'申请人'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'SQR'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'申请人'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'SQR'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THD', 
+'COLUMN', N'THYY')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'退货原因'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'THYY'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'退货原因'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'THYY'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THD', 
+'COLUMN', N'SHR')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'审核人'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'SHR'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'审核人'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'SHR'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THD', 
+'COLUMN', N'SHYJ')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'审核意见'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'SHYJ'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'审核意见'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'SHYJ'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THD', 
+'COLUMN', N'FLAG')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'0合格退货，1不合格退货'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'FLAG'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'0合格退货，1不合格退货'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'FLAG'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THD', 
+'COLUMN', N'YSID')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'验收ID'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'YSID'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'验收ID'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'YSID'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THD', 
+'COLUMN', N'RKFlag')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'0入库前退货1入库后退货'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'RKFlag'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'0入库前退货1入库后退货'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'RKFlag'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THD', 
+'COLUMN', N'THDH')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'退货单号'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'THDH'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'退货单号'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'THDH'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THD', 
+'COLUMN', N'ISSH')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'审核状态，0待审核，1审核通过，2审核不通过'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'ISSH'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'审核状态，0待审核，1审核通过，2审核不通过'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'ISSH'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THD', 
+'COLUMN', N'THCJR')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'退货采集人'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'THCJR'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'退货采集人'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'THCJR'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THD', 
+'COLUMN', N'THCJRQ')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'退货采集日期'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'THCJRQ'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'退货采集日期'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'THCJRQ'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THD', 
+'COLUMN', N'IsFinish')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'是否完成，0未完成1完成'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'IsFinish'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'是否完成，0未完成1完成'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THD'
+, @level2type = 'COLUMN', @level2name = N'IsFinish'
+GO
+
+-- ----------------------------
+-- Indexes structure for table T_THD
+-- ----------------------------
+
+-- ----------------------------
+-- Primary Key structure for table T_THD
+-- ----------------------------
+ALTER TABLE [dbo].[T_THD] ADD PRIMARY KEY ([THID])
+GO
+
+-- ----------------------------
+-- Foreign Key structure for table [dbo].[T_THD]
+-- ----------------------------
+ALTER TABLE [dbo].[T_THD] ADD FOREIGN KEY ([YSID]) REFERENCES [dbo].[T_YSD] ([YSID]) ON DELETE NO ACTION ON UPDATE NO ACTION
+GO
