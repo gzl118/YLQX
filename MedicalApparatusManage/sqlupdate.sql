@@ -238,3 +238,14 @@ GO
 
 UPDATE T_YSD SET IsTHFinish=0;
 GO
+
+IF NOT EXISTS(SELECT 1 FROM sys.syscolumns WHERE id = OBJECT_ID('T_THMX') AND name = 'CPPH') 
+		BEGIN
+			ALTER TABLE T_THMX ADD CPPH varchar(50) NULL;
+			EXECUTE sp_addextendedproperty N'MS_Description', '产品批号', N'user', N'dbo', N'table', N'T_THMX', N'column', N'CPPH';
+			ALTER TABLE T_THMX ADD CPSCRQ date NULL;
+			EXECUTE sp_addextendedproperty N'MS_Description', '产品生产日期', N'user', N'dbo', N'table', N'T_THMX', N'column', N'CPSCRQ';
+			ALTER TABLE T_THMX ADD CPYXQ date NULL;
+			EXECUTE sp_addextendedproperty N'MS_Description', '产品有效期', N'user', N'dbo', N'table', N'T_THMX', N'column', N'CPYXQ';
+		END
+GO

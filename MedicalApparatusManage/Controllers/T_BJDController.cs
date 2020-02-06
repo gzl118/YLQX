@@ -150,6 +150,9 @@ namespace MedicalApparatusManage.Controllers
                 Expression<Func<T_SHD, bool>> whereSHD = p => p.ISSH == 0;
                 var SHDCount = T_SHDDomain.GetInstance().GetAllModels<int>(whereSHD).Count; //待审批的损耗单数量
 
+                Expression<Func<T_THD, bool>> whereTHD = p => p.ISSH == 0;
+                var THHDCount = T_THDDomain.GetInstance().GetAllModels<int>(whereTHD).Count; //待审批的退货单数量
+
                 if (SupQYCount > 0)
                 {
                     strHtml.Append(string.Format(strTemplete, "SupQYManage", "/T_SupQY/Index/", "供货企业", SupQYCount, "供货企业待审批"));
@@ -177,6 +180,10 @@ namespace MedicalApparatusManage.Controllers
                 if (SHDCount > 0)
                 {
                     strHtml.Append(string.Format(strTemplete, "SHDManage", "/T_SHD/Index/", "损耗管理", SHDCount, "损耗单待审批"));
+                }
+                if (THHDCount > 0)
+                {
+                    strHtml.Append(string.Format(strTemplete, "THDManage", "/T_THD/Index/", "退货管理", THHDCount, "退货单待审批"));
                 }
                 #endregion
             }

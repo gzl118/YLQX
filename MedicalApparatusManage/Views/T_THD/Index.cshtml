@@ -9,6 +9,13 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>退货单</title>
+    <script type="text/javascript" language="javascript">
+        $(function () {
+            $("#strTHSQPerson", $("#formSerachMATHD")).chosen({
+                search_contains: true
+            });
+        });
+    </script>
 </head>
 <body>
     <div id="pageContent">
@@ -28,7 +35,30 @@
                                 退货单名称:
                             </td>
                             <td>
-                                @Html.TextBox("strTHMC")
+                                @Html.TextBox("strTHMC", Model.DataModel.THMC)
+                            </td>
+                            <td>
+                                申请人:
+                            </td>
+                            <td>
+                                @Html.DropDownList("strTHSQPerson", ViewBag.Persons as SelectList, "请选择", new { Value = ViewData["strTHSQPerson"], id = "strTHSQPerson", style = "width:150px;" })
+                            </td>
+                            <td>
+                                申请日期:
+                            </td>
+                            <td>
+                                @{ string strStart = Model.StartTime.HasValue ? Model.StartTime.Value.ToString("yyyy/MM/dd") : "";
+                                    string strEnd = Model.EndTime.HasValue ? Model.EndTime.Value.ToString("yyyy/MM/dd") : "";
+                                }
+                                <input id="StartDate" name="StartTime" class="Wdate" type="text" autocomplete="off" value="@strStart"
+                                       onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', maxDate: '#F{$dp.$D(\'EndDate\')}' })" />
+                            </td>
+                            <td>
+                                至
+                            </td>
+                            <td>
+                                <input id="EndDate" name="EndTime" class="Wdate" type="text" autocomplete="off" value="@strEnd"
+                                       onfocus="WdatePicker({ dateFmt: 'yyyy/MM/dd', minDate: '#F{$dp.$D(\'StartDate\')}' })" />
                             </td>
                             <td>
                                 <ul>
@@ -66,46 +96,72 @@
                         退货单号
                     </th>
                     <th>
+                        验收单号
+                    </th>
+                    <th>
                         申请人
                     </th>
                     <th>
                         申请日期
                     </th>
                     <th>
-                        验收单号
-                    </th>
-                    <th>
                         退货原因
                     </th>
-                    <th>
-                        审核人
-                    </th>
-                    <th>
-                        审核日期
-                    </th>
-                    <th>
-                        审核意见
-                    </th>
+                    @*<th>
+                            审核人
+                        </th>
+                        <th>
+                            审核日期
+                        </th>
+                        <th>
+                            审核意见
+                        </th>*@
                     <th>
                         备注
+                    </th>
+                    <th>
+                        审批状态
                     </th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.DataList)
+                @if (Model.DataList != null)
                 {
-                    <tr target="sid_user" rel="@item.THID">
-                        <td>@item.THMC</td>
-                        <td>@item.THDH</td>
-                        <td>@item.SQR</td>
-                        <td>@item.SQRQ</td>
-                        <td>@item.YSID</td>
-                        <td>@item.THYY</td>
-                        <td>@item.SHR</td>
-                        <td>@item.SHRQ</td>
-                        <td>@item.SHYJ</td>
-                        <td>@item.BZ</td>
-                    </tr>
+                    foreach (var item in Model.DataList)
+                    {
+                        <tr target="sid_user" rel="@item.THID">
+                            <td>@item.THMC</td>
+                            <td>@item.THDH</td>
+                            <td>@((item.T_YSD != null && !string.IsNullOrEmpty(item.T_YSD.YSDH)) ? item.T_YSD.YSDH : "")</td>
+                            <td>@item.SQR</td>
+                            @{ if (item.SQRQ == null)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>@item.SQRQ.Value.ToString("yyyy/MM/dd")</td>
+                                }
+                            }
+                            <td>@item.THYY</td>
+                            @*<td>@item.SHR</td>
+                                <td>@item.SHRQ</td>
+                                <td>@item.SHYJ</td>*@
+                            <td>@item.BZ</td>
+                            @{
+                                switch (item.ISSH)
+                                {
+                                    case 0:
+                                        <td style="background-color:deepskyblue;">未审批</td>; break;
+                                    case 1:
+                                        <td style="background-color:limegreen;">审批通过</td>; break;
+                                    case 2:
+                                        <td style="background-color:orangered;">审批未通过</td> ; break;
+                                    default:
+                                        <td></td>; break;
+                                }}
+                        </tr>
+                    }
                 }
             </tbody>
         </table>
@@ -126,8 +182,8 @@
                 @{
                     string[] sL = { "10", "20", "30", "50" };
                     List<SelectListItem>
-                        list = new List<SelectListItem>
-                            ();
+                                            list = new List<SelectListItem>
+                                                ();
                     foreach (string s in sL)
                     {
                         list.Add(new SelectListItem { Text = s, Value = s });

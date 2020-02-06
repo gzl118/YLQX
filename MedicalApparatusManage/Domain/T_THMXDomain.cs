@@ -108,5 +108,44 @@ namespace MedicalApparatusManage.Domain
 
             }
         }
+        public List<T_THMX> GetT_THMXBythid(int thid)
+        {
+            List<T_THMX> list = new List<T_THMX>();
+            using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
+            {
+                try
+                {
+                    DbSet<T_THMX> db = hContext1.Set<T_THMX>();
+                    DbQuery<T_THMX> dbq = db.Include("T_YLCP").Include("T_THD").Include("T_YLCP.T_SupQY").Include("T_YLCP.T_SupQY1").Include("T_CK");
+                    list = dbq.Where(p => p.THID == thid).ToList();
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+            return list;
+        }
+
+        public List<T_THMX> GetT_THMXBythdh(string thdh)
+        {
+            List<T_THMX> list = new List<T_THMX>();
+            using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
+            {
+                try
+                {
+                    var ysd = hContext1.Set<T_THD>().Where(p => p.THDH == thdh).FirstOrDefault();
+                    if (ysd != null)
+                    {
+                        DbSet<T_THMX> db = hContext1.Set<T_THMX>();
+                        DbQuery<T_THMX> dbq = db.Include("T_YLCP").Include("T_THD").Include("T_YLCP.T_SupQY").Include("T_YLCP.T_SupQY1").Include("T_CK");
+                        list = dbq.Where(p => p.THID == ysd.THID).ToList();
+                    }
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+            return list;
+        }
     }
 }

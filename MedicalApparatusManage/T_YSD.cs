@@ -17,6 +17,7 @@ namespace MedicalApparatusManage
         public T_YSD()
         {
             this.T_YSMX = new HashSet<T_YSMX>();
+            this.T_THD = new HashSet<T_THD>();
         }
     
         public int YSID { get; set; }
@@ -35,5 +36,6 @@ namespace MedicalApparatusManage
         public Nullable<int> IsTHFinish { get; set; }
     
         public virtual ICollection<T_YSMX> T_YSMX { get; set; }
+        public virtual ICollection<T_THD> T_THD { get; set; }
     }
 }

@@ -47,14 +47,20 @@ namespace MedicalApparatusManage.Controllers
                 }
             }
 
-            if (Request["strTHDW"] != null)
+            if (Request["strTHSQPerson"] != null)
             {
-                string str = Request["strTHDW"].ToString();
+                string str = Request["strTHSQPerson"].ToString();
                 if (!String.IsNullOrEmpty(str))
                 {
-                    //evalModel.DataModel.THKHMC = str;
+                    evalModel.DataModel.SQR = str;
                 }
+                ViewData["strTHSQPerson"] = str;
             }
+            //获取本企业下的人员列表
+            SysUser UserModel = Session["UserModel"] as SysUser;
+            T_Person person = new T_Person();
+            person.PsQYID = (int)UserModel.UserCompanyID;
+            ViewBag.Persons = new SelectList(T_PersonDomain.GetInstance().GetAllT_Person(person), "PsMZ", "PsMZ");
 
             evalModel.DataList = T_THDDomain.GetInstance().PageT_THD(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, out pagecount, out resultCount).ToList();
             evalModel.resultCount = resultCount;
@@ -116,6 +122,7 @@ namespace MedicalApparatusManage.Controllers
                 if (model.Tag == "Add")
                 {
                     model.DataModel.FLAG = 1;
+                    model.DataModel.ISSH = 0;
                     result = T_THDDomain.GetInstance().AddModel(model.DataModel);
                 }
                 else if (model.Tag == "Edit")
@@ -164,7 +171,16 @@ namespace MedicalApparatusManage.Controllers
         [CheckLogin()]
         public void Delete(System.Int32 id)
         {
-            int result = T_THDDomain.GetInstance().DeleteModelById(id);
+            var temp = T_THDDomain.GetInstance().GetModelById(id);
+            if (temp != null)
+            {
+                if (temp.ISSH == 1)
+                {
+                    Response.Write("{\"statusCode\":\"300\", \"message\":\"已审批通过的数据不能删除！\"}");
+                    return;
+                }
+            }
+            int result = T_THDDomain.GetInstance().Delete(id);
             Response.ContentType = "text/json";
             if (result > 0)
                 Response.Write("{\"statusCode\":\"200\", \"message\":\"操作成功\",\"callbackType\":\"forward\",\"forwardUrl\":\"/T_THD/Index\"}");
@@ -188,13 +204,32 @@ namespace MedicalApparatusManage.Controllers
             catch { }
             Response.ContentType = "text/json";
             if (result > 0)
-                Response.Write("{\"statusCode\":\"200\", \"message\":\"操作成功\",\"callbackType\":\"closeCurrentReloadTab\",\"forwardUrl\":\"/T_CGD/Index\"}");
+                Response.Write("{\"statusCode\":\"200\", \"message\":\"操作成功\",\"callbackType\":\"closeCurrentReloadTab\",\"forwardUrl\":\"/T_THD/Index\"}");
             else
                 Response.Write("{\"statusCode\":\"300\", \"message\":\"操作失败\"}");
         }
         private string GetRoleCode()
         {
             return Session["RoleCode"] == null ? "" : Session["RoleCode"].ToString();
+        }
+        [CheckLogin()]
+        public ActionResult THMXTable(System.Int32 id, string thdh, int canEdit, int isSH)
+        {
+            T_THDModels model = new T_THDModels();
+            if (id != 0)
+            {
+                model.THMXList = T_THMXDomain.GetInstance().GetT_THMXBythid(id);
+            }
+            else
+            {
+                model.THMXList = T_THMXDomain.GetInstance().GetT_THMXBythdh(thdh);
+            }
+            ViewData["canEdit"] = canEdit;
+            model.RoleCode = GetRoleCode();
+            model.DataModel = new T_THD();
+            model.DataModel.ISSH = isSH;
+            //model.DataModel.THID = id;
+            return View("~/Views/T_THD/THMXTable.cshtml", model);
         }
     }
 }

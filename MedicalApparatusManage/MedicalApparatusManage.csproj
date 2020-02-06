@@ -2406,6 +2406,7 @@
     <Content Include="Views\T_CKCollect\Details.cshtml" />
     <Content Include="Views\T_YSD\NCGIndex.cshtml" />
     <Content Include="Views\T_YSD\NCGSave.cshtml" />
+    <Content Include="Views\T_THD\THMXTable.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

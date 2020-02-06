@@ -34,10 +34,18 @@ namespace MedicalApparatusManage.Domain
             {
                 where = where.And(p => p.THMC.Contains(info.THMC));
             }
-            //if(!String.IsNullOrEmpty(info.THKHMC))
-            //{
-            //    where = where.And(p => p.THKHMC.Contains(info.THKHMC));
-            //}
+            if (!String.IsNullOrEmpty(info.SQR))
+            {
+                where = where.And(p => p.SQR == info.SQR);
+            }
+            if (startTime != null)
+            {
+                where = where.And(p => p.SQRQ >= startTime.Value);
+            }
+            if (endTime != null)
+            {
+                where = where.And(p => p.SQRQ <= endTime.Value);
+            }
             Func<T_THD, System.Int32> order = p => p.THID;
             return GetPageInfo<System.Int32>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);
         }
@@ -58,7 +66,7 @@ namespace MedicalApparatusManage.Domain
                 try
                 {
                     DbSet<T_THD> db = hContext1.Set<T_THD>();
-                    DbQuery<T_THD> dbq = db.Include("T_XSD");
+                    DbQuery<T_THD> dbq = db.Include("T_YSD");
                     totalRecord = db.Where(where.Compile()).Count();
                     if (totalRecord > 0)
                     {
@@ -88,7 +96,7 @@ namespace MedicalApparatusManage.Domain
             {
                 try
                 {
-                    count = hContext1.Set<T_THD>().Where(p => p.THCJR == user.UserAccount).Count() + 1;
+                    count = hContext1.Set<T_THD>().Where(p => p.THCJR == user.UserAccount).Count();
                 }
                 catch (Exception ex)
                 {
@@ -107,6 +115,55 @@ namespace MedicalApparatusManage.Domain
                 {
                     var model = hContext1.Set<T_THD>().Find(id);
                     model.ISSH = status;
+
+                    #region 更新库存
+                    if (model.RKFlag == 1)  //入库后退货
+                    {
+                        var ysdModel = hContext1.Set<T_YSD>().Find(model.YSID);
+                        if (ysdModel != null && ysdModel.YSFLAG == "合格收货")  //只有验收单是“合格收货”的才会入库，才能引起库存变化
+                        {
+                            var lstMX = hContext1.Set<T_THMX>().Where(p => p.THID == id).ToList();
+                            if (lstMX != null && lstMX.Count > 0)
+                            {
+                                foreach (var item in lstMX)
+                                {
+                                    DbSet<T_KC> kcdb = hContext1.Set<T_KC>();
+                                    var kc = kcdb.Where(p => p.CPID == item.CPID && p.CPPH == item.CPPH && p.CKID == item.CKID).FirstOrDefault();
+                                    if (kc == null)
+                                    {
+                                        return 0;
+                                    }
+                                    kc.CPNUM = kc.CPNUM - Convert.ToInt32(item.CPNUM);
+                                }
+                            }
+                        }
+                    }
+                    #endregion
+
+                    hContext1.SaveChanges();
+                    result = 1;
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            return result;
+        }
+        public int Delete(int id)
+        {
+            int result = 0;
+            using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
+            {
+                try
+                {
+                    var dbchild = hContext1.Set<T_THMX>();
+                    var lst = dbchild.Where(p => p.THID == id);
+                    if (lst != null && lst.Count() > 0)
+                        dbchild.RemoveRange(lst);
+                    var db = hContext1.Set<T_THD>();
+                    var model = db.Find(id);
+                    db.Remove(model);
                     hContext1.SaveChanges();
                     result = 1;
                 }

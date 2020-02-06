@@ -188,6 +188,7 @@ namespace MedicalApparatusManage.Controllers
                 if (model.Tag == "Add")
                 {
                     model.DataModel.XSFLAG = 0;
+                    model.DataModel.IsFinish = 0;
                     result = T_XSDDomain.GetInstance().AddModel(model.DataModel);
                 }
                 else if (model.Tag == "Edit")

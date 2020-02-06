@@ -19,7 +19,8 @@
             navTab.reload("/T_RKD/Index");
         };
         function SaveRkd() {
-            if ($("#ysd").find("option:selected").val() == "") {
+            var tempysd = $("#ysd").find("option:selected").val();
+            if (!tempysd || tempysd == "") {
                 alertMsg.error('请选择验收单！')
             }
             var elements = document.forms['formT_RKD'];
@@ -90,6 +91,7 @@
         };
         function RefreshForm() {
             $('#formT_RKMX')[0].reset();
+            $("#lblRkmx").text("");
         }
         function AddRow() {
             var tag = $("#guid").val();

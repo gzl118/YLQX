@@ -9,6 +9,7 @@
     <title>Save</title>
     <script type="text/javascript" language="javascript">
         $(function () {
+            refreshYsmxGrid();
             $("#supId", $("#formT_THD")).chosen({
                 search_contains: true
             });
@@ -141,13 +142,23 @@
             navTab.reload("/T_THD/Index");
         };
         function SaveTHmx() {
-            $("#mxTHDH").val($("#THDH").val());
+            if ($("#mainthid").val() != 0) {
+                $("#mxTHDH").val($("#THDH").val());
+            }
             if ($("#mxTHDH").val() == 0 || $("#mxTHDH").val() == "") {
                 $("#lblthmx").text("请先填写退货单！");
                 return false;
             }
             if ($("#cpmc").val() == "") {
                 $("#lblthmx").text("请选择产品！");
+                return false;
+            }
+            if ($("#ckid").find("option:selected").text() == "请选择") {
+                $("#lblthmx").text("请选择库房！");
+                return false;
+            }
+            if (parseFloat($("#kcnum").val()) < parseFloat($("#cpnum").val())) {
+                $("#lblthmx").text("退货数量超出库存数量，无法退货");
                 return false;
             }
             var elements = document.forms['formT_THDMX'];
@@ -162,7 +173,7 @@
                         if (data.statusCode == "200") {
                             alertMsg.correct('保存成功！');
                             RefreshForm();
-                            //refreshCgmxGrid(1);
+                            refreshYsmxGrid();
                         } else {
                             alertMsg.error('保存失败！')
                         }
@@ -172,6 +183,7 @@
         };
         function RefreshForm() {
             $('#formT_THDMX')[0].reset();
+            $("#lblthmx").text("");
         }
         function bindMX(mxId) {
             dropChange(mxId);
@@ -212,17 +224,30 @@
                 $.ajax({
                     type: "post",
                     dataType: "json",
-                    url: "/T_CK/GetCK",
-                    data: { ckid: id },
+                    url: "/T_KC/GetKCInfo",
+                    data: {
+                        ckid: id, cpid: $("#supcpId").val(), cpph: $("#cpph").val()
+                    },
                     success: function (json) {
-                        var tes = eval("(" + json + ")");
-                        $("#kg").val(tes.CKGLY);
+                        if (json && json != "") {
+                            var tes = eval("(" + json + ")");
+                            $("#kg").val(tes.CKGLY);
+                            $("#kcnum").val(tes.KCNUM);
+                        }
                     },
                     error: function () {
                         alertMsg.error('发生错误！');
                     }
                 });
             }
+        };
+        function refreshYsmxGrid() {
+            var tempIsSH = $("#ISSH").val();
+            if (tempIsSH == null || tempIsSH == "")
+                tempIsSH = 0;
+            $("#thmxBox").loadUrl("/T_THD/THMXTable", {
+                id: $("#mainthid").val(), thdh: $("#THDH").val(), canEdit: 1, isSH: tempIsSH
+            });
         };
     </script>
 </head>
@@ -232,7 +257,10 @@
             <fieldset>
                 <form id="formT_THD" method="post" onsubmit="return false;" class="pageForm required-validate-noalert" style="overflow: visible;">
                     @Html.HiddenFor(m => m.Tag, new { ID = "Tag", Name = "Tag" })
-                    @Html.HiddenFor(m => m.DataModel.THID, new { Name = "DataModel.THID" })
+                    @Html.HiddenFor(m => m.DataModel.THID, new { Name = "DataModel.THID", id = "mainthid" })
+                    @Html.HiddenFor(m => m.DataModel.THCJR, new { Name = "DataModel.THCJR" })
+                    @Html.HiddenFor(m => m.DataModel.THCJRQ, new { Name = "DataModel.THCJRQ" })
+                    @Html.HiddenFor(m => m.DataModel.ISSH, new { Name = "DataModel.ISSH", id = "ISSH" })
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
@@ -313,10 +341,16 @@
                             <label>
                                 退货类型：
                             </label>
-                            <select style="width:265px;" id="RKFlag" name="DataModel.RKFlag">
-                                <option value="0">入库前退货</option>
-                                <option value="1">入库后退货</option>
-                            </select>
+                            @*<select style="width:265px;" id="RKFlag" name="DataModel.RKFlag">
+                                    <option value="0">入库前退货</option>
+                                    <option value="1">入库后退货</option>
+                                </select>*@
+                            @{
+                                List<SelectListItem> thtypeList = new List<SelectListItem>();
+                                thtypeList.Add(new SelectListItem { Text = "入库前退货", Value = "0" });
+                                thtypeList.Add(new SelectListItem { Text = "入库后退货", Value = "1" });
+                                @Html.DropDownListFor(m => m.DataModel.RKFlag, thtypeList, new { name = "RKFlag", style = "width:265px", Value = Model.DataModel.RKFlag })
+                            }
                         </div>
                         <div class="unit">
                             <label>
@@ -328,32 +362,32 @@
                             <label>
                                 申请日期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.SQRQ, new { name = "SQRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:260px" })
+                            @Html.TextBoxFor(m => m.DataModel.SQRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.SQRQ), name = "SQRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:260px" })
                         </div>
                         <div class="unit">
                             <label>
                                 退货原因：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.THYY, new { name = "THYY", style = "width:260px" })
+                            @Html.TextBoxFor(m => m.DataModel.THYY, new { name = "THYY", style = "width:260px", @class = "required" })
                         </div>
-                        <div class="unit">
-                            <label>
-                                审核人：
-                            </label>
-                            @Html.DropDownListFor(m => m.DataModel.SHR, ViewBag.Persons as SelectList, "请选择", new { id = "thSHR", name = "SHR", style = "width:265px" })
-                        </div>
-                        <div class="unit">
-                            <label>
-                                审核日期：
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.SHRQ, new { name = "SHRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:260px" })
-                        </div>
-                        <div class="unit">
-                            <label>
-                                审核意见：
-                            </label>
-                            @Html.TextBoxFor(m => m.DataModel.SHYJ, new { name = "SHYJ", style = "width:260px" })
-                        </div>
+                        @*<div class="unit">
+                                <label>
+                                    审核人：
+                                </label>
+                                @Html.DropDownListFor(m => m.DataModel.SHR, ViewBag.Persons as SelectList, "请选择", new { id = "thSHR", name = "SHR", style = "width:265px" })
+                            </div>
+                            <div class="unit">
+                                <label>
+                                    审核日期：
+                                </label>
+                                @Html.TextBoxFor(m => m.DataModel.SHRQ, new { name = "SHRQ", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:260px" })
+                            </div>
+                            <div class="unit">
+                                <label>
+                                    审核意见：
+                                </label>
+                                @Html.TextBoxFor(m => m.DataModel.SHYJ, new { name = "SHYJ", style = "width:260px" })
+                            </div>*@
                         <div class="unit">
                             <label>
                                 备注：
@@ -417,13 +451,13 @@
                             <label>
                                 产品批号：
                             </label>
-                            <input type="text" name="" id="cpph" style="width:279px" readonly="readonly" value="" />
+                            <input type="text" name="DataModel.CPPH" id="cpph" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>
                                 生产日期：
                             </label>
-                            <input type="text" name="" id="CPSCRQ" style="width:279px" readonly="readonly" value="" />
+                            <input type="text" name="DataModel.CPSCRQ" id="CPSCRQ" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>
@@ -436,6 +470,12 @@
                                         <option value="@item.Value">@item.Text</option>
                                     }}
                             </select>
+                        </div>
+                        <div class="unit">
+                            <label>
+                                库存数量：
+                            </label>
+                            <input type="text" name="" id="kcnum" style="width:279px" readonly="readonly" value="" />
                         </div>
                     </div>
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
@@ -473,7 +513,7 @@
                             <label>
                                 有效期：
                             </label>
-                            <input type="text" name="" id="CPYXQ" style="width:279px" readonly="readonly" value="" />
+                            <input type="text" name="DataModel.CPYXQ" id="CPYXQ" style="width:279px" readonly="readonly" value="" />
                         </div>
                         <div class="unit">
                             <label>

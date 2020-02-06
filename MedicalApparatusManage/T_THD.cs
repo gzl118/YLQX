@@ -38,5 +38,6 @@ namespace MedicalApparatusManage
         public Nullable<int> IsFinish { get; set; }
     
         public virtual ICollection<T_THMX> T_THMX { get; set; }
+        public virtual T_YSD T_YSD { get; set; }
     }
 }

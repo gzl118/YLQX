@@ -147,6 +147,7 @@ namespace MedicalApparatusManage.Controllers
                     model.DataModel.IsFinish = 0;
                     model.DataModel.IsCGFinish = 0;
                     model.DataModel.IsCGYS = 0;
+                    model.DataModel.IsTHFinish = 0;
                     result = T_YSDDomain.GetInstance().AddModel(model.DataModel);
                 }
                 else if (model.Tag == "Edit")
@@ -217,7 +218,15 @@ namespace MedicalApparatusManage.Controllers
                     var lst = T_RKDDomain.GetInstance().GetAllModels<int>(where);
                     if (lst != null && lst.Count > 0)
                     {
-                        Response.Write("{\"statusCode\":\"300\", \"message\":\"该验收单单已存在入库单，不能删除！\"}");
+                        Response.Write("{\"statusCode\":\"300\", \"message\":\"该验收单已存在入库单，不能删除！\"}");
+                        return;
+                    }
+
+                    Expression<Func<T_THD, bool>> whereTHD = p => (p.YSID == ysdModel.YSID);
+                    var lstTHD = T_THDDomain.GetInstance().GetAllModels<int>(whereTHD);
+                    if (lstTHD != null && lstTHD.Count > 0)
+                    {
+                        Response.Write("{\"statusCode\":\"300\", \"message\":\"该验收单已存在退货单，不能删除！\"}");
                         return;
                     }
                     if (!string.IsNullOrEmpty(ysdModel.YSBG))
@@ -477,6 +486,7 @@ namespace MedicalApparatusManage.Controllers
                     model.DataModel.IsFinish = 0;
                     model.DataModel.IsCGFinish = 0;
                     model.DataModel.IsCGYS = 1;
+                    model.DataModel.IsTHFinish = 0;
                     result = T_YSDDomain.GetInstance().AddModel(model.DataModel);
                 }
                 else if (model.Tag == "Edit")
@@ -510,7 +520,14 @@ namespace MedicalApparatusManage.Controllers
                     var lst = T_RKDDomain.GetInstance().GetAllModels<int>(where);
                     if (lst != null && lst.Count > 0)
                     {
-                        Response.Write("{\"statusCode\":\"300\", \"message\":\"该验收单单已存在入库单，不能删除！\"}");
+                        Response.Write("{\"statusCode\":\"300\", \"message\":\"该验收单已存在入库单，不能删除！\"}");
+                        return;
+                    }
+                    Expression<Func<T_THD, bool>> whereTHD = p => (p.YSID == ysdModel.YSID);
+                    var lstTHD = T_THDDomain.GetInstance().GetAllModels<int>(whereTHD);
+                    if (lstTHD != null && lstTHD.Count > 0)
+                    {
+                        Response.Write("{\"statusCode\":\"300\", \"message\":\"该验收单已存在退货单，不能删除！\"}");
                         return;
                     }
                     if (!string.IsNullOrEmpty(ysdModel.YSBG))

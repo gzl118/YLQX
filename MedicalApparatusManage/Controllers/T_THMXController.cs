@@ -150,7 +150,7 @@ namespace MedicalApparatusManage.Controllers
             int result = T_THMXDomain.GetInstance().DeleteModelById(id);
             Response.ContentType = "text/json";
             if (result > 0)
-                Response.Write("{\"statusCode\":\"200\", \"message\":\"操作成功\",\"callbackType\":\"forward\",\"forwardUrl\":\"/T_THMX/Index\"}");
+                Response.Write("{\"statusCode\":\"200\", \"message\":\"操作成功\"}");
             else
                 Response.Write("{\"statusCode\":\"300\", \"message\":\"操作失败\"}");
         }

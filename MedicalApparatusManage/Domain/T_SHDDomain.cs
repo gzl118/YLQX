@@ -38,11 +38,11 @@ namespace MedicalApparatusManage.Domain
             }
             if (startTime != null)
             {
-                where = where.And(p => p.SHCJRQ >= startTime.Value);
+                where = where.And(p => p.SQRQ >= startTime.Value);
             }
             if (endTime != null)
             {
-                where = where.And(p => p.SHCJRQ <= endTime.Value);
+                where = where.And(p => p.SQRQ <= endTime.Value);
             }
             Func<T_SHD, System.String> order = p => p.SHDH;
             return GetPageInfo<System.String>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);

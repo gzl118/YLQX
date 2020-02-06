@@ -25,6 +25,10 @@
             navTab.reload("/T_CKD/Index");
         };
         function SaveCkd() {
+            var tempysd = $("#xsd").find("option:selected").val();
+            if (!tempysd || tempysd == "") {
+                alertMsg.error('请选择销售单！')
+            }
             var elements = document.forms['formT_CKD'];
             var bl = validateCallback(elements);
             if (bl) {
@@ -260,7 +264,7 @@
             else {
                 $("#cpscrq").val("");
                 $("#cpyxq").val("");
-                $("#kcnum").val("");
+                $("#kcnum").val(0);
             }
         };
 
@@ -376,7 +380,7 @@
                                 List<SelectListItem> xsdList = new List<SelectListItem>();
                                 xsdList.Add(new SelectListItem { Text = "未完结", Value = "0" });
                                 xsdList.Add(new SelectListItem { Text = "已完结", Value = "1" });
-                                @Html.DropDownListFor(m => m.DataModel.IsFinish, xsdList, new { name = "IsFinish", style = "width:285px",Value=Model.DataModel.IsFinish })
+                                @Html.DropDownListFor(m => m.DataModel.IsFinish, xsdList, new { name = "IsFinish", style = "width:285px", Value = Model.DataModel.IsFinish })
                             }
                         </div>
                     </div>

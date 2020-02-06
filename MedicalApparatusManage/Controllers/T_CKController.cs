@@ -286,7 +286,7 @@ namespace MedicalApparatusManage.Controllers
                     CPGG = (kcp.T_YLCP != null && kcp.T_YLCP.CPGG != null) ? kcp.T_YLCP.CPGG : "",
                     CPXH = (kcp.T_YLCP != null && kcp.T_YLCP.CPXH != null) ? kcp.T_YLCP.CPXH : "",
                     CPDW = (kcp.T_YLCP != null && kcp.T_YLCP.CPDW != null) ? kcp.T_YLCP.CPDW : "",
-                    CPNUM = kcp.CPNUM,
+                    CPNUM = kcp.CPNUM ?? 0,
                     CPSCRQ = kcp.CPSCRQ.HasValue ? kcp.CPSCRQ.Value.ToString("yyyy/MM/dd") : "",
                     CPYXQ = kcp.CPYXQ.HasValue ? kcp.CPYXQ.Value.ToString("yyyy/MM/dd") : "",
                     CPZCZ = (kcp.T_YLCP != null && kcp.T_YLCP.CPZCZ != null) ? kcp.T_YLCP.CPZCZ : "",

@@ -620,7 +620,7 @@
           <Property Name="SQRQ" Type="datetime" />
           <Property Name="THYY" Type="nvarchar" MaxLength="400" />
           <Property Name="SHR" Type="nvarchar" MaxLength="50" />
-          <Property Name="SHRQ" Type="datetime" />
+          <Property Name="SHRQ" Type="date" />
           <Property Name="SHYJ" Type="nvarchar" MaxLength="200" />
           <Property Name="FLAG" Type="int" />
           <Property Name="BZ" Type="nvarchar" MaxLength="200" />
@@ -643,6 +643,9 @@
           <Property Name="BZ" Type="nvarchar" MaxLength="200" />
           <Property Name="CKID" Type="int" Nullable="false" />
           <Property Name="FLAG" Type="int" />
+          <Property Name="CPPH" Type="varchar" MaxLength="50" />
+          <Property Name="CPSCRQ" Type="date" />
+          <Property Name="CPYXQ" Type="date" />
         </EntityType>
         <EntityType Name="T_WhsQY">
           <Key>
@@ -1264,6 +1267,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_T_THD_T_YSD">
+          <End Role="T_YSD" Type="Self.T_YSD" Multiplicity="0..1" />
+          <End Role="T_THD" Type="Self.T_THD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_YSD">
+              <PropertyRef Name="YSID" />
+            </Principal>
+            <Dependent Role="T_THD">
+              <PropertyRef Name="YSID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_T_THMX_T_CK">
           <End Role="T_CK" Type="Self.T_CK" Multiplicity="1" />
           <End Role="T_THMX" Type="Self.T_THMX" Multiplicity="*" />
@@ -1698,6 +1713,10 @@
             <End Role="T_WhsQY" EntitySet="T_WhsQY" />
             <End Role="T_SupQY" EntitySet="T_SupQY" />
           </AssociationSet>
+          <AssociationSet Name="FK_T_THD_T_YSD" Association="Self.FK_T_THD_T_YSD">
+            <End Role="T_YSD" EntitySet="T_YSD" />
+            <End Role="T_THD" EntitySet="T_THD" />
+          </AssociationSet>
           <AssociationSet Name="FK_T_THMX_T_CK" Association="Self.FK_T_THMX_T_CK">
             <End Role="T_CK" EntitySet="T_CK" />
             <End Role="T_THMX" EntitySet="T_THMX" />
@@ -2071,6 +2090,10 @@
           <AssociationSet Name="T_CK_Collect" Association="MedicalApparatusManageModel.T_CK_Collect">
             <End Role="T_CK" EntitySet="T_CK" />
             <End Role="T_CKCollect" EntitySet="T_CKCollect" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_THD_T_YSD" Association="MedicalApparatusManageModel.FK_T_THD_T_YSD">
+            <End Role="T_YSD" EntitySet="T_YSD" />
+            <End Role="T_THD" EntitySet="T_THD" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
@@ -2718,7 +2741,7 @@
           <Property Name="SQRQ" Type="DateTime" Precision="3" />
           <Property Name="THYY" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
           <Property Name="SHR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SHRQ" Type="DateTime" Precision="3" />
+          <Property Name="SHRQ" Type="DateTime" Precision="0" />
           <Property Name="SHYJ" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="FLAG" Type="Int32" />
           <Property Name="BZ" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
@@ -2730,6 +2753,7 @@
           <Property Name="THCJR" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="THCJRQ" Type="DateTime" Precision="0" />
           <Property Name="IsFinish" Type="Int32" />
+          <NavigationProperty Name="T_YSD" Relationship="MedicalApparatusManageModel.FK_T_THD_T_YSD" FromRole="T_THD" ToRole="T_YSD" />
         </EntityType>
         <EntityType Name="T_THMX">
           <Key>
@@ -2745,6 +2769,9 @@
           <NavigationProperty Name="T_CK" Relationship="MedicalApparatusManageModel.FK_T_THMX_T_CK" FromRole="T_THMX" ToRole="T_CK" />
           <NavigationProperty Name="T_THD" Relationship="MedicalApparatusManageModel.FK_T_THMX_T_THD" FromRole="T_THMX" ToRole="T_THD" />
           <NavigationProperty Name="T_YLCP" Relationship="MedicalApparatusManageModel.FK_T_THMX_T_YLCP" FromRole="T_THMX" ToRole="T_YLCP" />
+          <Property Name="CPPH" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CPSCRQ" Type="DateTime" Precision="0" />
+          <Property Name="CPYXQ" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="T_WhsQY">
           <Key>
@@ -2926,6 +2953,7 @@
           <Property Name="IsCGFinish" Type="Int32" />
           <Property Name="IsCGYS" Type="Int32" />
           <Property Name="IsTHFinish" Type="Int32" />
+          <NavigationProperty Name="T_THD" Relationship="MedicalApparatusManageModel.FK_T_THD_T_YSD" FromRole="T_YSD" ToRole="T_THD" />
         </EntityType>
         <EntityType Name="T_YSMX">
           <Key>
@@ -3669,6 +3697,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_T_THD_T_YSD">
+          <End Type="MedicalApparatusManageModel.T_YSD" Role="T_YSD" Multiplicity="0..1" />
+          <End Type="MedicalApparatusManageModel.T_THD" Role="T_THD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="T_YSD">
+              <PropertyRef Name="YSID" />
+            </Principal>
+            <Dependent Role="T_THD">
+              <PropertyRef Name="YSID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4313,6 +4353,9 @@
           <EntitySetMapping Name="T_THMX">
             <EntityTypeMapping TypeName="MedicalApparatusManageModel.T_THMX">
               <MappingFragment StoreEntitySet="T_THMX">
+                <ScalarProperty Name="CPYXQ" ColumnName="CPYXQ" />
+                <ScalarProperty Name="CPSCRQ" ColumnName="CPSCRQ" />
+                <ScalarProperty Name="CPPH" ColumnName="CPPH" />
                 <ScalarProperty Name="FLAG" ColumnName="FLAG" />
                 <ScalarProperty Name="CKID" ColumnName="CKID" />
                 <ScalarProperty Name="BZ" ColumnName="BZ" />

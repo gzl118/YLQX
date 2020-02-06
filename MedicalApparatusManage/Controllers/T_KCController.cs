@@ -1,5 +1,6 @@
 ﻿using MedicalApparatusManage.Domain;
 using MedicalApparatusManage.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -176,6 +177,29 @@ namespace MedicalApparatusManage.Controllers
                 Response.Write("{\"statusCode\":\"200\", \"message\":\"操作成功\",\"callbackType\":\"forward\",\"forwardUrl\":\"/T_KC/Index\"}");
             else
                 Response.Write("{\"statusCode\":\"300\", \"message\":\"操作失败\"}");
+        }
+        [HttpPost]
+        [CheckLogin()]
+        public JsonResult GetKCInfo(int ckid, int cpid, string cpph)
+        {
+            var mlist = T_KCDomain.GetInstance().GetAllModels<int>(p => p.CKID == ckid && p.CPID == cpid && p.CPPH == cpph);
+            if (mlist != null && mlist.Count > 0)
+            {
+                var mkc = mlist.First();
+                if (mkc != null)
+                {
+
+                    string resultStr = JsonConvert.SerializeObject(new { CKGLY = mkc.T_CK.CKGLY, KCNUM = mkc.CPNUM });
+                    return Json(resultStr);
+                }
+            }
+            T_CK ck = T_CKDomain.GetInstance().GetModelById(ckid);
+            if (ck != null)
+            {
+                string resultStr = JsonConvert.SerializeObject(new { CKGLY = ck.CKGLY, KCNUM = 0 });
+                return Json(resultStr);
+            }
+            return Json("");
         }
     }
 }
