@@ -250,9 +250,13 @@
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>
-                                生产许可证发证日期：
+                                生产许可证有效期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.SupFZRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.SupFZRQ), name = "SupFZRQ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", autocomplete = "off" })
+                            @Html.TextBoxFor(m => m.DataModel.SupYXQKS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.SupYXQKS), name = "SupYXQKS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
+                            <label style="width:10px">
+                                至
+                            </label>
+                            @Html.TextBoxFor(m => m.DataModel.SupYXQJS, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.SupYXQJS), name = "SupYXQJS", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })" })
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;">

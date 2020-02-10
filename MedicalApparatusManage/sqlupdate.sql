@@ -250,6 +250,9 @@ IF NOT EXISTS(SELECT 1 FROM sys.syscolumns WHERE id = OBJECT_ID('T_THMX') AND na
 		END
 GO
 
+DROP TABLE [dbo].[T_THMX]
+GO
+
 DROP TABLE [dbo].[T_THD]
 GO
 CREATE TABLE [dbo].[T_THD] (
@@ -486,3 +489,187 @@ GO
 -- ----------------------------
 ALTER TABLE [dbo].[T_THD] ADD FOREIGN KEY ([YSID]) REFERENCES [dbo].[T_YSD] ([YSID]) ON DELETE NO ACTION ON UPDATE NO ACTION
 GO
+
+
+CREATE TABLE [dbo].[T_THMX] (
+[MXID] int NOT NULL IDENTITY(1,1) ,
+[CPID] int NOT NULL ,
+[THID] int NOT NULL ,
+[CPNUM] float(53) NULL ,
+[BZ] nvarchar(200) NULL ,
+[CKID] int NOT NULL ,
+[FLAG] int NULL ,
+[CPPH] varchar(50) NULL ,
+[CPSCRQ] date NULL ,
+[CPYXQ] date NULL 
+)
+
+
+GO
+DBCC CHECKIDENT(N'[dbo].[T_THMX]', RESEED, 3)
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THMX', 
+NULL, NULL)) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'退货明细'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THMX'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'退货明细'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THMX'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THMX', 
+'COLUMN', N'CPID')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'产品ID'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THMX'
+, @level2type = 'COLUMN', @level2name = N'CPID'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'产品ID'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THMX'
+, @level2type = 'COLUMN', @level2name = N'CPID'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THMX', 
+'COLUMN', N'THID')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'退货ID'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THMX'
+, @level2type = 'COLUMN', @level2name = N'THID'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'退货ID'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THMX'
+, @level2type = 'COLUMN', @level2name = N'THID'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THMX', 
+'COLUMN', N'CPNUM')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'产品数量'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THMX'
+, @level2type = 'COLUMN', @level2name = N'CPNUM'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'产品数量'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THMX'
+, @level2type = 'COLUMN', @level2name = N'CPNUM'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THMX', 
+'COLUMN', N'BZ')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'备注'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THMX'
+, @level2type = 'COLUMN', @level2name = N'BZ'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'备注'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THMX'
+, @level2type = 'COLUMN', @level2name = N'BZ'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THMX', 
+'COLUMN', N'CPPH')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'产品批号'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THMX'
+, @level2type = 'COLUMN', @level2name = N'CPPH'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'产品批号'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THMX'
+, @level2type = 'COLUMN', @level2name = N'CPPH'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THMX', 
+'COLUMN', N'CPSCRQ')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'产品生产日期'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THMX'
+, @level2type = 'COLUMN', @level2name = N'CPSCRQ'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'产品生产日期'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THMX'
+, @level2type = 'COLUMN', @level2name = N'CPSCRQ'
+GO
+IF ((SELECT COUNT(*) from fn_listextendedproperty('MS_Description', 
+'SCHEMA', N'dbo', 
+'TABLE', N'T_THMX', 
+'COLUMN', N'CPYXQ')) > 0) 
+EXEC sp_updateextendedproperty @name = N'MS_Description', @value = N'产品有效期'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THMX'
+, @level2type = 'COLUMN', @level2name = N'CPYXQ'
+ELSE
+EXEC sp_addextendedproperty @name = N'MS_Description', @value = N'产品有效期'
+, @level0type = 'SCHEMA', @level0name = N'dbo'
+, @level1type = 'TABLE', @level1name = N'T_THMX'
+, @level2type = 'COLUMN', @level2name = N'CPYXQ'
+GO
+
+-- ----------------------------
+-- Indexes structure for table T_THMX
+-- ----------------------------
+
+-- ----------------------------
+-- Primary Key structure for table T_THMX
+-- ----------------------------
+ALTER TABLE [dbo].[T_THMX] ADD PRIMARY KEY ([MXID])
+GO
+
+-- ----------------------------
+-- Foreign Key structure for table [dbo].[T_THMX]
+-- ----------------------------
+ALTER TABLE [dbo].[T_THMX] ADD FOREIGN KEY ([CKID]) REFERENCES [dbo].[T_CK] ([CKID]) ON DELETE NO ACTION ON UPDATE NO ACTION
+GO
+ALTER TABLE [dbo].[T_THMX] ADD FOREIGN KEY ([THID]) REFERENCES [dbo].[T_THD] ([THID]) ON DELETE NO ACTION ON UPDATE NO ACTION
+GO
+ALTER TABLE [dbo].[T_THMX] ADD FOREIGN KEY ([CPID]) REFERENCES [dbo].[T_YLCP] ([CPID]) ON DELETE NO ACTION ON UPDATE NO ACTION
+GO
+
+
+
+
+UPDATE SysResource
+SET ResourceOrder=2
+WHERE ResourceId=71;
+
+UPDATE SysResource
+SET ResourceOrder=3
+WHERE ResourceId=2003;
+
+UPDATE SysResource
+SET ResourceOrder=4
+WHERE ResourceId=72;
+
+UPDATE SysResource
+SET ResourceOrder=5
+WHERE ResourceId=73;
+
+UPDATE SysResource
+SET ResourceOrder=6
+WHERE ResourceId=74;
+
+UPDATE SysResource
+SET ResourceOrder=7
+WHERE ResourceId=75;
+
+UPDATE SysResource
+SET ResourceOrder=8
+WHERE ResourceId=99;
+
+UPDATE SysResource
+SET ResourceOrder=9
+WHERE ResourceId=23;
