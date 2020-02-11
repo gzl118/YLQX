@@ -145,7 +145,7 @@ namespace MedicalApparatusManage.Controllers
                 if (model.Tag == "Add")
                 {
                     model.DataModel.IsFinish = 0;
-                    model.DataModel.IsCGFinish = 0;
+                    //model.DataModel.IsCGFinish = 0;
                     model.DataModel.IsCGYS = 0;
                     model.DataModel.IsTHFinish = 0;
                     result = T_YSDDomain.GetInstance().AddModel(model.DataModel);
@@ -213,7 +213,7 @@ namespace MedicalApparatusManage.Controllers
                 ysdModel = T_YSDDomain.GetInstance().GetModelById(id);
                 if (ysdModel != null)
                 {
-                    //如果验收单未被使用，管理员、超级管理员可删除。否则，任何人不能删除
+                    //如果验收单未被使用，可删除。否则，任何人不能删除
                     Expression<Func<T_RKD, bool>> where = p => (p.YSDH == ysdModel.YSDH);
                     var lst = T_RKDDomain.GetInstance().GetAllModels<int>(where);
                     if (lst != null && lst.Count > 0)
@@ -486,7 +486,7 @@ namespace MedicalApparatusManage.Controllers
                     model.DataModel.IsFinish = 0;
                     model.DataModel.IsCGFinish = 0;
                     model.DataModel.IsCGYS = 1;
-                    model.DataModel.IsTHFinish = 0;
+                    //model.DataModel.IsTHFinish = 0;
                     result = T_YSDDomain.GetInstance().AddModel(model.DataModel);
                 }
                 else if (model.Tag == "Edit")

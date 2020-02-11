@@ -291,6 +291,27 @@
                 }
             });
         };
+        function tqXsdNew() {
+            var xsid = $("#xsd").val();
+            if (xsid == "") {
+                return;
+            }
+            $("#xsmxBox").loadUrl("/T_XSMX/XSMXTable", { id: xsid, xsdh: "", canEdit: 0, ISSH: 1 });
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/T_XSD/GetXsInfoByID",
+                data: { id: xsid },
+                success: function (json) {
+                    var tes = eval("(" + json + ")");
+                    $("#xsperson").val(tes.XSRY);
+                    $("#xsrq").val(tes.XSRQ);
+                },
+                error: function () {
+                    alertMsg.error('发生错误！');
+                }
+            });
+        };
 
         function refreshCkmxGrid() {
             $("#ckmxCkPageBox").loadUrl("/T_CKMX/CKMXTable", {
@@ -330,7 +351,10 @@
             }
         }
         function initXsd() {
-            var xsid = $("#xsd").find("option:selected").val();
+            var tempckid = $("#CkidMain").val();
+            if (tempckid == "0")
+                return;
+            var xsid = $("#xsd").val();
             if (xsid == "") {
                 return false;
             }
@@ -382,10 +406,18 @@
                             <label>
                                 销售单号：
                             </label>
-                            @Html.DropDownListFor(m => m.DataModel.XSID, ViewData["XSD"] as SelectList, "请选择", new { ID = "xsd", style = "width:285px" })
                             @{if (Model.DataModel.CKID == 0)
                                 {
+                                    @Html.DropDownListFor(m => m.DataModel.XSID, ViewData["XSD"] as SelectList, "请选择", new { ID = "xsd", style = "width:285px" })
                                     <button value="提取" onclick="tqXsd();">
+                                        提取
+                                    </button>
+                                }
+                                else
+                                {
+                                    @Html.HiddenFor(m => m.DataModel.XSID, new { ID = "xsd" })
+                                    @Html.TextBox("XSDH", Model.XSDH, new { style = "width:279px", ReadOnly = true })
+                                    <button value="提取" onclick="tqXsdNew();">
                                         提取
                                     </button>
                                 }

@@ -9,6 +9,8 @@ namespace MedicalApparatusManage.Models
     {
         public T_THMX T_THMXModel { get; set; }
         public List<T_THMX> THMXList { get; set; }
+
+        public string YSDH { get; set; }
         public T_THDModels()
         {
             THMXList = new List<T_THMX>();

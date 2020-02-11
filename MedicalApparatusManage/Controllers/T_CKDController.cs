@@ -89,6 +89,12 @@ namespace MedicalApparatusManage.Controllers
             {
                 model.DataModel = T_CKDDomain.GetInstance().GetModelById(id);
                 model.CKMXList = T_CKMXDomain.GetInstance().GetT_CKMXByCkid(id);
+                if (model.DataModel.XSID != null && model.DataModel.XSID != 0)
+                {
+                    var temp = T_XSDDomain.GetInstance().GetModelById(model.DataModel.XSID);
+                    if (temp != null)
+                        model.XSDH = temp.XSDH;
+                }
             }
             else
             {
@@ -143,64 +149,26 @@ namespace MedicalApparatusManage.Controllers
                 Response.Write("{\"statusCode\":\"300\", \"message\":\"操作失败\"}");
         }
 
-        //[CheckLogin()]
-        //public void ExportExcel()
-        //{
-        //    Int32 xsdid = 12;
-        //    T_XSD pxsd = T_XSDDomain.GetInstance().GetModelById(xsdid);
-        //    string qyMC = pxsd.T_CusQY.CusMC;
-
-
-
-
-
-        //    StringBuilder sb = new StringBuilder();
-        //    sb.Append("出库单名称").Append("\t");
-        //    sb.Append("出库申请人").Append("\t");
-        //    sb.Append("申请日期").Append("\t");
-        //    sb.Append("复核人").Append("\t");
-        //    sb.Append("复核日期").Append("\t");
-        //    sb.Append("仓库出货人").Append("\t");
-        //    sb.Append("出货日期").Append("\t");
-        //    sb.Append("备注").Append("\n"); 
-        //    T_CKD ckdinfo = new T_CKD();
-        //    List<T_CKD> ckdlist = T_CKDDomain.GetInstance().GetAllT_CKD(ckdinfo);
-        //    foreach (var item in ckdlist)
-        //    {
-        //        sb.Append(item.CKMC).Append("\t");
-        //        sb.Append(item.CKSQR).Append("\t");
-        //        sb.Append(item.SQRQ).Append("\t");
-        //        sb.Append(item.FHR).Append("\t");
-        //        sb.Append(item.FHRQ).Append("\t");
-        //        sb.Append(item.CKCHR).Append("\t");
-        //        sb.Append(item.CHRQ).Append("\t");
-        //        sb.Append(item.CHBZ).Append("\n");
-        //    }
-        //    Response.Clear();
-        //    Response.Buffer = true;
-        //    Response.Charset = "GB2312";
-        //    Response.ContentEncoding = Encoding.Default;
-        //    Response.ContentType = "application/ms-excel";
-        //    Response.AppendHeader("Content-Disposition", "attachment; filename=card.xls");
-        //    //加上这句　             
-        //    Response.Write(sb.ToString());
-        //    Response.End();
-        //}
         [HttpPost]
         [CheckLogin()]
         public void Delete(System.Int32 id)
         {
-            //var rCode = GetRoleCode();
             var temp = T_CKDDomain.GetInstance().GetModelById(id);
             if (temp != null)
             {
-                Response.Write("{\"statusCode\":\"300\", \"message\":\"该数据不能删除！\"}");
-                return;
+                var lstMX = T_CKMXDomain.GetInstance().GetT_CKMXByCkid(temp.CKID);
+                if (lstMX != null && lstMX.Count > 0)
+                {
+                    Response.Write("{\"statusCode\":\"300\", \"message\":\"该数据不能删除！\"}");
+                    return;
+                }
             }
             int result = T_CKDDomain.GetInstance().Delete(id);
             Response.ContentType = "text/json";
             if (result > 0)
+            {
                 Response.Write("{\"statusCode\":\"200\", \"message\":\"操作成功\",\"callbackType\":\"forward\",\"forwardUrl\":\"/T_CKD/Index\"}");
+            }
             else
                 Response.Write("{\"statusCode\":\"300\", \"message\":\"操作失败\"}");
         }

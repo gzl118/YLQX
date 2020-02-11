@@ -177,6 +177,12 @@
             var cgdh = $("#cgd").find("option:selected").val();
             $("#cgmxBox").loadUrl("/T_CGMX/CGMXTable", { id: 0, cgdh: cgdh, canEdit: 0,ISSH:1 });
         };
+        function tqCgdNew() {
+            var cgdh = $("#cgd").val();
+            if (cgdh == "")
+                return;
+            $("#cgmxBox").loadUrl("/T_CGMX/CGMXTable", { id: 0, cgdh: cgdh, canEdit: 0, ISSH: 1 });
+        };
         function refreshYsmxGrid() {
             $("#ysmxBox").loadUrl("/T_YSD/YSMXTable", {
                 id: $("#ysidMain").val(), ysdh: $("#YSDH").val(), canEdit: 1 });
@@ -221,28 +227,42 @@
                     @Html.HiddenFor(m => m.DataModel.YSCJR, new { Name = "DataModel.YSCJR" })
                     @Html.HiddenFor(m => m.DataModel.YSCJRQ, new { Name = "DataModel.YSCJRQ" })
                     @Html.Hidden("DataModel.CGDH", "", new { ID = "cgdhMain" })
-                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
-                        <div class="unit">
-                            <label>
-                                采购单名称：
-                            </label>
-                            <input type="text" id="ysCGDMC" style="width:279px;" onBlur="changeCGD()" />
-                        </div>
-                    </div>
-                    <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
-                        <div class="unit">
-                            <label>
-                                采购单号：
-                            </label>
-                            @Html.DropDownListFor(m => m.DataModel.CGDH, ViewData["CGD"] as SelectList, "请选择", new { ID = "cgd", style = "width:279px", @class = "required" })
-                            @{if (Model.DataModel.YSID == 0)
-                                {
+                    @{if (Model.DataModel.YSID == 0)
+                        {
+                            <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
+                                <div class="unit">
+                                    <label>
+                                        采购单名称：
+                                    </label>
+                                    <input type="text" id="ysCGDMC" style="width:279px;" onBlur="changeCGD()" />
+                                </div>
+                            </div>
+                            <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
+                                <div class="unit">
+                                    <label>
+                                        采购单号：
+                                    </label>
+                                    @Html.DropDownListFor(m => m.DataModel.CGDH, ViewData["CGD"] as SelectList, "请选择", new { ID = "cgd", style = "width:279px", @class = "required" })
                                     <button value="提取" onclick="tqCgd();">
                                         提取
                                     </button>
-                                } }
-                        </div>
-                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {<div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
+                                <div class="unit">
+                                    <label>
+                                        采购单号：
+                                    </label>
+                                    @Html.TextBoxFor(m => m.DataModel.CGDH, new { ID = "cgd", name = "CGDH", style = "width:279px", ReadOnly = true })
+                                    <button value="提取" onclick="tqCgdNew();">
+                                        提取
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    }
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
                         <div class="unit">
                             <label>

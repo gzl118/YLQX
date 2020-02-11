@@ -163,6 +163,19 @@ namespace MedicalApparatusManage.Domain
                         dbchild.RemoveRange(lst);
                     var db = hContext1.Set<T_THD>();
                     var model = db.Find(id);
+
+                    #region 如果当前退货单使对应的验收单完结，则删除时更改验收单置为未完结状态
+                    //if (model.IsFinish == 1)
+                    //{
+                    //    var dbYSD = hContext1.Set<T_YSD>();
+                    //    var modelYSD = dbYSD.Find(model.YSID);
+                    //    if (modelYSD != null && modelYSD.YSID != 0)
+                    //    {
+                    //        modelYSD.IsTHFinish = 0;
+                    //    }
+                    //}
+                    #endregion
+
                     db.Remove(model);
                     hContext1.SaveChanges();
                     result = 1;

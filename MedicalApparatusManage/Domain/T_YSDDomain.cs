@@ -135,6 +135,19 @@ namespace MedicalApparatusManage.Domain
                         dbchild.RemoveRange(lst);
                     var db = hContext1.Set<T_YSD>();
                     var model = db.Find(id);
+
+                    #region 如果当前验收单使对应的采购单完结，则删除时更改采购单置为未完结状态
+                    if (model.IsCGFinish == 1)
+                    {
+                        var dbCGD = hContext1.Set<T_CGD>();
+                        var modelCGD = dbCGD.Where(p => p.CGDH == model.CGDH).FirstOrDefault();
+                        if (modelCGD != null && modelCGD.CGID != 0)
+                        {
+                            modelCGD.IsFinish = 0;
+                        }
+                    }
+                    #endregion
+
                     db.Remove(model);
                     hContext1.SaveChanges();
                     result = 1;

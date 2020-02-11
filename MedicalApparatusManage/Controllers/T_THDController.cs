@@ -100,6 +100,12 @@ namespace MedicalApparatusManage.Controllers
             {
                 model.DataModel = T_THDDomain.GetInstance().GetModelById(id);
                 model.THMXList = T_THMXDomain.GetInstance().GetT_THMXByYsid(id);
+                if (model.DataModel.YSID != null && model.DataModel.YSID != 0)
+                {
+                    var temp = T_YSDDomain.GetInstance().GetModelById(model.DataModel.YSID);
+                    if (temp != null)
+                        model.YSDH = temp.YSDH;
+                }
             }
             else
             {

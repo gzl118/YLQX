@@ -151,6 +151,19 @@ namespace MedicalApparatusManage.Domain
                         dbchild.RemoveRange(lst);
                     var db = hContext1.Set<T_CKD>();
                     var model = db.Find(id);
+
+                    #region 如果当前出库单使对应的销售单完结，则删除时更改销售单置为未完结状态
+                    if (model.IsFinish == 1)
+                    {
+                        var dbXSD = hContext1.Set<T_XSD>();
+                        var modelXSD = dbXSD.Find(model.XSID);
+                        if (modelXSD != null)
+                        {
+                            modelXSD.IsFinish = 0;
+                        }
+                    }
+                    #endregion
+
                     db.Remove(model);
                     hContext1.SaveChanges();
                     result = 1;
