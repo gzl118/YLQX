@@ -9,6 +9,7 @@
     <title>Save</title>
     <script type="text/javascript" language="javascript">
         $(function () {
+            initXsd();
             refreshCkmxGrid();
             $("#ckdCKSQR").chosen({
                 search_contains: true
@@ -328,6 +329,26 @@
                 });
             }
         }
+        function initXsd() {
+            var xsid = $("#xsd").find("option:selected").val();
+            if (xsid == "") {
+                return false;
+            }
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/T_XSD/GetXsInfoByID",
+                data: { id: xsid },
+                success: function (json) {
+                    var tes = eval("(" + json + ")");
+                    $("#xsperson").val(tes.XSRY);
+                    $("#xsrq").val(tes.XSRQ);
+                },
+                error: function () {
+                    alertMsg.error('发生错误！');
+                }
+            });
+        };
     </script>
 </head>
 <body>
