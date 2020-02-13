@@ -353,8 +353,8 @@ namespace MedicalApparatusManage.Controllers
             //sHtml.Append("<tr height=\"40\"><td colspan=\"10\" align=\"center\" style='font-size:24px'><b>出库单" + "</b></td></tr>");
             //sHtml.Append("<tr height=\"40\"><td colspan=\"8\" align=\"left\">&nbsp;购买单位：" + xsqyName + "</td><td align=\"right\">日期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\">单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
             //打印列名
-            sHtml.Append("<tr height=\"30\" align=\"center\" ><td>产品名称</td><td>产品规格（型号）</td><td>生产企业</td><td>生产日期</td><td>单位</td><td>数量</td><td>单价</td>"
-                + "<td>金额</td><td>产品批号</td><td>产品有效期</td><td>经营许可证号</td><td>注册证号</td><td>储运条件</td></tr>");
+            sHtml.Append("<tr height=\"30\" align=\"center\" ><td>产品名称</td><td>规格</td><td>型号</td><td>生产企业</td><td>单位</td><td>数量</td><td>单价</td>"
+                + "<td>金额</td><td>产品批号</td><td>生产日期</td><td>失效日期</td><td>生产/经营许可证号</td><td>注册证号</td><td>储运条件</td></tr>");
 
             //合计
             double total = 0.0;
@@ -366,6 +366,7 @@ namespace MedicalApparatusManage.Controllers
                 string cpName = ckmx.T_YLCP.CPMC;
                 //规格
                 string cpGg = ckmx.T_YLCP.CPGG ?? "";
+                var cpxh = ckmx.T_YLCP.CPXH ?? "";
                 //单位
                 string cpDw = ckmx.T_YLCP.CPDW ?? "";
                 //数量
@@ -406,17 +407,17 @@ namespace MedicalApparatusManage.Controllers
                 string cpzczh = ckmx.T_YLCP.CPZCZ;
                 var cytj = ckmx.CYTJ;
                 sHtml.Append("<tr height=\"30\" align=\"center\"><td>" + cpName
-                            + "</td><td>" + cpGg + "</td><td>" + cpScqy
-                             + "</td><td>" + scrq
+                            + "</td><td>" + cpGg + "</td><td>" + cpxh + "</td><td>" + cpScqy
                             + "</td><td>" + cpDw + "</td><td>" + cpDj.ToString()
-                            + "</td><td>" + cpPrice.ToString("0.000") + "</td><td>" + rowTotal.ToString("0.000") + "</td><td>" + scPh + "</td><td>" + scRq
+                            + "</td><td>" + cpPrice.ToString("0.000") + "</td><td>" + rowTotal.ToString("0.000") + "</td><td>" + scPh
+                            + "</td><td>" + scrq + "</td><td>" + scRq
                             + "</td><td>" + xkzbh
                             + "</td><td>" + cpzczh
                             + "</td><td>" + cytj
                             + "</td></tr>");
             }
             //打印表尾
-            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"5\">合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"8\">（小写）" + total.ToString("0.000") + "</td></tr>");
+            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"6\">合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"8\">（小写）" + total.ToString("0.000") + "</td></tr>");
             sHtml.Append("</table>");
             sHtml.Append("<table  border=\"0\" width=\"100%\">");
             var xsry = ckdinfo.T_XSD == null ? "" : ckdinfo.T_XSD.XSRY;
