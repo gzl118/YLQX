@@ -434,7 +434,7 @@ namespace MedicalApparatusManage.Controllers
             Expression<Func<T_YSD, bool>> where = p => p.YSDH == ckdinfo.YSDH;
             var ysd = T_YSDDomain.GetInstance().GetAllModels<int>(where).FirstOrDefault();
             var cgdModel = new T_CGD();
-            if (ysd != null && ysd.YSID != 0)
+            if (ysd != null && ysd.YSID != 0 && !string.IsNullOrEmpty(ysd.CGDH))
             {
                 Expression<Func<T_CGD, bool>> where1 = p => p.CGDH == ysd.CGDH;
                 cgdModel = T_CGDDomain.GetInstance().GetAllModels<int>(where1).FirstOrDefault();

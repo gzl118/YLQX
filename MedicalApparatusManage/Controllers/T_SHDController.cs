@@ -255,7 +255,7 @@ namespace MedicalApparatusManage.Controllers
             sHtml.Append("<tr height=\"40\"><td align=\"left\"  colspan=\"8\">日 期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\"  colspan=\"4\">单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
             sHtml.Append("</table>");
             sHtml.Append("<table border=\"1\" width=\"100%\" style='border-collapse:collapse;border:1px solid black;'>");
-            sHtml.Append("<tr height=\"30\" align=\"center\" ><td>产品名称</td><td>产品规格（型号）</td><td>生产企业</td><td>生产日期</td><td>单位</td><td>数量</td><td>单价</td>"
+            sHtml.Append("<tr height=\"30\" align=\"center\" ><td>产品名称</td><td>规格</td><td>型号</td><td>生产企业</td><td>生产日期</td><td>单位</td><td>数量</td><td>单价</td>"
                 + "<td>金额</td><td>产品批号</td><td>产品有效期</td><td>经营许可证号</td><td>注册证号</td></tr>");
 
             //合计
@@ -268,6 +268,8 @@ namespace MedicalApparatusManage.Controllers
                 string cpName = ckmx.T_YLCP.CPMC;
                 //规格
                 string cpGg = ckmx.T_YLCP.CPGG ?? "";
+
+                var cpxh = ckmx.T_YLCP.CPXH ?? "";
                 //单位
                 string cpDw = ckmx.T_YLCP.CPDW ?? "";
                 //数量
@@ -307,7 +309,7 @@ namespace MedicalApparatusManage.Controllers
                 //注册证号
                 string cpzczh = ckmx.T_YLCP.CPZCZ;
                 sHtml.Append("<tr height=\"30\" align=\"center\"><td>" + cpName
-                            + "</td><td>" + cpGg + "</td><td>" + cpScqy
+                            + "</td><td>" + cpGg + "</td><td>" + cpxh + "</td><td>" + cpScqy
                              + "</td><td>" + scrq
                             + "</td><td>" + cpDw + "</td><td>" + cpDj.ToString()
                             + "</td><td>" + cpPrice.ToString("0.000") + "</td><td>" + rowTotal.ToString("0.000") + "</td><td>" + scPh + "</td><td>" + scRq
@@ -316,7 +318,7 @@ namespace MedicalApparatusManage.Controllers
                             + "</td></tr>");
             }
             //打印表尾
-            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"5\">合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"7\">（小写）" + total.ToString("0.000") + "</td></tr>");
+            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"6\">合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"7\">（小写）" + total.ToString("0.000") + "</td></tr>");
             sHtml.Append("</table>");
             sHtml.Append("<table  border=\"0\" width=\"100%\">");
             sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"7\" align=\"left\">申请人：&nbsp;" + ckdinfo.SQR + "</td><td align=\"left\" colspan='5'>复核员：&nbsp;" + ckdinfo.FHY + "</td></tr>");
