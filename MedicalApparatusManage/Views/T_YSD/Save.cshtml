@@ -272,7 +272,7 @@
                                 List<SelectListItem> cgdList = new List<SelectListItem>();
                                 cgdList.Add(new SelectListItem { Text = "未完结", Value = "0" });
                                 cgdList.Add(new SelectListItem { Text = "已完结", Value = "1" });
-                                @Html.DropDownListFor(m => m.DataModel.IsCGFinish, cgdList, new { name = "IsFinish", style = "width:279px", Value = Model.DataModel.IsCGFinish })
+                                @Html.DropDownListFor(m => m.DataModel.IsCGFinish, cgdList, new { name = "IsFinish", style = "width:284px", Value = Model.DataModel.IsCGFinish })
                             }
                         </div>
                     </div>
@@ -297,7 +297,7 @@
                             <label>
                                 验收日期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.YSRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.YSRQ), name = "YSRQ", @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:273px", autocomplete = "off" })
+                            @Html.TextBoxFor(m => m.DataModel.YSRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.YSRQ), name = "YSRQ", @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:278px", autocomplete = "off" })
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
@@ -309,7 +309,7 @@
                                 List<SelectListItem> ysjgList = new List<SelectListItem>();
                                 ysjgList.Add(new SelectListItem { Text = "合格收货", Value = "合格收货" });
                                 ysjgList.Add(new SelectListItem { Text = "不合格", Value = "不合格" });
-                                @Html.DropDownListFor(m => m.DataModel.YSFLAG, ysjgList, new { name = "YSFLAG", style = "width:279px" })
+                                @Html.DropDownListFor(m => m.DataModel.YSFLAG, ysjgList, new { name = "YSFLAG", style = "width:285px" })
                             }
                         </div>
                     </div>

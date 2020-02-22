@@ -107,7 +107,7 @@
                     <label>
                         性别：
                     </label>
-                    @Html.DropDownListFor(m => m.DataModel.PsXB, ViewData["XB"] as SelectList, new { style = "width:270px" })
+                    @Html.DropDownListFor(m => m.DataModel.PsXB, ViewData["XB"] as SelectList, new { style = "width:266px" })
                     @*@Html.TextBoxFor(m => m.DataModel.PsXB, new { name = "PsXB" })*@
                 </div>
                 <div class="unit">
@@ -148,7 +148,7 @@
                         学历：
                     </label>
                     @*@Html.TextBoxFor(m => m.DataModel.PsXL, new {name = "PsXL" })*@
-                    @Html.DropDownListFor(m => m.DataModel.PsXL, ViewData["XL"] as SelectList, new { style = "width:270px" })
+                    @Html.DropDownListFor(m => m.DataModel.PsXL, ViewData["XL"] as SelectList, new { style = "width:266px" })
                 </div>
                 @*<div class="unit">
                         <label>
@@ -176,7 +176,7 @@
                     <label>
                         企业名称：
                     </label>
-                    @Html.DropDownListFor(m => m.DataModel.PsQYID, ViewData["WHSQY"] as SelectList, new { style = "width:270px" })
+                    @Html.DropDownListFor(m => m.DataModel.PsQYID, ViewData["WHSQY"] as SelectList, new { style = "width:266px" })
                     @*@Html.TextBoxFor(m => m.DataModel.PsQYID, new {name = "PsQYID" })*@
                 </div>
                 <div class="unit">
@@ -188,7 +188,7 @@
                         list.Add(new SelectListItem { Text = "是", Value = "1" });
                         list.Add(new SelectListItem { Text = "否", Value = "0" });
 
-                        @Html.DropDownListFor(m => m.DataModel.PsISZZ, list, new { style = "width:270px" })
+                        @Html.DropDownListFor(m => m.DataModel.PsISZZ, list, new { style = "width:266px" })
                     }
                 </div>
                 <div class="unit">

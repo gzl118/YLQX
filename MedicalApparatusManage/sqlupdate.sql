@@ -673,3 +673,6 @@ WHERE ResourceId=99;
 UPDATE SysResource
 SET ResourceOrder=9
 WHERE ResourceId=23;
+
+DELETE FROM SysRoleResource
+WHERE AuthorId IN (129,136,143,159);

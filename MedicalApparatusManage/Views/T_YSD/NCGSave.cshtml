@@ -233,7 +233,7 @@
                             <label>
                                 验收日期：
                             </label>
-                            @Html.TextBoxFor(m => m.DataModel.YSRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.YSRQ), name = "YSRQ", @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:273px", autocomplete = "off" })
+                            @Html.TextBoxFor(m => m.DataModel.YSRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.YSRQ), name = "YSRQ", @class = "Wdate required", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", style = "width:278px", autocomplete = "off" })
                         </div>
                     </div>
                     <div style="width:96%;border:1px solid #ffffff;margin:5px;float:left;">
@@ -245,7 +245,7 @@
                                 List<SelectListItem> nysjgList = new List<SelectListItem>();
                                 nysjgList.Add(new SelectListItem { Text = "合格收货", Value = "合格收货" });
                                 nysjgList.Add(new SelectListItem { Text = "不合格", Value = "不合格" });
-                                @Html.DropDownListFor(m => m.DataModel.YSFLAG, nysjgList, new { name = "YSFLAG", style = "width:279px" })
+                                @Html.DropDownListFor(m => m.DataModel.YSFLAG, nysjgList, new { name = "YSFLAG", style = "width:284px" })
                             }
                         </div>
                     </div>

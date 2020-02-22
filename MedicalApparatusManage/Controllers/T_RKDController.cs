@@ -422,13 +422,13 @@ namespace MedicalApparatusManage.Controllers
                             + "</td><td>" + cpGg + "</td><td>" + cpScqy
                              + "</td><td>" + scrq
                             + "</td><td>" + cpDw + "</td><td>" + cpDj.ToString()
-                            + "</td><td>" + cpPrice.ToString() + "</td><td>" + rowTotal.ToString() + "</td><td>" + scPh + "</td><td>" + yxq
+                            + "</td><td>" + cpPrice.ToString("0.00") + "</td><td>" + rowTotal.ToString("0.00") + "</td><td>" + scPh + "</td><td>" + yxq
                             + "</td><td>" + xkzbh
                             + "</td><td>" + cpzczh
                             + "</td></tr>");
             }
             //打印表尾
-            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"5\">合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"7\">（小写）" + total.ToString("0.000") + "</td></tr>");
+            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"5\">合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"7\">（小写）" + total.ToString("0.00") + "</td></tr>");
             sHtml.Append("</table>");
             sHtml.Append("<table  border=\"0\" width=\"100%\">"); // width =\"100%\"
             Expression<Func<T_YSD, bool>> where = p => p.YSDH == ckdinfo.YSDH;

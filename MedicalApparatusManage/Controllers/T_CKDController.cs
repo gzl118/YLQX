@@ -409,7 +409,7 @@ namespace MedicalApparatusManage.Controllers
                 sHtml.Append("<tr height=\"30\" align=\"center\"><td>" + cpName
                             + "</td><td>" + cpGg + "</td><td>" + cpxh + "</td><td>" + cpScqy
                             + "</td><td>" + cpDw + "</td><td>" + cpDj.ToString()
-                            + "</td><td>" + cpPrice.ToString("0.000") + "</td><td>" + rowTotal.ToString("0.000") + "</td><td>" + scPh
+                            + "</td><td>" + cpPrice.ToString("0.00") + "</td><td>" + rowTotal.ToString("0.00") + "</td><td>" + scPh
                             + "</td><td>" + scrq + "</td><td>" + scRq
                             + "</td><td>" + xkzbh
                             + "</td><td>" + cpzczh
@@ -417,7 +417,7 @@ namespace MedicalApparatusManage.Controllers
                             + "</td></tr>");
             }
             //打印表尾
-            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"6\">合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"8\">（小写）" + total.ToString("0.000") + "</td></tr>");
+            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"6\">合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"8\">（小写）" + total.ToString("0.00") + "</td></tr>");
             sHtml.Append("</table>");
             sHtml.Append("<table  border=\"0\" width=\"100%\">");
             var xsry = ckdinfo.T_XSD == null ? "" : ckdinfo.T_XSD.XSRY;

@@ -18,11 +18,22 @@
                 iframe: true, mediaPrint: false, stylesheet: defaultstyle
             });
         }
+        function disCol(e) {
+            if (e.checked == true) {
+                $('table tr').find('td:eq(7)').hide();
+                $('table tr').find('td:eq(8)').hide();
+            }
+            else {
+                $('table tr').find('td:eq(7)').show();
+                $('table tr').find('td:eq(8)').show();
+            }
+        }
     </script>
 </head>
 <body>
+    <input type="checkbox" onclick="disCol(this)" value="隐藏" />隐藏单价/金额
     <div>
-        <div id="printshd" style="margin:15px;">@Html.Raw(ViewData["ParaStr"].ToString())</div>
+        <div id="printshd" style="margin:15px;margin-left:12px;">@Html.Raw(ViewData["ParaStr"].ToString())</div>
     </div>
     <div class="pageContent" style="position: absolute;bottom: 5px;">
         @Html.HiddenFor(m => m.DataModel.SHID, new { ID = "shidMain", Name = "DataModel.SHID" })

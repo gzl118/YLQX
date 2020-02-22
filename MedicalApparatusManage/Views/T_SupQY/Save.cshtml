@@ -183,7 +183,7 @@
                                     QYlist.Add(new SelectListItem { Text = s, Value = s });
                                 }
 
-                                @Html.DropDownListFor(m => m.DataModel.SupDWXZ, QYlist, "--- 请选择 ---", new { name = "SupDWXZ", style = "width:282px" })
+                                @Html.DropDownListFor(m => m.DataModel.SupDWXZ, QYlist, "--- 请选择 ---", new { name = "SupDWXZ", style = "width:285px" })
                             }
                         </div>
                         <div class="unit">
@@ -208,7 +208,7 @@
                             <label>
                                 经营范围：
                             </label>
-                            @Html.TextAreaFor(m => m.DataModel.SupJXFW, new { name = "SupJXFW", style = "width:81.3%;height:30px;" })
+                            @Html.TextAreaFor(m => m.DataModel.SupJXFW, new { name = "SupJXFW", style = "width:788px;height:30px;" })
                         </div>
                     </div>
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
@@ -247,7 +247,7 @@
                             @Html.TextBoxFor(m => m.DataModel.SupFZRQ, new { Value = String.Format("{0:yyyy/MM/dd}", Model.DataModel.SupFZRQ), name = "SupFZRQ", style = "width:279px", @class = "Wdate", onfocus = "WdatePicker({ dateFmt: 'yyyy/MM/dd' })", autocomplete = "off" })
                         </div>
                     </div>
-                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
+                    <div style="width:48%;border:1px solid #ffffff;margin:5px;float:right;">
                         <div class="unit">
                             <label>
                                 生产许可证有效期：
@@ -264,7 +264,7 @@
                             <label>
                                 生产范围：
                             </label>
-                            @Html.TextAreaFor(m => m.DataModel.SupSCFW, new { name = "SupSCFW", style = "width:81.3%;height:30px;" })
+                            @Html.TextAreaFor(m => m.DataModel.SupSCFW, new { name = "SupSCFW", style = "width:788px;height:30px;" })
                         </div>
                     </div>
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
@@ -375,7 +375,7 @@
                             <label>
                                 备案经营范围：
                             </label>
-                            @Html.TextAreaFor(m => m.DataModel.SupBAJYFW, new { name = "SupBAJYFW", style = "width:81.3%;height:30px;" })
+                            @Html.TextAreaFor(m => m.DataModel.SupBAJYFW, new { name = "SupBAJYFW", style = "width:788px;height:30px;" })
                         </div>
                     </div>
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">
@@ -426,7 +426,7 @@
                             <label>
                                 备注：
                             </label>
-                            @Html.TextAreaFor(m => m.DataModel.SupBZ, new { name = "SupBZ", style = "width:81.3%;height:45px;" })
+                            @Html.TextAreaFor(m => m.DataModel.SupBZ, new { name = "SupBZ", style = "width:788px;height:45px;" })
                         </div>
                     </div>
                 </fieldset>
