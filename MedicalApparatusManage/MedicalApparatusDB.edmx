@@ -264,7 +264,7 @@
           <Property Name="CusJYKSSJ" Type="datetime" />
           <Property Name="CusJXJSSJ" Type="datetime" />
           <Property Name="CusKHH" Type="nvarchar" MaxLength="50" />
-          <Property Name="CusZH" Type="nvarchar" MaxLength="20" />
+          <Property Name="CusZH" Type="nvarchar" MaxLength="50" />
           <Property Name="CusJYXKZ" Type="nvarchar" MaxLength="50" />
           <Property Name="CusZCZB" Type="float" />
           <Property Name="WhsQYID" Type="int" Nullable="false" />
@@ -577,7 +577,7 @@
           <Property Name="SupJYKSSJ" Type="datetime" />
           <Property Name="SupJXJSSJ" Type="datetime" />
           <Property Name="SupKHH" Type="nvarchar" MaxLength="50" />
-          <Property Name="SupZH" Type="nvarchar" MaxLength="20" />
+          <Property Name="SupZH" Type="nvarchar" MaxLength="50" />
           <Property Name="SupJYXKZ" Type="nvarchar" MaxLength="50" />
           <Property Name="SupZCZB" Type="float" />
           <Property Name="SupType" Type="nvarchar" MaxLength="50" />
@@ -663,7 +663,7 @@
           <Property Name="WhsJYKSSJ" Type="date" />
           <Property Name="WhsJXJSSJ" Type="date" />
           <Property Name="WhsKHH" Type="nvarchar" MaxLength="50" />
-          <Property Name="WhsZH" Type="nvarchar" MaxLength="20" />
+          <Property Name="WhsZH" Type="nvarchar" MaxLength="50" />
           <Property Name="WhsJYXKZ" Type="nvarchar" MaxLength="50" />
           <Property Name="WhsZCZB" Type="float" />
           <Property Name="WhsXKZBH" Type="nvarchar" MaxLength="50" />
@@ -2382,7 +2382,7 @@
           <Property Name="CusJYKSSJ" Type="DateTime" Precision="3" />
           <Property Name="CusJXJSSJ" Type="DateTime" Precision="3" />
           <Property Name="CusKHH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CusZH" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CusZH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CusJYXKZ" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CusZCZB" Type="Double" />
           <Property Name="WhsQYID" Type="Int32" Nullable="false" />
@@ -2684,7 +2684,7 @@
           <Property Name="SupJYKSSJ" Type="DateTime" Precision="3" />
           <Property Name="SupJXJSSJ" Type="DateTime" Precision="3" />
           <Property Name="SupKHH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SupZH" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="SupZH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SupJYXKZ" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SupZCZB" Type="Double" />
           <Property Name="SupType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -2789,7 +2789,7 @@
           <Property Name="WhsJYKSSJ" Type="DateTime" Precision="0" />
           <Property Name="WhsJXJSSJ" Type="DateTime" Precision="0" />
           <Property Name="WhsKHH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WhsZH" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="WhsZH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="WhsJYXKZ" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="WhsZCZB" Type="Double" />
           <Property Name="WhsXKZBH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
