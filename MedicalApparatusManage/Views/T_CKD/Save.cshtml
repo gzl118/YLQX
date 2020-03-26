@@ -218,7 +218,7 @@
                     alertMsg.error('发生错误！');
                 }
             });
-            if (ckid != "" && ckid != "请选择") {
+            if (ckid != "" && ckid != "请选择" && ckid != null) {
                 $.ajax({
                     type: "post",
                     dataType: "json",
@@ -342,6 +342,7 @@
                         $("#cpxkzh").val(tes.XKZH);
                         $("#cpzczh").val(tes.ZCZH);
                         $("#CYTJ").val(tes.CYTJ);
+                        $("#xsCPPRICE").val(tes.CPPrice);
                         dropCkChange(tes.CPID);
                     },
                     error: function () {
@@ -523,6 +524,7 @@
                     @Html.HiddenFor(m => m.Tag, new { Value = "Add", Name = "Tag" })
                     @Html.HiddenFor(m => m.T_CKMXModel.CKMID, new { Name = "DataModel.CKMID" })
                     @Html.HiddenFor(m => m.T_CKMXModel.CPID, new { ID = "supcpId", Name = "DataModel.CPID" })
+                    @Html.HiddenFor(m => m.T_CKMXModel.CPPRICE, new { ID = "xsCPPRICE", Name = "DataModel.CPPRICE" })
                     <input type="hidden" id="CKDID" name="CKDH">
                     <input type="hidden" id="guid">
                     <div style="width:48%;border:1px solid #ffffff;margin:5px;float:left;">

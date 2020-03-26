@@ -354,7 +354,7 @@ namespace MedicalApparatusManage.Controllers
             //sHtml.Append("<tr height=\"40\"><td colspan=\"8\" align=\"left\">&nbsp;购买单位：" + xsqyName + "</td><td align=\"right\">日期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\">单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
             //打印列名
             sHtml.Append("<tr height=\"30\" align=\"center\" ><td>产品名称</td><td>规格</td><td>型号</td><td>生产企业</td><td>单位</td><td>数量</td><td>单价</td>"
-                + "<td>金额</td><td>产品批号</td><td>生产日期</td><td>失效日期</td><td>生产/经营许可证号</td><td>注册证号</td><td>储运条件</td></tr>");
+                + "<td>金额</td><td>产品批号</td><td>生产日期</td><td>失效日期</td><td>生产/经营许可证号</td><td>注册证号</td><td>储运条件</td><td>备注</td></tr>");
 
             //合计
             double total = 0.0;
@@ -391,7 +391,7 @@ namespace MedicalApparatusManage.Controllers
                     cpScqy = ckmx.T_YLCP.T_SupQY1.SupMC;
                 }
                 //单价
-                double cpPrice = ckmx.T_YLCP.XSJG ?? 0.0;
+                double cpPrice = ckmx.CPPRICE ?? 0.0;
                 //产品总价
                 double rowTotal = cpDj * cpPrice;
 
@@ -414,14 +414,15 @@ namespace MedicalApparatusManage.Controllers
                             + "</td><td>" + xkzbh
                             + "</td><td>" + cpzczh
                             + "</td><td>" + cytj
-                            + "</td></tr>");
+                            + "</td></td><td></tr>");
             }
             //打印表尾
-            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"6\">合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"8\">（小写）" + total.ToString("0.00") + "</td></tr>");
+            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"11\">合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"4\">（小写）" + total.ToString("0.00") + "</td></tr>");
             sHtml.Append("</table>");
             sHtml.Append("<table  border=\"0\" width=\"100%\">");
             var xsry = ckdinfo.T_XSD == null ? "" : ckdinfo.T_XSD.XSRY;
-            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"2\" align=\"left\">销售员：&nbsp;" + xsry + "</td><td align=\"left\" colspan=\"4\">复核员：&nbsp;" + ckdinfo.FHR + "</td ><td align =\"left\" colspan=\"4\">出库员：&nbsp;" + ckdinfo.CKCHR + "</td ><td align =\"center\" colspan=\"3\">收货员：&nbsp;</td></tr>");
+            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"2\" align=\"left\">销售员：&nbsp;" + xsry + "</td><td align=\"left\" colspan=\"4\">复核员：&nbsp;" + ckdinfo.FHR + "</td ><td align =\"left\" colspan=\"4\">出库员：&nbsp;" + ckdinfo.CKCHR + "</td ><td align =\"center\" colspan=\"3\">收货人：&nbsp;</td></tr>");
+            sHtml.Append("<tr><td colspan=\"13\">公司地址：" + qy.WhsZCDZ + "</td></tr>");
             sHtml.Append("</table>");
             return sHtml.ToString();
         }
