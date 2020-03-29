@@ -30,15 +30,17 @@
         }
     </script>
     <style>
-        table tr td {
+        #printckd table tr td {
             font-family: 宋体;
+            line-height: 20px;
+            border: 1px solid black;
         }
     </style>
 </head>
 <body>
     <input type="checkbox" onclick="disCol(this)" value="隐藏" />隐藏单价/金额
     <div>
-        <div id="printckd" style="margin:15px;margin-left:12px;font-family: 宋体;">@Html.Raw(ViewData["ParaStr"].ToString())</div>
+        <div id="printckd" style="margin:15px;margin-left:12px;font-family: 宋体;width:800px;">@Html.Raw(ViewData["ParaStr"].ToString())</div>
     </div>
     <div class="pageContent" style="position: absolute;bottom: 5px;">
         @Html.HiddenFor(m => m.DataModel.CKID, new { ID = "CkidMain", Name = "DataModel.CKID" })
