@@ -117,7 +117,8 @@ namespace MedicalApparatusManage.Controllers
             T_CKDModels model = new T_CKDModels();
             model.DataModel = new T_CKD();
             model.DataModel.CKID = id;
-            ViewData["ParaStr"] = ExportExcelPR(id);
+            var str = ExportExcelPR(id);
+            ViewData["ParaStr"] = str.Replace("\r\n", "<br />");
             return View("~/Views/T_CKD/Details.cshtml", model);
         }
 
@@ -294,7 +295,9 @@ namespace MedicalApparatusManage.Controllers
             var strStyle = @"<html><head><style type='text/css'>table tr td {
                 font-family: 宋体;
                 line-height: 20px;
-                border:1px solid black;
+                border:thin solid black;
+                border-right: 0px;
+                border-bottom: 0px;
             }</style></head><body>";
             StringBuilder builder = new StringBuilder();
             builder.Append(strStyle);
@@ -352,9 +355,9 @@ namespace MedicalApparatusManage.Controllers
             //命名导出表格的StringBuilder变量
             StringBuilder sHtml = new StringBuilder(string.Empty);
             //打印表头
-            sHtml.Append("<table style='border-collapse:collapse;'>");
+            sHtml.Append("<table style='border-collapse:collapse;' rull='all'>");
             sHtml.Append("<tr height=\"40\"><td colspan=\"14\" align=\"center\" style='font-size:24px;border:0px;'><b>" + qy.WhsMC + "销售复核出库单" + "</b></td></tr>");
-            sHtml.Append("<tr height=\"40\"><td colspan=\"6\" align=\"left\" style='border:0px;'>购货单位：" + xsqyName + "</td><td align=\"center\"  colspan=\"4\" style='border:0px;'>日 期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\"  colspan=\"4\" style='border:0px;'>单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
+            sHtml.Append("<tr height=\"40\"><td colspan=\"6\" align=\"left\" style='border:0px;'>购货单位：" + xsqyName + "</td><td align=\"center\"  colspan=\"4\" style='border:0px;'>日 期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\"  colspan=\"4\" style='border:0px;'>单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmss") + "</td></tr>");
             sHtml.Append("<tr><td colspan=\"14\" height=\"30\" style='border:0px;'>地址：" + xsqyKFDZ + "</td></tr>");
             //sHtml.Append("</table>");
             //sHtml.Append("<table border=\"1\" style='border-collapse:collapse;border:1px solid black;'>");
@@ -362,7 +365,7 @@ namespace MedicalApparatusManage.Controllers
             //sHtml.Append("<tr height=\"30\" align=\"center\" ><td style='width: 80px;'>产品名称</td><td style='width: 40px;'>规格</td><td style='width: 40px;'>型号</td><td style='width:100px;'>生产企业</td><td style='width: 30px;'>单位</td><td style='width: 30px;'>数量</td><td style='width: 40px;'>单价</td>"
             //    + "<td style='width: 60px;'>金额</td><td style='width: 60px;'>产品批号</td><td style='width: 60px;'>生产日期</td><td style='width: 60px;'>失效日期</td><td style='width: 60px;'>生产/经营许可证号</td><td style='width: 60px;'>注册证号</td><td style='width: 35px;'>储运条件</td><td style='width: 30px;'>备注</td></tr>");
             sHtml.Append("<tr align=\"center\" ><td style='width: 80px;'>产品名称</td><td style='width: 40px;'>规格</td><td style='width: 40px;'>型号</td><td style='width:100px;'>生产企业</td><td style='width: 35px;'>单位</td><td style='width: 35px;'>数量</td><td style='width: 40px;'>单价</td>"
-                + "<td style='width: 60px;'>金额</td><td style='width: 70px;'>产品批号</td><td style='width: 70px;'>生产日期<br/>失效日期</td><td style='width: 75px;'>生产/经营许可证号</td><td style='width: 70px;'>注册证号</td><td style='width: 35px;'>储运条件</td><td style='width: 35px;'>备注</td></tr>");
+                + "<td style='width: 60px;'>金额</td><td style='width: 70px;'>产品批号</td><td style='width: 70px;'>生产日期\r\n失效日期</td><td style='width: 75px;'>生产/经营\r\n许可证号</td><td style='width: 70px;'>注册证号</td><td style='width: 35px;'>储运条件</td><td style='width: 35px;border-right: thin solid black;'>备注</td></tr>");
 
             //合计
             double total = 0.0;
@@ -415,17 +418,17 @@ namespace MedicalApparatusManage.Controllers
                 string cpzczh = ckmx.T_YLCP.CPZCZ;
                 var cytj = ckmx.CYTJ;
                 sHtml.Append("<tr align=\"center\"><td>" + cpName
-                            + "</td><td>" + cpGg + "</td><td>" + cpxh + "</td><td>" + cpScqy
-                            + "</td><td>" + cpDw + "</td><td>" + cpDj.ToString()
-                            + "</td><td>" + cpPrice.ToString("0.00") + "</td><td>" + rowTotal.ToString("0.00") + "</td><td>" + scPh
-                            + "</td><td>" + scrq + "<br/>" + scRq + " </td>"
-                            + "<td>" + xkzbh
-                            + "</td><td>" + cpzczh
+                            + "</td><td style='vnd.ms-excel.numberformat:@'>" + cpGg + "</td><td style='vnd.ms-excel.numberformat:@'>" + cpxh + "</td><td>" + cpScqy
+                            + "</td><td>" + cpDw + "</td><td style='vnd.ms-excel.numberformat:@'>" + cpDj.ToString()
+                            + "</td><td style='vnd.ms-excel.numberformat:@'>" + cpPrice.ToString("0.00") + "</td><td style='vnd.ms-excel.numberformat:@'>" + rowTotal.ToString("0.00") + "</td><td  style='vnd.ms-excel.numberformat:@'>" + scPh
+                            + "</td><td style='vnd.ms-excel.numberformat:@'>" + scrq + "\r\n" + scRq + " </td>"
+                            + "<td style='vnd.ms-excel.numberformat:@'>" + xkzbh
+                            + "</td><td style='vnd.ms-excel.numberformat:@'>" + cpzczh
                             + "</td><td>" + cytj
-                            + "</td></td><td></tr>");
+                            + "</td><td style='border-right: thin solid black;'></td></tr>");
             }
             //打印表尾
-            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"9\">合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"5\">（小写）" + total.ToString("0.00") + "</td></tr>");
+            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"9\" style='border-bottom: thin solid black;'>合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"5\" style='border-bottom: thin solid black;border-right: thin solid black;'>（小写）" + total.ToString("0.00") + "</td></tr>");
             //sHtml.Append("</table>");
             //sHtml.Append("<table  border=\"0\" width=\"500px\" style='width:500px;'>  ");
             var xsry = ckdinfo.T_XSD == null ? "" : ckdinfo.T_XSD.XSRY;
