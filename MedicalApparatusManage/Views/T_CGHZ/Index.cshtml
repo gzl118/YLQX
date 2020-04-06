@@ -113,6 +113,9 @@
                         进货单价(元)
                     </th>
                     <th>
+                        总价(元)
+                    </th>
+                    <th>
                         供货企业
                     </th>
                     <th>
@@ -138,14 +141,20 @@
             <tbody id="wtlb">
                 @if (Model.DataList != null)
                 {
+                    double hzje = 0;
                     foreach (var item in Model.DataList)
                     {
+                        double? cpgs = @item.CPNUM;
+                        double? cpdj = @item.CPPRICE;
+                        double? cpzj = cpgs * cpdj;
+                        hzje += (cpzj ?? 0);
                         <tr target="sid_user">
                             <td>@(item.T_CGD != null && !string.IsNullOrEmpty(item.T_CGD.CGDH) ? item.T_CGD.CGDH : "")</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPMC) ? item.T_YLCP.CPMC : "")</td>
                             <td>@item.CPNUM</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPDW) ? item.T_YLCP.CPDW : "")</td>
                             <td>@item.CPPRICE</td>
+                            <td>@cpzj</td>
                             <td>@(item.T_SupQY != null && !string.IsNullOrEmpty(item.T_SupQY.SupMC) ? item.T_SupQY.SupMC : "")</td>
                             <td>@(item.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_SupQY1.SupMC) ? item.T_SupQY1.SupMC : "")</td>
                             <td>@(item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPGG) ? item.T_YLCP.CPGG : "")</td>
@@ -159,7 +168,8 @@
                     {
                         <tr>
                             <td colspan="2">总计：</td>
-                            <td colspan="10">@ViewBag.TotalNum</td>
+                            <td colspan="3">@ViewBag.TotalNum</td>
+                            <td colspan="8">@hzje</td>
                         </tr>
                     }
                 }

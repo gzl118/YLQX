@@ -131,11 +131,13 @@ namespace MedicalApparatusManage.Controllers
             if (listMX == null)
                 listMX = new List<T_XSMX>();
             var totalNum = 0;
+            var totalPrice = 0d;
             if (listMX != null && listMX.Count > 0)
             {
                 listMX.ForEach(p =>
                 {
                     totalNum += p.CPSL == null ? 0 : (int)p.CPSL;
+                    totalPrice += (p.CPSL ?? 0) * (p.XSJG ?? 0);
                 });
             }
 
@@ -143,16 +145,18 @@ namespace MedicalApparatusManage.Controllers
             StringBuilder sHtml = new StringBuilder(string.Empty);
 
             sHtml.Append("<table border=\"1\" width=\"100%\"  style='border-collapse:collapse;border:1px solid black;'>");
-            sHtml.Append("<tr height=\"30\" align=\"center\"><th>销售单号</th><th>产品名称</th><th>产品数量</th><th>产品单位</th><th>销售单价(元)</th><th>购货企业</th><th>生产企业</th><th>产品规格</th><th>产品型号</th><th>许可证号</th><th>注册证号</th><th>销售日期</th></tr>");
+            sHtml.Append("<tr height=\"30\" align=\"center\"><th>销售单号</th><th>产品名称</th><th>产品数量</th><th>产品单位</th><th>销售单价(元)</th><th>总价(元)</th><th>购货企业</th><th>生产企业</th><th>产品规格</th><th>产品型号</th><th>许可证号</th><th>注册证号</th><th>销售日期</th></tr>");
 
             for (int i = 0; i < listMX.Count; i++)
             {
                 var item = listMX[i];
+                var temptotal = item.CPSL * item.XSJG;
                 sHtml.Append("<tr height=\"30\" align=\"center\"><td>" + (item.T_XSD != null && !string.IsNullOrEmpty(item.T_XSD.XSDH) ? item.T_XSD.XSDH : "")
                             + "</td><td>" + (item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPMC) ? item.T_YLCP.CPMC : "")
                             + "</td><td>" + item.CPSL
                             + "</td><td>" + (item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPDW) ? item.T_YLCP.CPDW : "")
                             + "</td><td>" + item.XSJG
+                            + "</td><td>" + temptotal
                             + "</td><td>" + (item.T_XSD != null && item.T_XSD.T_CusQY != null && !string.IsNullOrEmpty(item.T_XSD.T_CusQY.CusMC) ? item.T_XSD.T_CusQY.CusMC : "")
                             + "</td><td>" + (item.T_YLCP != null && item.T_YLCP.T_SupQY1 != null && !string.IsNullOrEmpty(item.T_YLCP.T_SupQY1.SupMC) ? item.T_YLCP.T_SupQY1.SupMC : "")
                             + "</td><td>" + (item.T_YLCP != null && !string.IsNullOrEmpty(item.T_YLCP.CPGG) ? item.T_YLCP.CPGG : "")
@@ -162,7 +166,7 @@ namespace MedicalApparatusManage.Controllers
                             + "</td><td>" + (item.T_XSD != null && item.T_XSD.XSRQ.HasValue ? item.T_XSD.XSRQ.Value.ToString("yyyy/MM/dd") : "")
                             + "</td></tr>");
             }
-            sHtml.Append("<tr height=\"30\"><td colspan=\"2\">总计：</td><td style='vnd.ms-excel.numberformat:@' colspan=\"10\">" + totalNum.ToString() + "</td></tr>");
+            sHtml.Append("<tr height=\"30\"><td colspan=\"2\">总计：</td><td style='vnd.ms-excel.numberformat:@' colspan=\"3\">" + totalNum.ToString() + "</td><td  style='vnd.ms-excel.numberformat:@' colspan=\"8\">" + totalPrice + "</td></tr>");
             sHtml.Append("</table>");
             return sHtml.ToString();
         }

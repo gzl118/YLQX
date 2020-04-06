@@ -356,7 +356,7 @@ namespace MedicalApparatusManage.Controllers
             StringBuilder sHtml = new StringBuilder(string.Empty);
             //打印表头
             sHtml.Append("<table style='border-collapse:collapse;' rull='all'>");
-            sHtml.Append("<tr height=\"40\"><td colspan=\"14\" align=\"center\" style='font-size:24px;border:0px;'><b>" + qy.WhsMC + "销售复核出库单" + "</b></td></tr>");
+            sHtml.Append("<tr height=\"40\"><td colspan=\"14\" align=\"center\" style='font-size:24px;border:0px;'>" + qy.WhsMC + "销售复核出库单" + "</td></tr>");
             sHtml.Append("<tr height=\"40\"><td colspan=\"6\" align=\"left\" style='border:0px;'>购货单位：" + xsqyName + "</td><td align=\"center\"  colspan=\"4\" style='border:0px;'>日 期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\"  colspan=\"4\" style='border:0px;'>单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmss") + "</td></tr>");
             sHtml.Append("<tr><td colspan=\"14\" height=\"30\" style='border:0px;'>地址：" + xsqyKFDZ + "</td></tr>");
             //sHtml.Append("</table>");
