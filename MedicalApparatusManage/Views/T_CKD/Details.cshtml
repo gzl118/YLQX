@@ -9,40 +9,53 @@
     <title>Details</title>
     <script type="text/javascript" language="javascript">
         function ExportCkd() {
-            document.location.href = "/T_CKD/ExportExcel/" + $("#CkidMain").val();
+            var isdis = 0; //0显示，1隐藏
+            var temp = $("#cbbtn").prop("checked");
+            if (temp == true)
+                isdis = 1;
+            document.location.href = "/T_CKD/ExportExcel?id=" + $("#CkidMain").val() + " &isdis=" + isdis;
         };
         function prickd() {
-            //$("#printckd").jqprint();
             var defaultstyle = "../../Content/css/stylepage.css";
-            $("#printckd").print({
-                iframe: true, mediaPrint: false, stylesheet: defaultstyle
-            });
+            var isDis = $("#cbbtn").prop("checked");
+            if (isDis == true) {
+                $("#printckd2").print({
+                    iframe: true, mediaPrint: false, stylesheet: defaultstyle
+                });
+            }
+            else {
+                $("#printckd").print({
+                    iframe: true, mediaPrint: false, stylesheet: defaultstyle
+                });
+            }
         }
         function disCol(e) {
             if (e.checked == true) {
-                $('table tr').find('td:eq(6)').hide();
-                $('table tr').find('td:eq(7)').hide();
+                $("#printckd2").css("display", "");
+                $("#printckd").css("display", "none");
             }
             else {
-                $('table tr').find('td:eq(6)').show();
-                $('table tr').find('td:eq(7)').show();
+                $("#printckd").css("display", "");
+                $("#printckd2").css("display", "none");
             }
         }
     </script>
     <style>
-        #printckd table tr td {
+        .ckdprint table tr td {
             font-family: 宋体;
-            line-height: 20px;
+            line-height: 15px;
             border: thin solid black;
             border-right: 0px;
             border-bottom: 0px;
+            font-size: 12px;
         }
     </style>
 </head>
 <body>
-    <input type="checkbox" onclick="disCol(this)" value="隐藏" />隐藏单价/金额
-    <div>
-        <div id="printckd" style="margin:15px;margin-left:12px;font-family: 宋体;width:800px;">@Html.Raw(ViewData["ParaStr"].ToString())</div>
+    <input type="checkbox" onclick="disCol(this)" value="隐藏" id="cbbtn" />隐藏单价/金额
+    <div style="overflow-y:auto;height:400px;">
+        <div id="printckd" style="margin:15px;margin-left:12px;font-family: 宋体;width:750px;" class="ckdprint">@Html.Raw(ViewData["ParaStr"].ToString())</div>
+        <div id="printckd2" style="margin:15px;margin-left:12px;font-family: 宋体;width:700px;display:none;" class="ckdprint">@Html.Raw(ViewData["ParaStr2"].ToString())</div>
     </div>
     <div class="pageContent" style="position: absolute;bottom: 5px;">
         @Html.HiddenFor(m => m.DataModel.CKID, new { ID = "CkidMain", Name = "DataModel.CKID" })

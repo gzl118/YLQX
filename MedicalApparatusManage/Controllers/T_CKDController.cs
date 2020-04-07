@@ -118,7 +118,9 @@ namespace MedicalApparatusManage.Controllers
             model.DataModel = new T_CKD();
             model.DataModel.CKID = id;
             var str = ExportExcelPR(id);
+            var str2 = ExportExcelPR2(id);
             ViewData["ParaStr"] = str.Replace("\r\n", "<br />");
+            ViewData["ParaStr2"] = str2.Replace("\r\n", "<br />");
             return View("~/Views/T_CKD/Details.cshtml", model);
         }
 
@@ -177,127 +179,20 @@ namespace MedicalApparatusManage.Controllers
         #region 导出excel及打印功能
 
         [CheckLogin()]
-        public void ExportExcel(System.Int32 id)
+        public void ExportExcel(System.Int32 id, System.Int32 isdis = 0)
         {
-            #region 
-            //接收需要导出的数据
-            //T_CKD ckdinfo = new T_CKD();
-
-            //List<T_CKD> list = T_CKDDomain.GetInstance().GetListModelById(id);
-            //if (list.Count > 0)
-            //{
-            //    ckdinfo = list[0];
-            //}
-
-            //int xsqyid = 0;
-            //if (ckdinfo.T_XSD != null && ckdinfo.T_XSD.KHID.HasValue)
-            //{
-            //    xsqyid = ckdinfo.T_XSD.KHID.Value;
-            //}
-
-            //T_CusQY cusqy = T_CusQYDomain.GetInstance().GetModelById(xsqyid);
-            ////购货企业名称
-            ////购货企业名称
-            //string xsqyName = (cusqy != null && !string.IsNullOrEmpty(cusqy.CusMC)) ? cusqy.CusMC : "";
-            //string xsqyKFDZ = (cusqy != null) ? cusqy.CusKFDZ : ""; //库房地址
-
-            //List<T_CKMX> ckmxList = T_CKMXDomain.GetInstance().GetListModelById(id);
-            //T_WhsQY qy = new T_WhsQY();
-            //Expression<Func<T_WhsQY, bool>> where = PredicateBuilder.True<T_WhsQY>();
-            //var lst = T_WhsQYDomain.GetInstance().GetAllModels<int>(where);
-            //if (lst != null && lst.Count > 0)
-            //{
-            //    qy = lst[0];
-            //}
-
-            ////命名导出表格的StringBuilder变量
-            //StringBuilder sHtml = new StringBuilder(string.Empty);
-            ////打印表头
-            //sHtml.Append("<table border=\"0\" width=\"100%\">");
-            //sHtml.Append("<tr height=\"40\"><td colspan=\"10\" align=\"center\" style='font-size:24px'><b>" + qy.WhsMC + "销售复核出库单" + "</b></td></tr>");
-            //sHtml.Append("<tr height=\"40\"><td colspan=\"8\" align=\"left\">购货单位：" + xsqyName + "</td><td align=\"right\">日 期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\">单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
-            //sHtml.Append("<tr><td colspan=\"10\">地址：" + xsqyKFDZ + "<td></tr>");
-            //sHtml.Append("</table>");
-            //sHtml.Append("<table border=\"1\" width=\"100%\">");
-            ////sHtml.Append("<tr height=\"40\"><td colspan=\"10\" align=\"center\" style='font-size:24px'><b>出库单" + "</b></td></tr>");
-            ////sHtml.Append("<tr height=\"40\"><td colspan=\"8\" align=\"left\">&nbsp;购买单位：" + xsqyName + "</td><td align=\"right\">日期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\">单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "</td></tr>");
-            ////打印列名
-            //sHtml.Append("<tr height=\"30\" align=\"center\" ><td>产品名称</td><td>产品规格（型号）</td><td>生产企业</td><td>生产日期</td><td>单位</td><td>数量</td><td>单价</td>"
-            //    + "<td>金额</td><td>产品批号</td><td>产品有效期</td><td>经营许可证号</td><td>注册证号</td><td>储运条件</td></tr>");
-
-            ////合计
-            //double total = 0.0;
-            //double NumCpNum = 0.0;
-            //for (int i = 0; i < ckmxList.Count; i++)
-            //{
-            //    T_CKMX ckmx = ckmxList[i];
-            //    //产品名称
-            //    string cpName = ckmx.T_YLCP.CPMC;
-            //    //规格
-            //    string cpGg = ckmx.T_YLCP.CPGG ?? "";
-            //    //单位
-            //    string cpDw = ckmx.T_YLCP.CPDW ?? "";
-            //    //数量
-            //    double cpDj = ckmx.CPNUM ?? 0;
-            //    //产品批号
-            //    string scPh = ckmx.CPPH ?? "";
-            //    //产品有效期
-            //    string scRq = "";
-            //    if (ckmx.CPYXQ != null)
-            //    {
-            //        scRq = ckmx.CPYXQ.Value.ToString("yyyyMMdd");
-            //    }
-            //    var scrq = "";
-            //    if (ckmx.CPSCRQ != null)
-            //    {
-            //        scrq = ckmx.CPSCRQ.Value.ToString("yyyyMMdd");
-            //    }
-            //    //生产企业
-            //    string cpScqy = "";
-            //    if (ckmx.T_YLCP != null && ckmx.T_YLCP.T_SupQY1 != null && !string.IsNullOrEmpty(ckmx.T_YLCP.T_SupQY1.SupMC))
-            //    {
-            //        cpScqy = ckmx.T_YLCP.T_SupQY1.SupMC;
-            //    }
-            //    //单价
-            //    double cpPrice = ckmx.T_YLCP.XSJG ?? 0.0;
-            //    //产品总价
-            //    double rowTotal = cpDj * cpPrice;
-
-            //    total = total + rowTotal;
-            //    NumCpNum = NumCpNum + cpDj;
-            //    //经营许可证号
-            //    string xkzbh = "";
-            //    if (ckmx.T_YLCP != null && ckmx.T_YLCP.T_SupQY1 != null && !string.IsNullOrEmpty(ckmx.T_YLCP.T_SupQY1.SupXKZBH))
-            //    {
-            //        xkzbh = ckmx.T_YLCP.T_SupQY1.SupXKZBH;
-            //    }
-            //    //注册证号
-            //    string cpzczh = ckmx.T_YLCP.CPZCZ;
-            //    var cytj = ckmx.CYTJ;
-            //    sHtml.Append("<tr height=\"30\" align=\"center\"><td>" + cpName
-            //                + "</td><td>" + cpGg + "</td><td>" + cpScqy
-            //                 + "</td><td>" + scrq
-            //                + "</td><td>" + cpDw + "</td><td>" + cpDj.ToString()
-            //                + "</td><td>" + cpPrice.ToString("0.000") + "</td><td>" + rowTotal.ToString("0.000") + "</td><td>" + scPh + "</td><td>" + scRq
-            //                + "</td><td>" + xkzbh
-            //                + "</td><td>" + cpzczh
-            //                + "</td><td>" + cytj
-            //                + "</td></tr>");
-            //}
-            ////打印表尾
-            //sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"5\">合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"8\">（小写）" + total.ToString("0.000") + "</td></tr>");
-            //sHtml.Append("</table>");
-            //sHtml.Append("<table  border=\"0\" width=\"100%\">");
-            //sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"8\" align=\"left\">销售员：&nbsp;&nbsp</td><td align=\"right\">复核员：&nbsp;&nbsp</td><td align=\"right\">出库员：&nbsp;&nbsp</td><td align=\"center\">收货员：&nbsp;&nbsp</td></tr>");
-            //sHtml.Append("</table>");
-            #endregion
-            var str = ExportExcelPR(id);
+            var str = "";
+            if (isdis == 0)
+                str = ExportExcelPR(id);
+            else
+                str = ExportExcelPR2(id);
             var strStyle = @"<html><head><style type='text/css'>table tr td {
                 font-family: 宋体;
-                line-height: 20px;
+                line-height: 15px;
                 border:thin solid black;
                 border-right: 0px;
                 border-bottom: 0px;
+                font-size: 12px;
             }</style></head><body>";
             StringBuilder builder = new StringBuilder();
             builder.Append(strStyle);
@@ -359,13 +254,8 @@ namespace MedicalApparatusManage.Controllers
             sHtml.Append("<tr height=\"40\"><td colspan=\"14\" align=\"center\" style='font-size:24px;border:0px;'>" + qy.WhsMC + "销售复核出库单" + "</td></tr>");
             sHtml.Append("<tr height=\"40\"><td colspan=\"6\" align=\"left\" style='border:0px;'>购货单位：" + xsqyName + "</td><td align=\"center\"  colspan=\"4\" style='border:0px;'>日 期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\"  colspan=\"4\" style='border:0px;'>单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmss") + "</td></tr>");
             sHtml.Append("<tr><td colspan=\"14\" height=\"30\" style='border:0px;'>地址：" + xsqyKFDZ + "</td></tr>");
-            //sHtml.Append("</table>");
-            //sHtml.Append("<table border=\"1\" style='border-collapse:collapse;border:1px solid black;'>");
-            //打印列名
-            //sHtml.Append("<tr height=\"30\" align=\"center\" ><td style='width: 80px;'>产品名称</td><td style='width: 40px;'>规格</td><td style='width: 40px;'>型号</td><td style='width:100px;'>生产企业</td><td style='width: 30px;'>单位</td><td style='width: 30px;'>数量</td><td style='width: 40px;'>单价</td>"
-            //    + "<td style='width: 60px;'>金额</td><td style='width: 60px;'>产品批号</td><td style='width: 60px;'>生产日期</td><td style='width: 60px;'>失效日期</td><td style='width: 60px;'>生产/经营许可证号</td><td style='width: 60px;'>注册证号</td><td style='width: 35px;'>储运条件</td><td style='width: 30px;'>备注</td></tr>");
-            sHtml.Append("<tr align=\"center\" ><td style='width: 80px;'>产品名称</td><td style='width: 40px;'>规格</td><td style='width: 40px;'>型号</td><td style='width:100px;'>生产企业</td><td style='width: 35px;'>单位</td><td style='width: 35px;'>数量</td><td style='width: 40px;'>单价</td>"
-                + "<td style='width: 60px;'>金额</td><td style='width: 70px;'>产品批号</td><td style='width: 70px;'>生产日期\r\n失效日期</td><td style='width: 75px;'>生产/经营\r\n许可证号</td><td style='width: 70px;'>注册证号</td><td style='width: 35px;'>储运条件</td><td style='width: 35px;border-right: thin solid black;'>备注</td></tr>");
+            sHtml.Append("<tr align=\"center\" ><td style='width: 80px;' >产品名称</td><td style='width: 40px;' >规格</td><td style='width: 40px;' >型号</td><td style='width:100px;' >生产企业</td><td style='width: 35px;' >单位</td><td style='width: 35px;' >数量</td><td style='width: 40px;' >单价</td>"
+                + "<td style='width: 60px;' >金额</td><td style='width: 70px;' >产品批号</td><td style='width: 60px;'>生产日期\r\n---------\r\n失效日期</td><td style='width: 60px;' >生产/经营\r\n许可证号</td><td style='width: 60px;' >注册证号</td><td style='width: 35px;' >储运条件</td><td style='width: 35px;border-right: thin solid black;' >备注</td></tr>");
 
             //合计
             double total = 0.0;
@@ -417,23 +307,128 @@ namespace MedicalApparatusManage.Controllers
                 //注册证号
                 string cpzczh = ckmx.T_YLCP.CPZCZ;
                 var cytj = ckmx.CYTJ;
-                sHtml.Append("<tr align=\"center\"><td>" + cpName
-                            + "</td><td style='vnd.ms-excel.numberformat:@'>" + cpGg + "</td><td style='vnd.ms-excel.numberformat:@'>" + cpxh + "</td><td>" + cpScqy
-                            + "</td><td>" + cpDw + "</td><td style='vnd.ms-excel.numberformat:@'>" + cpDj.ToString()
-                            + "</td><td style='vnd.ms-excel.numberformat:@'>" + cpPrice.ToString("0.00") + "</td><td style='vnd.ms-excel.numberformat:@'>" + rowTotal.ToString("0.00") + "</td><td  style='vnd.ms-excel.numberformat:@'>" + scPh
-                            + "</td><td style='vnd.ms-excel.numberformat:@'>" + scrq + "\r\n" + scRq + " </td>"
-                            + "<td style='vnd.ms-excel.numberformat:@'>" + xkzbh
-                            + "</td><td style='vnd.ms-excel.numberformat:@'>" + cpzczh
-                            + "</td><td>" + cytj
-                            + "</td><td style='border-right: thin solid black;'></td></tr>");
+                sHtml.Append("<tr align=\"center\"><td >" + cpName
+                            + "</td><td style='vnd.ms-excel.numberformat:@' >" + cpGg + "</td><td style='vnd.ms-excel.numberformat:@' >" + cpxh + "</td><td >" + cpScqy
+                            + "</td><td >" + cpDw + "</td><td style='vnd.ms-excel.numberformat:@' >" + cpDj.ToString()
+                            + "</td><td style='vnd.ms-excel.numberformat:@' >" + cpPrice.ToString("0.00") + "</td><td style='vnd.ms-excel.numberformat:@'  >" + rowTotal.ToString("0.00") + "</td><td  style='vnd.ms-excel.numberformat:@' >" + scPh
+                            + "</td><td style='vnd.ms-excel.numberformat:@'>" + scrq + "\r\n" + "---------" + "\r\n" + scRq + " </td>"
+                            + "<td style='vnd.ms-excel.numberformat:@' >" + xkzbh
+                            + "</td><td style='vnd.ms-excel.numberformat:@' >" + cpzczh
+                            + "</td><td >" + cytj
+                            + "</td><td style='border-right: thin solid black;' ></td></tr>");
             }
             //打印表尾
-            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"9\" style='border-bottom: thin solid black;'>合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"5\" style='border-bottom: thin solid black;border-right: thin solid black;'>（小写）" + total.ToString("0.00") + "</td></tr>");
-            //sHtml.Append("</table>");
-            //sHtml.Append("<table  border=\"0\" width=\"500px\" style='width:500px;'>  ");
+            sHtml.Append("<tr id='trtotal' height=\"40\" align=\"center\"><td colspan=\"9\" style='border-bottom: thin solid black;'>合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"5\" style='border-bottom: thin solid black;border-right: thin solid black;'>（小写）" + total.ToString("0.00") + "</td></tr>");
             var xsry = ckdinfo.T_XSD == null ? "" : ckdinfo.T_XSD.XSRY;
             sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"3\" align=\"left\" style='border:0px;'>销售员：&nbsp;" + xsry + "</td><td align=\"center\" colspan=\"4\" style='border:0px;'>复核员：&nbsp;" + ckdinfo.FHR + "</td ><td align =\"center\" colspan=\"4\" style='border:0px;'>出库员：&nbsp;" + ckdinfo.CKCHR + "</td ><td align =\"center\" colspan=\"3\" style='border:0px;'>收货人：&nbsp;</td></tr>");
             sHtml.Append("<tr><td colspan=\"14\" style='border:0px;'>公司地址：" + qy.WhsZCDZ + "</td></tr>");
+            sHtml.Append("</table>");
+            return sHtml.ToString();
+        }
+
+        public string ExportExcelPR2(System.Int32 id)
+        {
+            //获取需要打印的数据
+            T_CKD ckdinfo = new T_CKD();
+
+            List<T_CKD> list = T_CKDDomain.GetInstance().GetListModelById(id);
+            if (list.Count > 0)
+            {
+                ckdinfo = list[0];
+            }
+
+            int xsqyid = 0;
+            if (ckdinfo.T_XSD != null && ckdinfo.T_XSD.KHID.HasValue)
+            {
+                xsqyid = ckdinfo.T_XSD.KHID.Value;
+            }
+
+            T_CusQY cusqy = T_CusQYDomain.GetInstance().GetModelById(xsqyid);
+            //购货企业名称
+            string xsqyName = (cusqy != null && !string.IsNullOrEmpty(cusqy.CusMC)) ? cusqy.CusMC : "";
+            string xsqyKFDZ = (cusqy != null) ? cusqy.CusKFDZ : ""; //库房地址
+
+            List<T_CKMX> ckmxList = T_CKMXDomain.GetInstance().GetListModelById(id);
+            T_WhsQY qy = new T_WhsQY();
+            Expression<Func<T_WhsQY, bool>> where = PredicateBuilder.True<T_WhsQY>();
+            var lst = T_WhsQYDomain.GetInstance().GetAllModels<int>(where);
+            if (lst != null && lst.Count > 0)
+            {
+                qy = lst[0];
+            }
+            //命名导出表格的StringBuilder变量
+            StringBuilder sHtml = new StringBuilder(string.Empty);
+            //打印表头
+            sHtml.Append("<table style='border-collapse:collapse;' rull='all'>");
+            sHtml.Append("<tr height=\"40\"><td colspan=\"12\" align=\"center\" style='font-size:24px;border:0px;'>" + qy.WhsMC + "销售复核出库单" + "</td></tr>");
+            sHtml.Append("<tr height=\"40\"><td colspan=\"5\" align=\"left\" style='border:0px;'>购货单位：" + xsqyName + "</td><td align=\"center\"  colspan=\"3\" style='border:0px;'>日 期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\"  colspan=\"4\" style='border:0px;'>单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmss") + "</td></tr>");
+            sHtml.Append("<tr><td colspan=\"12\" height=\"30\" style='border:0px;'>地址：" + xsqyKFDZ + "</td></tr>");
+            sHtml.Append("<tr align=\"center\" ><td style='width: 100px;' >产品名称</td><td style='width: 40px;' >规格</td><td style='width: 40px;' >型号</td><td style='width:130px;' >生产企业</td><td style='width: 35px;' >单位</td><td style='width: 35px;' >数量</td><td style='width: 70px;' >产品批号</td><td style='width: 60px;'>生产日期\r\n---------\r\n失效日期</td><td style='width: 60px;' >生产/经营\r\n许可证号</td><td style='width: 60px;' >注册证号</td><td style='width: 35px;' >储运条件</td><td style='width: 35px;border-right: thin solid black;' >备注</td></tr>");
+
+            //合计
+            double total = 0.0;
+            double NumCpNum = 0.0;
+            for (int i = 0; i < ckmxList.Count; i++)
+            {
+                T_CKMX ckmx = ckmxList[i];
+                //产品名称
+                string cpName = ckmx.T_YLCP.CPMC;
+                //规格
+                string cpGg = ckmx.T_YLCP.CPGG ?? "";
+                var cpxh = ckmx.T_YLCP.CPXH ?? "";
+                //单位
+                string cpDw = ckmx.T_YLCP.CPDW ?? "";
+                //数量
+                double cpDj = ckmx.CPNUM ?? 0;
+                //产品批号
+                string scPh = ckmx.CPPH ?? "";
+                //产品有效期
+                string scRq = "";
+                if (ckmx.CPYXQ != null)
+                {
+                    scRq = ckmx.CPYXQ.Value.ToString("yyyyMMdd");
+                }
+                var scrq = "";
+                if (ckmx.CPSCRQ != null)
+                {
+                    scrq = ckmx.CPSCRQ.Value.ToString("yyyyMMdd");
+                }
+                //生产企业
+                string cpScqy = "";
+                if (ckmx.T_YLCP != null && ckmx.T_YLCP.T_SupQY1 != null && !string.IsNullOrEmpty(ckmx.T_YLCP.T_SupQY1.SupMC))
+                {
+                    cpScqy = ckmx.T_YLCP.T_SupQY1.SupMC;
+                }
+                //单价
+                double cpPrice = ckmx.CPPRICE ?? 0.0;
+                //产品总价
+                double rowTotal = cpDj * cpPrice;
+
+                total = total + rowTotal;
+                NumCpNum = NumCpNum + cpDj;
+                //经营许可证号
+                string xkzbh = "";
+                if (ckmx.T_YLCP != null && ckmx.T_YLCP.T_SupQY1 != null && !string.IsNullOrEmpty(ckmx.T_YLCP.T_SupQY1.SupXKZBH))
+                {
+                    xkzbh = ckmx.T_YLCP.T_SupQY1.SupXKZBH;
+                }
+                //注册证号
+                string cpzczh = ckmx.T_YLCP.CPZCZ;
+                var cytj = ckmx.CYTJ;
+                sHtml.Append("<tr align=\"center\"><td >" + cpName
+                            + "</td><td style='vnd.ms-excel.numberformat:@' >" + cpGg + "</td><td style='vnd.ms-excel.numberformat:@' >" + cpxh + "</td><td >" + cpScqy
+                            + "</td><td >" + cpDw + "</td><td style='vnd.ms-excel.numberformat:@'  >" + rowTotal.ToString("0.00") + "</td><td  style='vnd.ms-excel.numberformat:@' >" + scPh
+                            + "</td><td style='vnd.ms-excel.numberformat:@'>" + scrq + "\r\n" + "---------" + "\r\n" + scRq + " </td>"
+                            + "<td style='vnd.ms-excel.numberformat:@' >" + xkzbh
+                            + "</td><td style='vnd.ms-excel.numberformat:@' >" + cpzczh
+                            + "</td><td >" + cytj
+                            + "</td><td style='border-right: thin solid black;' ></td></tr>");
+            }
+            //打印表尾
+            sHtml.Append("<tr id='trtotal' height=\"40\" align=\"center\"><td colspan=\"7\" style='border-bottom: thin solid black;'>合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"5\" style='border-bottom: thin solid black;border-right: thin solid black;'>（小写）" + total.ToString("0.00") + "</td></tr>");
+            var xsry = ckdinfo.T_XSD == null ? "" : ckdinfo.T_XSD.XSRY;
+            sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"3\" align=\"left\" style='border:0px;'>销售员：&nbsp;" + xsry + "</td><td align=\"center\" colspan=\"3\" style='border:0px;'>复核员：&nbsp;" + ckdinfo.FHR + "</td ><td align =\"center\" colspan=\"3\" style='border:0px;'>出库员：&nbsp;" + ckdinfo.CKCHR + "</td ><td align =\"center\" colspan=\"3\" style='border:0px;'>收货人：&nbsp;</td></tr>");
+            sHtml.Append("<tr><td colspan=\"12\" style='border:0px;'>公司地址：" + qy.WhsZCDZ + "</td></tr>");
             sHtml.Append("</table>");
             return sHtml.ToString();
         }
