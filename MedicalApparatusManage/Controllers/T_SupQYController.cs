@@ -94,7 +94,7 @@ namespace MedicalApparatusManage.Controllers
                 evalModel.resultCount = resultCount;
 
                 //企业类型
-                string[] QYL = { "--请选择--", "国有企业", "集体企业", "股份合作企业", "有限责任公司", "联营企业", "中外合资经营企业", "中外合作经营企业" };
+                string[] QYL = { "--请选择--", "国有企业", "集体企业", "股份合作企业", "有限责任公司", "联营企业", "中外合资经营企业", "中外合作经营企业", "其他有限责任公司分公司", "其他有限责任公司", "其他" };
                 List<SelectListItem> QYlist = new List<SelectListItem>();
                 foreach (string s in QYL)
                 {
