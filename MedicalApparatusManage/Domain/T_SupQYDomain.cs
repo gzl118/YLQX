@@ -142,5 +142,27 @@ namespace MedicalApparatusManage.Domain
                 }
             }
         }
+        public int Delete(int id)
+        {
+            using (MedicalApparatusManageEntities hContext1 = new MedicalApparatusManageEntities())
+            {
+                try
+                {
+                    var dbchild = hContext1.Set<T_QYZZ>();
+                    var lst = dbchild.Where(p => p.QYID == id);
+                    if (lst != null && lst.Count() > 0)
+                        dbchild.RemoveRange(lst);
+                    DbSet<T_SupQY> db = hContext1.Set<T_SupQY>();
+                    var model = db.Find(id);
+                    db.Remove(model);
+                    return hContext1.SaveChanges();
+
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+            }
+        }
     }
 }

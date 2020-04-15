@@ -236,7 +236,7 @@ namespace MedicalApparatusManage.Controllers
                 Response.Write("{\"statusCode\":\"300\", \"message\":\"该企业下已有采购单，不能删除！\"}");
                 return;
             }
-            int result = T_SupQYDomain.GetInstance().DeleteModelById(id);
+            int result = T_SupQYDomain.GetInstance().Delete(id);
             Response.ContentType = "text/json";
             if (result > 0)
                 Response.Write("{\"statusCode\":\"200\", \"message\":\"操作成功\",\"callbackType\":\"forward\",\"forwardUrl\":\"/T_SupQY/Index\"}");
