@@ -82,6 +82,10 @@ namespace MedicalApparatusManage.Domain
                     hContext1.SaveChanges();
                     return 1;
                 }
+                catch (DbEntityValidationException dbEx)
+                {
+                    return 0;
+                }
                 catch (Exception ex)
                 {
                     return 0;

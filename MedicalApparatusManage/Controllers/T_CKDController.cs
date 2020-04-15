@@ -192,7 +192,7 @@ namespace MedicalApparatusManage.Controllers
                 border:thin solid black;
                 border-right: 0px;
                 border-bottom: 0px;
-                font-size: 12px;
+                font-size: 13px;
             }</style></head><body>";
             StringBuilder builder = new StringBuilder();
             builder.Append(strStyle);
@@ -252,10 +252,10 @@ namespace MedicalApparatusManage.Controllers
             //打印表头
             sHtml.Append("<table style='border-collapse:collapse;' rull='all'>");
             sHtml.Append("<tr height=\"40\"><td colspan=\"14\" align=\"center\" style='font-size:24px;border:0px;'>" + qy.WhsMC + "销售复核出库单" + "</td></tr>");
-            sHtml.Append("<tr height=\"40\"><td colspan=\"6\" align=\"left\" style='border:0px;'>购货单位：" + xsqyName + "</td><td align=\"center\"  colspan=\"4\" style='border:0px;'>日 期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\"  colspan=\"4\" style='border:0px;'>单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmss") + "</td></tr>");
+            sHtml.Append("<tr height=\"40\"><td colspan=\"6\" align=\"left\" style='border:0px;'>购货单位：" + xsqyName + "</td><td align=\"center\"  colspan=\"4\" style='border:0px;'>日 期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\"  colspan=\"4\" style='border:0px;padding-right:10px;'>单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmss") + "</td></tr>");
             sHtml.Append("<tr><td colspan=\"14\" height=\"30\" style='border:0px;'>地址：" + xsqyKFDZ + "</td></tr>");
-            sHtml.Append("<tr align=\"center\" ><td style='width: 80px;' >产品名称</td><td style='width: 40px;' >规格</td><td style='width: 40px;' >型号</td><td style='width:100px;' >生产企业</td><td style='width: 35px;' >单位</td><td style='width: 35px;' >数量</td><td style='width: 40px;' >单价</td>"
-                + "<td style='width: 60px;' >金额</td><td style='width: 70px;' >产品批号</td><td style='width: 60px;'>生产日期\r\n---------\r\n失效日期</td><td style='width: 60px;' >生产/经营\r\n许可证号</td><td style='width: 60px;' >注册证号</td><td style='width: 35px;' >储运条件</td><td style='width: 35px;border-right: thin solid black;' >备注</td></tr>");
+            sHtml.Append("<tr align=\"center\" ><td style='width: 80px;' >产品名称</td><td style='width: 40px;' >规格</td><td style='width: 40px;' >型号</td><td style='width:98px;' >生产企业</td><td style='width: 35px;' >单位</td><td style='width: 35px;' >数量</td><td style='width: 40px;' >单价</td>"
+                + "<td style='width: 60px;' >金额</td><td style='width: 70px;' >产品批号</td><td style='width: 65px;'>生产日期\r\n--------\r\n失效日期</td><td style='width: 65px;' >生产/经营\r\n许可证号</td><td style='width: 60px;' >注册证号</td><td style='width: 35px;' >储运条件</td><td style='width: 32px;border-right: thin solid black;' >备注</td></tr>");
 
             //合计
             double total = 0.0;
@@ -311,14 +311,14 @@ namespace MedicalApparatusManage.Controllers
                             + "</td><td style='vnd.ms-excel.numberformat:@' >" + cpGg + "</td><td style='vnd.ms-excel.numberformat:@' >" + cpxh + "</td><td >" + cpScqy
                             + "</td><td >" + cpDw + "</td><td style='vnd.ms-excel.numberformat:@' >" + cpDj.ToString()
                             + "</td><td style='vnd.ms-excel.numberformat:@' >" + cpPrice.ToString("0.00") + "</td><td style='vnd.ms-excel.numberformat:@'  >" + rowTotal.ToString("0.00") + "</td><td  style='vnd.ms-excel.numberformat:@' >" + scPh
-                            + "</td><td style='vnd.ms-excel.numberformat:@'>" + scrq + "\r\n" + "---------" + "\r\n" + scRq + " </td>"
+                            + "</td><td style='vnd.ms-excel.numberformat:@'>" + scrq + "\r\n" + "--------" + "\r\n" + scRq + " </td>"
                             + "<td style='vnd.ms-excel.numberformat:@' >" + xkzbh
                             + "</td><td style='vnd.ms-excel.numberformat:@' >" + cpzczh
                             + "</td><td >" + cytj
                             + "</td><td style='border-right: thin solid black;' ></td></tr>");
             }
             //打印表尾
-            sHtml.Append("<tr id='trtotal' height=\"40\" align=\"center\"><td colspan=\"9\" style='border-bottom: thin solid black;'>合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"5\" style='border-bottom: thin solid black;border-right: thin solid black;'>（小写）" + total.ToString("0.00") + "</td></tr>");
+            sHtml.Append("<tr id='trtotal' height=\"40\" align=\"center\"><td colspan=\"9\" style='border-bottom: thin solid black;font-size:16px;'>合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"5\" style='border-bottom: thin solid black;border-right: thin solid black;font-size:16px;'>（小写）" + total.ToString("0.00") + "</td></tr>");
             var xsry = ckdinfo.T_XSD == null ? "" : ckdinfo.T_XSD.XSRY;
             sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"3\" align=\"left\" style='border:0px;'>销售员：&nbsp;" + xsry + "</td><td align=\"center\" colspan=\"4\" style='border:0px;'>复核员：&nbsp;" + ckdinfo.FHR + "</td ><td align =\"center\" colspan=\"4\" style='border:0px;'>出库员：&nbsp;" + ckdinfo.CKCHR + "</td ><td align =\"center\" colspan=\"3\" style='border:0px;'>收货人：&nbsp;</td></tr>");
             sHtml.Append("<tr><td colspan=\"14\" style='border:0px;'>公司地址：" + qy.WhsZCDZ + "</td></tr>");
@@ -361,9 +361,9 @@ namespace MedicalApparatusManage.Controllers
             //打印表头
             sHtml.Append("<table style='border-collapse:collapse;' rull='all'>");
             sHtml.Append("<tr height=\"40\"><td colspan=\"12\" align=\"center\" style='font-size:24px;border:0px;'>" + qy.WhsMC + "销售复核出库单" + "</td></tr>");
-            sHtml.Append("<tr height=\"40\"><td colspan=\"5\" align=\"left\" style='border:0px;'>购货单位：" + xsqyName + "</td><td align=\"center\"  colspan=\"3\" style='border:0px;'>日 期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\"  colspan=\"4\" style='border:0px;'>单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmss") + "</td></tr>");
+            sHtml.Append("<tr height=\"40\"><td colspan=\"5\" align=\"left\" style='border:0px;'>购货单位：" + xsqyName + "</td><td align=\"center\"  colspan=\"3\" style='border:0px;'>日 期：" + DateTime.Now.ToString("yyyy-MM-dd") + "</td><td align=\"right\"  colspan=\"4\" style='border:0px;padding-right:10px;'>单据编号：" + DateTime.Now.ToString("yyyyMMddHHmmss") + "</td></tr>");
             sHtml.Append("<tr><td colspan=\"12\" height=\"30\" style='border:0px;'>地址：" + xsqyKFDZ + "</td></tr>");
-            sHtml.Append("<tr align=\"center\" ><td style='width: 100px;' >产品名称</td><td style='width: 40px;' >规格</td><td style='width: 40px;' >型号</td><td style='width:130px;' >生产企业</td><td style='width: 35px;' >单位</td><td style='width: 35px;' >数量</td><td style='width: 70px;' >产品批号</td><td style='width: 60px;'>生产日期\r\n---------\r\n失效日期</td><td style='width: 60px;' >生产/经营\r\n许可证号</td><td style='width: 60px;' >注册证号</td><td style='width: 35px;' >储运条件</td><td style='width: 35px;border-right: thin solid black;' >备注</td></tr>");
+            sHtml.Append("<tr align=\"center\" ><td style='width: 100px;' >产品名称</td><td style='width: 40px;' >规格</td><td style='width: 40px;' >型号</td><td style='width:128px;' >生产企业</td><td style='width: 35px;' >单位</td><td style='width: 35px;' >数量</td><td style='width: 70px;' >产品批号</td><td style='width: 65px;'>生产日期\r\n--------\r\n失效日期</td><td style='width: 65px;' >生产/经营\r\n许可证号</td><td style='width: 60px;' >注册证号</td><td style='width: 35px;' >储运条件</td><td style='width: 32px;border-right: thin solid black;' >备注</td></tr>");
 
             //合计
             double total = 0.0;
@@ -418,14 +418,14 @@ namespace MedicalApparatusManage.Controllers
                 sHtml.Append("<tr align=\"center\"><td >" + cpName
                             + "</td><td style='vnd.ms-excel.numberformat:@' >" + cpGg + "</td><td style='vnd.ms-excel.numberformat:@' >" + cpxh + "</td><td >" + cpScqy
                             + "</td><td >" + cpDw + "</td><td style='vnd.ms-excel.numberformat:@'  >" + rowTotal.ToString("0.00") + "</td><td  style='vnd.ms-excel.numberformat:@' >" + scPh
-                            + "</td><td style='vnd.ms-excel.numberformat:@'>" + scrq + "\r\n" + "---------" + "\r\n" + scRq + " </td>"
+                            + "</td><td style='vnd.ms-excel.numberformat:@'>" + scrq + "\r\n" + "--------" + "\r\n" + scRq + " </td>"
                             + "<td style='vnd.ms-excel.numberformat:@' >" + xkzbh
                             + "</td><td style='vnd.ms-excel.numberformat:@' >" + cpzczh
                             + "</td><td >" + cytj
                             + "</td><td style='border-right: thin solid black;' ></td></tr>");
             }
             //打印表尾
-            sHtml.Append("<tr id='trtotal' height=\"40\" align=\"center\"><td colspan=\"7\" style='border-bottom: thin solid black;'>合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"5\" style='border-bottom: thin solid black;border-right: thin solid black;'>（小写）" + total.ToString("0.00") + "</td></tr>");
+            sHtml.Append("<tr id='trtotal' height=\"40\" align=\"center\"><td colspan=\"7\" style='border-bottom: thin solid black;font-size:16px;'>合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"5\" style='border-bottom: thin solid black;border-right: thin solid black;font-size:16px;'>（小写）" + total.ToString("0.00") + "</td></tr>");
             var xsry = ckdinfo.T_XSD == null ? "" : ckdinfo.T_XSD.XSRY;
             sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"3\" align=\"left\" style='border:0px;'>销售员：&nbsp;" + xsry + "</td><td align=\"center\" colspan=\"3\" style='border:0px;'>复核员：&nbsp;" + ckdinfo.FHR + "</td ><td align =\"center\" colspan=\"3\" style='border:0px;'>出库员：&nbsp;" + ckdinfo.CKCHR + "</td ><td align =\"center\" colspan=\"3\" style='border:0px;'>收货人：&nbsp;</td></tr>");
             sHtml.Append("<tr><td colspan=\"12\" style='border:0px;'>公司地址：" + qy.WhsZCDZ + "</td></tr>");

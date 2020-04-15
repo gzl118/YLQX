@@ -47,15 +47,15 @@
             border: thin solid black;
             border-right: 0px;
             border-bottom: 0px;
-            font-size: 12px;
+            font-size: 13px;
         }
     </style>
 </head>
 <body>
     <input type="checkbox" onclick="disCol(this)" value="隐藏" id="cbbtn" />隐藏单价/金额
     <div style="overflow-y:auto;height:400px;">
-        <div id="printckd" style="margin:15px;margin-left:12px;font-family: 宋体;width:750px;" class="ckdprint">@Html.Raw(ViewData["ParaStr"].ToString())</div>
-        <div id="printckd2" style="margin:15px;margin-left:12px;font-family: 宋体;width:700px;display:none;" class="ckdprint">@Html.Raw(ViewData["ParaStr2"].ToString())</div>
+        <div id="printckd" style="margin:15px;margin-left:12px;font-family: 宋体;width:755px;" class="ckdprint">@Html.Raw(ViewData["ParaStr"].ToString())</div>
+        <div id="printckd2" style="margin:15px;margin-left:12px;font-family: 宋体;width:705px;display:none;" class="ckdprint">@Html.Raw(ViewData["ParaStr2"].ToString())</div>
     </div>
     <div class="pageContent" style="position: absolute;bottom: 5px;">
         @Html.HiddenFor(m => m.DataModel.CKID, new { ID = "CkidMain", Name = "DataModel.CKID" })
