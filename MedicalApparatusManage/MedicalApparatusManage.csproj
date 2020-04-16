@@ -1941,6 +1941,7 @@
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Common\PredicateBuilder.cs" />
+    <Compile Include="Common\RmbHelper.cs" />
     <Compile Include="Controllers\ActivityInfoController.cs" />
     <Compile Include="Controllers\CheckLogin.cs" />
     <Compile Include="Controllers\SysFavoriteController.cs" />

@@ -46,7 +46,7 @@
 <body>
     <input type="checkbox" onclick="disCol(this)" value="隐藏" id="cbbtn" />隐藏单价/金额
     <div>
-        <div id="printshd" style="margin:15px;margin-left:12px;border:1px solid red;">@Html.Raw(ViewData["ParaStr"].ToString())</div>
+        <div id="printshd" style="margin:15px;margin-left:12px;">@Html.Raw(ViewData["ParaStr"].ToString())</div>
     </div>
     <div class="pageContent" style="position: absolute;bottom: 5px;">
         @Html.HiddenFor(m => m.DataModel.SHID, new { ID = "shidMain", Name = "DataModel.SHID" })

@@ -318,7 +318,7 @@ namespace MedicalApparatusManage.Controllers
                             + "</td><td style='border-right: thin solid black;' ></td></tr>");
             }
             //打印表尾
-            sHtml.Append("<tr id='trtotal' height=\"40\" align=\"center\"><td colspan=\"9\" style='border-bottom: thin solid black;font-size:16px;'>合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"5\" style='border-bottom: thin solid black;border-right: thin solid black;font-size:16px;'>（小写）" + total.ToString("0.00") + "</td></tr>");
+            sHtml.Append("<tr id='trtotal' height=\"40\" align=\"center\"><td colspan=\"9\" style='border-bottom: thin solid black;font-size:16px;'>合计金额：（大写）" + RmbHelper.CmycurD(total.ToString()) + "</td><td colspan=\"5\" style='border-bottom: thin solid black;border-right: thin solid black;font-size:16px;'>（小写）" + total.ToString("0.00") + "</td></tr>");
             var xsry = ckdinfo.T_XSD == null ? "" : ckdinfo.T_XSD.XSRY;
             sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"3\" align=\"left\" style='border:0px;'>销售员：&nbsp;" + xsry + "</td><td align=\"center\" colspan=\"4\" style='border:0px;'>复核员：&nbsp;" + ckdinfo.FHR + "</td ><td align =\"center\" colspan=\"4\" style='border:0px;'>出库员：&nbsp;" + ckdinfo.CKCHR + "</td ><td align =\"center\" colspan=\"3\" style='border:0px;'>收货人：&nbsp;</td></tr>");
             sHtml.Append("<tr><td colspan=\"14\" style='border:0px;'>公司地址：" + qy.WhsZCDZ + "</td></tr>");
@@ -425,7 +425,7 @@ namespace MedicalApparatusManage.Controllers
                             + "</td><td style='border-right: thin solid black;' ></td></tr>");
             }
             //打印表尾
-            sHtml.Append("<tr id='trtotal' height=\"40\" align=\"center\"><td colspan=\"7\" style='border-bottom: thin solid black;font-size:16px;'>合计金额：（大写）" + MoneySmallToBig(total.ToString()) + "</td><td colspan=\"5\" style='border-bottom: thin solid black;border-right: thin solid black;font-size:16px;'>（小写）" + total.ToString("0.00") + "</td></tr>");
+            sHtml.Append("<tr id='trtotal' height=\"40\" align=\"center\"><td colspan=\"7\" style='border-bottom: thin solid black;font-size:16px;'>合计金额：（大写）" + RmbHelper.CmycurD(total.ToString()) + "</td><td colspan=\"5\" style='border-bottom: thin solid black;border-right: thin solid black;font-size:16px;'>（小写）" + total.ToString("0.00") + "</td></tr>");
             var xsry = ckdinfo.T_XSD == null ? "" : ckdinfo.T_XSD.XSRY;
             sHtml.Append("<tr height=\"40\" align=\"center\"><td colspan=\"3\" align=\"left\" style='border:0px;'>销售员：&nbsp;" + xsry + "</td><td align=\"center\" colspan=\"3\" style='border:0px;'>复核员：&nbsp;" + ckdinfo.FHR + "</td ><td align =\"center\" colspan=\"3\" style='border:0px;'>出库员：&nbsp;" + ckdinfo.CKCHR + "</td ><td align =\"center\" colspan=\"3\" style='border:0px;'>收货人：&nbsp;</td></tr>");
             sHtml.Append("<tr><td colspan=\"12\" style='border:0px;'>公司地址：" + qy.WhsZCDZ + "</td></tr>");
