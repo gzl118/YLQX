@@ -25,8 +25,14 @@
             $.pdialog.closeCurrent();
             navTab.reload("/T_CKD/Index");
         };
-        function SaveCkd() {
-            var tempysd = $("#xsd").find("option:selected").val();
+        function SaveCkd(curId) {
+            var tempysd = "";
+            if (curId == 0) {
+                tempysd = $("#xsd").find("option:selected").val();
+            }
+            else {
+                tempysd = $("#xsd").val();
+            }
             if (!tempysd || tempysd == "") {
                 alertMsg.error('请选择销售单！')
             }
@@ -501,11 +507,11 @@
                 </form>
                 <div style="width:91%;border:1px solid #ffffff;margin:5px;">
                     <div><label id="lblCkd" style="width:50%;color:red;"></label></div>
-                    @{if (Model.DataModel.CKID == 0)
+                    @{if (Model.RoleCode == "1")
                         {
                             <div class="button" id="divSaveCkd" style="float:right;">
                                 <div class="buttonContent">
-                                    <button id="btnCkd" value="保存出库单" onclick="SaveCkd();">
+                                    <button id="btnCkd" value="保存出库单" onclick="SaveCkd(@Model.DataModel.CKID);">
                                         保存出库单
                                     </button>
                                 </div>
@@ -644,7 +650,7 @@
                 </form>
                 <div style="width:91%;border:1px solid #ffffff;margin:5px;">
                     <div><label id="lblCkmx" style="width:50%;color:red;"></label></div>
-                    @{if (Model.DataModel.CKID == 0)
+                    @{if (Model.RoleCode == "1")
                         {
                             <div class="button" id="divSaveCkMx" style="float:right;">
                                 <div class="buttonContent">

@@ -41,7 +41,7 @@ namespace MedicalApparatusManage.Controllers
             int currentPage = Convert.ToInt32(evalModel.currentPage);
             evalModel.DataModel = evalModel.DataModel ?? new T_CKD();
 
-            if (Request["strCKDName"] != null)
+            if (Request["strCKDName"] != null)  //出库单号
             {
                 string str = Request["strCKDName"].ToString();
                 if (!String.IsNullOrEmpty(str))
@@ -50,8 +50,59 @@ namespace MedicalApparatusManage.Controllers
                 }
                 ViewData["strCKDName"] = str;
             }
+            if (Request["strCKDMC"] != null)  //出库单名称
+            {
+                string str = Request["strCKDMC"].ToString();
+                if (!String.IsNullOrEmpty(str))
+                {
+                    evalModel.DataModel.CKMC = str.Trim();
+                }
+            }
+            var ghId = 0;
+            if (Request["strCKDGHQY"] != null)
+            {
+                var str = Request["strCKDGHQY"].ToString();
+                if (!string.IsNullOrEmpty(str))
+                {
+                    ghId = Convert.ToInt32(str);
+                }
+                ViewData["strCKDGHQY"] = str;
+            }
+            var cpId = 0;  //产品名称
+            if (Request["strCKDCPMC"] != null)
+            {
+                string str = Request["strCKDCPMC"].ToString();
+                if (!String.IsNullOrEmpty(str))
+                {
+                    cpId = Convert.ToInt32(str);
+                }
+                ViewData["strCKDCPMC"] = str;
+            }
+            var scId = 0; //生产企业ID
+            if (Request["strCKDSCQY"] != null)
+            {
+                string str = Request["strCKDSCQY"].ToString();
+                if (!String.IsNullOrEmpty(str))
+                {
+                    scId = Convert.ToInt32(str);
+                }
+                ViewData["strCKDSCQY"] = str;
+            }
 
-            evalModel.DataList = T_CKDDomain.GetInstance().PageT_CKD(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, out pagecount, out resultCount);
+            //购货企业列表
+            T_CusQY cusqy = new T_CusQY();
+            ViewBag.CUSQY = new SelectList(T_CusQYDomain.GetInstance().GetAllT_CusQY(cusqy).Where(p => p.CusStatus == 1).ToList(), "CusID", "CusMC");
+
+            T_SupQYModels supmode = new T_SupQYModels();
+            supmode.DataModel = supmode.DataModel ?? new T_SupQY();
+            supmode.DataList = T_SupQYDomain.GetInstance().GetAllT_SupQY(supmode.DataModel).Where(p => p.SupStatus == 1).ToList();
+            ViewData["SupQYList"] = new SelectList(supmode.DataList, "SupID", "SupMC");
+            T_YLCPModels ylcpQymode = new T_YLCPModels();
+            ylcpQymode.DataModel = ylcpQymode.DataModel ?? new T_YLCP();
+            ylcpQymode.DataList = T_YLCPDomain.GetInstance().GetAllT_YLCP(ylcpQymode.DataModel).Where(p => p.CPStatus == 1).ToList();
+            ViewData["YLCP"] = new SelectList(ylcpQymode.DataList, "CPID", "CPMC");
+
+            evalModel.DataList = T_CKDDomain.GetInstance().PageT_CKD(evalModel.DataModel, evalModel.StartTime, evalModel.EndTime, currentPage, pagesize, cpId, scId, ghId, out pagecount, out resultCount);
             evalModel.resultCount = resultCount;
             return View("~/Views/T_CKD/Index.cshtml", evalModel);
         }

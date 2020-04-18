@@ -26,12 +26,16 @@ namespace MedicalApparatusManage.Domain
             return _instance;
         }
 
-        public List<T_CKD> PageT_CKD(T_CKD info, DateTime? startTime, DateTime? endTime, int pageIndex, int pageSize, out int pageCount, out int totalRecord)
+        public List<T_CKD> PageT_CKD(T_CKD info, DateTime? startTime, DateTime? endTime, int pageIndex, int pageSize, int cpID, int scqyId, int ghId, out int pageCount, out int totalRecord)
         {
             Expression<Func<T_CKD, bool>> where = PredicateBuilder.True<T_CKD>();
             if (!String.IsNullOrEmpty(info.CKDH))
             {
                 where = where.And(p => p.CKDH.Contains(info.CKDH));
+            }
+            if (!string.IsNullOrEmpty(info.CKMC))
+            {
+                where = where.And(p => !string.IsNullOrEmpty(p.CKMC) && p.CKMC.Contains(info.CKMC));
             }
             if (startTime != null)
             {
@@ -42,7 +46,7 @@ namespace MedicalApparatusManage.Domain
                 where = where.And(p => p.CHRQ <= endTime.Value);
             }
             Func<T_CKD, System.String> order = p => p.CKDH;
-            return GetPageInfo<System.String>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);
+            return GetPageInfo<System.String>(where, order, true, pageIndex, pageSize, cpID, scqyId, ghId, out pageCount, out totalRecord);
         }
 
         public List<T_CKD> GetAllT_CKD(T_CKD info)
@@ -51,7 +55,7 @@ namespace MedicalApparatusManage.Domain
             return base.GetAllModels<System.Int32>(where);
         }
 
-        public List<T_CKD> GetPageInfo<S>(Expression<Func<T_CKD, bool>> where, Func<T_CKD, S> order, bool desc, int pageIndex, int pageSize, out int pageCount, out int totalRecord)
+        public List<T_CKD> GetPageInfo<S>(Expression<Func<T_CKD, bool>> where, Func<T_CKD, S> order, bool desc, int pageIndex, int pageSize, int cpID, int scqyId, int ghId, out int pageCount, out int totalRecord)
         {
             totalRecord = 0;
             pageCount = 0;
@@ -60,6 +64,33 @@ namespace MedicalApparatusManage.Domain
             {
                 try
                 {
+                    Expression<Func<T_CKMX, bool>> whereCKMX = PredicateBuilder.True<T_CKMX>();
+                    var isContain = false;
+                    if (cpID != 0)
+                    {
+                        whereCKMX = whereCKMX.And(p => p.CPID == cpID);
+                        isContain = true;
+                    }
+                    if (scqyId != 0)
+                    {
+                        var dbcp = hContext1.Set<T_YLCP>().Where(p => p.CPSCQYID == scqyId);
+                        var lstCPID = dbcp.Select(p => p.CPID);
+                        whereCKMX = whereCKMX.And(p => lstCPID.Contains(p.CPID));
+                        isContain = true;
+                    }
+                    if (isContain)
+                    {
+                        var dbchild = hContext1.Set<T_CKMX>().Where(whereCKMX.Compile());
+                        var lst = dbchild.Select(p => p.CKDID);
+                        if (lst != null)
+                            where = where.And(p => lst.Contains(p.CKID));
+                    }
+                    if (ghId != 0)
+                    {
+                        where = where.And(p => p.T_XSD != null && p.T_XSD.KHID == ghId);
+                    }
+
+
                     DbSet<T_CKD> db = hContext1.Set<T_CKD>();
                     DbQuery<T_CKD> dbq = db.Include("T_XSD");
                     totalRecord = db.Where(where.Compile()).Count();
