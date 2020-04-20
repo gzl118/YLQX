@@ -507,7 +507,7 @@
                 </form>
                 <div style="width:91%;border:1px solid #ffffff;margin:5px;">
                     <div><label id="lblCkd" style="width:50%;color:red;"></label></div>
-                    @{if (Model.RoleCode == "1")
+                    @{if (Model.DataModel.CKID == 0 || Model.RoleCode == "1")
                         {
                             <div class="button" id="divSaveCkd" style="float:right;">
                                 <div class="buttonContent">
@@ -650,7 +650,7 @@
                 </form>
                 <div style="width:91%;border:1px solid #ffffff;margin:5px;">
                     <div><label id="lblCkmx" style="width:50%;color:red;"></label></div>
-                    @{if (Model.RoleCode == "1")
+                    @{if (Model.DataModel.CKID == 0 || Model.RoleCode == "1")
                         {
                             <div class="button" id="divSaveCkMx" style="float:right;">
                                 <div class="buttonContent">
