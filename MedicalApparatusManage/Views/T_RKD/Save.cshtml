@@ -21,7 +21,8 @@
         function SaveRkd() {
             var tempysd = $("#ysd").find("option:selected").val();
             if (!tempysd || tempysd == "") {
-                alertMsg.error('请选择验收单！')
+                alertMsg.error('请选择验收单！');
+                return;
             }
             var elements = document.forms['formT_RKD'];
             var bl = validateCallback(elements);

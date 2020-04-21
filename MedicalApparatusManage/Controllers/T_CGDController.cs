@@ -181,6 +181,12 @@ namespace MedicalApparatusManage.Controllers
                     model.DataModel.ISCG = 0;
                     model.DataModel.ISSH = 0;
                     model.DataModel.IsFinish = 0;
+                    var temp = T_CGDDomain.GetInstance().GetAllModels<string>(p => p.CGDH == model.DataModel.CGDH).FirstOrDefault();
+                    if (temp != null && temp.CGID != 0)
+                    {
+                        var CurUser1 = Session["UserModel"] as SysUser;
+                        model.DataModel.CGDH = T_CGDDomain.GetInstance().GetCgOrderNum("CP", CurUser1);
+                    }
                     result = T_CGDDomain.GetInstance().AddModel(model.DataModel);
                 }
                 else if (model.Tag == "Edit")

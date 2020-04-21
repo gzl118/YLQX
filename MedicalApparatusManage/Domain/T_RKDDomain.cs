@@ -191,14 +191,16 @@ namespace MedicalApparatusManage.Domain
             {
                 try
                 {
-                    count = hContext1.Set<T_RKD>().Where(p => p.RKCJR == user.UserAccount).Count() + 1;
+                    string sql = $@"SELECT ISNULL(MAX(SUBSTRING(RKDH, 12,8)),0) + 1 FROM T_RKD WHERE RKCJR='{user.UserAccount}' AND SUBSTRING(RKDH,3,6)=CONVERT(varchar(100), GETDATE(), 12)";
+                    count = hContext1.Database.SqlQuery<int>(sql).FirstOrDefault();
+                    //count = hContext1.Set<T_RKD>().Where(p => p.RKCJR == user.UserAccount).Count() + 1;
                 }
                 catch (Exception ex)
                 {
 
                 }
             }
-            return "RK" + DateTime.Now.ToString("yyMMdd") + user.UserId.ToString().PadLeft(3, '0') + (count + 1).ToString().PadLeft(5, '0');
+            return "RK" + DateTime.Now.ToString("yyMMdd") + user.UserId.ToString().PadLeft(3, '0') + count.ToString().PadLeft(5, '0');
         }
 
         public int GetRkidByRkdh(string rkdh)

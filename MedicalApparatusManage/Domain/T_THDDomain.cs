@@ -96,14 +96,16 @@ namespace MedicalApparatusManage.Domain
             {
                 try
                 {
-                    count = hContext1.Set<T_THD>().Where(p => p.THCJR == user.UserAccount).Count();
+                    string sql = $@"SELECT ISNULL(MAX(SUBSTRING(THDH, 12,8)),0) + 1 FROM T_THD WHERE THCJR='{user.UserAccount}' AND SUBSTRING(THDH,3,6)=CONVERT(varchar(100), GETDATE(), 12)";
+                    count = hContext1.Database.SqlQuery<int>(sql).FirstOrDefault();
+                    //count = hContext1.Set<T_THD>().Where(p => p.THCJR == user.UserAccount).Count();
                 }
                 catch (Exception ex)
                 {
 
                 }
             }
-            string result = prefix + DateTime.Now.ToString("yyMMdd") + user.UserId.ToString().PadLeft(3, '0') + (count + 1).ToString().PadLeft(5, '0');
+            string result = prefix + DateTime.Now.ToString("yyMMdd") + user.UserId.ToString().PadLeft(3, '0') + count.ToString().PadLeft(5, '0');
             return result;
         }
         public int Sh(int id, int status)

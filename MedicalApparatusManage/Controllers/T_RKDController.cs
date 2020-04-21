@@ -159,6 +159,14 @@ namespace MedicalApparatusManage.Controllers
                 {
                     model.DataModel.ISSH = 0;
                     model.DataModel.RKMC = model.DataModel.RKMC + DateTime.Now.ToLongDateString();
+
+                    var temp = T_RKDDomain.GetInstance().GetAllModels<string>(p => p.RKDH == model.DataModel.RKDH).FirstOrDefault();
+                    if (temp != null && temp.RKID != 0)
+                    {
+                        var CurUser1 = Session["UserModel"] as SysUser;
+                        model.DataModel.RKDH = T_RKDDomain.GetInstance().GetRkOrderNum(CurUser1);
+                    }
+
                     result = T_RKDDomain.GetInstance().AddModel(model.DataModel);
                 }
                 else if (model.Tag == "Edit")

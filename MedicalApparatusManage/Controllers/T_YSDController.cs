@@ -148,6 +148,12 @@ namespace MedicalApparatusManage.Controllers
                     //model.DataModel.IsCGFinish = 0;
                     model.DataModel.IsCGYS = 0;
                     model.DataModel.IsTHFinish = 0;
+                    var temp = T_YSDDomain.GetInstance().GetAllModels<string>(p => p.YSDH == model.DataModel.YSDH).FirstOrDefault();
+                    if (temp != null && temp.YSID != 0)
+                    {
+                        var CurUser1 = Session["UserModel"] as SysUser;
+                        model.DataModel.YSDH = T_YSDDomain.GetInstance().GetYsOrderNum("YS", CurUser1);
+                    }
                     result = T_YSDDomain.GetInstance().AddModel(model.DataModel);
                 }
                 else if (model.Tag == "Edit")

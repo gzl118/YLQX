@@ -34,7 +34,8 @@
                 tempysd = $("#xsd").val();
             }
             if (!tempysd || tempysd == "") {
-                alertMsg.error('请选择销售单！')
+                alertMsg.error('请选择销售单！');
+                return;
             }
             var elements = document.forms['formT_CKD'];
             var bl = validateCallback(elements);

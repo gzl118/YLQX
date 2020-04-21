@@ -47,7 +47,8 @@
         };
         function Savethd() {
             if ($("#thysd").find("option:selected").val() == "") {
-                alertMsg.error('请选择验收单！')
+                alertMsg.error('请选择验收单！');
+                return;
             }
             var elements = document.forms['formT_THD'];
             var bl = validateCallback(elements);

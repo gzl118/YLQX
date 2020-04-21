@@ -189,6 +189,14 @@ namespace MedicalApparatusManage.Controllers
                 {
                     model.DataModel.XSFLAG = 0;
                     model.DataModel.IsFinish = 0;
+
+                    var temp = T_XSDDomain.GetInstance().GetAllModels<string>(p => p.XSDH == model.DataModel.XSDH).FirstOrDefault();
+                    if (temp != null && temp.XSID != 0)
+                    {
+                        var CurUser1 = Session["UserModel"] as SysUser;
+                        model.DataModel.XSDH = T_XSDDomain.GetInstance().GetXsOrderNum(CurUser1);
+                    }
+
                     result = T_XSDDomain.GetInstance().AddModel(model.DataModel);
                 }
                 else if (model.Tag == "Edit")

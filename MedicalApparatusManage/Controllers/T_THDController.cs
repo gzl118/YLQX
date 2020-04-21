@@ -129,6 +129,14 @@ namespace MedicalApparatusManage.Controllers
                 {
                     model.DataModel.FLAG = 1;
                     model.DataModel.ISSH = 0;
+
+                    var temp = T_THDDomain.GetInstance().GetAllModels<string>(p => p.THDH == model.DataModel.THDH).FirstOrDefault();
+                    if (temp != null && temp.THID != 0)
+                    {
+                        var CurUser1 = Session["UserModel"] as SysUser;
+                        model.DataModel.THDH = T_THDDomain.GetInstance().GetTHOrderNum("TH", CurUser1);
+                    }
+
                     result = T_THDDomain.GetInstance().AddModel(model.DataModel);
                 }
                 else if (model.Tag == "Edit")

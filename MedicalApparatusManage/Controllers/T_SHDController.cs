@@ -114,6 +114,14 @@ namespace MedicalApparatusManage.Controllers
                 if (model.Tag == "Add")
                 {
                     model.DataModel.ISSH = 0;
+
+                    var temp = T_SHDDomain.GetInstance().GetAllModels<string>(p => p.SHDH == model.DataModel.SHDH).FirstOrDefault();
+                    if (temp != null && temp.SHID != 0)
+                    {
+                        var CurUser1 = Session["UserModel"] as SysUser;
+                        model.DataModel.SHDH = T_SHDDomain.GetInstance().GetSHOrderNum(CurUser1);
+                    }
+
                     result = T_SHDDomain.GetInstance().AddModel(model.DataModel);
                 }
                 else if (model.Tag == "Edit")

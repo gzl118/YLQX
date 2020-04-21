@@ -184,6 +184,12 @@ namespace MedicalApparatusManage.Controllers
             {
                 if (model.Tag == "Add")
                 {
+                    var temp = T_CKDDomain.GetInstance().GetAllModels<string>(p => p.CKDH == model.DataModel.CKDH).FirstOrDefault();
+                    if (temp != null && temp.XSID != 0)
+                    {
+                        var CurUser1 = Session["UserModel"] as SysUser;
+                        model.DataModel.CKDH = T_CKDDomain.GetInstance().GetCkOrderNum(CurUser1);
+                    }
                     result = T_CKDDomain.GetInstance().AddModel(model.DataModel);
                 }
                 else if (model.Tag == "Edit")

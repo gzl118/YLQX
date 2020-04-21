@@ -93,14 +93,16 @@ namespace MedicalApparatusManage.Domain
             {
                 try
                 {
-                    count = hContext1.Set<T_SHD>().Where(p => p.SHCJR == user.UserAccount).Count();
+                    string sql = $@"SELECT ISNULL(MAX(SUBSTRING(SHDH, 12,8)),0) + 1 FROM T_SHD WHERE SHCJR='{user.UserAccount}' AND SUBSTRING(SHDH,3,6)=CONVERT(varchar(100), GETDATE(), 12)";
+                    count = hContext1.Database.SqlQuery<int>(sql).FirstOrDefault();
+                    //count = hContext1.Set<T_SHD>().Where(p => p.SHCJR == user.UserAccount).Count();
                 }
                 catch (Exception ex)
                 {
 
                 }
             }
-            return "SH" + DateTime.Now.ToString("yyMMdd") + user.UserId.ToString().PadLeft(3, '0') + (count + 1).ToString().PadLeft(5, '0');
+            return "SH" + DateTime.Now.ToString("yyMMdd") + user.UserId.ToString().PadLeft(3, '0') + count.ToString().PadLeft(5, '0');
         }
         public List<T_SHMX> GetT_SHMXByshid(int shid)
         {
