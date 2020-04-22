@@ -101,7 +101,8 @@ namespace MedicalApparatusManage.Controllers
             //采购单列表
             T_CGDModels cgdQymode = new T_CGDModels();
             cgdQymode.DataModel = cgdQymode.DataModel ?? new T_CGD();
-            cgdQymode.DataList = T_CGDDomain.GetInstance().GetAllT_CGD(cgdQymode.DataModel).Where(p => p.ISSH == 1 && p.IsFinish == 0).OrderByDescending(p => p.CGDH).ToList();
+            //cgdQymode.DataList = T_CGDDomain.GetInstance().GetAllT_CGD(cgdQymode.DataModel).Where(p => p.ISSH == 1 && p.IsFinish == 0).OrderByDescending(p => p.CGDH).ToList();
+            cgdQymode.DataList = T_CGDDomain.GetInstance().GetAllT_CGD(cgdQymode.DataModel).Where(p => p.ISSH == 1 && p.IsFinish != 1).OrderByDescending(p => p.CGDH).ToList();
             ViewData["CGD"] = new SelectList(cgdQymode.DataList, "CGDH", "CGDH");
 
             //加载企业列表
@@ -160,7 +161,7 @@ namespace MedicalApparatusManage.Controllers
                 {
                     result = T_YSDDomain.GetInstance().UpdateModel(model.DataModel, model.DataModel.YSID);
                 }
-                if (model.DataModel.IsCGFinish == 1)
+                if (model.DataModel.IsCGFinish == 1)  //IsCGFinish=1表示该验收单对应的采购单已经完结
                 {
                     T_CGDDomain.GetInstance().UpdateFinish(model.DataModel.CGDH);
                 }
@@ -493,6 +494,12 @@ namespace MedicalApparatusManage.Controllers
                     model.DataModel.IsCGFinish = 0;
                     model.DataModel.IsCGYS = 1;
                     //model.DataModel.IsTHFinish = 0;
+                    var temp = T_YSDDomain.GetInstance().GetAllModels<string>(p => p.YSDH == model.DataModel.YSDH).FirstOrDefault();
+                    if (temp != null && temp.YSID != 0)
+                    {
+                        var CurUser1 = Session["UserModel"] as SysUser;
+                        model.DataModel.YSDH = T_YSDDomain.GetInstance().GetYsOrderNum("YS", CurUser1);
+                    }
                     result = T_YSDDomain.GetInstance().AddModel(model.DataModel);
                 }
                 else if (model.Tag == "Edit")

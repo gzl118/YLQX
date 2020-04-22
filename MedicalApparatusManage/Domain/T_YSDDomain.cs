@@ -49,7 +49,7 @@ namespace MedicalApparatusManage.Domain
         public List<T_YSD> GetAllT_YSD(T_YSD info)
         {
             Expression<Func<T_YSD, bool>> where = PredicateBuilder.True<T_YSD>();
-            where = where.And(p => p.IsFinish == 0 && p.YSFLAG == "合格收货");
+            where = where.And(p => p.IsFinish != 1 && p.YSFLAG == "合格收货");
             return base.GetAllModels<System.Int32>(where);
         }
 

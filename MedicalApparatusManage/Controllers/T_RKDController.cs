@@ -500,7 +500,7 @@ namespace MedicalApparatusManage.Controllers
             {
                 Int32 cgid = model.DataModel.RKID;
                 result = T_RKDDomain.GetInstance().Sh(cgid, id);
-                if (id == 1 && model.DataModel.IsFinish == 1)
+                if (id == 1 && model.DataModel.IsFinish == 1)  //IsFinish=1表示验收单已经完结
                 {
                     T_YSDDomain.GetInstance().UpdateFinish(model.DataModel.YSDH);
                 }

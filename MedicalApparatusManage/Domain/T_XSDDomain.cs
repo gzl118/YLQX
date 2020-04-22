@@ -60,7 +60,7 @@ namespace MedicalApparatusManage.Domain
         public List<T_XSD> GetAllT_XSD(T_XSD info)
         {
             Expression<Func<T_XSD, bool>> where = PredicateBuilder.True<T_XSD>();
-            where = where.And(p => p.IsFinish == 0);
+            where = where.And(p => p.IsFinish != 1);
             return base.GetAllModels<System.Int32>(where);
         }
 

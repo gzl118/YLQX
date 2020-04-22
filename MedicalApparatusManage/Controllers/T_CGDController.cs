@@ -330,7 +330,7 @@ namespace MedicalApparatusManage.Controllers
         [CheckLogin()]
         public JsonResult GetCGDH(string CGDMC)
         {
-            var mxModel = T_CGDDomain.GetInstance().GetAllModels<int>(p => p.ISSH == 1 && p.IsFinish == 0 && (string.IsNullOrEmpty(CGDMC) || p.CGDMC.Contains(CGDMC))).OrderByDescending(p => p.CGDH).ToList();
+            var mxModel = T_CGDDomain.GetInstance().GetAllModels<int>(p => p.ISSH == 1 && p.IsFinish != 1 && (string.IsNullOrEmpty(CGDMC) || p.CGDMC.Contains(CGDMC))).OrderByDescending(p => p.CGDH).ToList();
             var result1 = "";
             StringBuilder result = new StringBuilder();
             result.Append("[[\"\",\"请选择\"]");

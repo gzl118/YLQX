@@ -77,7 +77,7 @@ namespace MedicalApparatusManage.Controllers
             ViewData["SupID"] = new SelectList(supmode.DataList, "SupID", "SupMC");
 
             Expression<Func<T_YSD, bool>> where = PredicateBuilder.True<T_YSD>();
-            where = where.And(p => p.IsTHFinish == 0);
+            where = where.And(p => p.IsTHFinish != 1);
             var yslist = T_YSDDomain.GetInstance().GetAllModels<int>(where);
             ViewData["YSD"] = new SelectList(yslist, "YSID", "YSDH");
 
@@ -210,7 +210,7 @@ namespace MedicalApparatusManage.Controllers
             {
                 Int32 cgid = model.DataModel.THID;
                 result = T_THDDomain.GetInstance().Sh(cgid, id);
-                if (id == 1 && model.DataModel.IsFinish == 1 && model.DataModel.YSID != 0)
+                if (id == 1 && model.DataModel.IsFinish == 1 && model.DataModel.YSID != 0)  //IsFinish=1表示该退货单对应的验收单已经完结
                 {
                     T_YSDDomain.GetInstance().UpdateFinish((int)model.DataModel.YSID);
                 }
