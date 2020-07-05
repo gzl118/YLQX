@@ -173,10 +173,10 @@
             <div class="pages">
                 <span style="width: 35px;">显示</span>
                 @{
-                    string[] sL = { "10", "20", "30", "50" };
+                    string[] sL = { "10", "20", "30", "50", "100", "500", "1000", "5000" };
                     List<SelectListItem>
-                        list = new List<SelectListItem>
-                            ();
+                                list = new List<SelectListItem>
+                                    ();
                     foreach (string s in sL)
                     {
                         list.Add(new SelectListItem { Text = s, Value = s });
