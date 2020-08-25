@@ -747,7 +747,7 @@
           <Property Name="CPGG" Type="nvarchar" MaxLength="200" />
           <Property Name="CPXH" Type="nvarchar" MaxLength="50" />
           <Property Name="CPSCQY" Type="nvarchar" MaxLength="50" />
-          <Property Name="CPSCDZ" Type="nvarchar" MaxLength="50" />
+          <Property Name="CPSCDZ" Type="nvarchar" MaxLength="2000" />
           <Property Name="CPJYDW" Type="int" />
           <Property Name="CPGYSID" Type="int" />
           <Property Name="CPLXID" Type="int" />
@@ -769,7 +769,7 @@
           <Property Name="BJSL" Type="int" />
           <Property Name="BJDate" Type="int" />
           <Property Name="ZCRName" Type="nvarchar" MaxLength="20" />
-          <Property Name="ZCRAddr" Type="nvarchar" MaxLength="100" />
+          <Property Name="ZCRAddr" Type="nvarchar" MaxLength="2000" />
           <Property Name="Remark" Type="nvarchar" MaxLength="200" />
           <Property Name="CCTJ" Type="nvarchar" MaxLength="200" />
           <Property Name="CKID" Type="int" />
@@ -2885,7 +2885,7 @@
           <Property Name="CPGG" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="CPXH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CPSCQY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CPSCDZ" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CPSCDZ" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
           <Property Name="CPJYDW" Type="Int32" />
           <Property Name="CPGYSID" Type="Int32" />
           <Property Name="CPLXID" Type="Int32" />
@@ -2919,7 +2919,7 @@
           <Property Name="BJDate" Type="Int32" />
           <NavigationProperty Name="T_SHMX" Relationship="MedicalApparatusManageModel.FK_T_SHMX_T_YLCP" FromRole="T_YLCP" ToRole="T_SHMX" />
           <Property Name="ZCRName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="ZCRAddr" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ZCRAddr" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
           <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="CCTJ" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="CKID" Type="Int32" />
