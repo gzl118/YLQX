@@ -349,9 +349,9 @@ namespace MedicalApparatusManage.Controllers
                     cpScqy = ckmx.T_YLCP.T_SupQY1.SupMC;
                 }
                 //单价
-                double cpPrice = ckmx.CPPRICE ?? 0.0;
+                double cpPrice = Math.Round(ckmx.CPPRICE ?? 0.0, 2);
                 //产品总价
-                double rowTotal = cpDj * cpPrice;
+                double rowTotal = Math.Round(cpDj * cpPrice, 2);
 
                 total = total + rowTotal;
                 NumCpNum = NumCpNum + cpDj;
@@ -457,9 +457,9 @@ namespace MedicalApparatusManage.Controllers
                     cpScqy = ckmx.T_YLCP.T_SupQY1.SupMC;
                 }
                 //单价
-                double cpPrice = ckmx.CPPRICE ?? 0.0;
+                double cpPrice = Math.Round(ckmx.CPPRICE ?? 0.0, 2);
                 //产品总价
-                double rowTotal = cpDj * cpPrice;
+                double rowTotal = Math.Round(cpDj * cpPrice, 2);
 
                 total = total + rowTotal;
                 NumCpNum = NumCpNum + cpDj;
@@ -474,7 +474,7 @@ namespace MedicalApparatusManage.Controllers
                 var cytj = ckmx.CYTJ;
                 sHtml.Append("<tr align=\"center\"><td >" + cpName
                             + "</td><td style='vnd.ms-excel.numberformat:@' >" + cpGg + "</td><td style='vnd.ms-excel.numberformat:@' >" + cpxh + "</td><td >" + cpScqy
-                            + "</td><td >" + cpDw + "</td><td style='vnd.ms-excel.numberformat:@'  >" + rowTotal.ToString("0.00") + "</td><td  style='vnd.ms-excel.numberformat:@' >" + scPh
+                            + "</td><td >" + cpDw + "</td><td style='vnd.ms-excel.numberformat:@'  >" + cpDj.ToString("") + "</td><td  style='vnd.ms-excel.numberformat:@' >" + scPh
                             + "</td><td style='vnd.ms-excel.numberformat:@'>" + scrq + "\r\n" + "--------" + "\r\n" + scRq + " </td>"
                             + "<td style='vnd.ms-excel.numberformat:@' >" + xkzbh
                             + "</td><td style='vnd.ms-excel.numberformat:@' >" + cpzczh

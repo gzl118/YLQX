@@ -417,9 +417,9 @@ namespace MedicalApparatusManage.Controllers
                 //生产企业
                 string cpScqy = rkdinfo.T_SupQY1 == null ? "" : rkdinfo.T_SupQY1.SupMC;
                 //单价
-                double cpPrice = rkmx.T_YLCP.CPPrice ?? 0.0;
+                double cpPrice = Math.Round(rkmx.T_YLCP.CPPrice ?? 0.0, 2);
                 //产品总价
-                double rowTotal = cpDj * cpPrice;
+                double rowTotal = Math.Round(cpDj * cpPrice, 2);
 
                 total = total + rowTotal;
                 //注册证号
