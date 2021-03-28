@@ -43,8 +43,8 @@ namespace MedicalApparatusManage.Domain
             {
                 where = where.And(p => p.CollectDate < endTime.Value.AddDays(1));
             }
-            Func<T_CKCollect, System.Int32> order = p => p.CKID;
-            return GetPageInfo<System.Int32>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);
+            Func<T_CKCollect, System.DateTime?> order = p => p.CollectDate;
+            return GetPageInfo<System.DateTime?>(where, order, true, pageIndex, pageSize, out pageCount, out totalRecord);
         }
         public List<T_CKCollect> GetPageInfo<S>(Expression<Func<T_CKCollect, bool>> where, Func<T_CKCollect, S> order, bool desc, int pageIndex, int pageSize, out int pageCount, out int totalRecord)
         {
